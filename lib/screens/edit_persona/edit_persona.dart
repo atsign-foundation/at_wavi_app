@@ -102,20 +102,29 @@ class _EditPersonaState extends State<EditPersona> {
                 runSpacing: 10.0,
                 spacing: 10.0,
                 children: _colors.map((_color) {
-                  return Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      _rectangle(
-                          width: 78,
-                          height: 78,
-                          color: _color,
-                          roundedCorner: 10),
-                      _color == _selectedColor
-                          ? Positioned(
-                              child: _circularDoneIcon(
-                                  isDark: true, size: 35.toWidth))
-                          : SizedBox()
-                    ],
+                  return InkWell(
+                    onTap: () {
+                      Themes.setHighlightColor(_color);
+                      Provider.of<ThemeProvider>(context, listen: false)
+                          .setTheme(
+                              Provider.of<ThemeProvider>(context, listen: false)
+                                  .getTheme);
+                    },
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        _rectangle(
+                            width: 78,
+                            height: 78,
+                            color: _color,
+                            roundedCorner: 10),
+                        _color == Themes.highlightColor
+                            ? Positioned(
+                                child: _circularDoneIcon(
+                                    isDark: true, size: 35.toWidth))
+                            : SizedBox()
+                      ],
+                    ),
                   );
                 }).toList(),
               )

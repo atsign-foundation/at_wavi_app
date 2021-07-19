@@ -1,11 +1,15 @@
+import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Themes {
   Themes._();
   static final Themes _instance = Themes._();
   factory Themes() => _instance;
+  static late Color highlightColor;
+
   // ignore: non_constant_identifier_names
   ThemeData PRIMARY_THEME = ThemeData(
     primaryColor: ColorConstants.white,
@@ -13,11 +17,17 @@ class Themes {
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );
 
+  static Color setHighlightColor(Color _highlightColor) {
+    Provider.of<ThemeProvider>(NavService.navKey.currentContext!, listen: false)
+        .storeHexHighlightColor(_highlightColor.toString());
+    return highlightColor = _highlightColor;
+  }
+
   static ThemeData get lightTheme {
     return ThemeData(
       brightness: Brightness.light,
       primaryColor: ColorConstants.black,
-      canvasColor: ColorConstants.purpleShade2,
+      highlightColor: highlightColor,
       // hintColor: AllColors().DARK_GREY,
       // textTheme: TextTheme(
       //   subtitle1: TextStyle(color: AllColors().DARK_GREY, fontSize: 12),
@@ -69,7 +79,7 @@ class Themes {
     return ThemeData(
       brightness: Brightness.dark,
       primaryColor: ColorConstants.white,
-      canvasColor: ColorConstants.purpleShade2,
+      highlightColor: highlightColor,
       // hintColor: AllColors().DARK_GREY,
       // textTheme: TextTheme(
       //   subtitle1: TextStyle(color: AllColors().DARK_GREY, fontSize: 12),
