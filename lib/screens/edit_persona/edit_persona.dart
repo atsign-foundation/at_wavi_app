@@ -1,3 +1,5 @@
+import 'package:at_wavi_app/routes/route_names.dart';
+import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
@@ -122,22 +124,27 @@ class _EditPersonaState extends State<EditPersona> {
 
   Widget _bottomSheetButton(String _text, {bool isDark = false}) {
     return Expanded(
-      child: Container(
-        height: 80.toHeight,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-            color: isDark ? ColorConstants.black : ColorConstants.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                offset: Offset(0.0, 1.0),
-                blurRadius: 3.0,
-              ),
-            ]),
-        child: Text(_text,
-            style: isDark
-                ? CustomTextStyles.white(size: 18)
-                : CustomTextStyles.black(size: 18)),
+      child: InkWell(
+        onTap: () async {
+          await SetupRoutes.push(context, Routes.HOME);
+        },
+        child: Container(
+          height: 80.toHeight,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              color: isDark ? ColorConstants.black : ColorConstants.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(0.0, 1.0),
+                  blurRadius: 3.0,
+                ),
+              ]),
+          child: Text(_text,
+              style: isDark
+                  ? CustomTextStyles.white(size: 18)
+                  : CustomTextStyles.black(size: 18)),
+        ),
       ),
     );
   }
