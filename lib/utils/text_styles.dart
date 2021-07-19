@@ -26,4 +26,17 @@ class CustomTextStyles {
       fontSize: size.toFont,
       letterSpacing: 0.1,
       fontWeight: FontWeight.bold);
+
+  static TextStyle customTextStyle(Color color, {int size = 16}) => TextStyle(
+      color: color,
+      fontSize: size.toFont,
+      letterSpacing: 0.1,
+      fontWeight: FontWeight.normal);
+
+  static TextStyle customBoldTextStyle(Color color, {int size = 16}) =>
+      TextStyle(
+          color: color,
+          fontSize: size.toFont,
+          letterSpacing: 0.1,
+          fontWeight: FontWeight.bold);
 }
