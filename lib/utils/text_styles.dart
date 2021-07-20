@@ -40,3 +40,27 @@ class CustomTextStyles {
           letterSpacing: 0.1,
           fontWeight: FontWeight.bold);
 }
+
+class TextStyles {
+  static TextStyle black18bold = TextStyle(
+      fontSize: 18.toFont, color: Colors.black, fontWeight: FontWeight.bold);
+
+  static TextStyle grey15 =
+      TextStyle(fontSize: 15.toFont, color: ColorConstants.greyText);
+
+  static TextStyle orange18bold = TextStyle(
+      fontSize: 18.toFont,
+      color: ColorConstants.orange,
+      fontWeight: FontWeight.w500);
+
+  static TextStyle purple18bold = TextStyle(
+      fontSize: 18.toFont,
+      color: ColorConstants.purple,
+      fontWeight: FontWeight.bold);
+
+  static TextStyle lightPurpleText14 =
+      TextStyle(fontSize: 14.toFont, color: ColorConstants.lightPurpleText);
+
+  static TextStyle purple16 =
+      TextStyle(fontSize: 16.toFont, color: ColorConstants.purple);
+}

@@ -18,4 +18,8 @@ class ColorConstants {
   /// Purple Shades
   static const purpleShade1 = Color(0xFFF5F4F9);
   static const purpleShade2 = Color(0xFF58419C);
+  static const Color lightPurple = Color(0XFFF5F4F9);
+  static const Color lightPurpleText = Color(0xFF9789C2);
+  static const Color lightGrey = Color(0xFFF5F4F9);
+  static const Color greyText = Color(0xFF98A0B1);
 }
