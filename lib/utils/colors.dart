@@ -4,6 +4,7 @@ class ColorConstants {
   static const Color orange = Color(0xFFF2623E);
   static const Color white = Colors.white;
   static const Color black = Colors.black;
+  static const Color blackShade2 = Color(0xFF14141C);
   static const purple = Color(0xFF58419C);
   static const darkBlue = Color(0xFF0D1F44);
 
@@ -24,5 +25,6 @@ class ColorConstants {
   static const Color greyText = Color(0xFF98A0B1);
 
   /// Opacity color
-  static Color dullColor = Colors.black.withOpacity(0.5);
+  static Color dullColor({Color color = Colors.black, double opacity = 0.5}) =>
+      color.withOpacity(opacity);
 }

@@ -27,13 +27,25 @@ class _AddLinkState extends State<AddLink> {
     SizeConfig().init(context);
     return Scaffold(
       bottomSheet: InkWell(
-        onTap: _selectedValue == '' ? null : () {},
+        onTap: _selectedValue == ''
+            ? () {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                    'Select a section',
+                    textAlign: TextAlign.center,
+                  ),
+                  duration: Duration(seconds: 1),
+                  dismissDirection: DismissDirection.horizontal,
+                ));
+              }
+            : () {},
         child: Container(
             alignment: Alignment.center,
             height: 70.toHeight,
             width: SizeConfig().screenWidth,
             color: _selectedValue == ''
-                ? ColorConstants.dullColor
+                ? ColorConstants.dullColor(
+                    color: Theme.of(context).primaryColor, opacity: 0.5)
                 : Theme.of(context).primaryColor,
             child: Text(
               'Next',
@@ -50,6 +62,7 @@ class _AddLinkState extends State<AddLink> {
               Theme.of(context).primaryColor,
               size: 16),
         ),
+        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         centerTitle: false,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
@@ -66,34 +79,41 @@ class _AddLinkState extends State<AddLink> {
   }
 
   Widget _radioButtons(String _value) {
-    return Padding(
-      padding:
-          EdgeInsets.symmetric(horizontal: 16.toWidth, vertical: 4.toHeight),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            '$_value',
-            style: CustomTextStyles.customTextStyle(
-                Theme.of(context).primaryColor,
-                size: 16),
-          ),
-          Transform.scale(
-            scale: 1.4,
-            child: Radio(
-              value: _value,
-              groupValue: _selectedValue,
-              activeColor: Theme.of(context).primaryColor,
-              splashRadius: 5,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              onChanged: (value) {
-                setState(() {
-                  _selectedValue = _value;
-                });
-              },
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _selectedValue = _value;
+        });
+      },
+      child: Padding(
+        padding:
+            EdgeInsets.symmetric(horizontal: 16.toWidth, vertical: 4.toHeight),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '$_value',
+              style: CustomTextStyles.customTextStyle(
+                  Theme.of(context).primaryColor,
+                  size: 16),
             ),
-          ),
-        ],
+            Transform.scale(
+              scale: 1.4,
+              child: Radio(
+                value: _value,
+                groupValue: _selectedValue,
+                activeColor: Theme.of(context).primaryColor,
+                splashRadius: 5,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedValue = _value;
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
