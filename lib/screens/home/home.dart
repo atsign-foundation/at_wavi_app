@@ -248,9 +248,9 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_currentTab == HOME_TABS.DETAILS) {
       // return HomeEmptyDetails();
       return HomeDetails();
-    } else if (_currentTab == HOME_TABS.DETAILS) {
+    } else if (_currentTab == HOME_TABS.CHANNELS) {
       return HomeChannels();
-    } else if (_currentTab == HOME_TABS.DETAILS) {
+    } else if (_currentTab == HOME_TABS.FEATURED) {
       return HomeFeatured();
     } else
       return SizedBox();
