@@ -21,7 +21,9 @@ class ThemeProvider extends BaseModel {
     ThemeColor _currentTheme;
     var res = await _hiveDataProvider.readData('theme');
 
-    Themes.highlightColor = setHighlightColor(res['highlight_color']);
+    Themes.highlightColor = (res['highlight_color'] != null)
+        ? setHighlightColor(res['highlight_color'])
+        : ColorConstants.purple;
 
     if (res['theme_color'] == 'ThemeColor.Dark') {
       _currentTheme = ThemeColor.Dark;
