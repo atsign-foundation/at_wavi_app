@@ -244,8 +244,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: BoxDecoration(
                     border: Border.all(
                         color: _isDark
-                            ? _themeData.scaffoldBackgroundColor
-                            : _themeData.highlightColor),
+                            ? ColorConstants.white.withOpacity(0.1)
+                            : ColorConstants.black.withOpacity(0.1)),
                     borderRadius: BorderRadius.circular(60),
                   ),
                   child: Row(
