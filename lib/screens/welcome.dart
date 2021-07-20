@@ -1,5 +1,6 @@
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,27 @@ class Welcome extends StatefulWidget {
 }
 
 class _WelcomeState extends State<Welcome> {
+  var atClientPrefernce;
+
+  void _checkToOnboard() async {
+    String? currentatSign = await BackendService().getAtSign();
+    await BackendService()
+        .getAtClientPreference()
+        .then((value) => atClientPrefernce = value)
+        .catchError((e) => print(e));
+
+    if (currentatSign != null && currentatSign != '') {
+      await BackendService()
+          .onboard(currentatSign, atClientPreference: atClientPrefernce);
+    }
+  }
+
+  @override
+  void initState() {
+    _checkToOnboard();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -52,7 +74,8 @@ and share it with others.''',
                 SizedBox(height: 60),
                 CustomButton(
                   onPressed: () {
-                    SetupRoutes.push(context, Routes.EDIT_PERSONA);
+                    setState(() {});
+                    BackendService().onboard('');
                   },
                   buttonColor: ColorConstants.black,
                   buttonText: 'Create my persona',
