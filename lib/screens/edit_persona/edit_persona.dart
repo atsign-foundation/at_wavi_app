@@ -28,13 +28,6 @@ class _EditPersonaState extends State<EditPersona> {
     ColorConstants.solidYellow,
   ];
 
-  Color _selectedColor = ColorConstants.purple;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -62,7 +55,9 @@ class _EditPersonaState extends State<EditPersona> {
               SizedBox(height: 20.toHeight),
               Text(
                 'Theme',
-                style: CustomTextStyles.blackBold(size: 18),
+                style: CustomTextStyles.customBoldTextStyle(
+                    Theme.of(context).primaryColor,
+                    size: 18),
               ),
               SizedBox(height: 15.toHeight),
               Row(
@@ -93,7 +88,9 @@ class _EditPersonaState extends State<EditPersona> {
               SizedBox(height: 30.toHeight),
               Text(
                 'Colour',
-                style: CustomTextStyles.blackBold(size: 18),
+                style: CustomTextStyles.customBoldTextStyle(
+                    Theme.of(context).primaryColor,
+                    size: 18),
               ),
               SizedBox(height: 15.toHeight),
               Wrap(
