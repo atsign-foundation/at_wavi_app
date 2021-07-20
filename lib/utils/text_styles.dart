@@ -58,9 +58,24 @@ class TextStyles {
       color: ColorConstants.purple,
       fontWeight: FontWeight.bold);
 
+  static TextStyle boldText(Color color, {int size = 16}) => TextStyle(
+      color: color,
+      fontSize: size.toFont,
+      letterSpacing: 0.1,
+      fontWeight: FontWeight.bold);
+
+  static TextStyle lightText(Color color, {int size = 16}) => TextStyle(
+        color: color,
+        fontSize: size.toFont,
+        letterSpacing: 0.1,
+      );
+
   static TextStyle lightPurpleText14 =
       TextStyle(fontSize: 14.toFont, color: ColorConstants.lightPurpleText);
 
   static TextStyle purple16 =
       TextStyle(fontSize: 16.toFont, color: ColorConstants.purple);
+
+  static TextStyle orange16 =
+      TextStyle(fontSize: 16.toFont, color: ColorConstants.orange);
 }

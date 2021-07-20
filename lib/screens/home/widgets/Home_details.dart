@@ -1,7 +1,10 @@
 import 'package:at_wavi_app/common_components/custom_card.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
+import 'package:at_wavi_app/utils/theme.dart';
+import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:at_wavi_app/services/size_config.dart';
+import 'package:provider/provider.dart';
 
 class HomeDetails extends StatefulWidget {
   @override
@@ -9,6 +12,20 @@ class HomeDetails extends StatefulWidget {
 }
 
 class _HomeDetailsState extends State<HomeDetails> {
+  late bool _isDark;
+  late ThemeData _themeData;
+
+  @override
+  void initState() {
+    _isDark = Provider.of<ThemeProvider>(context, listen: false).isDark;
+    if (_isDark) {
+      _themeData = Themes.darkTheme;
+    } else {
+      _themeData = Themes.lightTheme;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +34,8 @@ class _HomeDetailsState extends State<HomeDetails> {
         children: <Widget>[
           Text(
             'Basic Details',
-            style: TextStyles.purple18bold,
+            style: TextStyles.boldText(_isDark ? Colors.white : Colors.black,
+                size: 18),
           ),
           SizedBox(height: 15.toHeight),
           SizedBox(
@@ -34,7 +52,9 @@ class _HomeDetailsState extends State<HomeDetails> {
                 subtitle: 'lauren@atsign.com',
               )),
           SizedBox(height: 40.toHeight),
-          Text('Additional Details', style: TextStyles.purple18bold),
+          Text('Additional Details',
+              style: TextStyles.boldText(_isDark ? Colors.white : Colors.black,
+                  size: 18)),
           SizedBox(height: 15.toHeight),
           SizedBox(
               width: double.infinity,

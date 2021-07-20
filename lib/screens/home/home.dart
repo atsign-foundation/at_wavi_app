@@ -5,7 +5,10 @@ import 'package:at_wavi_app/screens/home/widgets/home_empty_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/theme.dart';
+import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 enum HOME_TABS { DETAILS, CHANNELS, FEATURED }
 
@@ -17,6 +20,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   HOME_TABS _currentTab = HOME_TABS.DETAILS;
+  late bool _isDark;
+  late ThemeData _themeData;
 
   _onItemTapped(int index) {
     setState(() {
@@ -25,10 +30,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    setThemeData();
+    super.initState();
+  }
+
+  setThemeData() {
+    _isDark = Provider.of<ThemeProvider>(context, listen: false).isDark;
+    if (_isDark) {
+      _themeData = Themes.darkTheme;
+    } else {
+      _themeData = Themes.lightTheme;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
+      backgroundColor: _themeData.scaffoldBackgroundColor,
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: _themeData.scaffoldBackgroundColor,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -59,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       'My Profile',
                       style: TextStyle(
                           fontSize: 18.toFont,
-                          color: ColorConstants.darkBlue,
+                          color: _isDark ? Colors.white : Colors.black,
                           fontWeight: FontWeight.w800),
                     ),
                   ),
@@ -71,9 +93,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: Icon(Icons.search,
-                              color: ColorConstants.darkBlue),
+                              color: _isDark ? Colors.white : Colors.black),
                         ),
-                        Icon(Icons.more_vert, color: ColorConstants.darkBlue)
+                        Icon(Icons.more_vert,
+                            color: _isDark ? Colors.white : Colors.black)
                       ],
                     ),
                   ),
@@ -96,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Text('Lauren London',
                               style: TextStyle(
                                   fontSize: 18,
-                                  color: ColorConstants.purple,
+                                  color: _isDark ? Colors.white : Colors.black,
                                   fontWeight: FontWeight.w600)),
                           SizedBox(height: 8.toHeight),
                           Text(
@@ -106,26 +129,54 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontSize: 18.toFont),
                           ),
                           SizedBox(height: 18.5.toHeight),
-                          Divider(),
+                          Divider(
+                            color: _themeData.highlightColor,
+                          ),
                           SizedBox(height: 18.5.toHeight),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
-                                child: Text(
-                                  '0 Followers',
-                                  style: TextStyle(
-                                      fontSize: 14.toFont,
-                                      color: ColorConstants.purple),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '0',
+                                      style: TextStyle(
+                                          fontSize: 18.toFont,
+                                          color: _themeData.highlightColor,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                                    Text(
+                                      'Followers',
+                                      style: TextStyle(
+                                          fontSize: 14.toFont,
+                                          color: _themeData.highlightColor),
+                                    ),
+                                  ],
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(right: 10.0),
-                                child: Text('0 Following',
-                                    style: TextStyle(
-                                        fontSize: 14.toFont,
-                                        color: ColorConstants.purple)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '0',
+                                      style: TextStyle(
+                                          fontSize: 18.toFont,
+                                          color: _themeData.highlightColor,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                                    Text(
+                                      'Following',
+                                      style: TextStyle(
+                                          fontSize: 14.toFont,
+                                          color: _themeData.highlightColor),
+                                    ),
+                                  ],
+                                ),
                               )
                             ],
                           )
@@ -143,14 +194,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: TextButton(
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xFFF5F4F9)),
+                                _themeData.highlightColor.withOpacity(0.1)),
                           ),
                           onPressed: () {},
                           child: Text(
                             'Edit Profile',
                             style: TextStyle(
                                 fontSize: 16.toFont,
-                                color: ColorConstants.purple),
+                                color: _themeData.highlightColor),
                           ),
                         ),
                       ),
@@ -162,13 +213,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: TextButton(
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xFFF5F4F9)),
+                                _themeData.highlightColor.withOpacity(0.1)),
                           ),
                           onPressed: () {},
                           child: Text('Share Profile',
                               style: TextStyle(
                                   fontSize: 16.toFont,
-                                  color: ColorConstants.purple)),
+                                  color: _themeData.highlightColor)),
                         ),
                       ),
                     )
@@ -179,8 +230,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   height: 70.toHeight,
                   decoration: BoxDecoration(
-                    border: Border.all(color: ColorConstants.lightGrey),
-                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                        color: _isDark
+                            ? _themeData.scaffoldBackgroundColor
+                            : _themeData.highlightColor),
+                    borderRadius: BorderRadius.circular(60),
                   ),
                   child: Row(
                     children: <Widget>[
@@ -229,18 +283,29 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget tab(String title, HOME_TABS tab) {
     return Container(
       decoration: BoxDecoration(
-        color: _currentTab == tab ? ColorConstants.purple : Colors.white,
+        color: _currentTab == tab
+            ? _themeData.highlightColor
+            : _isDark
+                ? _themeData.scaffoldBackgroundColor
+                : Colors.white,
         border: _currentTab == tab
-            ? Border.all(color: ColorConstants.lightGrey)
+            ? Border.all(
+                color: _isDark
+                    ? _themeData.highlightColor
+                    : ColorConstants.lightGrey)
             : null,
-        borderRadius: _currentTab == tab ? BorderRadius.circular(60) : null,
+        // borderRadius: _currentTab == tab ? BorderRadius.circular(60) : null,
+        borderRadius: BorderRadius.circular(60),
       ),
       child: Center(
-          child: Text(title,
-              style: TextStyle(
-                  color:
-                      _currentTab == tab ? Colors.white : ColorConstants.purple,
-                  fontSize: 18.toFont))),
+        child: Text(
+          title,
+          style: TextStyle(
+              color:
+                  _currentTab == tab ? Colors.white : _themeData.highlightColor,
+              fontSize: 18.toFont),
+        ),
+      ),
     );
   }
 

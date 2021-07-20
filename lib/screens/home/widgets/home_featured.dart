@@ -1,6 +1,9 @@
 import 'package:at_wavi_app/utils/text_styles.dart';
+import 'package:at_wavi_app/utils/theme.dart';
+import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:at_wavi_app/services/size_config.dart';
+import 'package:provider/provider.dart';
 
 class HomeFeatured extends StatefulWidget {
   @override
@@ -8,8 +11,17 @@ class HomeFeatured extends StatefulWidget {
 }
 
 class _HomeFeaturedState extends State<HomeFeatured> {
+  late bool _isDark;
+  late ThemeData _themeData;
+
   @override
   Widget build(BuildContext context) {
+    _isDark = Provider.of<ThemeProvider>(context, listen: false).isDark;
+    if (_isDark) {
+      _themeData = Themes.darkTheme;
+    } else {
+      _themeData = Themes.lightTheme;
+    }
     return Container(
       child: Column(
         children: <Widget>[
@@ -18,28 +30,35 @@ class _HomeFeaturedState extends State<HomeFeatured> {
             children: [
               Text(
                 'Instagram',
-                style: TextStyles.purple18bold,
+                style: TextStyles.boldText(
+                    _isDark ? Colors.white : Colors.black,
+                    size: 18),
               ),
               Text(
                 'See more',
-                style: TextStyles.purple16,
+                style: TextStyles.lightText(
+                    _isDark ? Colors.white : Colors.black,
+                    size: 16),
               ),
             ],
           ),
           SizedBox(height: 15.toHeight),
-          Align(
-            alignment: Alignment.center,
-            child: Wrap(
-              alignment: WrapAlignment.start,
-              runAlignment: WrapAlignment.start,
-              runSpacing: 10.0,
-              spacing: 20.0,
-              children: List.generate(6, (index) {
-                return Icon(
-                  Icons.image,
-                  size: 80,
-                );
-              }),
+          Container(
+            color: _themeData.highlightColor.withOpacity(0.1),
+            child: Align(
+              alignment: Alignment.center,
+              child: Wrap(
+                alignment: WrapAlignment.start,
+                runAlignment: WrapAlignment.start,
+                runSpacing: 10.0,
+                spacing: 20.0,
+                children: List.generate(6, (index) {
+                  return Icon(
+                    Icons.image,
+                    size: 80,
+                  );
+                }),
+              ),
             ),
           ),
           SizedBox(height: 40.toHeight),
@@ -48,11 +67,15 @@ class _HomeFeaturedState extends State<HomeFeatured> {
             children: [
               Text(
                 'Twitter',
-                style: TextStyles.purple18bold,
+                style: TextStyles.boldText(
+                    _isDark ? Colors.white : Colors.black,
+                    size: 18),
               ),
               Text(
                 'See more',
-                style: TextStyles.purple16,
+                style: TextStyles.lightText(
+                    _isDark ? Colors.white : Colors.black,
+                    size: 16),
               ),
             ],
           ),
