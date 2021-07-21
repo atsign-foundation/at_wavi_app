@@ -290,9 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
       decoration: BoxDecoration(
         color: _currentTab == tab
             ? _themeData.highlightColor
-            : _isDark
-                ? _themeData.scaffoldBackgroundColor
-                : Colors.white,
+            : _themeData.scaffoldBackgroundColor,
         border: _currentTab == tab
             ? Border.all(
                 color: _isDark
