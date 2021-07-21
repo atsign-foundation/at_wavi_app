@@ -15,19 +15,18 @@ class _HomeDetailsState extends State<HomeDetails> {
   late bool _isDark;
   late ThemeData _themeData;
 
-  @override
-  void initState() {
-    _isDark = Provider.of<ThemeProvider>(context, listen: false).isDark;
+  void setThemeData() {
+    _isDark = isDarkModeEnabled(context);
     if (_isDark) {
       _themeData = Themes.darkTheme;
     } else {
       _themeData = Themes.lightTheme;
     }
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    setThemeData();
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

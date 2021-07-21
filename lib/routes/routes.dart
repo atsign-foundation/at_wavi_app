@@ -6,10 +6,11 @@ import 'package:at_wavi_app/screens/welcome.dart';
 import 'package:flutter/material.dart';
 
 class SetupRoutes {
-  static String initialRoute = Routes.EDIT_PERSONA;
-  // static String initialRoute = Routes.WELCOME_SCREEN;
+  // static String initialRoute = Routes.EDIT_PERSONA;
+  static String initialRoute = Routes.WELCOME_SCREEN;
   static Map<String, WidgetBuilder> get routes {
     return {
+      Routes.WELCOME_SCREEN: (context) => Welcome(),
       Routes.EDIT_PERSONA: (context) => EditPersona(),
       Routes.HOME: (context) => HomeScreen(),
       Routes.ADD_LINK: (context) => AddLink(),

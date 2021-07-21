@@ -14,14 +14,18 @@ class _HomeFeaturedState extends State<HomeFeatured> {
   late bool _isDark;
   late ThemeData _themeData;
 
-  @override
-  Widget build(BuildContext context) {
-    _isDark = Provider.of<ThemeProvider>(context, listen: false).isDark;
+  void setThemeData() {
+    _isDark = isDarkModeEnabled(context);
     if (_isDark) {
       _themeData = Themes.darkTheme;
     } else {
       _themeData = Themes.lightTheme;
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    setThemeData();
     return Container(
       child: Column(
         children: <Widget>[

@@ -1,8 +1,11 @@
 import 'package:at_wavi_app/common_components/header.dart';
+import 'package:at_wavi_app/routes/route_names.dart';
+import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_channel.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_empty_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
+import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/theme.dart';
@@ -31,22 +34,31 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    setThemeData();
+    Provider.of<ThemeProvider>(context, listen: false)
+        .checkThemeFromSecondary();
     super.initState();
   }
 
   setThemeData() {
-    _isDark = Provider.of<ThemeProvider>(context, listen: false).isDark;
-    if (_isDark) {
-      _themeData = Themes.darkTheme;
-    } else {
-      _themeData = Themes.lightTheme;
+    // _isDark = Provider.of<ThemeProvider>(context).isDark;
+    // if (_isDark) {
+    //   _themeData = Theme.of(context);
+    // } else {
+    //   _themeData = Themes.lightTheme;
+    // }
+
+    _themeData = Theme.of(context);
+    if (_themeData.scaffoldBackgroundColor ==
+        Themes.darkTheme.scaffoldBackgroundColor) {
+      _isDark = true;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    setThemeData();
+
     return Scaffold(
       backgroundColor: _themeData.scaffoldBackgroundColor,
       bottomNavigationBar: BottomNavigationBar(
@@ -201,7 +213,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 _themeData.highlightColor.withOpacity(0.1)),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            SetupRoutes.push(NavService.navKey.currentContext!,
+                                Routes.EDIT_PERSONA);
+                          },
                           child: Text(
                             'Edit Profile',
                             style: TextStyle(

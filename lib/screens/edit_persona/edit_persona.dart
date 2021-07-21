@@ -1,6 +1,7 @@
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/size_config.dart';
+import 'package:at_wavi_app/services/theme_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
@@ -28,10 +29,25 @@ class _EditPersonaState extends State<EditPersona> {
     ColorConstants.solidYellow,
   ];
 
+  late ThemeColor _theme;
+  late Color _highlightColor;
+  bool _updateTheme = false, _updateHighlightColor = false;
+
+  // ThemeService()
+  //       .getThemePreference('@new52plum', returnHighlightColorPreference: true);
+
+  @override
+  void initState() {
+    _theme = Provider.of<ThemeProvider>(context, listen: false).getTheme;
+    _highlightColor = Themes.highlightColor;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     _themeColor = Provider.of<ThemeProvider>(context, listen: false).getTheme;
+
     return Scaffold(
         bottomSheet: _bottomSheet(),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -101,11 +117,10 @@ class _EditPersonaState extends State<EditPersona> {
                 children: _colors.map((_color) {
                   return InkWell(
                     onTap: () {
-                      Themes.setHighlightColor(_color);
-                      Provider.of<ThemeProvider>(context, listen: false)
-                          .setTheme(
-                              Provider.of<ThemeProvider>(context, listen: false)
-                                  .getTheme);
+                      setState(() {
+                        _highlightColor = _color;
+                        _updateHighlightColor = true;
+                      });
                     },
                     child: Stack(
                       alignment: Alignment.center,
@@ -115,7 +130,9 @@ class _EditPersonaState extends State<EditPersona> {
                             height: 78,
                             color: _color,
                             roundedCorner: 10),
-                        _color == Themes.highlightColor
+                        (_updateHighlightColor
+                                ? (_color == _highlightColor)
+                                : (_color == Themes.highlightColor))
                             ? Positioned(
                                 child: _circularDoneIcon(
                                     isDark: true, size: 35.toWidth))
@@ -144,6 +161,18 @@ class _EditPersonaState extends State<EditPersona> {
     return Expanded(
       child: InkWell(
         onTap: () async {
+          if (_text == 'Preview') {
+            await _previewButtonCall();
+          }
+
+          if (_text == 'Save') {
+            await _saveButtonCall();
+          }
+
+          if (_text == 'Publish') {
+            await _publishButtonCall();
+          }
+
           await SetupRoutes.push(context, Routes.HOME);
         },
         child: Container(
@@ -178,8 +207,13 @@ class _EditPersonaState extends State<EditPersona> {
   Widget _themeCard({bool isDark = false}) {
     return InkWell(
       onTap: () {
-        Provider.of<ThemeProvider>(context, listen: false)
-            .setTheme(isDark ? ThemeColor.Dark : ThemeColor.Light);
+        setState(() {
+          _theme = isDark ? ThemeColor.Dark : ThemeColor.Light;
+          _updateTheme = true;
+        });
+
+        // Provider.of<ThemeProvider>(context, listen: false)
+        //     .setTheme(isDark ? ThemeColor.Dark : ThemeColor.Light);
       },
       child: Container(
         width: 166.toWidth,
@@ -221,7 +255,10 @@ class _EditPersonaState extends State<EditPersona> {
                 _button(),
               ],
             ),
-            _themeColor == (isDark ? ThemeColor.Dark : ThemeColor.Light)
+            (_updateTheme
+                    ? (_theme == (isDark ? ThemeColor.Dark : ThemeColor.Light))
+                    : (_themeColor ==
+                        (isDark ? ThemeColor.Dark : ThemeColor.Light)))
                 ? Positioned(child: _circularDoneIcon(isDark: isDark))
                 : SizedBox()
           ],
@@ -274,5 +311,21 @@ class _EditPersonaState extends State<EditPersona> {
         size: 30.toFont,
       ),
     );
+  }
+
+  _previewButtonCall() async {}
+
+  _saveButtonCall() async {}
+
+  _publishButtonCall() async {
+    if (_updateHighlightColor) {
+      Provider.of<ThemeProvider>(context, listen: false)
+          .setTheme(highlightColor: _highlightColor);
+    }
+
+    if (_updateTheme) {
+      Provider.of<ThemeProvider>(context, listen: false)
+          .setTheme(themeColor: _theme, highlightColor: _highlightColor);
+    }
   }
 }

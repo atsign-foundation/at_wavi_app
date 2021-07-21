@@ -8,7 +8,7 @@ class Themes {
   Themes._();
   static final Themes _instance = Themes._();
   factory Themes() => _instance;
-  static late Color highlightColor;
+  static Color highlightColor = ColorConstants.purple;
 
   // ignore: non_constant_identifier_names
   ThemeData PRIMARY_THEME = ThemeData(
@@ -134,4 +134,13 @@ class Themes {
       return Themes.lightTheme;
     }
   }
+}
+
+isDarkModeEnabled(BuildContext _context) {
+  if (Theme.of(_context).scaffoldBackgroundColor ==
+      Themes.darkTheme.scaffoldBackgroundColor) {
+    return true;
+  }
+
+  return false;
 }

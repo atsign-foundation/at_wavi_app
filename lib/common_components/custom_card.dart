@@ -11,14 +11,19 @@ class CustomCard extends StatelessWidget {
   late bool _isDark;
   late ThemeData _themeData;
   CustomCard({required this.title, required this.subtitle, this.isUrl = false});
-  @override
-  Widget build(BuildContext context) {
-    _isDark = Provider.of<ThemeProvider>(context, listen: false).isDark;
+
+  void setThemeData(BuildContext context) {
+    _isDark = isDarkModeEnabled(context);
     if (_isDark) {
       _themeData = Themes.darkTheme;
     } else {
       _themeData = Themes.lightTheme;
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    setThemeData(context);
     return Container(
       color: _themeData.highlightColor.withOpacity(0.1),
       child: Padding(
