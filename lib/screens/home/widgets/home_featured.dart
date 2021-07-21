@@ -30,15 +30,11 @@ class _HomeFeaturedState extends State<HomeFeatured> {
             children: [
               Text(
                 'Instagram',
-                style: TextStyles.boldText(
-                    _isDark ? Colors.white : Colors.black,
-                    size: 18),
+                style: TextStyles.boldText(_themeData.primaryColor, size: 18),
               ),
               Text(
                 'See more',
-                style: TextStyles.lightText(
-                    _isDark ? Colors.white : Colors.black,
-                    size: 16),
+                style: TextStyles.lightText(_themeData.primaryColor, size: 16),
               ),
             ],
           ),
@@ -67,15 +63,11 @@ class _HomeFeaturedState extends State<HomeFeatured> {
             children: [
               Text(
                 'Twitter',
-                style: TextStyles.boldText(
-                    _isDark ? Colors.white : Colors.black,
-                    size: 18),
+                style: TextStyles.boldText(_themeData.primaryColor, size: 18),
               ),
               Text(
                 'See more',
-                style: TextStyles.lightText(
-                    _isDark ? Colors.white : Colors.black,
-                    size: 16),
+                style: TextStyles.lightText(_themeData.primaryColor, size: 16),
               ),
             ],
           ),

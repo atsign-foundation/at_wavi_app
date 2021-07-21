@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       'My Profile',
                       style: TextStyle(
                           fontSize: 18.toFont,
-                          color: _isDark ? Colors.white : Colors.black,
+                          color: _themeData.primaryColor,
                           fontWeight: FontWeight.w800),
                     ),
                   ),
@@ -93,10 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: Icon(Icons.search,
-                              color: _isDark ? Colors.white : Colors.black),
+                              color: _themeData.primaryColor),
                         ),
-                        Icon(Icons.more_vert,
-                            color: _isDark ? Colors.white : Colors.black)
+                        Icon(Icons.more_vert, color: _themeData.primaryColor)
                       ],
                     ),
                   ),
@@ -119,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Text('Lauren London',
                               style: TextStyle(
                                   fontSize: 18,
-                                  color: _isDark ? Colors.white : Colors.black,
+                                  color: _themeData.primaryColor,
                                   fontWeight: FontWeight.w600)),
                           SizedBox(height: 8.toHeight),
                           Text(
@@ -146,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       style: TextStyle(
                                           fontSize: 18.toFont,
                                           color: _isDark
-                                              ? Colors.white
+                                              ? _themeData.primaryColor
                                               : _themeData.highlightColor,
                                           fontWeight: FontWeight.w800),
                                     ),
@@ -154,9 +153,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       'Followers',
                                       style: TextStyle(
                                           fontSize: 14.toFont,
-                                          color: _isDark
-                                              ? Colors.white.withOpacity(0.5)
-                                              : Colors.black.withOpacity(0.5)),
+                                          color: _themeData.primaryColor
+                                              .withOpacity(0.5)),
                                     ),
                                   ],
                                 ),
@@ -171,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       style: TextStyle(
                                           fontSize: 18.toFont,
                                           color: _isDark
-                                              ? Colors.white
+                                              ? _themeData.primaryColor
                                               : _themeData.highlightColor,
                                           fontWeight: FontWeight.w800),
                                     ),
@@ -179,9 +177,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       'Following',
                                       style: TextStyle(
                                           fontSize: 14.toFont,
-                                          color: _isDark
-                                              ? Colors.white.withOpacity(0.5)
-                                              : Colors.black.withOpacity(0.5)),
+                                          color: _themeData.primaryColor
+                                              .withOpacity(0.5)),
                                     ),
                                   ],
                                 ),
@@ -209,9 +206,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             'Edit Profile',
                             style: TextStyle(
                                 fontSize: 16.toFont,
-                                color: _isDark
-                                    ? Colors.white.withOpacity(0.5)
-                                    : Colors.black.withOpacity(0.5)),
+                                color:
+                                    _themeData.primaryColor.withOpacity(0.5)),
                           ),
                         ),
                       ),
@@ -229,9 +225,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Text('Share Profile',
                               style: TextStyle(
                                   fontSize: 16.toFont,
-                                  color: _isDark
-                                      ? Colors.white.withOpacity(0.5)
-                                      : Colors.black.withOpacity(0.5))),
+                                  color: _themeData.primaryColor
+                                      .withOpacity(0.5))),
                         ),
                       ),
                     )
@@ -243,9 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 70.toHeight,
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: _isDark
-                            ? ColorConstants.white.withOpacity(0.1)
-                            : ColorConstants.black.withOpacity(0.1)),
+                        color: _themeData.primaryColor.withOpacity(0.1)),
                     borderRadius: BorderRadius.circular(60),
                   ),
                   child: Row(

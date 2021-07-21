@@ -30,8 +30,7 @@ class _HomeChannelsState extends State<HomeChannels> {
         children: <Widget>[
           Text(
             '@apps',
-            style: TextStyles.boldText(_isDark ? Colors.white : Colors.black,
-                size: 18),
+            style: TextStyles.boldText(_themeData.primaryColor, size: 18),
           ),
           SizedBox(height: 15.toHeight),
           SizedBox(
@@ -49,8 +48,7 @@ class _HomeChannelsState extends State<HomeChannels> {
           SizedBox(height: 40.toHeight),
           Text(
             'Social Accounts',
-            style: TextStyles.boldText(_isDark ? Colors.white : Colors.black,
-                size: 18),
+            style: TextStyles.boldText(_themeData.primaryColor, size: 18),
           ),
           SizedBox(height: 15.toHeight),
           SizedBox(
@@ -71,8 +69,7 @@ class _HomeChannelsState extends State<HomeChannels> {
           SizedBox(height: 40.toHeight),
           Text(
             'Game Accounts',
-            style: TextStyles.boldText(_isDark ? Colors.white : Colors.black,
-                size: 18),
+            style: TextStyles.boldText(_themeData.primaryColor, size: 18),
           ),
           SizedBox(height: 15.toHeight),
           SizedBox(

@@ -28,11 +28,9 @@ class CustomCard extends StatelessWidget {
           children: <Widget>[
             Text(
               title,
-              style: _isDark
-                  ? TextStyles.lightText(Colors.white.withOpacity(0.5),
-                      size: 16)
-                  : TextStyles.lightText(Colors.black.withOpacity(0.5),
-                      size: 16),
+              style: TextStyles.lightText(
+                  _themeData.primaryColor.withOpacity(0.5),
+                  size: 16),
             ),
             SizedBox(height: 6),
             Text(
@@ -40,7 +38,7 @@ class CustomCard extends StatelessWidget {
               style: isUrl
                   ? TextStyles.lightText(ColorConstants.orange, size: 18)
                   : _isDark
-                      ? TextStyles.lightText(Colors.white, size: 18)
+                      ? TextStyles.lightText(_themeData.primaryColor, size: 18)
                       : TextStyles.lightText(_themeData.highlightColor,
                           size: 18),
             ),

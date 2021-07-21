@@ -34,8 +34,7 @@ class _HomeDetailsState extends State<HomeDetails> {
         children: <Widget>[
           Text(
             'Basic Details',
-            style: TextStyles.boldText(_isDark ? Colors.white : Colors.black,
-                size: 18),
+            style: TextStyles.boldText(_themeData.primaryColor, size: 18),
           ),
           SizedBox(height: 15.toHeight),
           SizedBox(
@@ -53,8 +52,7 @@ class _HomeDetailsState extends State<HomeDetails> {
               )),
           SizedBox(height: 40.toHeight),
           Text('Additional Details',
-              style: TextStyles.boldText(_isDark ? Colors.white : Colors.black,
-                  size: 18)),
+              style: TextStyles.boldText(_themeData.primaryColor, size: 18)),
           SizedBox(height: 15.toHeight),
           SizedBox(
               width: double.infinity,
