@@ -29,4 +29,11 @@ class ColorConstants {
   /// Opacity color
   static Color dullColor({Color color = Colors.black, double opacity = 0.5}) =>
       color.withOpacity(opacity);
+
+  /// grey shades
+  static const Color LIGHT_GREY = Color(0xFFBEC0C8);
+  static const Color DARK_GREY = Color(0xFF6D6D79);
+  static const Color MILD_GREY = Color(0xFFE4E4E4);
+
+  static const Color RED = Color(0xFFe34040);
 }

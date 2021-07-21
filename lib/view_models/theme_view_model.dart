@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'base_model.dart';
 
 class ThemeProvider extends BaseModel {
+  // ignore: non_constant_identifier_names
+  String SET_THEME = 'set_theme';
+
   ThemeColor themeColor = ThemeColor.Light;
   ThemeData darktheme = Themes.darkTheme(ColorConstants.purple);
   ThemeData lighttheme = Themes.lightTheme(ColorConstants.purple);
@@ -62,11 +65,16 @@ class ThemeProvider extends BaseModel {
 
   // ignore: always_declare_return_types
   setTheme({ThemeColor? themeColor, Color? highlightColor}) async {
+    setStatus(SET_THEME, Status.Loading);
+
     if (highlightColor != null) {
       var _res =
           await ThemeService().updateProfile(highlightColor: highlightColor);
       if (_res) {
         setHighlightColor(highlightColor);
+        setStatus(SET_THEME, Status.Done);
+      } else {
+        setStatus(SET_THEME, Status.Error);
       }
     }
 
@@ -81,9 +89,11 @@ class ThemeProvider extends BaseModel {
           currentAtsignThemeData = lighttheme;
           themeColor = ThemeColor.Light;
         }
+        setStatus(SET_THEME, Status.Done);
+      } else {
+        setStatus(SET_THEME, Status.Error);
       }
     }
-    notifyListeners();
   }
 
   convertToHighlightColor(String _color) {
