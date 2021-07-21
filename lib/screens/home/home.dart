@@ -93,8 +93,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(right: 8.0),
-                          child: Icon(Icons.search,
-                              color: _themeData.primaryColor),
+                          child: InkWell(
+                            onTap: () {
+                              SetupRoutes.push(context, Routes.SEARCH_SCREEN);
+                            },
+                            child: Icon(Icons.search,
+                                color: _themeData.primaryColor),
+                          ),
                         ),
                         Icon(Icons.more_vert, color: _themeData.primaryColor)
                       ],
@@ -150,12 +155,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                               : _themeData.highlightColor,
                                           fontWeight: FontWeight.w800),
                                     ),
-                                    Text(
-                                      'Followers',
-                                      style: TextStyle(
-                                          fontSize: 14.toFont,
-                                          color: _themeData.primaryColor
-                                              .withOpacity(0.5)),
+                                    GestureDetector(
+                                      onTap: () {
+                                        SetupRoutes.push(
+                                            context, Routes.FOLLOWING_SCREEN);
+                                      },
+                                      child: Text(
+                                        'Followers',
+                                        style: TextStyle(
+                                            fontSize: 14.toFont,
+                                            color: _themeData.primaryColor
+                                                .withOpacity(0.5)),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -174,12 +185,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                               : _themeData.highlightColor,
                                           fontWeight: FontWeight.w800),
                                     ),
-                                    Text(
-                                      'Following',
-                                      style: TextStyle(
-                                          fontSize: 14.toFont,
-                                          color: _themeData.primaryColor
-                                              .withOpacity(0.5)),
+                                    GestureDetector(
+                                      onTap: () {
+                                        SetupRoutes.push(
+                                            context, Routes.FOLLOWING_SCREEN);
+                                      },
+                                      child: Text(
+                                        'Following',
+                                        style: TextStyle(
+                                            fontSize: 14.toFont,
+                                            color: _themeData.primaryColor
+                                                .withOpacity(0.5)),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -202,9 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 _themeData.highlightColor.withOpacity(0.1)),
                           ),
-                          onPressed: () {
-                            SetupRoutes.push(context, Routes.FOLLOWING_SCREEN);
-                          },
+                          onPressed: () {},
                           child: Text(
                             'Edit Profile',
                             style: TextStyle(

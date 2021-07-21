@@ -41,7 +41,7 @@ class _FollowingState extends State<Following>
     return SafeArea(
       child: Scaffold(
         body: Container(
-          padding: EdgeInsets.symmetric(vertical: 30, horizontal: 25),
+          padding: EdgeInsets.only(top: 30, left: 25, right: 25),
           color: _themeData.scaffoldBackgroundColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,41 +105,45 @@ class _FollowingState extends State<Following>
                 child: TabBarView(
                   controller: _controller,
                   children: [
-                    Wrap(
-                      children: List.generate(4, (index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: CustomPersonHorizontalTile(
-                              title: 'User name',
-                              subTitle: '@lauren',
-                              trailingWidget: InkWell(
-                                child: Text(
-                                  'Unfollow',
-                                  style: TextStyles.lightText(
-                                      ColorConstants.orange,
-                                      size: 16),
-                                ),
-                              )),
-                        );
-                      }),
+                    SingleChildScrollView(
+                      child: Wrap(
+                        children: List.generate(40, (index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: CustomPersonHorizontalTile(
+                                title: 'User name',
+                                subTitle: '@atsign',
+                                trailingWidget: InkWell(
+                                  child: Text(
+                                    'Unfollow',
+                                    style: TextStyles.lightText(
+                                        ColorConstants.orange,
+                                        size: 16),
+                                  ),
+                                )),
+                          );
+                        }),
+                      ),
                     ),
-                    Wrap(
-                      children: List.generate(4, (index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: CustomPersonHorizontalTile(
-                              title: 'User name',
-                              subTitle: '@lauren',
-                              trailingWidget: InkWell(
-                                child: Text(
-                                  'Remove',
-                                  style: TextStyles.lightText(
-                                      ColorConstants.orange,
-                                      size: 16),
-                                ),
-                              )),
-                        );
-                      }),
+                    SingleChildScrollView(
+                      child: Wrap(
+                        children: List.generate(40, (index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: CustomPersonHorizontalTile(
+                                title: 'User name',
+                                subTitle: '@atsign',
+                                trailingWidget: InkWell(
+                                  child: Text(
+                                    'Remove',
+                                    style: TextStyles.lightText(
+                                        ColorConstants.orange,
+                                        size: 16),
+                                  ),
+                                )),
+                          );
+                        }),
+                      ),
                     )
                   ],
                 ),
