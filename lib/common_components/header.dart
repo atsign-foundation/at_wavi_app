@@ -10,13 +10,17 @@ class Header extends StatelessWidget {
       child: Row(
         children: <Widget>[
           (leading != null)
-              ? Container(child: Expanded(child: leading!))
+              ? Expanded(
+                  child: Align(alignment: Alignment.topLeft, child: leading!))
               : Expanded(child: SizedBox()),
           (centerWidget != null)
-              ? Expanded(child: centerWidget!)
+              ? Expanded(
+                  child:
+                      Align(alignment: Alignment.center, child: centerWidget!))
               : Expanded(child: SizedBox()),
           (trailing != null)
-              ? Expanded(child: trailing!)
+              ? Expanded(
+                  child: Align(alignment: Alignment.topRight, child: trailing!))
               : Expanded(child: SizedBox()),
         ],
       ),

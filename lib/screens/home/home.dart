@@ -1,7 +1,8 @@
 import 'package:at_wavi_app/common_components/header.dart';
+import 'package:at_wavi_app/routes/route_names.dart';
+import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_channel.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_details.dart';
-import 'package:at_wavi_app/screens/home/widgets/home_empty_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -201,7 +202,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 _themeData.highlightColor.withOpacity(0.1)),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            SetupRoutes.push(context, Routes.FOLLOWING_SCREEN);
+                          },
                           child: Text(
                             'Edit Profile',
                             style: TextStyle(
