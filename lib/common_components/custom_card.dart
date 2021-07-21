@@ -28,14 +28,21 @@ class CustomCard extends StatelessWidget {
           children: <Widget>[
             Text(
               title,
-              style: TextStyles.lightText(_themeData.highlightColor, size: 16),
+              style: _isDark
+                  ? TextStyles.lightText(Colors.white.withOpacity(0.5),
+                      size: 16)
+                  : TextStyles.lightText(Colors.black.withOpacity(0.5),
+                      size: 16),
             ),
             SizedBox(height: 6),
             Text(
               subtitle,
               style: isUrl
                   ? TextStyles.lightText(ColorConstants.orange, size: 18)
-                  : TextStyles.lightText(_themeData.highlightColor, size: 18),
+                  : _isDark
+                      ? TextStyles.lightText(Colors.white, size: 18)
+                      : TextStyles.lightText(_themeData.highlightColor,
+                          size: 18),
             ),
           ],
         ),

@@ -145,14 +145,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                       '0',
                                       style: TextStyle(
                                           fontSize: 18.toFont,
-                                          color: _themeData.highlightColor,
+                                          color: _isDark
+                                              ? Colors.white
+                                              : _themeData.highlightColor,
                                           fontWeight: FontWeight.w800),
                                     ),
                                     Text(
                                       'Followers',
                                       style: TextStyle(
                                           fontSize: 14.toFont,
-                                          color: _themeData.highlightColor),
+                                          color: _isDark
+                                              ? Colors.white.withOpacity(0.5)
+                                              : Colors.black.withOpacity(0.5)),
                                     ),
                                   ],
                                 ),
@@ -166,14 +170,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                       '0',
                                       style: TextStyle(
                                           fontSize: 18.toFont,
-                                          color: _themeData.highlightColor,
+                                          color: _isDark
+                                              ? Colors.white
+                                              : _themeData.highlightColor,
                                           fontWeight: FontWeight.w800),
                                     ),
                                     Text(
                                       'Following',
                                       style: TextStyle(
                                           fontSize: 14.toFont,
-                                          color: _themeData.highlightColor),
+                                          color: _isDark
+                                              ? Colors.white.withOpacity(0.5)
+                                              : Colors.black.withOpacity(0.5)),
                                     ),
                                   ],
                                 ),
@@ -201,7 +209,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             'Edit Profile',
                             style: TextStyle(
                                 fontSize: 16.toFont,
-                                color: _themeData.highlightColor),
+                                color: _isDark
+                                    ? Colors.white.withOpacity(0.5)
+                                    : Colors.black.withOpacity(0.5)),
                           ),
                         ),
                       ),
@@ -219,7 +229,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Text('Share Profile',
                               style: TextStyle(
                                   fontSize: 16.toFont,
-                                  color: _themeData.highlightColor)),
+                                  color: _isDark
+                                      ? Colors.white.withOpacity(0.5)
+                                      : Colors.black.withOpacity(0.5))),
                         ),
                       ),
                     )
@@ -232,8 +244,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: BoxDecoration(
                     border: Border.all(
                         color: _isDark
-                            ? _themeData.scaffoldBackgroundColor
-                            : _themeData.highlightColor),
+                            ? ColorConstants.white.withOpacity(0.1)
+                            : ColorConstants.black.withOpacity(0.1)),
                     borderRadius: BorderRadius.circular(60),
                   ),
                   child: Row(

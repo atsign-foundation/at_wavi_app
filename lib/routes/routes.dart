@@ -2,10 +2,12 @@ import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/screens/add_link/add_link.dart';
 import 'package:at_wavi_app/screens/edit_persona/edit_persona.dart';
 import 'package:at_wavi_app/screens/home/home.dart';
+import 'package:at_wavi_app/screens/welcome.dart';
 import 'package:flutter/material.dart';
 
 class SetupRoutes {
   static String initialRoute = Routes.ADD_LINK;
+  // static String initialRoute = Routes.WELCOME_SCREEN;
   static Map<String, WidgetBuilder> get routes {
     return {
       Routes.EDIT_PERSONA: (context) => EditPersona(),
