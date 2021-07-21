@@ -38,117 +38,122 @@ class _FollowingState extends State<Following>
     }
 
     SizeConfig().init(context);
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          padding: EdgeInsets.only(top: 30, left: 25, right: 25),
-          color: _themeData.scaffoldBackgroundColor,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Header(
-                leading: InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Icon(Icons.arrow_back),
-                ),
-                centerWidget: Text(
-                  '@lauren',
-                  style: TextStyles.boldText(
-                      _isDark ? ColorConstants.white : ColorConstants.black,
-                      size: 18),
-                ),
-                trailing: Icon(Icons.edit_attributes_sharp),
-              ),
-              SizedBox(height: 35),
-              TabBar(
-                onTap: (index) async {},
-                labelColor:
-                    _isDark ? ColorConstants.white : ColorConstants.black,
-                indicatorWeight: 5.toHeight,
-                indicatorColor: ColorConstants.orange,
-                indicatorSize: TabBarIndicatorSize.label,
-                unselectedLabelColor: _isDark
-                    ? ColorConstants.white.withOpacity(0.5)
-                    : ColorConstants.black.withOpacity(0.5),
-                controller: _controller,
-                tabs: [
-                  Text(
-                    'Following',
-                    style: TextStyle(letterSpacing: 0.1, fontSize: 18),
+    return Container(
+      color: ColorConstants.white,
+      child: SafeArea(
+        child: Scaffold(
+          body: Container(
+            padding: EdgeInsets.only(top: 30, left: 25, right: 25),
+            color: _themeData.scaffoldBackgroundColor,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Header(
+                  leading: InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Icon(Icons.arrow_back),
                   ),
-                  Text(
-                    'Followers',
-                    style: TextStyle(letterSpacing: 0.1, fontSize: 18),
-                  )
-                ],
-              ),
-              Divider(height: 1),
-              SizedBox(height: 25),
-              CustomInputField(
-                width: 343.toWidth,
-                height: 60.toHeight,
-                hintText: '',
-                leadingWidget: Padding(
-                  padding: const EdgeInsets.only(right: 5.0, top: 6),
-                  child: Image.asset(Images.at_icon),
+                  centerWidget: Text(
+                    '@lauren',
+                    style: TextStyles.boldText(
+                        _isDark ? ColorConstants.white : ColorConstants.black,
+                        size: 18),
+                  ),
+                  trailing: Icon(Icons.public),
                 ),
-                inputFieldColor: _isDark ? ColorConstants.greyText : null,
-                value: (String s) {
-                  print('text : $s');
-                },
-              ),
-              SizedBox(height: 25.toHeight),
-              Expanded(
-                child: TabBarView(
+                SizedBox(height: 35),
+                TabBar(
+                  onTap: (index) async {},
+                  labelColor:
+                      _isDark ? ColorConstants.white : ColorConstants.black,
+                  indicatorWeight: 5.toHeight,
+                  indicatorColor: ColorConstants.orange,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  unselectedLabelColor: _isDark
+                      ? ColorConstants.white.withOpacity(0.5)
+                      : ColorConstants.black.withOpacity(0.5),
                   controller: _controller,
-                  children: [
-                    SingleChildScrollView(
-                      child: Wrap(
-                        children: List.generate(40, (index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: CustomPersonHorizontalTile(
-                                title: 'User name',
-                                subTitle: '@atsign',
-                                trailingWidget: InkWell(
-                                  child: Text(
-                                    'Unfollow',
-                                    style: TextStyles.lightText(
-                                        ColorConstants.orange,
-                                        size: 16),
-                                  ),
-                                )),
-                          );
-                        }),
-                      ),
+                  tabs: [
+                    Text(
+                      'Following',
+                      style: TextStyle(letterSpacing: 0.1, fontSize: 18),
                     ),
-                    SingleChildScrollView(
-                      child: Wrap(
-                        children: List.generate(40, (index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: CustomPersonHorizontalTile(
-                                title: 'User name',
-                                subTitle: '@atsign',
-                                trailingWidget: InkWell(
-                                  child: Text(
-                                    'Remove',
-                                    style: TextStyles.lightText(
-                                        ColorConstants.orange,
-                                        size: 16),
-                                  ),
-                                )),
-                          );
-                        }),
-                      ),
+                    Text(
+                      'Followers',
+                      style: TextStyle(letterSpacing: 0.1, fontSize: 18),
                     )
                   ],
                 ),
-              ),
-            ],
+                Divider(height: 1),
+                SizedBox(height: 25),
+                CustomInputField(
+                  width: 343.toWidth,
+                  height: 60.toHeight,
+                  hintText: '',
+                  leadingWidget: Padding(
+                    padding: const EdgeInsets.only(right: 5.0, top: 6),
+                    child: Image.asset(Images.atIcon),
+                  ),
+                  inputFieldColor: _isDark ? ColorConstants.greyText : null,
+                  value: (String s) {
+                    print('text : $s');
+                  },
+                ),
+                SizedBox(height: 25.toHeight),
+                Expanded(
+                  child: TabBarView(
+                    controller: _controller,
+                    children: [
+                      SingleChildScrollView(
+                        child: Wrap(
+                          children: List.generate(40, (index) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: CustomPersonHorizontalTile(
+                                  title: 'User name',
+                                  subTitle: '@atsign',
+                                  trailingWidget: InkWell(
+                                    child: Text(
+                                      'Unfollow',
+                                      style: TextStyles.lightText(
+                                          ColorConstants.orange,
+                                          size: 16),
+                                    ),
+                                  )),
+                            );
+                          }),
+                        ),
+                      ),
+                      SingleChildScrollView(
+                        child: Wrap(
+                          children: List.generate(40, (index) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: CustomPersonHorizontalTile(
+                                  title: 'User name',
+                                  subTitle: '@atsign',
+                                  trailingWidget: InkWell(
+                                    child: Text(
+                                      'Remove',
+                                      style: TextStyles.lightText(
+                                          ColorConstants.orange,
+                                          size: 16),
+                                    ),
+                                  )),
+                            );
+                          }),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

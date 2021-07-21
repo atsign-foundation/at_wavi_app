@@ -26,68 +26,71 @@ class _SearchState extends State<Search> {
     } else {
       _themeData = Themes.lightTheme;
     }
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.only(
-              top: 30.0.toHeight, left: 15.toWidth, right: 15.toWidth),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Header(
-                leading: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Icon(Icons.arrow_back),
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: Scaffold(
+          body: Padding(
+            padding: EdgeInsets.only(
+                top: 30.0.toHeight, left: 15.toWidth, right: 15.toWidth),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Header(
+                  leading: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Icon(Icons.arrow_back),
+                      ),
+                      SizedBox(width: 5),
+                      Text('Search'),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 25),
+                Align(
+                  alignment: Alignment.center,
+                  child: CustomInputField(
+                    width: 343.toWidth,
+                    height: 60.toHeight,
+                    hintText: '',
+                    leadingWidget: Padding(
+                      padding: const EdgeInsets.only(right: 5.0, top: 6),
+                      child: Image.asset(Images.atIcon),
                     ),
-                    SizedBox(width: 5),
-                    Text('Search'),
-                  ],
-                ),
-              ),
-              SizedBox(height: 25),
-              Align(
-                alignment: Alignment.center,
-                child: CustomInputField(
-                  width: 343.toWidth,
-                  height: 60.toHeight,
-                  hintText: '',
-                  leadingWidget: Padding(
-                    padding: const EdgeInsets.only(right: 5.0, top: 6),
-                    child: Image.asset(Images.at_icon),
-                  ),
-                  inputFieldColor: _isDark ? ColorConstants.greyText : null,
-                  value: (String s) {
-                    print('text : $s');
-                  },
-                ),
-              ),
-              SizedBox(height: 30),
-              Text(
-                'Recent Search',
-                style: TextStyles.boldText(
-                    _isDark ? ColorConstants.white : ColorConstants.black),
-              ),
-              SizedBox(height: 30),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Wrap(
-                    children: List.generate(40, (index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: CustomPersonHorizontalTile(
-                          title: 'User name',
-                          subTitle: '@atsign',
-                        ),
-                      );
-                    }),
+                    inputFieldColor: _isDark ? ColorConstants.greyText : null,
+                    value: (String s) {
+                      print('text : $s');
+                    },
                   ),
                 ),
-              )
-            ],
+                SizedBox(height: 30),
+                Text(
+                  'Recent Search',
+                  style: TextStyles.boldText(
+                      _isDark ? ColorConstants.white : ColorConstants.black),
+                ),
+                SizedBox(height: 30),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Wrap(
+                      children: List.generate(40, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: CustomPersonHorizontalTile(
+                            title: 'User name',
+                            subTitle: '@atsign',
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

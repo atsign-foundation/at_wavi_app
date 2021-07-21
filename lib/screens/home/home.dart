@@ -4,6 +4,7 @@ import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_channel.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
+import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/theme.dart';
@@ -101,7 +102,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: _themeData.primaryColor),
                           ),
                         ),
-                        Icon(Icons.more_vert, color: _themeData.primaryColor)
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                shape: StadiumBorder(),
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    height: 546,
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 20, horizontal: 20),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: const Radius.circular(12.0),
+                                        topRight: const Radius.circular(12.0),
+                                      ),
+                                    ),
+                                    child: Options(),
+                                  );
+                                });
+                          },
+                          child: Icon(Icons.more_vert,
+                              color: _themeData.primaryColor),
+                        )
                       ],
                     ),
                   ),
