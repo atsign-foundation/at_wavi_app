@@ -37,16 +37,9 @@ class _EditPersonaState extends State<EditPersona> {
   //       .getThemePreference('@new52plum', returnHighlightColorPreference: true);
 
   @override
-  void initState() {
-    _theme = Provider.of<ThemeProvider>(context, listen: false).getTheme;
-    _highlightColor = Themes.highlightColor;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    _themeColor = Provider.of<ThemeProvider>(context, listen: false).getTheme;
+    _themeColor = Provider.of<ThemeProvider>(context, listen: false).themeColor;
 
     return Scaffold(
         bottomSheet: _bottomSheet(),
@@ -132,7 +125,10 @@ class _EditPersonaState extends State<EditPersona> {
                             roundedCorner: 10),
                         (_updateHighlightColor
                                 ? (_color == _highlightColor)
-                                : (_color == Themes.highlightColor))
+                                : (_color ==
+                                    Provider.of<ThemeProvider>(context,
+                                            listen: false)
+                                        .highlightColor))
                             ? Positioned(
                                 child: _circularDoneIcon(
                                     isDark: true, size: 35.toWidth))
@@ -173,7 +169,7 @@ class _EditPersonaState extends State<EditPersona> {
             await _publishButtonCall();
           }
 
-          await SetupRoutes.push(context, Routes.HOME);
+          await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
         },
         child: Container(
           height: 80.toHeight,
@@ -319,13 +315,13 @@ class _EditPersonaState extends State<EditPersona> {
 
   _publishButtonCall() async {
     if (_updateHighlightColor) {
-      Provider.of<ThemeProvider>(context, listen: false)
+      await Provider.of<ThemeProvider>(context, listen: false)
           .setTheme(highlightColor: _highlightColor);
     }
 
     if (_updateTheme) {
-      Provider.of<ThemeProvider>(context, listen: false)
-          .setTheme(themeColor: _theme, highlightColor: _highlightColor);
+      await Provider.of<ThemeProvider>(context, listen: false)
+          .setTheme(themeColor: _theme);
     }
   }
 }

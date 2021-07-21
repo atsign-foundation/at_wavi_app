@@ -29,7 +29,11 @@ class ThemeService {
 
       if (themePreference != null) {
         _atKey.key = AtKeyConstants.themePreference;
-        _value = themePreference.toString();
+        if (themePreference == ThemeColor.Dark) {
+          _value = 'dark'.toString();
+        } else {
+          _value = 'light'.toString();
+        }
       } else if (highlightColor != null) {
         _atKey.key = AtKeyConstants.highlightColorPreference;
         _value = highlightColor.toString();

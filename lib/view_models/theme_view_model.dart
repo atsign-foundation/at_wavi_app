@@ -1,102 +1,92 @@
-import 'package:at_wavi_app/data_services/hive/hive_db.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/theme_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'base_model.dart';
 
 class ThemeProvider extends BaseModel {
-  ThemeColor themeColor;
-  late HiveDataProvider _hiveDataProvider;
-  bool isDark = false;
+  ThemeColor themeColor = ThemeColor.Light;
+  ThemeData darktheme = Themes.darkTheme(ColorConstants.purple);
+  ThemeData lighttheme = Themes.lightTheme(ColorConstants.purple);
+  ThemeData? currentAtsignThemeData;
+  Color? highlightColor;
 
-  ThemeProvider({required this.themeColor}) {
-    _hiveDataProvider = HiveDataProvider();
-    // checkTheme();
-    Hive.initFlutter();
+  ThemeProvider();
+
+  setHighlightColor(Color _color) {
+    darktheme = Themes.darkTheme(_color);
+    lighttheme = Themes.lightTheme(_color);
+    highlightColor = _color;
+    currentAtsignThemeData =
+        (themeColor == ThemeColor.Light) ? lighttheme : darktheme;
   }
 
-  /// checks in hive
-  checkTheme() async {
-    ThemeColor _currentTheme;
-    var res = await _hiveDataProvider.readData('theme');
-
-    Themes.highlightColor = (res['highlight_color'] != null)
-        ? setHighlightColor(res['highlight_color'])
-        : ColorConstants.purple;
-
-    if (res['theme_color'] == 'ThemeColor.Dark') {
-      _currentTheme = ThemeColor.Dark;
-      isDark = true;
-    } else {
-      isDark = false;
-      _currentTheme = ThemeColor.Light;
-    }
-
-    return _currentTheme;
+  Future<ThemeData> getTheme() async {
+    await checkThemeFromSecondary(notifyListener: false);
+    return currentAtsignThemeData!;
   }
 
   // ignore: always_declare_return_types
-  checkThemeFromSecondary() async {
-    ThemeColor _currentTheme;
-    var _themePreference = await ThemeService()
-        .getThemePreference(BackendService().atClientInstance.currentAtSign!);
+  checkThemeFromSecondary({bool notifyListener = true}) async {
+    if (currentAtsignThemeData == null) {
+      var _themePreference = await ThemeService()
+          .getThemePreference(BackendService().atClientInstance.currentAtSign!);
 
-    if ((_themePreference ?? '').toLowerCase() == 'dark') {
-      _currentTheme = ThemeColor.Dark;
-      isDark = true;
-    } else {
-      isDark = false;
-      _currentTheme = ThemeColor.Light;
+      if ((_themePreference ?? '').toLowerCase() == 'dark') {
+        currentAtsignThemeData = darktheme;
+        themeColor = ThemeColor.Dark;
+      } else {
+        currentAtsignThemeData = lighttheme;
+        themeColor = ThemeColor.Light;
+      }
     }
 
-    var _highlightColorPreference = await ThemeService().getThemePreference(
-        BackendService().atClientInstance.currentAtSign!,
-        returnHighlightColorPreference: true);
+    if (highlightColor == null) {
+      var _highlightColorPreference = await ThemeService().getThemePreference(
+          BackendService().atClientInstance.currentAtSign!,
+          returnHighlightColorPreference: true);
 
-    Themes.highlightColor = (_highlightColorPreference != null)
-        ? setHighlightColor(_highlightColorPreference)
-        : ColorConstants.purple;
+      highlightColor = (_highlightColorPreference != null)
+          ? convertToHighlightColor(_highlightColorPreference)
+          : ColorConstants.purple;
 
-    notifyListeners();
+      // theme.highlightColor = highlightColor!;
+      setHighlightColor(highlightColor!);
+    }
 
-    return _currentTheme;
+    if (notifyListener) {
+      notifyListeners();
+    }
   }
 
   // ignore: always_declare_return_types
   setTheme({ThemeColor? themeColor, Color? highlightColor}) async {
     if (highlightColor != null) {
-      await ThemeService().updateProfile(highlightColor: highlightColor);
-      Themes.setHighlightColor(highlightColor);
+      var _res =
+          await ThemeService().updateProfile(highlightColor: highlightColor);
+      if (_res) {
+        setHighlightColor(highlightColor);
+      }
     }
 
     if (themeColor != null) {
-      await ThemeService().updateProfile(themePreference: themeColor);
-      await _hiveDataProvider
-          .insertData('theme', {'theme_color': themeColor.toString()});
-
-      this.themeColor = themeColor;
-      isDark = themeColor == ThemeColor.Dark ? true : false;
+      var _res =
+          await ThemeService().updateProfile(themePreference: themeColor);
+      if (_res) {
+        if (themeColor == ThemeColor.Dark) {
+          currentAtsignThemeData = darktheme;
+          themeColor = ThemeColor.Dark;
+        } else {
+          currentAtsignThemeData = lighttheme;
+          themeColor = ThemeColor.Light;
+        }
+      }
     }
     notifyListeners();
-
-    // await Hive.initFlutter();
-
-    // notifyListeners();
   }
 
-  storeHexHighlightColor(String color) async {
-    // await Hive.initFlutter();
-    await _hiveDataProvider.insertData(
-        'theme', {'highlight_color': color.toUpperCase().toString()});
-  }
-
-  ThemeColor get getTheme => themeColor;
-
-  setHighlightColor(String _color) {
+  convertToHighlightColor(String _color) {
     switch (_color.toUpperCase()) {
       case 'COLOR(0XFF58419C)':
         return ColorConstants.purple;
