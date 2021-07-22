@@ -14,7 +14,19 @@ class SetupRoutes {
     return {
       Routes.WELCOME_SCREEN: (context) => Welcome(),
       Routes.EDIT_PERSONA: (context) => EditPersona(),
-      Routes.HOME: (context) => HomeScreen(),
+      Routes.HOME: (context) {
+        if ((ModalRoute.of(context) != null) &&
+            (ModalRoute.of(context)!.settings.arguments != null)) {
+          Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return HomeScreen(
+            themeData: args['themeData'],
+            isPreview: args['isPreview'],
+          );
+        }
+
+        return HomeScreen();
+      },
       Routes.ADD_LINK: (context) => AddLink(),
       Routes.FOLLOWING_SCREEN: (context) => Following(),
       Routes.SEARCH_SCREEN: (context) => Search(),
