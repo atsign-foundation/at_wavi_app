@@ -2,11 +2,8 @@ import 'dart:typed_data';
 import 'package:at_wavi_app/common_components/contact_initial.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
-import 'package:at_wavi_app/utils/theme.dart';
-import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:at_common_flutter/at_common_flutter.dart';
-import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class CustomPersonHorizontalTile extends StatelessWidget {
@@ -15,8 +12,6 @@ class CustomPersonHorizontalTile extends StatelessWidget {
   final IconData? icon;
   List<dynamic>? image;
   final Widget? trailingWidget;
-  late bool _isDark;
-  late ThemeData _themeData;
 
   CustomPersonHorizontalTile(
       {this.image,
@@ -33,13 +28,6 @@ class CustomPersonHorizontalTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _isDark = Provider.of<ThemeProvider>(context, listen: false).isDark;
-    if (_isDark) {
-      _themeData = Themes.darkTheme;
-    } else {
-      _themeData = Themes.lightTheme;
-    }
-
     SizeConfig().init(context);
     return Container(
       child: Row(
@@ -77,9 +65,7 @@ class CustomPersonHorizontalTile extends StatelessWidget {
                   title != null
                       ? Text(
                           title!,
-                          style: TextStyles.lightText(_isDark
-                              ? ColorConstants.white
-                              : ColorConstants.black),
+                          style: TextStyles.lightText(ColorConstants.black),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         )

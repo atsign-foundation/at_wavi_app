@@ -4,10 +4,7 @@ import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
-import 'package:at_wavi_app/utils/theme.dart';
-import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class Following extends StatefulWidget {
   @override
@@ -18,8 +15,6 @@ class _FollowingState extends State<Following>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
   int _tabIndex = 0;
-  late bool _isDark;
-  late ThemeData _themeData;
 
   @override
   void initState() {
@@ -30,13 +25,6 @@ class _FollowingState extends State<Following>
 
   @override
   Widget build(BuildContext context) {
-    _isDark = Provider.of<ThemeProvider>(context, listen: false).isDark;
-    if (_isDark) {
-      _themeData = Themes.darkTheme;
-    } else {
-      _themeData = Themes.lightTheme;
-    }
-
     SizeConfig().init(context);
     return Container(
       color: ColorConstants.white,
@@ -44,7 +32,7 @@ class _FollowingState extends State<Following>
         child: Scaffold(
           body: Container(
             padding: EdgeInsets.only(top: 30, left: 25, right: 25),
-            color: _themeData.scaffoldBackgroundColor,
+            color: ColorConstants.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -58,23 +46,18 @@ class _FollowingState extends State<Following>
                   ),
                   centerWidget: Text(
                     '@lauren',
-                    style: TextStyles.boldText(
-                        _isDark ? ColorConstants.white : ColorConstants.black,
-                        size: 18),
+                    style: TextStyles.boldText(ColorConstants.white, size: 18),
                   ),
                   trailing: Icon(Icons.public),
                 ),
                 SizedBox(height: 35),
                 TabBar(
                   onTap: (index) async {},
-                  labelColor:
-                      _isDark ? ColorConstants.white : ColorConstants.black,
+                  labelColor: ColorConstants.black,
                   indicatorWeight: 5.toHeight,
                   indicatorColor: ColorConstants.orange,
                   indicatorSize: TabBarIndicatorSize.label,
-                  unselectedLabelColor: _isDark
-                      ? ColorConstants.white.withOpacity(0.5)
-                      : ColorConstants.black.withOpacity(0.5),
+                  unselectedLabelColor: ColorConstants.black.withOpacity(0.5),
                   controller: _controller,
                   tabs: [
                     Text(
@@ -97,7 +80,6 @@ class _FollowingState extends State<Following>
                     padding: const EdgeInsets.only(right: 5.0, top: 6),
                     child: Image.asset(Images.atIcon),
                   ),
-                  inputFieldColor: _isDark ? ColorConstants.greyText : null,
                   value: (String s) {
                     print('text : $s');
                   },

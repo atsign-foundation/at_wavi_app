@@ -4,11 +4,8 @@ import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
-import 'package:at_wavi_app/utils/theme.dart';
-import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:at_wavi_app/services/size_config.dart';
-import 'package:provider/provider.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -16,16 +13,8 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  late bool _isDark;
-  late ThemeData _themeData;
   @override
   Widget build(BuildContext context) {
-    _isDark = Provider.of<ThemeProvider>(context, listen: false).isDark;
-    if (_isDark) {
-      _themeData = Themes.darkTheme;
-    } else {
-      _themeData = Themes.lightTheme;
-    }
     return Container(
       color: Colors.white,
       child: SafeArea(
@@ -61,7 +50,6 @@ class _SearchState extends State<Search> {
                       padding: const EdgeInsets.only(right: 5.0, top: 6),
                       child: Image.asset(Images.atIcon),
                     ),
-                    inputFieldColor: _isDark ? ColorConstants.greyText : null,
                     value: (String s) {
                       print('text : $s');
                     },
@@ -70,8 +58,7 @@ class _SearchState extends State<Search> {
                 SizedBox(height: 30),
                 Text(
                   'Recent Search',
-                  style: TextStyles.boldText(
-                      _isDark ? ColorConstants.white : ColorConstants.black),
+                  style: TextStyles.boldText(ColorConstants.black),
                 ),
                 SizedBox(height: 30),
                 Expanded(
