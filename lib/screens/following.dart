@@ -76,7 +76,7 @@ class _FollowingState extends State<Following>
                   width: 343.toWidth,
                   height: 60.toHeight,
                   hintText: '',
-                  leadingWidget: Padding(
+                  prefix: Padding(
                     padding: const EdgeInsets.only(right: 5.0, top: 6),
                     child: Image.asset(Images.atIcon),
                   ),
