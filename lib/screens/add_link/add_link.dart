@@ -35,7 +35,6 @@ class _AddLinkState extends State<AddLink> {
                     textAlign: TextAlign.center,
                   ),
                   duration: Duration(seconds: 1),
-                  dismissDirection: DismissDirection.horizontal,
                 ));
               }
             : () {},
