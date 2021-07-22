@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:at_client/at_client.dart';
 import 'package:at_client_mobile/at_client_mobile.dart';
+import 'package:at_commons/at_commons.dart';
 import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
@@ -101,5 +102,16 @@ class BackendService {
     atClientServiceInstance = AtClientService();
 
     return await atClientServiceInstance.getAtSign();
+  }
+
+  ///Returns List<AtKey> for the current @sign.
+  Future<List<AtKey>> getAtKeys([String? sharedBy]) async {
+    var regex = MixedConstants.syncRegex;
+    var scanKeys =
+        await atClientInstance.getAtKeys(sharedBy: sharedBy, regex: regex);
+    scanKeys.retainWhere((scanKey) =>
+        !scanKey.metadata!.isCached &&
+        '@' + (scanKey.sharedBy ?? '') == atClientInstance.currentAtSign);
+    return scanKeys;
   }
 }
