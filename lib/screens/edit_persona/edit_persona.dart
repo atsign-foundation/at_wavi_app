@@ -310,9 +310,32 @@ class _EditPersonaState extends State<EditPersona> {
   }
 
   _previewButtonCall() async {
-    // await SetupRoutes.push(context, Routes.HOME, arguments: {
-    //   'themeData': true,
-    // });
+    var _modifiedTheme =
+        await Provider.of<ThemeProvider>(context, listen: false).getTheme();
+
+    var _modifiedHighlightColor =
+        Provider.of<ThemeProvider>(context, listen: false).highlightColor;
+
+    if (_updateHighlightColor) {
+      _modifiedHighlightColor = _highlightColor;
+    }
+
+    if (_updateTheme) {
+      _modifiedTheme = _theme == ThemeColor.Dark
+          ? Themes.darkTheme(_modifiedHighlightColor!)
+          : Themes.lightTheme(_modifiedHighlightColor!);
+    } else {
+      _modifiedTheme =
+          Provider.of<ThemeProvider>(context, listen: false).themeColor ==
+                  ThemeColor.Dark
+              ? Themes.darkTheme(_modifiedHighlightColor!)
+              : Themes.lightTheme(_modifiedHighlightColor!);
+    }
+
+    await SetupRoutes.push(context, Routes.HOME, arguments: {
+      'themeData': _modifiedTheme,
+      'isPreview': true,
+    });
   }
 
   _saveButtonCall() async {}

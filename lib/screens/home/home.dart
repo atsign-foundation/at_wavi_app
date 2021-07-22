@@ -7,6 +7,7 @@ import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,8 @@ enum HOME_TABS { DETAILS, CHANNELS, FEATURED }
 
 class HomeScreen extends StatefulWidget {
   final ThemeData? themeData;
-  HomeScreen({this.themeData});
+  final bool isPreview;
+  HomeScreen({this.themeData, this.isPreview = false});
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -220,11 +222,24 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   _themeData!.highlightColor.withOpacity(0.1)),
                             ),
-                            onPressed: () {
-                              SetupRoutes.push(
-                                  NavService.navKey.currentContext!,
-                                  Routes.EDIT_PERSONA);
-                            },
+                            onPressed: widget.isPreview
+                                ? () {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      backgroundColor: ColorConstants.RED,
+                                      content: Text(
+                                        'This is a Preview',
+                                        style: CustomTextStyles.customTextStyle(
+                                          ColorConstants.white,
+                                        ),
+                                      ),
+                                    ));
+                                  }
+                                : () {
+                                    SetupRoutes.push(
+                                        NavService.navKey.currentContext!,
+                                        Routes.EDIT_PERSONA);
+                                  },
                             child: Text(
                               'Edit Profile',
                               style: TextStyle(
@@ -244,7 +259,20 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   _themeData!.highlightColor.withOpacity(0.1)),
                             ),
-                            onPressed: () {},
+                            onPressed: widget.isPreview
+                                ? () {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      backgroundColor: ColorConstants.RED,
+                                      content: Text(
+                                        'This is a Preview',
+                                        style: CustomTextStyles.customTextStyle(
+                                          ColorConstants.white,
+                                        ),
+                                      ),
+                                    ));
+                                  }
+                                : () {},
                             child: Text('Share Profile',
                                 style: TextStyle(
                                     fontSize: 16.toFont,
@@ -342,9 +370,9 @@ class _HomeScreenState extends State<HomeScreen> {
       // return HomeEmptyDetails();
       return HomeDetails(themeData: _themeData!);
     } else if (_currentTab == HOME_TABS.CHANNELS) {
-      return HomeChannels();
+      return HomeChannels(themeData: _themeData!);
     } else if (_currentTab == HOME_TABS.FEATURED) {
-      return HomeFeatured();
+      return HomeFeatured(themeData: _themeData!);
     } else
       return SizedBox();
   }
