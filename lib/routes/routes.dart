@@ -1,7 +1,9 @@
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/screens/add_link/add_link.dart';
 import 'package:at_wavi_app/screens/edit_persona/edit_persona.dart';
+import 'package:at_wavi_app/screens/following.dart';
 import 'package:at_wavi_app/screens/home/home.dart';
+import 'package:at_wavi_app/screens/search.dart';
 import 'package:at_wavi_app/screens/welcome.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +28,9 @@ class SetupRoutes {
         return HomeScreen();
       },
       Routes.ADD_LINK: (context) => AddLink(),
+      Routes.FOLLOWING_SCREEN: (context) => Following(),
+      Routes.SEARCH_SCREEN: (context) => Search(),
+      Routes.WELCOME_SCREEN: (context) => Welcome(),
     };
   }
 

@@ -48,6 +48,12 @@ class TextStyles {
   static TextStyle grey15 =
       TextStyle(fontSize: 15.toFont, color: ColorConstants.greyText);
 
+  static TextStyle grey16 =
+      TextStyle(fontSize: 16.toFont, color: ColorConstants.greyText);
+
+  static TextStyle grey14 =
+      TextStyle(fontSize: 14.toFont, color: ColorConstants.greyText);
+
   static TextStyle orange18bold = TextStyle(
       fontSize: 18.toFont,
       color: ColorConstants.orange,

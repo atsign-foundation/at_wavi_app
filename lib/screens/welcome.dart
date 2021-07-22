@@ -48,14 +48,14 @@ class _WelcomeState extends State<Welcome> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset(Images.persona_icon),
+                      Image.asset(Images.personaIcon),
                       SizedBox(width: 5.toWidth),
                       Text('@persona', style: TextStyle(color: Colors.black))
                     ],
                   ),
                 ),
                 SizedBox(height: 35.toHeight),
-                Image.asset(Images.welcome_screen_banner),
+                Image.asset(Images.welcomeScreenBanner),
                 SizedBox(height: 35),
                 Text('All links in one!',
                     style: TextStyle(

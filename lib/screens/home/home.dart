@@ -4,6 +4,7 @@ import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_channel.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
+import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -111,10 +112,44 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
-                            child: Icon(Icons.search,
-                                color: _themeData!.primaryColor),
+                            child: InkWell(
+                              onTap: () {
+                                SetupRoutes.push(context, Routes.SEARCH_SCREEN);
+                              },
+                              child: Icon(Icons.search,
+                                  color: _themeData!.primaryColor),
+                            ),
                           ),
-                          Icon(Icons.more_vert, color: _themeData!.primaryColor)
+                          SizedBox(height: 18.5.toHeight),
+                          Divider(
+                            color: _themeData!.highlightColor,
+                          ),
+                          SizedBox(height: 18.5.toHeight),
+                          GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  shape: StadiumBorder(),
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      height: 546,
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 20, horizontal: 20),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: const Radius.circular(12.0),
+                                          topRight: const Radius.circular(12.0),
+                                        ),
+                                      ),
+                                      child: Options(),
+                                    );
+                                  });
+                            },
+                            child: Icon(Icons.more_vert,
+                                color: _themeData!.primaryColor),
+                          )
                         ],
                       ),
                     ),
@@ -169,12 +204,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 : _themeData!.highlightColor,
                                             fontWeight: FontWeight.w800),
                                       ),
-                                      Text(
-                                        'Followers',
-                                        style: TextStyle(
-                                            fontSize: 14.toFont,
-                                            color: _themeData!.primaryColor
-                                                .withOpacity(0.5)),
+                                      GestureDetector(
+                                        onTap: () {
+                                          SetupRoutes.push(
+                                              context, Routes.FOLLOWING_SCREEN);
+                                        },
+                                        child: Text(
+                                          'Followers',
+                                          style: TextStyle(
+                                              fontSize: 14.toFont,
+                                              color: _themeData!.primaryColor
+                                                  .withOpacity(0.5)),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -194,12 +235,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 : _themeData!.highlightColor,
                                             fontWeight: FontWeight.w800),
                                       ),
-                                      Text(
-                                        'Following',
-                                        style: TextStyle(
-                                            fontSize: 14.toFont,
-                                            color: _themeData!.primaryColor
-                                                .withOpacity(0.5)),
+                                      GestureDetector(
+                                        onTap: () {
+                                          SetupRoutes.push(
+                                              context, Routes.FOLLOWING_SCREEN);
+                                        },
+                                        child: Text(
+                                          'Following',
+                                          style: TextStyle(
+                                              fontSize: 14.toFont,
+                                              color: _themeData!.primaryColor
+                                                  .withOpacity(0.5)),
+                                        ),
                                       ),
                                     ],
                                   ),
