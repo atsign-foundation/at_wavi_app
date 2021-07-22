@@ -4,6 +4,7 @@ import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
+import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -308,13 +309,17 @@ class _EditPersonaState extends State<EditPersona> {
     );
   }
 
-  _previewButtonCall() async {}
+  _previewButtonCall() async {
+    // await SetupRoutes.push(context, Routes.HOME, arguments: {
+    //   'themeData': true,
+    // });
+  }
 
   _saveButtonCall() async {}
 
   _publishButtonCall() async {
     if (_updateHighlightColor) {
-      providerCallback<ThemeProvider>(
+      await providerCallback<ThemeProvider>(
         context,
         task: (provider) async {
           await provider.setTheme(highlightColor: _highlightColor);
@@ -335,13 +340,15 @@ class _EditPersonaState extends State<EditPersona> {
         text: 'Publishing',
         taskName: (provider) => provider.SET_THEME,
         onSuccess: (provider) async {
-          await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
+          if (!_updateTheme) {
+            await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
+          }
         },
       );
     }
 
     if (_updateTheme) {
-      providerCallback<ThemeProvider>(
+      await providerCallback<ThemeProvider>(
         context,
         task: (provider) async {
           await provider.setTheme(themeColor: _theme);
