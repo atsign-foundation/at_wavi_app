@@ -22,7 +22,9 @@ class ThemeService {
       var _metaData = Metadata()
         ..isPublic = true
         ..ccd = true
-        ..namespaceAware = false
+
+        /// TODO: true or false
+        ..namespaceAware = true
         ..isEncrypted = false;
 
       var _atKey = AtKey()..metadata = _metaData;
@@ -36,7 +38,7 @@ class ThemeService {
         }
       } else if (highlightColor != null) {
         _atKey.key = AtKeyConstants.highlightColorPreference;
-        _value = highlightColor.toString();
+        _value = highlightColor.toString().toLowerCase().substring(10, 16);
       }
 
       print('_value $_value');
@@ -59,7 +61,7 @@ class ThemeService {
 
       var metadata = Metadata();
       metadata.isPublic = true;
-      metadata.namespaceAware = false;
+      metadata.namespaceAware = true;
 
       var key = AtKey();
       key.sharedBy = _atsign;
@@ -84,4 +86,41 @@ class ThemeService {
       return '';
     }
   }
+
+  // deletePreviousKeys() async {
+  //   var _metaData = Metadata()
+  //     ..isPublic = true
+  //     ..ccd = true
+
+  //     /// TODO: true or false
+  //     ..namespaceAware = false
+  //     ..isEncrypted = false;
+
+  //   var _atKey = AtKey()..metadata = _metaData;
+
+  //   if (true) {
+  //     _atKey.key = 'THEME_PREFERENCE' + '.me';
+  //   } else {
+  //     _atKey.key = AtKeyConstants.highlightColorPreference;
+  //     // _value = highlightColor.toString();
+  //   }
+
+  //   // var response = await BackendService().atClientInstance.getKeys(
+  //   //       regex: 'THEME_PREFERENCE' + '.me',
+  //   //     );
+  //   // var atKey = AtKey.fromString(response[0]);
+  //   // atKey.metadata!.ttr = -1;
+
+  //   var result = await BackendService().atClientInstance.delete(_atKey);
+  //   print(' is deleted ? $result');
+
+  //   // var response2 = await BackendService().atClientInstance.getKeys(
+  //   //       regex: 'HIGHLIGHT_COLOR_PREFERENCE' + '.me',
+  //   //     );
+  //   // var atKey2 = AtKey.fromString(response2[0]);
+  //   // atKey2.metadata!.ttr = -1;
+
+  //   // var result2 = await BackendService().atClientInstance.delete(atKey2);
+  //   // print(' is deleted ? $result');
+  // }
 }
