@@ -42,7 +42,7 @@ class BackendService {
         await atClientServiceMap[atSign]!.makeAtSignPrimary(atSign!);
         await startMonitor(atsign: atsign, value: value);
         SetupRoutes.pushAndRemoveAll(
-            NavService.navKey.currentContext!, Routes.EDIT_PERSONA);
+            NavService.navKey.currentContext!, Routes.HOME);
       },
       onError: (error) {
         print('Onboarding throws $error error');

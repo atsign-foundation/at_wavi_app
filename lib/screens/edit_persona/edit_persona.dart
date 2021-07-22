@@ -1,3 +1,4 @@
+import 'package:at_wavi_app/common_components/provider_callback.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/size_config.dart';
@@ -16,6 +17,7 @@ class EditPersona extends StatefulWidget {
 }
 
 class _EditPersonaState extends State<EditPersona> {
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   late ThemeColor _themeColor;
   List<Color> _colors = [
     ColorConstants.purple,
@@ -28,11 +30,20 @@ class _EditPersonaState extends State<EditPersona> {
     ColorConstants.solidYellow,
   ];
 
+  late ThemeColor _theme;
+  late Color _highlightColor;
+  bool _updateTheme = false, _updateHighlightColor = false;
+
+  // ThemeService()
+  //       .getThemePreference('@new52plum', returnHighlightColorPreference: true);
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    _themeColor = Provider.of<ThemeProvider>(context, listen: false).getTheme;
+    _themeColor = Provider.of<ThemeProvider>(context, listen: false).themeColor;
+
     return Scaffold(
+        key: scaffoldKey,
         bottomSheet: _bottomSheet(),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
@@ -101,11 +112,10 @@ class _EditPersonaState extends State<EditPersona> {
                 children: _colors.map((_color) {
                   return InkWell(
                     onTap: () {
-                      Themes.setHighlightColor(_color);
-                      Provider.of<ThemeProvider>(context, listen: false)
-                          .setTheme(
-                              Provider.of<ThemeProvider>(context, listen: false)
-                                  .getTheme);
+                      setState(() {
+                        _highlightColor = _color;
+                        _updateHighlightColor = true;
+                      });
                     },
                     child: Stack(
                       alignment: Alignment.center,
@@ -115,7 +125,12 @@ class _EditPersonaState extends State<EditPersona> {
                             height: 78,
                             color: _color,
                             roundedCorner: 10),
-                        _color == Themes.highlightColor
+                        (_updateHighlightColor
+                                ? (_color == _highlightColor)
+                                : (_color ==
+                                    Provider.of<ThemeProvider>(context,
+                                            listen: false)
+                                        .highlightColor))
                             ? Positioned(
                                 child: _circularDoneIcon(
                                     isDark: true, size: 35.toWidth))
@@ -144,7 +159,17 @@ class _EditPersonaState extends State<EditPersona> {
     return Expanded(
       child: InkWell(
         onTap: () async {
-          await SetupRoutes.push(context, Routes.HOME);
+          if (_text == 'Preview') {
+            await _previewButtonCall();
+          }
+
+          if (_text == 'Save') {
+            await _saveButtonCall();
+          }
+
+          if (_text == 'Publish') {
+            await _publishButtonCall();
+          }
         },
         child: Container(
           height: 80.toHeight,
@@ -178,8 +203,13 @@ class _EditPersonaState extends State<EditPersona> {
   Widget _themeCard({bool isDark = false}) {
     return InkWell(
       onTap: () {
-        Provider.of<ThemeProvider>(context, listen: false)
-            .setTheme(isDark ? ThemeColor.Dark : ThemeColor.Light);
+        setState(() {
+          _theme = isDark ? ThemeColor.Dark : ThemeColor.Light;
+          _updateTheme = true;
+        });
+
+        // Provider.of<ThemeProvider>(context, listen: false)
+        //     .setTheme(isDark ? ThemeColor.Dark : ThemeColor.Light);
       },
       child: Container(
         width: 166.toWidth,
@@ -221,7 +251,10 @@ class _EditPersonaState extends State<EditPersona> {
                 _button(),
               ],
             ),
-            _themeColor == (isDark ? ThemeColor.Dark : ThemeColor.Light)
+            (_updateTheme
+                    ? (_theme == (isDark ? ThemeColor.Dark : ThemeColor.Light))
+                    : (_themeColor ==
+                        (isDark ? ThemeColor.Dark : ThemeColor.Light)))
                 ? Positioned(child: _circularDoneIcon(isDark: isDark))
                 : SizedBox()
           ],
@@ -274,5 +307,71 @@ class _EditPersonaState extends State<EditPersona> {
         size: 30.toFont,
       ),
     );
+  }
+
+  _previewButtonCall() async {
+    // await SetupRoutes.push(context, Routes.HOME, arguments: {
+    //   'themeData': true,
+    // });
+  }
+
+  _saveButtonCall() async {}
+
+  _publishButtonCall() async {
+    if (_updateHighlightColor) {
+      await providerCallback<ThemeProvider>(
+        context,
+        task: (provider) async {
+          await provider.setTheme(highlightColor: _highlightColor);
+        },
+        onError: (provider) {
+          ScaffoldMessenger.of(scaffoldKey.currentContext!)
+              .showSnackBar(SnackBar(
+            backgroundColor: ColorConstants.RED,
+            content: Text(
+              'Publishing failed. Try again!',
+              style: CustomTextStyles.customTextStyle(
+                ColorConstants.white,
+              ),
+            ),
+          ));
+        },
+        showDialog: false,
+        text: 'Publishing',
+        taskName: (provider) => provider.SET_THEME,
+        onSuccess: (provider) async {
+          if (!_updateTheme) {
+            await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
+          }
+        },
+      );
+    }
+
+    if (_updateTheme) {
+      await providerCallback<ThemeProvider>(
+        context,
+        task: (provider) async {
+          await provider.setTheme(themeColor: _theme);
+        },
+        onError: (provider) {
+          ScaffoldMessenger.of(scaffoldKey.currentContext!)
+              .showSnackBar(SnackBar(
+            backgroundColor: ColorConstants.RED,
+            content: Text(
+              'Publishing failed. Try again!',
+              style: CustomTextStyles.customTextStyle(
+                ColorConstants.white,
+              ),
+            ),
+          ));
+        },
+        showDialog: false,
+        text: 'Publishing',
+        taskName: (provider) => provider.SET_THEME,
+        onSuccess: (provider) async {
+          await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
+        },
+      );
+    }
   }
 }
