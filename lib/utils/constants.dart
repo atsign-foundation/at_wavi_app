@@ -24,7 +24,7 @@ class MixedConstants {
   // the time to await for file transfer acknowledgement in milliseconds
   static const int TIME_OUT = 60000;
 
-  static String appNamespace = 'persona';
+  static String appNamespace = 'wavi';
   static String regex =
       '(.$appNamespace|atconnections|[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12})';
 }

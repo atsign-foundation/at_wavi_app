@@ -98,21 +98,21 @@ class ThemeProvider extends BaseModel {
 
   convertToHighlightColor(String _color) {
     switch (_color.toUpperCase()) {
-      case 'COLOR(0XFF58419C)':
+      case '58419C':
         return ColorConstants.purple;
-      case 'COLOR(0XFF6EBCB7)':
+      case '6EBCB7':
         return ColorConstants.peach;
-      case 'COLOR(0XFF0455BF)':
+      case '0455BF':
         return ColorConstants.blue;
-      case 'COLOR(0XFFFE1094)':
+      case 'FE1094':
         return ColorConstants.solidPink;
-      case 'COLOR(0XFFA77D60)':
+      case 'A77D60':
         return ColorConstants.fadedBrown;
-      case 'COLOR(0XFFEF5743)':
+      case 'EF5743':
         return ColorConstants.solidOrange;
-      case 'COLOR(0XFF7CCB12)':
+      case '7CCB12':
         return ColorConstants.solidLightGreen;
-      case 'COLOR(0XFFFFBE21)':
+      case 'FFBE21':
         return ColorConstants.solidYellow;
       default:
         return ColorConstants.purple;
