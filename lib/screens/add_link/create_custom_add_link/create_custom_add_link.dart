@@ -1,11 +1,18 @@
 import 'package:at_wavi_app/common_components/custom_input_field.dart';
+import 'package:at_wavi_app/common_components/loading_widget.dart';
+import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class CreateCustomAddLink extends StatefulWidget {
-  const CreateCustomAddLink({Key? key}) : super(key: key);
+  final AtCategory category;
+  final dynamic value;
+  const CreateCustomAddLink(this.value, {required this.category, Key? key})
+      : super(key: key);
 
   @override
   _CreateCustomAddLinkState createState() => _CreateCustomAddLinkState();
@@ -22,16 +29,9 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
       bottomSheet: InkWell(
         onTap: (_accountName == '')
             ? () {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  backgroundColor: ColorConstants.RED,
-                  content: Text(
-                    'Enter title',
-                    textAlign: TextAlign.center,
-                  ),
-                  duration: Duration(seconds: 1),
-                ));
+                _showToast('Enter title', isError: true);
               }
-            : () {},
+            : _updateCustomContent,
         child: Container(
             alignment: Alignment.center,
             height: 70.toHeight,
@@ -118,6 +118,23 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
               value: (str) => _valueDescription = str,
             ),
           ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
+            child: RichText(
+              text: TextSpan(
+                text: 'Value: ',
+                style: TextStyles.lightText(
+                    ColorConstants.black.withOpacity(0.5),
+                    size: 16),
+                children: [
+                  TextSpan(
+                    text: ' ${widget.value}',
+                    style: TextStyles.lightText(ColorConstants.RED, size: 16),
+                  )
+                ],
+              ),
+            ),
+          ),
           Divider(
             thickness: 1,
           ),
@@ -145,5 +162,40 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
         ],
       ),
     );
+  }
+
+  _updateCustomContent() async {
+    BasicData _customData = BasicData(
+        accountName: _accountName,
+        value: widget.value,
+        type: CustomContentType.Link.name,
+        valueDescription: _valueDescription);
+
+    print('_customData $_customData');
+
+    LoadingDialog().show(text: 'Adding custom content');
+
+    var _res = await AtKeySetService()
+        .updateCustomFields(widget.category.label, [_customData]);
+
+    LoadingDialog().hide();
+
+    if (_res) {
+      _showToast('$_accountName added', bgColor: ColorConstants.DARK_GREY);
+    } else {
+      _showToast('$_accountName addition failed', isError: true);
+    }
+  }
+
+  _showToast(String _text, {bool isError = false, Color? bgColor}) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor:
+          isError ? ColorConstants.RED : bgColor ?? ColorConstants.black,
+      content: Text(
+        _text,
+        textAlign: TextAlign.center,
+      ),
+      duration: Duration(seconds: 1),
+    ));
   }
 }

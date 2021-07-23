@@ -91,6 +91,11 @@ class BasicData {
       this.accountName,
       this.type,
       this.valueDescription});
+
+  @override
+  String toString() {
+    return 'value: $value, isPrivate: $isPrivate, icon: $icon, accountName:$accountName, type:$type, valueDescription:$valueDescription';
+  }
 }
 
 BasicData formData(name, value, {private, type, valueDescription}) {

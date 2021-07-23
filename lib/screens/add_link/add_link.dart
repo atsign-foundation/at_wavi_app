@@ -1,4 +1,7 @@
+import 'package:at_wavi_app/routes/route_names.dart';
+import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/size_config.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +14,7 @@ class AddLink extends StatefulWidget {
 }
 
 class _AddLinkState extends State<AddLink> {
+  String _linkValue = 'www.twitter.com';
   List<String> _sections = [
     'Basic Details',
     'Additional Details',
@@ -21,6 +25,25 @@ class _AddLinkState extends State<AddLink> {
   ];
 
   String _selectedValue = '';
+
+  AtCategory _getCategory() {
+    switch (_selectedValue) {
+      case 'Basic Details':
+        return AtCategory.DETAILS;
+      case 'Additional Details':
+        return AtCategory.ADDITIONAL_DETAILS;
+      case 'Location':
+        return AtCategory.LOCATION;
+      case 'Social Channel':
+        return AtCategory.SOCIAL;
+      case 'Game Channel':
+        return AtCategory.GAMER;
+      case 'Featured Content':
+        return AtCategory.FEATURED;
+      default:
+        return AtCategory.DETAILS;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +60,13 @@ class _AddLinkState extends State<AddLink> {
                   duration: Duration(seconds: 1),
                 ));
               }
-            : () {},
+            : () {
+                SetupRoutes.push(context, Routes.CREATE_CUSTOM_ADD_LINK,
+                    arguments: {
+                      'value': _linkValue,
+                      'category': _getCategory()
+                    });
+              },
         child: Container(
             alignment: Alignment.center,
             height: 70.toHeight,
