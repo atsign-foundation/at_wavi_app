@@ -142,7 +142,20 @@ valueOf(String property) {
   return '';
 }
 
-enum AtCategory { IMAGE, DETAILS, LOCATION, SOCIAL, GAMER }
+// enum CATEGORY { DETAILS, ADDITIONAL_DETAILS, LOCATION, SOCIAL, GAMER, FEATURED }
+
+/// new app doesnt have IMAGE
+enum AtCategory {
+  IMAGE,
+  DETAILS,
+  LOCATION,
+  SOCIAL,
+  GAMER,
+
+  /// Added for new wavi app
+  ADDITIONAL_DETAILS,
+  FEATURED
+}
 
 extension AtCategoryValues on AtCategory {
   String get name {
@@ -162,6 +175,14 @@ extension AtCategoryValues on AtCategory {
 
       case AtCategory.GAMER:
         return 'Gaming';
+
+      /// Added for new wavi app
+      case AtCategory.LOCATION:
+        return 'Location';
+      case AtCategory.FEATURED:
+        return 'Featured';
+      case AtCategory.ADDITIONAL_DETAILS:
+        return 'Additional_Details';
 
       default:
         return '';

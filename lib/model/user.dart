@@ -76,18 +76,21 @@ class User {
         this.customFields = customFields ?? {};
 }
 
+/// [accountName] is the label of the data
+/// [valueDescription] is any description of the data
 class BasicData {
   var value;
   bool isPrivate = false;
   Icon? icon;
-  String? accountName;
+  String? accountName, valueDescription;
   var type;
   BasicData(
       {this.value,
       this.isPrivate = false,
       this.icon,
       this.accountName,
-      this.type});
+      this.type,
+      this.valueDescription});
 }
 
 BasicData formData(name, value, {private, type}) {

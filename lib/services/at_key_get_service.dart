@@ -7,10 +7,10 @@ import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
 
-class AtKeyService {
-  AtKeyService._();
-  static AtKeyService _instance = AtKeyService._();
-  factory AtKeyService() => _instance;
+class AtKeyGetService {
+  AtKeyGetService._();
+  static AtKeyGetService _instance = AtKeyGetService._();
+  factory AtKeyGetService() => _instance;
   User user = User(allPrivate: false, atsign: '');
 
   init() {
@@ -33,7 +33,7 @@ class AtKeyService {
       user.customFields.forEach((key, value) {
         if (user.customFields[key] != null) {
           print(
-              'accountName:${value[0].accountName} type:${value[0].type} value:${value[0].value}');
+              'user.customFields[key] ${key} accountName:${value[0].accountName} type:${value[0].type} value:${value[0].value} ');
         }
       });
       return user;
@@ -100,8 +100,13 @@ class AtKeyService {
       var type = _getType(json[CustomFieldConstants.type]);
       var value = _getCustomContentValue(type: type, json: json);
       String label = json[CustomFieldConstants.label];
+      String valueDescription = json[CustomFieldConstants.label];
       BasicData basicData = BasicData(
-          accountName: label, value: value, isPrivate: isPrivate, type: type);
+          accountName: label,
+          value: value,
+          isPrivate: isPrivate,
+          type: type,
+          valueDescription: valueDescription);
       // _container.createCustomField(basicData, category.toUpperCase());
       if (user.customFields[category.toUpperCase()] == null) {
         user.customFields[category.toUpperCase()] = [];
@@ -221,6 +226,7 @@ class CustomFieldConstants {
   static const String category = 'category';
   static const String type = 'type';
   static const String name = 'name';
+  static const String valueDescription = 'valueDescription';
   static const String txtInNumber = 'TextInputType.number';
   static const String txtInText = 'TextInputType.text';
   static const String txtInUrl = 'TextInputType.url';
