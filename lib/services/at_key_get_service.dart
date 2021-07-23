@@ -7,10 +7,10 @@ import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
 
-class AtKeyService {
-  AtKeyService._();
-  static AtKeyService _instance = AtKeyService._();
-  factory AtKeyService() => _instance;
+class AtKeyGetService {
+  AtKeyGetService._();
+  static AtKeyGetService _instance = AtKeyGetService._();
+  factory AtKeyGetService() => _instance;
   User user = User(allPrivate: false, atsign: '');
 
   init() {
