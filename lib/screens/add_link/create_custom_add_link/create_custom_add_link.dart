@@ -1,5 +1,6 @@
 import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
+import 'package:at_wavi_app/common_components/text_tile.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
@@ -21,6 +22,12 @@ class CreateCustomAddLink extends StatefulWidget {
 class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
   String _valueDescription = '', _accountName = '';
   bool _isPrivate = false;
+
+  updateIsPrivate(bool _mode) {
+    setState(() {
+      _isPrivate = _mode;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,15 +155,18 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
           Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: 16.toWidth, vertical: 12.toHeight),
-            child: Row(
-              children: [
-                Icon(Icons.public),
-                SizedBox(width: 5.toWidth),
-                Text(
-                  'Public',
-                  style: TextStyles.lightText(ColorConstants.black, size: 16),
-                )
-              ],
+            child: InkWell(
+              onTap: () {
+                _showBottomSheet(
+                    onPublicClicked: () {
+                      updateIsPrivate(false);
+                    },
+                    onPrivateClicked: () {
+                      updateIsPrivate(true);
+                    },
+                    height: 200.toHeight);
+              },
+              child: _isPrivate ? _privateRow() : _publicRow(),
             ),
           ),
         ],
@@ -168,6 +178,7 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
     BasicData _customData = BasicData(
         accountName: _accountName,
         value: widget.value,
+        isPrivate: _isPrivate,
         type: CustomContentType.Link.name,
         valueDescription: _valueDescription);
 
@@ -185,6 +196,84 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
     } else {
       _showToast('$_accountName addition failed', isError: true);
     }
+  }
+
+  _showBottomSheet(
+      {required Function onPublicClicked,
+      required Function onPrivateClicked,
+      double height = 200}) {
+    return showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            padding: EdgeInsets.all(10),
+            height: height,
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.light
+                  ? ColorConstants.white
+                  : ColorConstants.black,
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(12.0),
+                topRight: const Radius.circular(12.0),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('Select',
+                    style: CustomTextStyles.customBoldTextStyle(
+                        ColorConstants.black)),
+                SizedBox(
+                  height: 50,
+                  child: InkWell(
+                    onTap: () {
+                      onPublicClicked();
+                      Navigator.of(context).pop();
+                    },
+                    child: _publicRow(),
+                  ),
+                ),
+                Divider(),
+                SizedBox(
+                  height: 50,
+                  child: InkWell(
+                    onTap: () {
+                      onPrivateClicked();
+                      Navigator.of(context).pop();
+                    },
+                    child: _privateRow(),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  Widget _privateRow() {
+    return Row(
+      children: [
+        Icon(Icons.lock),
+        SizedBox(width: 5.toWidth),
+        Text(
+          'Private',
+          style: TextStyles.lightText(ColorConstants.black, size: 16),
+        )
+      ],
+    );
+  }
+
+  Widget _publicRow() {
+    return Row(
+      children: [
+        Icon(Icons.public),
+        SizedBox(width: 5.toWidth),
+        Text(
+          'Public',
+          style: TextStyles.lightText(ColorConstants.black, size: 16),
+        )
+      ],
+    );
   }
 
   _showToast(String _text, {bool isError = false, Color? bgColor}) {
