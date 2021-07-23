@@ -78,7 +78,7 @@ class ThemeService {
         print('error in get ${e.errorCode} ${e.errorMessage}');
       });
 
-      print('getThemePreference result $result');
+      // print('getThemePreference result $result');
 
       return result.value;
     } catch (e) {

@@ -93,13 +93,14 @@ class BasicData {
       this.valueDescription});
 }
 
-BasicData formData(name, value, {private, type}) {
+BasicData formData(name, value, {private, type, valueDescription}) {
   BasicData basicdata = BasicData(
       accountName: name,
       // icon: setIcon(name),
       isPrivate: private ?? false,
       type: TextInputType.text,
-      value: value);
+      value: value,
+      valueDescription: valueDescription);
   return basicdata;
 }
 

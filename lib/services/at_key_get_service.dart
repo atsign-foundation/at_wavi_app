@@ -33,7 +33,7 @@ class AtKeyGetService {
       user.customFields.forEach((key, value) {
         if (user.customFields[key] != null) {
           print(
-              'user.customFields[key] ${key} accountName:${value[0].accountName} type:${value[0].type} value:${value[0].value} ');
+              'user.customFields[key] ${key} accountName:${value[0].accountName} type:${value[0].type} value:${value[0].value} valueDescription ${value[0].valueDescription} ');
         }
       });
       return user;
@@ -100,7 +100,7 @@ class AtKeyGetService {
       var type = _getType(json[CustomFieldConstants.type]);
       var value = _getCustomContentValue(type: type, json: json);
       String label = json[CustomFieldConstants.label];
-      String valueDescription = json[CustomFieldConstants.label];
+      String valueDescription = json[CustomFieldConstants.valueDescription];
       BasicData basicData = BasicData(
           accountName: label,
           value: value,
@@ -143,12 +143,13 @@ class AtKeyGetService {
     }
   }
 
-  dynamic set(property, value, {isPrivate}) {
+  dynamic set(property, value, {isPrivate, valueDescription}) {
     if (user == null) user = User();
     isPrivate = user.allPrivate == true ? true : isPrivate;
     FieldsEnum field = valueOf(property);
 
-    var data = formData(property, value, private: isPrivate);
+    var data = formData(property, value,
+        private: isPrivate, valueDescription: valueDescription);
     switch (field) {
       case FieldsEnum.ATSIGN:
         user.atsign = value;
