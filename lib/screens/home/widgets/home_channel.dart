@@ -1,5 +1,6 @@
-import 'package:at_wavi_app/common_components/custom_card.dart';
+import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
@@ -85,44 +86,25 @@ class _HomeChannelsState extends State<HomeChannels> {
               style: TextStyles.boldText(_themeData!.primaryColor, size: 18),
             ),
             SizedBox(height: 15.toHeight),
-            SizedBox(
-                width: double.infinity,
-                child: CustomCard(
-                  title: 'Facebook',
-                  subtitle: 'fb.com/laurenlondon',
-                  isUrl: true,
-                  themeData: _themeData!,
-                )),
-            Divider(height: 1),
-            SizedBox(
-                width: double.infinity,
-                child: CustomCard(
-                  title: 'Twitter',
-                  subtitle: 'twitter.com/laurenlondon',
-                  isUrl: true,
-                  themeData: _themeData!,
-                )),
+            Column(
+              children: CommonFunctions().getCustomCardForFields(
+                _themeData!,
+                FieldNames().socialAccountsFields,
+              ),
+            ),
             SizedBox(height: 40.toHeight),
             Text(
               'Game Accounts',
               style: TextStyles.boldText(_themeData!.primaryColor, size: 18),
             ),
             SizedBox(height: 15.toHeight),
-            SizedBox(
-                width: double.infinity,
-                child: CustomCard(
-                  title: 'PS4',
-                  subtitle: 'tackojohnlauren',
-                  themeData: _themeData!,
-                )),
-            Divider(height: 1),
-            SizedBox(
-                width: double.infinity,
-                child: CustomCard(
-                  title: 'Xbox',
-                  subtitle: 'tackolauren',
-                  themeData: _themeData!,
-                )),
+            Column(
+              children: CommonFunctions().getCustomCardForFields(
+                _themeData!,
+                FieldNames().gameFields,
+              ),
+            ),
+            SizedBox(height: 15.toHeight),
           ],
         ),
       );

@@ -74,6 +74,32 @@ class User {
         this.steam = steam ?? BasicData(),
         this.discord = discord ?? BasicData(),
         this.customFields = customFields ?? {};
+
+  static Map<dynamic, dynamic> toJson(User? user) {
+    return {
+      FieldsEnum.ATSIGN.name: user?.atsign,
+      FieldsEnum.IMAGE.name: user?.image,
+      FieldsEnum.FIRSTNAME.name: user?.firstname,
+      FieldsEnum.LASTNAME.name: user?.lastname,
+      FieldsEnum.PHONE.name: user?.phone,
+      FieldsEnum.EMAIL.name: user?.email,
+      FieldsEnum.ABOUT.name: user?.about,
+      FieldsEnum.LOCATION.name: user?.location,
+      FieldsEnum.LOCATIONNICKNAME.name: user?.locationNickName,
+      FieldsEnum.PRONOUN.name: user?.pronoun,
+      FieldsEnum.TWITTER.name: user?.twitter,
+      FieldsEnum.FACEBOOK.name: user?.facebook,
+      FieldsEnum.LINKEDIN.name: user?.linkedin,
+      FieldsEnum.INSTAGRAM.name: user?.instagram,
+      FieldsEnum.YOUTUBE.name: user?.youtube,
+      FieldsEnum.TUMBLR.name: user?.tumbler,
+      FieldsEnum.MEDIUM.name: user?.medium,
+      FieldsEnum.PS4.name: user?.ps4,
+      FieldsEnum.XBOX.name: user?.xbox,
+      FieldsEnum.STEAM.name: user?.steam,
+      FieldsEnum.DISCORD.name: user?.discord,
+    };
+  }
 }
 
 /// [accountName] is the label of the data

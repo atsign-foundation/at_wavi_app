@@ -1,5 +1,5 @@
 import 'package:at_wavi_app/model/user.dart';
-import 'package:at_wavi_app/services/at_key_service.dart';
+import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 
 class UserProvider extends BaseModel {
@@ -12,8 +12,7 @@ class UserProvider extends BaseModel {
 
   fetchUserData(String atsign) async {
     setStatus(FETCH_USER, Status.Loading);
-    var data = await AtKeyService().getProfile(atsign: atsign);
-    print('fetched user daya: ${data!.about}');
+    user = await AtKeyGetService().getProfile(atsign: atsign);
     setStatus(FETCH_USER, Status.Loading);
   }
 }

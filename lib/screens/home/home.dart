@@ -1,16 +1,19 @@
 import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/screens/home/widgets/Home_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_channel.dart';
-import 'package:at_wavi_app/screens/home/widgets/home_details.dart';
+import 'package:at_wavi_app/screens/home/widgets/home_empty_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
 import 'package:at_wavi_app/screens/options.dart';
+import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -175,12 +178,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: _themeData!.primaryColor,
                                     fontWeight: FontWeight.w600)),
                             SizedBox(height: 8.toHeight),
-                            Text(
-                              '@lauren',
-                              style: TextStyle(
-                                  color: ColorConstants.orange,
-                                  fontSize: 18.toFont),
-                            ),
+                            BackendService().currentAtSign != null
+                                ? Text(
+                                    BackendService().currentAtSign!,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: ColorConstants.orange,
+                                      fontSize: 18.toFont,
+                                    ),
+                                  )
+                                : SizedBox(),
                             SizedBox(height: 18.5.toHeight),
                             Divider(
                               color: _themeData!.highlightColor,
@@ -414,7 +422,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget homeContent() {
     if (_currentTab == HOME_TABS.DETAILS) {
-      // return HomeEmptyDetails();
+      // return HomeEmptyDetails()
       return HomeDetails(themeData: _themeData!);
     } else if (_currentTab == HOME_TABS.CHANNELS) {
       return HomeChannels(themeData: _themeData!);
