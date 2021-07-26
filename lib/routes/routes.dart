@@ -29,7 +29,15 @@ class SetupRoutes {
 
         return HomeScreen();
       },
-      Routes.ADD_LINK: (context) => AddLink(),
+      Routes.ADD_LINK: (context) {
+        if ((ModalRoute.of(context) != null) &&
+            (ModalRoute.of(context)!.settings.arguments != null)) {
+          Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return AddLink(args['url']);
+        }
+        return AddLink('');
+      },
       Routes.FOLLOWING_SCREEN: (context) => Following(),
       Routes.SEARCH_SCREEN: (context) => Search(),
       Routes.CREATE_CUSTOM_ADD_LINK: (context) {
