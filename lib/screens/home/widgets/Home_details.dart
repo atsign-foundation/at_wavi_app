@@ -1,5 +1,6 @@
-import 'package:at_wavi_app/common_components/custom_card.dart';
+import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
@@ -59,39 +60,22 @@ class _HomeDetailsState extends State<HomeDetails> {
               style: TextStyles.boldText(_themeData!.primaryColor, size: 18),
             ),
             SizedBox(height: 15.toHeight),
-            SizedBox(
-                width: double.infinity,
-                child: CustomCard(
-                  title: 'Phone Number',
-                  subtitle: '+1 234 567 578',
-                  themeData: _themeData!,
-                )),
-            Divider(height: 1),
-            SizedBox(
-                width: double.infinity,
-                child: CustomCard(
-                  title: 'Email Address',
-                  subtitle: 'lauren@atsign.com',
-                  themeData: _themeData!,
-                )),
+            Column(
+              children: CommonFunctions().getCustomCardForFields(
+                _themeData!,
+                FieldNames().basicDetailsFields,
+              ),
+            ),
             SizedBox(height: 40.toHeight),
             Text('Additional Details',
                 style: TextStyles.boldText(_themeData!.primaryColor, size: 18)),
             SizedBox(height: 15.toHeight),
-            SizedBox(
-                width: double.infinity,
-                child: CustomCard(
-                  title: 'Preferred Pronoun',
-                  subtitle: 'He/Him',
-                  themeData: _themeData!,
-                )),
-            SizedBox(
-                width: double.infinity,
-                child: CustomCard(
-                  title: 'About',
-                  subtitle: 'Designer at @ Company',
-                  themeData: _themeData!,
-                )),
+            Column(
+              children: CommonFunctions().getCustomCardForFields(
+                _themeData!,
+                FieldNames().additionalDetailsFields,
+              ),
+            ),
           ],
         ),
       );

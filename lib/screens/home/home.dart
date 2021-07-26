@@ -1,18 +1,24 @@
+import 'dart:async';
+
 import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/screens/home/widgets/Home_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_channel.dart';
-import 'package:at_wavi_app/screens/home/widgets/home_details.dart';
+import 'package:at_wavi_app/screens/home/widgets/home_empty_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
 import 'package:at_wavi_app/screens/options.dart';
+import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 enum HOME_TABS { DETAILS, CHANNELS, FEATURED }
 
@@ -29,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   HOME_TABS _currentTab = HOME_TABS.DETAILS;
   bool _isDark = false;
   ThemeData? _themeData;
+  late StreamSubscription<dynamic> _intentDataStreamSubscription;
 
   _onItemTapped(int index) {
     setState(() {
@@ -38,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    _receiveIntent();
     _getThemeData();
     super.initState();
   }
@@ -58,6 +66,50 @@ class _HomeScreenState extends State<HomeScreen> {
     if (mounted) {
       setState(() {});
     }
+  }
+
+  _receiveIntent() async {
+    // For sharing images coming from outside the app while the app is in the memory
+    _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
+        .listen((List<SharedMediaFile> value) {
+      print("Incoming Shared file in home :" +
+          (value.map((f) => f.path).join(",")));
+
+      if (value != null) {}
+    }, onError: (err) {
+      print("getIntentDataStream error: $err");
+    });
+
+    // For sharing images coming from outside the app while the app is closed
+    ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
+      print('Incoming images Value in home  is $value');
+      if (value != null) {}
+    });
+
+    // For sharing or opening urls/text coming from outside the app while the app is in the memory
+    _intentDataStreamSubscription =
+        ReceiveSharingIntent.getTextStream().listen((String value) {
+      print('Incoming text Value in home  is $value');
+      if (value != null) {
+        SetupRoutes.push(context, Routes.ADD_LINK, arguments: {'url': value});
+      }
+    }, onError: (err) {
+      print("getLinkStream error: $err");
+    });
+
+    // For sharing or opening urls/text coming from outside the app while the app is closed
+    ReceiveSharingIntent.getInitialText().then((String? value) {
+      if (value != null) {
+        SetupRoutes.push(context, Routes.ADD_LINK, arguments: {'url': value});
+      }
+      print('Incoming text in home  when app is closed $value');
+    });
+  }
+
+  @override
+  void dispose() {
+    _intentDataStreamSubscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -175,12 +227,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: _themeData!.primaryColor,
                                     fontWeight: FontWeight.w600)),
                             SizedBox(height: 8.toHeight),
-                            Text(
-                              '@lauren',
-                              style: TextStyle(
-                                  color: ColorConstants.orange,
-                                  fontSize: 18.toFont),
-                            ),
+                            BackendService().currentAtSign != null
+                                ? Text(
+                                    BackendService().currentAtSign!,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: ColorConstants.orange,
+                                      fontSize: 18.toFont,
+                                    ),
+                                  )
+                                : SizedBox(),
                             SizedBox(height: 18.5.toHeight),
                             Divider(
                               color: _themeData!.highlightColor,
@@ -414,7 +471,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget homeContent() {
     if (_currentTab == HOME_TABS.DETAILS) {
-      // return HomeEmptyDetails();
+      // return HomeEmptyDetails()
       return HomeDetails(themeData: _themeData!);
     } else if (_currentTab == HOME_TABS.CHANNELS) {
       return HomeChannels(themeData: _themeData!);

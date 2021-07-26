@@ -1,3 +1,4 @@
+import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/common_components/provider_callback.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
@@ -16,7 +17,8 @@ class EditPersona extends StatefulWidget {
   _EditPersonaState createState() => _EditPersonaState();
 }
 
-class _EditPersonaState extends State<EditPersona> {
+class _EditPersonaState extends State<EditPersona>
+    with SingleTickerProviderStateMixin {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   late ThemeColor _themeColor;
   List<Color> _colors = [
@@ -33,116 +35,187 @@ class _EditPersonaState extends State<EditPersona> {
   late ThemeColor _theme;
   late Color _highlightColor;
   bool _updateTheme = false, _updateHighlightColor = false;
+  late TabController _controller;
+  int _tabIndex = 0;
 
-  // ThemeService()
-  //       .getThemePreference('@new52plum', returnHighlightColorPreference: true);
+  @override
+  void initState() {
+    _controller =
+        TabController(length: 2, vsync: this, initialIndex: _tabIndex);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     _themeColor = Provider.of<ThemeProvider>(context, listen: false).themeColor;
 
-    return Scaffold(
-        key: scaffoldKey,
-        bottomSheet: _bottomSheet(),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        appBar: AppBar(
-          toolbarHeight: 40,
-          title: Text(
-            'Edit Persona',
-            style: CustomTextStyles.customBoldTextStyle(
-                Theme.of(context).primaryColor,
-                size: 16),
-          ),
-          centerTitle: false,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 0,
-        ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 20.toHeight),
-              Text(
-                'Theme',
-                style: CustomTextStyles.customBoldTextStyle(
-                    Theme.of(context).primaryColor,
-                    size: 18),
-              ),
-              SizedBox(height: 15.toHeight),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Container(
+      color: ColorConstants.white,
+      child: SafeArea(
+        child: Scaffold(
+            key: scaffoldKey,
+            bottomSheet: _bottomSheet(),
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            appBar: AppBar(
+              toolbarHeight: 40,
+              title: Row(
                 children: [
-                  Column(
-                    children: [
-                      _themeCard(),
-                      SizedBox(height: 13.toHeight),
-                      Text(
-                        'Light',
-                        style: CustomTextStyles.black(size: 18),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      _themeCard(isDark: true),
-                      SizedBox(height: 13.toHeight),
-                      Text(
-                        'Dark',
-                        style: CustomTextStyles.black(size: 18),
-                      ),
-                    ],
+                  Icon(Icons.arrow_back, color: ColorConstants.black),
+                  Text(
+                    'Edit Persona',
+                    style: CustomTextStyles.customBoldTextStyle(
+                        Theme.of(context).primaryColor,
+                        size: 16),
                   ),
                 ],
               ),
-              SizedBox(height: 30.toHeight),
-              Text(
-                'Colour',
-                style: CustomTextStyles.customBoldTextStyle(
-                    Theme.of(context).primaryColor,
-                    size: 18),
+              centerTitle: false,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              elevation: 0,
+            ),
+            body: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header(
+                  //   leading: Row(children: [
+                  //     Icon(Icons.arrow_back),
+                  //     Text(
+                  //       'Edit Persona',
+                  //       style: CustomTextStyles.customBoldTextStyle(
+                  //           Theme.of(context).primaryColor,
+                  //           size: 16),
+                  //     ),
+                  //   ]),
+                  // ),
+                  SizedBox(height: 20.toHeight),
+                  TabBar(
+                    onTap: (index) async {},
+                    labelColor: ColorConstants.black,
+                    indicatorWeight: 5.toHeight,
+                    indicatorColor: ColorConstants.orange,
+                    indicatorSize: TabBarIndicatorSize.label,
+                    unselectedLabelColor: ColorConstants.black.withOpacity(0.5),
+                    controller: _controller,
+                    tabs: [
+                      Text(
+                        'Content',
+                        style: TextStyle(letterSpacing: 0.1, fontSize: 18),
+                      ),
+                      Text(
+                        'Design',
+                        style: TextStyle(letterSpacing: 0.1, fontSize: 18),
+                      )
+                    ],
+                  ),
+                  Divider(height: 1),
+                  Expanded(
+                      child: TabBarView(
+                    controller: _controller,
+                    children: [
+                      SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: editContentCard('Profile picture', () {}),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Theme',
+                              style: CustomTextStyles.customBoldTextStyle(
+                                  Theme.of(context).primaryColor,
+                                  size: 18),
+                            ),
+                            SizedBox(height: 15.toHeight),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    _themeCard(),
+                                    SizedBox(height: 13.toHeight),
+                                    Text(
+                                      'Light',
+                                      style: CustomTextStyles.black(size: 18),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    _themeCard(isDark: true),
+                                    SizedBox(height: 13.toHeight),
+                                    Text(
+                                      'Dark',
+                                      style: CustomTextStyles.black(size: 18),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 30.toHeight),
+                            Text(
+                              'Colour',
+                              style: CustomTextStyles.customBoldTextStyle(
+                                  Theme.of(context).primaryColor,
+                                  size: 18),
+                            ),
+                            SizedBox(height: 15.toHeight),
+                            Wrap(
+                              alignment: WrapAlignment.start,
+                              runAlignment: WrapAlignment.start,
+                              runSpacing: 10.0,
+                              spacing: 10.0,
+                              children: _colors.map((_color) {
+                                return InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _highlightColor = _color;
+                                      _updateHighlightColor = true;
+                                    });
+                                  },
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      _rectangle(
+                                          width: 78,
+                                          height: 78,
+                                          color: _color,
+                                          roundedCorner: 10),
+                                      (_updateHighlightColor
+                                              ? (_color == _highlightColor)
+                                              : (_color ==
+                                                  Provider.of<ThemeProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .highlightColor))
+                                          ? Positioned(
+                                              child: _circularDoneIcon(
+                                                  isDark: true,
+                                                  size: 35.toWidth))
+                                          : SizedBox()
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  )),
+                ],
               ),
-              SizedBox(height: 15.toHeight),
-              Wrap(
-                alignment: WrapAlignment.start,
-                runAlignment: WrapAlignment.start,
-                runSpacing: 10.0,
-                spacing: 10.0,
-                children: _colors.map((_color) {
-                  return InkWell(
-                    onTap: () {
-                      setState(() {
-                        _highlightColor = _color;
-                        _updateHighlightColor = true;
-                      });
-                    },
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        _rectangle(
-                            width: 78,
-                            height: 78,
-                            color: _color,
-                            roundedCorner: 10),
-                        (_updateHighlightColor
-                                ? (_color == _highlightColor)
-                                : (_color ==
-                                    Provider.of<ThemeProvider>(context,
-                                            listen: false)
-                                        .highlightColor))
-                            ? Positioned(
-                                child: _circularDoneIcon(
-                                    isDark: true, size: 35.toWidth))
-                            : SizedBox()
-                      ],
-                    ),
-                  );
-                }).toList(),
-              )
-            ],
-          ),
-        ));
+            )),
+      ),
+    );
   }
 
   Widget _bottomSheet() {
@@ -396,5 +469,31 @@ class _EditPersonaState extends State<EditPersona> {
         },
       );
     }
+  }
+
+  Widget editContentCard(String title, Function onPressed) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(title, style: TextStyles.black18bold),
+            GestureDetector(
+              onTap: () {
+                onPressed();
+              },
+              child: Row(
+                children: [
+                  Text('Add',
+                      style: TextStyles.lightText(ColorConstants.black)),
+                  Icon(Icons.add)
+                ],
+              ),
+            )
+          ],
+        ),
+        Divider(height: 25)
+      ],
+    );
   }
 }
