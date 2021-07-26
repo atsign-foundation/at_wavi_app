@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/common_components/custom_card.dart';
+import 'package:at_wavi_app/common_components/custom_media_card.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
@@ -60,12 +61,9 @@ class CommonFunctions {
           var widget = Column(
             children: [
               SizedBox(
-                  width: double.infinity,
-                  child: CustomCard(
-                    title: basicData.accountName!,
-                    subtitle: basicData.value,
-                    themeData: _themeData,
-                  )),
+                width: double.infinity,
+                child: checkForCustomContentType(basicData, _themeData),
+              ),
               Divider(height: 1)
             ],
           );
@@ -75,5 +73,31 @@ class CommonFunctions {
     }
 
     return customFieldsWidgets;
+  }
+
+  Widget checkForCustomContentType(BasicData basicData, ThemeData _themeData) {
+    Widget fieldCard = SizedBox();
+    if (basicData.type == CustomContentType.Text.name ||
+        basicData.type == CustomContentType.Number.name) {
+      fieldCard = CustomCard(
+        title: basicData.accountName!,
+        subtitle: basicData.value,
+        themeData: _themeData,
+      );
+    } else if (basicData.type == CustomContentType.Image.name ||
+        basicData.type == CustomContentType.Youtube.name) {
+      fieldCard = CustomMediaCard(
+        basicData: basicData,
+        themeData: _themeData,
+      );
+    } else if (basicData.type == CustomContentType.Link.name) {
+      fieldCard = CustomCard(
+        title: basicData.accountName!,
+        subtitle: basicData.value,
+        themeData: _themeData,
+        isUrl: true,
+      );
+    }
+    return fieldCard;
   }
 }
