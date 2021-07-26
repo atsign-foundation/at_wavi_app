@@ -153,7 +153,7 @@ class AtKeySetService {
   String _encodeToJsonString(BasicData basicData, String screenName) {
     var value = {};
     value[CustomFieldConstants.label] = basicData.accountName;
-    value[CustomFieldConstants.category] = screenName;
+    value[CustomFieldConstants.category] = screenName.toUpperCase();
     value[CustomFieldConstants.type] = basicData.type;
     value[CustomFieldConstants.value] = basicData.value;
     value[CustomFieldConstants.valueDescription] = basicData.valueDescription;
