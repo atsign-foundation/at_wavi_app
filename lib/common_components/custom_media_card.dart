@@ -5,6 +5,7 @@ import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class CustomMediaCard extends StatefulWidget {
   final BasicData basicData;
@@ -18,6 +19,7 @@ class CustomMediaCard extends StatefulWidget {
 class _CustomMediaCardState extends State<CustomMediaCard> {
   late bool _isDark, _isImage = false, _isVideo = false;
   Uint8List? customImage;
+  late YoutubePlayerController _controller;
 
   void setThemeData(BuildContext context) {
     _isDark = widget.themeData.scaffoldBackgroundColor == ColorConstants.white;
@@ -29,8 +31,23 @@ class _CustomMediaCardState extends State<CustomMediaCard> {
       _isImage = true;
       var intList = widget.basicData.value!.cast<int>();
       customImage = Uint8List.fromList(intList);
-    } else if (widget.basicData.type == CustomContentType.Youtube) {
+    } else if (widget.basicData.type == CustomContentType.Youtube.name) {
+      // getting youtube video ID
+      String videoId = widget.basicData.value.split('/').last;
+      if (videoId.contains('watch?v=')) {
+        videoId = videoId.replaceAll('watch?v=', '');
+      }
+
       _isVideo = true;
+
+      /// initializing [_controller]
+      _controller = YoutubePlayerController(
+        initialVideoId: videoId,
+        flags: YoutubePlayerFlags(
+          autoPlay: false,
+          mute: false,
+        ),
+      );
     }
     super.initState();
   }
@@ -68,6 +85,15 @@ class _CustomMediaCardState extends State<CustomMediaCard> {
                     width: double.infinity,
                     height: 200,
                     fit: BoxFit.fill,
+                  )
+                : SizedBox(),
+            _isVideo
+                ? YoutubePlayer(
+                    controller: _controller,
+                    bottomActions: [
+                      CurrentPosition(),
+                      ProgressBar(isExpanded: true),
+                    ],
                   )
                 : SizedBox()
           ],
