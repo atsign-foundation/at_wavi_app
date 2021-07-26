@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.at_wavi_app">
+    package="com.atsign.wavi">
    <application
         android:label="at_wavi_app"
         android:icon="@mipmap/ic_launcher">

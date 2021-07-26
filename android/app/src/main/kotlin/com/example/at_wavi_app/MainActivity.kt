@@ -1,4 +1,4 @@
-package com.example.at_wavi_app
+package com.atsign.wavi
 
 import io.flutter.embedding.android.FlutterActivity
 
