@@ -38,7 +38,8 @@ class ThemeService {
         }
       } else if (highlightColor != null) {
         _atKey.key = AtKeyConstants.highlightColorPreference;
-        _value = highlightColor.toString().toLowerCase().substring(10, 16);
+        // _value = highlightColor.toString().toLowerCase().substring(10, 16);
+        _value = getStringFromHighlightColor(highlightColor);
       }
 
       print('_value $_value');
@@ -84,6 +85,29 @@ class ThemeService {
     } catch (e) {
       print('getThemePreference throws exception $e');
       return '';
+    }
+  }
+
+  String getStringFromHighlightColor(Color _highlightColor) {
+    switch (_highlightColor.toString().toUpperCase()) {
+      case 'COLOR(0XFF58419C)':
+        return 'purple';
+      case 'COLOR(0XFF6EBCB7)':
+        return 'peach';
+      case 'COLOR(0XFF0455BF)':
+        return 'blue';
+      case 'COLOR(0XFFFE1094)':
+        return 'pink';
+      case 'COLOR(0XFFA77D60)':
+        return 'brown';
+      case 'COLOR(0XFFEF5743)':
+        return 'orange';
+      case 'COLOR(0XFF7CCB12)':
+        return 'green';
+      case 'COLOR(0XFFFFBE21)':
+        return 'yellow';
+      default:
+        return 'purple';
     }
   }
 
