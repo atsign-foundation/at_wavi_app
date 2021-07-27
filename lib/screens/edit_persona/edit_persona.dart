@@ -62,12 +62,13 @@ class _EditPersonaState extends State<EditPersona>
               title: Row(
                 children: [
                   Icon(Icons.arrow_back, color: ColorConstants.black),
-                  Text(
-                    'Edit Persona',
-                    style: CustomTextStyles.customBoldTextStyle(
-                        Theme.of(context).primaryColor,
-                        size: 16),
-                  ),
+                  // TODO: have to fix alignment
+                  // Text(
+                  //   'Edit Persona',
+                  //   style: CustomTextStyles.customBoldTextStyle(
+                  //       Theme.of(context).primaryColor,
+                  //       size: 16),
+                  // ),
                 ],
               ),
               centerTitle: false,
@@ -79,17 +80,6 @@ class _EditPersonaState extends State<EditPersona>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header(
-                  //   leading: Row(children: [
-                  //     Icon(Icons.arrow_back),
-                  //     Text(
-                  //       'Edit Persona',
-                  //       style: CustomTextStyles.customBoldTextStyle(
-                  //           Theme.of(context).primaryColor,
-                  //           size: 16),
-                  //     ),
-                  //   ]),
-                  // ),
                   SizedBox(height: 20.toHeight),
                   TabBar(
                     onTap: (index) async {},
@@ -118,10 +108,11 @@ class _EditPersonaState extends State<EditPersona>
                       SingleChildScrollView(
                         child: Column(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: editContentCard('Profile picture', () {}),
-                            ),
+                            // TODO: add content edit fields
+                            // Padding(
+                            //   padding: const EdgeInsets.all(8.0),
+                            //   child: editContentCard('Profile picture', () {}),
+                            // ),
                           ],
                         ),
                       ),

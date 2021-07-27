@@ -8,11 +8,14 @@ class UserProvider extends BaseModel {
   factory UserProvider() => _instance;
 
   User? user;
-  String FETCH_USER = 'fetach_user_data';
+  String FETCH_USER = 'fetch_user_data';
 
   fetchUserData(String atsign) async {
     setStatus(FETCH_USER, Status.Loading);
     user = await AtKeyGetService().getProfile(atsign: atsign);
-    setStatus(FETCH_USER, Status.Loading);
+    if (user == null) {
+      setStatus(FETCH_USER, Status.Error);
+    }
+    setStatus(FETCH_USER, Status.Done);
   }
 }
