@@ -39,6 +39,8 @@ dependencies:
   at_commons: ^2.0.1
   at_base2e15: ^1.0.0
   receive_sharing_intent: ^1.4.5
+  google_maps_flutter: ^2.0.3
+  geocoder: ^0.2.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
