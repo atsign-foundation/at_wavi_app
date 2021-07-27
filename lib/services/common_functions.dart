@@ -1,3 +1,7 @@
+import 'dart:typed_data';
+
+import 'package:at_contact/at_contact.dart';
+import 'package:at_contacts_flutter/at_contacts_flutter.dart';
 import 'package:at_wavi_app/common_components/custom_card.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
@@ -37,5 +41,18 @@ class CommonFunctions {
       }
     }
     return fieldsWidgets;
+  }
+
+  getCachedContactImage(String atsign) {
+    Uint8List image;
+    AtContact contact = checkForCachedContactDetail(atsign);
+
+    if (contact != null &&
+        contact.tags != null &&
+        contact.tags!['image'] != null) {
+      List<int> intList = contact.tags!['image'].cast<int>();
+      image = Uint8List.fromList(intList);
+      return image;
+    }
   }
 }

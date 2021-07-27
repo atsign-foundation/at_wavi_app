@@ -1,4 +1,7 @@
 import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
+import 'package:at_wavi_app/common_components/switch_at_sign.dart';
+import 'package:at_wavi_app/services/backend_service.dart';
+import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,7 +65,7 @@ class _OptionsState extends State<Options> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0),
-                  child: Text('Discoverable Account'),
+                  child: Text('Searchable Account'),
                 ),
               ),
               Transform.scale(
@@ -76,27 +79,27 @@ class _OptionsState extends State<Options> {
             ],
           ),
           SizedBox(height: 15),
-          Divider(height: 1),
-          Row(
-            children: <Widget>[
-              Icon(Icons.notifications_active, size: 25),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Text('Receive other notifications'),
-                ),
-              ),
-              Transform.scale(
-                scale: 0.7,
-                child: CupertinoSwitch(
-                  activeColor: ColorConstants.black,
-                  value: true,
-                  onChanged: (value) {},
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 15),
+          // Divider(height: 1),
+          // Row(
+          //   children: <Widget>[
+          //     Icon(Icons.notifications_active, size: 25),
+          //     Expanded(
+          //       child: Padding(
+          //         padding: const EdgeInsets.only(left: 8.0),
+          //         child: Text('Receive other notifications'),
+          //       ),
+          //     ),
+          //     Transform.scale(
+          //       scale: 0.7,
+          //       child: CupertinoSwitch(
+          //         activeColor: ColorConstants.black,
+          //         value: true,
+          //         onChanged: (value) {},
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // SizedBox(height: 15),
           Divider(height: 1),
           Row(
             children: <Widget>[
@@ -134,20 +137,36 @@ class _OptionsState extends State<Options> {
           SizedBox(height: 15),
           Divider(height: 1),
           SizedBox(height: 15),
-          Row(
-            children: <Widget>[
-              SizedBox(
-                width: 25,
-                height: 25,
-                child: Image.asset(Images.logout),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Text('Switch @sign'),
+          InkWell(
+            onTap: () async {
+              String? atSign = await BackendService().getAtSign();
+
+              var atSignList = await BackendService()
+                  .atClientServiceMap[atSign]!
+                  .getAtsignList();
+              await showModalBottomSheet(
+                context: NavService.navKey.currentContext!,
+                backgroundColor: Colors.transparent,
+                builder: (context) => AtSignBottomSheet(
+                  atSignList: atSignList!,
                 ),
-              ),
-            ],
+              );
+            },
+            child: Row(
+              children: <Widget>[
+                SizedBox(
+                  width: 25,
+                  height: 25,
+                  child: Image.asset(Images.logout),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text('Switch @sign'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

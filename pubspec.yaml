@@ -34,6 +34,8 @@ dependencies:
   at_onboarding_flutter: ^2.1.2
   at_client_mobile: ^2.0.3
   at_client: ^2.0.3
+  at_contact: ^2.0.0
+  at_contacts_flutter: ^2.0.1
   path_provider: ^2.0.1
   permission_handler: ^8.1.3
   at_commons: ^2.0.1
