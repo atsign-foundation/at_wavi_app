@@ -28,9 +28,9 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.0.0
   google_fonts: ^2.1.0
-  at_common_flutter: ^2.0.0
-  # at_common_flutter:
-  #   path: /Users/sachinsingh/Documents/geekyAnts/AtSign/at_widgets/at_common_flutter
+  # at_common_flutter: ^2.0.0
+  at_common_flutter:
+    path: /Users/sachinsingh/Documents/geekyAnts/AtSign/at_widgets/at_common_flutter
   at_onboarding_flutter: ^2.1.2
   at_client_mobile: ^2.0.3
   at_client: ^2.0.3
@@ -40,6 +40,8 @@ dependencies:
   at_base2e15: ^1.0.0
   youtube_player_flutter: ^8.0.0
   receive_sharing_intent: ^1.4.5
+  http: ^0.13.3
+  flutter_html: ^2.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

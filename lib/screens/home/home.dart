@@ -9,8 +9,10 @@ import 'package:at_wavi_app/screens/home/widgets/home_empty_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
 import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
+import 'package:at_wavi_app/services/instagram_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
+import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
@@ -376,7 +378,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ));
                                   }
-                                : () {},
+                                : () async {
+                                    await TwitetrService().getTweets();
+                                  },
                             child: Text('Share Profile',
                                 style: TextStyle(
                                     fontSize: 16.toFont,

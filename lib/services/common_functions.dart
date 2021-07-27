@@ -1,6 +1,7 @@
 import 'package:at_wavi_app/common_components/custom_card.dart';
 import 'package:at_wavi_app/common_components/custom_media_card.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
@@ -38,7 +39,8 @@ class CommonFunctions {
                   subtitle: field.value.value,
                   themeData: _themeData,
                 )),
-            Divider(height: 1)
+            Divider(
+                height: 1, color: _themeData.highlightColor.withOpacity(0.5))
           ],
         );
 
@@ -64,10 +66,13 @@ class CommonFunctions {
                 width: double.infinity,
                 child: checkForCustomContentType(basicData, _themeData),
               ),
-              Divider(height: 1)
+              Divider(
+                  height: 1, color: _themeData.highlightColor.withOpacity(0.5))
             ],
           );
-          customFieldsWidgets.add(widget);
+          customFieldsWidgets.add(
+            widget,
+          );
         }
       }
     }
@@ -99,5 +104,36 @@ class CommonFunctions {
       );
     }
     return fieldCard;
+  }
+
+  List<Widget> getFeaturedTwitterCards(ThemeData _themeData) {
+    var twitterCards = <Widget>[];
+    if (TwitetrService().tweetList.isNotEmpty) {
+      int sliceIndex = TwitetrService().tweetList.length > 5
+          ? 5
+          : TwitetrService().tweetList.length;
+
+      TwitetrService().tweetList.sublist(0, sliceIndex).forEach((tweet) {
+        var twitterCard = Column(
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: CustomCard(
+                subtitle: tweet.text,
+                themeData: _themeData,
+              ),
+            ),
+            Divider(
+              height: 1,
+              color: _themeData.highlightColor.withOpacity(0.5),
+            )
+          ],
+        );
+
+        twitterCards.add(twitterCard);
+      });
+    }
+
+    return twitterCards;
   }
 }
