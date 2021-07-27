@@ -7,14 +7,15 @@ import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class AddLink extends StatefulWidget {
-  const AddLink({Key? key}) : super(key: key);
+  final String url;
+  const AddLink(this.url, {Key? key}) : super(key: key);
 
   @override
   _AddLinkState createState() => _AddLinkState();
 }
 
 class _AddLinkState extends State<AddLink> {
-  String _linkValue = 'www.twitter.com';
+  late String _linkValue;
   List<String> _sections = [
     'Basic Details',
     'Additional Details',
@@ -43,6 +44,12 @@ class _AddLinkState extends State<AddLink> {
       default:
         return AtCategory.DETAILS;
     }
+  }
+
+  @override
+  void initState() {
+    _linkValue = widget.url;
+    super.initState();
   }
 
   @override

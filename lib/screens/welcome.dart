@@ -14,6 +14,12 @@ class Welcome extends StatefulWidget {
 class _WelcomeState extends State<Welcome> {
   var atClientPrefernce;
 
+  @override
+  void initState() {
+    _checkToOnboard();
+    super.initState();
+  }
+
   void _checkToOnboard() async {
     String? currentatSign = await BackendService().getAtSign();
     await BackendService()
@@ -25,12 +31,6 @@ class _WelcomeState extends State<Welcome> {
       await BackendService()
           .onboard(currentatSign, atClientPreference: atClientPrefernce);
     }
-  }
-
-  @override
-  void initState() {
-    _checkToOnboard();
-    super.initState();
   }
 
   @override

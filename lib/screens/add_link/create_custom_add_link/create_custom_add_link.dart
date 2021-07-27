@@ -2,6 +2,8 @@ import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/common_components/text_tile.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/routes/route_names.dart';
+import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -118,7 +120,7 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
               hintTextColor: ColorConstants.black.withOpacity(0.5),
               bgColor: Colors.transparent,
               textColor: ColorConstants.black,
-              initialValue: '',
+              initialValue: _valueDescription,
               height: 200,
               maxLines: 2,
               expands: true,
@@ -193,6 +195,7 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
 
     if (_res) {
       _showToast('$_accountName added', bgColor: ColorConstants.DARK_GREY);
+      SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
     } else {
       _showToast('$_accountName addition failed', isError: true);
     }

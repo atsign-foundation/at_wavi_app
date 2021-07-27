@@ -46,6 +46,8 @@ PODS:
     - Flutter
   - "permission_handler (5.1.0+2)":
     - Flutter
+  - receive_sharing_intent (0.0.1):
+    - Flutter
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
@@ -66,6 +68,7 @@ DEPENDENCIES:
   - flutter_qr_reader (from `.symlinks/plugins/flutter_qr_reader/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - receive_sharing_intent (from `.symlinks/plugins/receive_sharing_intent/ios`)
   - share (from `.symlinks/plugins/share/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
@@ -94,6 +97,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
+  receive_sharing_intent:
+    :path: ".symlinks/plugins/receive_sharing_intent/ios"
   share:
     :path: ".symlinks/plugins/share/ios"
   url_launcher:
@@ -112,6 +117,7 @@ SPEC CHECKSUMS:
   flutter_qr_reader: d930dde3b2cfe2b3d0bb7d66e5ff3e514300a5e5
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
+  receive_sharing_intent: c0d87310754e74c0f9542947e7cbdf3a0335a3b1
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
