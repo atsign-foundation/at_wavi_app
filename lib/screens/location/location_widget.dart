@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:at_wavi_app/common_components/add_custom_content_button.dart';
 import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
+import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LocationWidget extends StatefulWidget {
   const LocationWidget({Key? key}) : super(key: key);
@@ -14,12 +19,23 @@ class LocationWidget extends StatefulWidget {
 }
 
 class _LocationWidgetState extends State<LocationWidget> {
+  BasicData? _data;
   late bool _isPrivate;
-  String _locationString = '', _locationNickname = 'Home';
+  String _locationString = '', _locationNickname = '';
 
   @override
   initState() {
     _isPrivate = false;
+    _data = Provider.of<UserProvider>(context, listen: false).user!.location;
+    _locationNickname = Provider.of<UserProvider>(context, listen: false)
+            .user!
+            .locationNickName
+            .value ??
+        'Home';
+    _isPrivate = Provider.of<UserProvider>(context, listen: false)
+        .user!
+        .location
+        .isPrivate;
     super.initState();
   }
 
@@ -31,6 +47,10 @@ class _LocationWidgetState extends State<LocationWidget> {
 
   @override
   Widget build(BuildContext context) {
+    _locationString = (_data != null && (_data!.value != null))
+        ? jsonDecode(_data!.value)['location']
+        : '';
+
     return Scaffold(
       bottomSheet: InkWell(
         onTap: (_locationString == '')
@@ -142,7 +162,7 @@ class _LocationWidgetState extends State<LocationWidget> {
               expands: false,
               maxLines: 1,
               value: (str) => setState(() {
-                _locationString = str;
+                _data!.value = str;
               }),
             ),
           ),
