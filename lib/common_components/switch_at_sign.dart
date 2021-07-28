@@ -56,18 +56,6 @@ class _AtSignBottomSheetState extends State<AtSignBottomSheet> {
                               : () async {
                                   await backendService
                                       .onboard(widget.atSignList[index]);
-
-                                  // Provider.of<WelcomeScreenProvider>(context,
-                                  //         listen: false)
-                                  //     .selectedContacts = [];
-                                  // Provider.of<FileTransferProvider>(context,
-                                  //         listen: false)
-                                  //     .selectedFiles = [];
-                                  print(
-                                      'currentAtsign ${backendService.atClientInstance.currentAtSign}');
-                                  SetupRoutes.pushAndRemoveAll(
-                                      context, Routes.HOME);
-                                  // Navigator.pop(context);
                                 },
                           child: Padding(
                             padding:
