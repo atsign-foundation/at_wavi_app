@@ -2,6 +2,8 @@ import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
 import 'package:at_wavi_app/common_components/switch_at_sign.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/routes/route_names.dart';
+import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/change_privacy_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
@@ -141,38 +143,48 @@ class _OptionsState extends State<Options> {
           // ),
           // SizedBox(height: 15),
           Divider(height: 1),
-          Row(
-            children: <Widget>[
-              SizedBox(
-                width: 25,
-                height: 25,
-                child: Image.asset(Images.termsAndConditionConditions),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Text('Terms and Conditions'),
+          InkWell(
+            onTap: () {
+              SetupRoutes.push(context, Routes.TERMS_CONDITIONS_SCREEN);
+            },
+            child: Row(
+              children: <Widget>[
+                SizedBox(
+                  width: 25,
+                  height: 25,
+                  child: Image.asset(Images.termsAndConditionConditions),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text('Terms and Conditions'),
+                  ),
+                ),
+              ],
+            ),
           ),
           SizedBox(height: 15),
           Divider(height: 1),
           SizedBox(height: 15),
-          Row(
-            children: <Widget>[
-              SizedBox(
-                width: 25,
-                height: 25,
-                child: Image.asset(Images.faqs),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Text('FAQs'),
+          InkWell(
+            onTap: () {
+              SetupRoutes.push(context, Routes.FAQS);
+            },
+            child: Row(
+              children: <Widget>[
+                SizedBox(
+                  width: 25,
+                  height: 25,
+                  child: Image.asset(Images.faqs),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text('FAQs'),
+                  ),
+                ),
+              ],
+            ),
           ),
           SizedBox(height: 15),
           Divider(height: 1),
