@@ -1,10 +1,12 @@
 import 'package:at_common_flutter/at_common_flutter.dart';
 import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
+import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Following extends StatefulWidget {
   @override
@@ -90,47 +92,55 @@ class _FollowingState extends State<Following>
                     controller: _controller,
                     children: [
                       SingleChildScrollView(
-                        child: Wrap(
-                          children: List.generate(40, (index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: CustomPersonHorizontalTile(
-                                  title: 'User name',
-                                  subTitle: '@atsign',
-                                  trailingWidget: InkWell(
-                                    child: Text(
-                                      'Unfollow',
-                                      style: TextStyles.lightText(
-                                          ColorConstants.orange,
-                                          size: 16),
-                                    ),
-                                  )),
-                            );
-                          }),
-                        ),
+                        child: Consumer<FollowService>(
+                            builder: (context, _provider, _) {
+                          return Wrap(
+                            children: List.generate(
+                                _provider.following.list!.length, (index) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: CustomPersonHorizontalTile(
+                                    title: 'User name',
+                                    subTitle: _provider.following.list![index],
+                                    trailingWidget: InkWell(
+                                      child: Text(
+                                        'Remove',
+                                        style: TextStyles.lightText(
+                                            ColorConstants.orange,
+                                            size: 16),
+                                      ),
+                                    )),
+                              );
+                            }),
+                          );
+                        }),
                       ),
                       SingleChildScrollView(
-                        child: Wrap(
-                          children: List.generate(40, (index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: CustomPersonHorizontalTile(
-                                  title: 'User name',
-                                  subTitle: '@atsign',
-                                  trailingWidget: InkWell(
-                                    child: Text(
-                                      'Remove',
-                                      style: TextStyles.lightText(
-                                          ColorConstants.orange,
-                                          size: 16),
-                                    ),
-                                  )),
-                            );
-                          }),
-                        ),
-                      )
+                        child: Consumer<FollowService>(
+                            builder: (context, _provider, _) {
+                          return Wrap(
+                            children: List.generate(
+                                _provider.followers.list!.length, (index) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: CustomPersonHorizontalTile(
+                                    title: 'User name',
+                                    subTitle: _provider.followers.list![index],
+                                    trailingWidget: InkWell(
+                                      child: Text(
+                                        'Remove',
+                                        style: TextStyles.lightText(
+                                            ColorConstants.orange,
+                                            size: 16),
+                                      ),
+                                    )),
+                              );
+                            }),
+                          );
+                        }),
+                      ),
                     ],
                   ),
                 ),

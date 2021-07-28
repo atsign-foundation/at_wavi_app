@@ -10,6 +10,7 @@ import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
 import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
+import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/services/instagram_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
@@ -51,6 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     _receiveIntent();
     _getThemeData();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+      await Provider.of<FollowService>(context, listen: false).fetchFollowers();
+      await Provider.of<FollowService>(context, listen: false)
+          .fetchFollowings();
+    });
     super.initState();
   }
 
@@ -247,73 +253,77 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: _themeData!.highlightColor,
                             ),
                             SizedBox(height: 18.5.toHeight),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '0',
-                                        style: TextStyle(
-                                            fontSize: 18.toFont,
-                                            color: _isDark
-                                                ? _themeData!.primaryColor
-                                                : _themeData!.highlightColor,
-                                            fontWeight: FontWeight.w800),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          SetupRoutes.push(
-                                              context, Routes.FOLLOWING_SCREEN);
-                                        },
-                                        child: Text(
-                                          'Followers',
+                            Consumer<FollowService>(
+                                builder: (context, _provider, _) {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${_provider.followers.list!.length}',
                                           style: TextStyle(
-                                              fontSize: 14.toFont,
-                                              color: _themeData!.primaryColor
-                                                  .withOpacity(0.5)),
+                                              fontSize: 18.toFont,
+                                              color: _isDark
+                                                  ? _themeData!.primaryColor
+                                                  : _themeData!.highlightColor,
+                                              fontWeight: FontWeight.w800),
                                         ),
-                                      ),
-                                    ],
+                                        GestureDetector(
+                                          onTap: () {
+                                            SetupRoutes.push(context,
+                                                Routes.FOLLOWING_SCREEN);
+                                          },
+                                          child: Text(
+                                            'Followers',
+                                            style: TextStyle(
+                                                fontSize: 14.toFont,
+                                                color: _themeData!.primaryColor
+                                                    .withOpacity(0.5)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '0',
-                                        style: TextStyle(
-                                            fontSize: 18.toFont,
-                                            color: _isDark
-                                                ? _themeData!.primaryColor
-                                                : _themeData!.highlightColor,
-                                            fontWeight: FontWeight.w800),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          SetupRoutes.push(
-                                              context, Routes.FOLLOWING_SCREEN);
-                                        },
-                                        child: Text(
-                                          'Following',
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 10.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${_provider.following.list!.length}',
                                           style: TextStyle(
-                                              fontSize: 14.toFont,
-                                              color: _themeData!.primaryColor
-                                                  .withOpacity(0.5)),
+                                              fontSize: 18.toFont,
+                                              color: _isDark
+                                                  ? _themeData!.primaryColor
+                                                  : _themeData!.highlightColor,
+                                              fontWeight: FontWeight.w800),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            )
+                                        GestureDetector(
+                                          onTap: () {
+                                            SetupRoutes.push(context,
+                                                Routes.FOLLOWING_SCREEN);
+                                          },
+                                          child: Text(
+                                            'Following',
+                                            style: TextStyle(
+                                                fontSize: 14.toFont,
+                                                color: _themeData!.primaryColor
+                                                    .withOpacity(0.5)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              );
+                            }),
                           ],
                         ),
                       )
