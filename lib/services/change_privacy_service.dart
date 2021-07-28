@@ -1,5 +1,9 @@
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/screens/options.dart';
+import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'at_key_set_service.dart';
 
@@ -43,26 +47,45 @@ class ChangePrivacyService {
   }
 
   setAllPrivate(private, User user) async {
-    this.user = user;
-    user.allPrivate = private;
-    for (var field in FieldsEnum.values) {
-      if ((field == FieldsEnum.ATSIGN)) {
-        continue;
+    try {
+      Provider.of<SetPrivateState>(NavService.navKey.currentContext!,
+              listen: false)
+          .setLoadingState(true);
+      this.user = user;
+      user.allPrivate = private;
+      for (var field in FieldsEnum.values) {
+        if ((field == FieldsEnum.ATSIGN)) {
+          continue;
+        }
+        await setPrivacy(field.name, private);
       }
-      await setPrivacy(field.name, private);
-    }
-    var customFields =
-        user.customFields.values.expand((element) => element).toList();
-    for (var field in customFields) {
-      field.isPrivate = private;
-    }
-    for (var field in user.customFields.entries) {
-      for (var _key in field.value) {
-        print('For $field update ${_key.isPrivate}');
+      var customFields =
+          user.customFields.values.expand((element) => element).toList();
+      for (var field in customFields) {
+        field.isPrivate = private;
       }
-    }
+      for (var field in user.customFields.entries) {
+        for (var _key in field.value) {
+          print('For $field update ${_key.isPrivate}');
+        }
+      }
 
-    await storeInSecondary(true);
+      await storeInSecondary(true);
+
+      Provider.of<UserProvider>(NavService.navKey.currentContext!,
+              listen: false)
+          .user!
+          .allPrivate = private;
+
+      Provider.of<SetPrivateState>(NavService.navKey.currentContext!,
+              listen: false)
+          .setLoadingState(false);
+    } catch (e) {
+      print('Error in setAllPrivate $e');
+      Provider.of<SetPrivateState>(NavService.navKey.currentContext!,
+              listen: false)
+          .setLoadingState(false);
+    }
   }
 
   dynamic setPrivacy(property, value) async {

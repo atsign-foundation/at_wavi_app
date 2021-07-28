@@ -24,6 +24,7 @@ class AtKeyGetService {
       // _setUser(atsign: atsign);
       atsign = atsign ?? BackendService().atClientInstance.currentAtSign;
       var scanKeys = await BackendService().getAtKeys();
+      user.allPrivate = true;
       for (var key in scanKeys) {
         await _performLookupAndSetUser(key);
         // if (!result) errorCallBack(false);
@@ -112,6 +113,10 @@ class AtKeyGetService {
         user.customFields[category.toUpperCase()] = [];
       }
       user.customFields[category.toUpperCase()]!.add(basicData);
+
+      if (!basicData.isPrivate) {
+        user.allPrivate = false;
+      }
     }
   }
 

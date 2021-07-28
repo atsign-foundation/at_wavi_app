@@ -76,7 +76,7 @@ class AtKeySetService {
   Future<bool> _deleteChangedKeys(AtKey atKey, List<AtKey> atKeys) async {
     var response;
     List<AtKey> tempScanKeys = [];
-    tempScanKeys.addAll(atKeys ?? []);
+    tempScanKeys.addAll(atKeys);
 
     tempScanKeys.retainWhere((scanKey) => scanKey.key == atKey.key
         //  && !scanKey.metadata.isPublic == atKey.metadata!.isPublic
