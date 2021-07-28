@@ -1,6 +1,10 @@
 import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
 import 'package:at_wavi_app/common_components/switch_at_sign.dart';
+import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/at_key_get_service.dart';
+import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
+import 'package:at_wavi_app/services/change_privacy_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
@@ -13,6 +17,25 @@ class Options extends StatefulWidget {
 }
 
 class _OptionsState extends State<Options> {
+  bool _allPrivate = false;
+  late User _user;
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
+
+  getUser() async {
+    var _res = await AtKeyGetService()
+        .getProfile(atsign: BackendService().atClientInstance.currentAtSign);
+    _user = _res!;
+    if (_user.allPrivate) {
+      setState(() {
+        _allPrivate = _user.allPrivate;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -51,8 +74,18 @@ class _OptionsState extends State<Options> {
                 scale: 0.7,
                 child: CupertinoSwitch(
                   activeColor: ColorConstants.black,
-                  value: true,
-                  onChanged: (value) {},
+                  value: _allPrivate,
+                  onChanged: (value) async {
+                    // print(
+                    //     'changing for ${_user.customFields['DETAILS']![1].accountName}');
+                    // _user.customFields['DETAILS']![1].isPrivate = true;
+                    // await AtKeySetService().updateCustomFields(
+                    //     'DETAILS', [_user.customFields['DETAILS']![1]], true);
+                    await ChangePrivacyService().setAllPrivate(value, _user);
+                    setState(() {
+                      _allPrivate = value;
+                    });
+                  },
                 ),
               ),
             ],

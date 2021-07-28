@@ -23,14 +23,14 @@ class AtKeySetService {
 
   /// Returns true if the field gets updated in secondary successfully.
   Future<bool> update(BasicData data, String key,
-      [bool? isCheck, List<AtKey>? scanKeys]) async {
+      {bool? isCheck = true, List<AtKey>? scanKeys}) async {
     var result;
     key = key.trim().toLowerCase().replaceAll(' ', '');
     String? sharedWith = data.isPrivate
         ? BackendService().atClientInstance.currentAtSign!
         : null;
     var value = data.value;
-    if (value.isEmpty && isCheck == null) {
+    if (value?.isEmpty && isCheck == null) {
       return true;
     }
     var metaData = Metadata();
@@ -45,6 +45,9 @@ class AtKeySetService {
       ..metadata = metaData;
     //updates only changed key and deletes previous key if public status is changed.
     if (isCheck != null) {
+      if (scanKeys == null) {
+        scanKeys = await BackendService().atClientInstance.getAtKeys();
+      }
       var isDeleted = await _deleteChangedKeys(atKey, scanKeys);
       if (value.isEmpty) {
         // _tempObject.remove(key.split('.')[0]);
@@ -70,19 +73,22 @@ class AtKeySetService {
   }
 
   ///deletes old key for atKey if public status is changed.
-  Future<bool> _deleteChangedKeys(AtKey atKey, var atKeys) async {
+  Future<bool> _deleteChangedKeys(AtKey atKey, List<AtKey> atKeys) async {
     var response;
-    var tempScanKeys = [];
-    tempScanKeys.addAll(atKeys);
+    List<AtKey> tempScanKeys = [];
+    tempScanKeys.addAll(atKeys ?? []);
 
-    tempScanKeys.retainWhere((scanKey) =>
-        scanKey.key == atKey.key &&
-        !scanKey.metadata.isPublic == atKey.metadata!.isPublic);
+    tempScanKeys.retainWhere((scanKey) => scanKey.key == atKey.key
+        //  && !scanKey.metadata.isPublic == atKey.metadata!.isPublic
+        );
+    print('tempScanKeys.length: ${tempScanKeys.length}');
     if (tempScanKeys.isNotEmpty) {
-      response =
-          await BackendService().atClientInstance.delete(tempScanKeys[0]);
+      await Future.forEach(tempScanKeys, (element) async {
+        response =
+            await BackendService().atClientInstance.delete(element! as AtKey);
+      });
     }
-    return response;
+    return response ?? false;
   }
 
   /// Example for updateCustomFields() => Will create custom_testing.wavi key with label = 'Testing
@@ -104,7 +110,7 @@ class AtKeySetService {
   /// category = screen name, later also gets stored as category in json
   /// Returns true on succesfully updating custom fields in secondary.
   Future<bool> updateCustomFields(String category, List<BasicData> value,
-      [bool? isCheck, var scanKeys]) async {
+      {bool? isCheck = true, var scanKeys}) async {
     var result;
     for (var data in value) {
       String accountname = _formatCustomTitle(data.accountName ?? '');
@@ -119,14 +125,21 @@ class AtKeySetService {
       var atKey = AtKey()
         ..key = key.contains(AtText.IS_DELETED)
             ? key.replaceAll(AtText.IS_DELETED, '')
-            : key
+            : key.replaceAll(' ', '')
         ..sharedWith = sharedWith
         ..metadata = metadata;
       if (data.value == null && isCheck == null) {
         continue;
       }
       if (isCheck != null) {
+        if (scanKeys == null) {
+          scanKeys = await BackendService().atClientInstance.getAtKeys();
+        }
         var isDeleted = await _deleteChangedKeys(atKey, scanKeys);
+        // if (!atKey.metadata!.isPublic!) {
+        //   await BackendService().atClientInstance.delete(atKey);
+        // }
+        // print('isDeleted $isDeleted');
         if (data.value == null) {
           // _tempObject.remove(key.split('.')[0]);
           result = await BackendService().atClientInstance.delete(atKey);

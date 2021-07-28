@@ -100,13 +100,13 @@ class AtKeyGetService {
       var type = _getType(json[CustomFieldConstants.type]);
       var value = _getCustomContentValue(type: type, json: json);
       String label = json[CustomFieldConstants.label];
-      String valueDescription = json[CustomFieldConstants.valueDescription];
+      String? valueDescription = json[CustomFieldConstants.valueDescription];
       BasicData basicData = BasicData(
           accountName: label,
           value: value,
           isPrivate: isPrivate,
           type: type,
-          valueDescription: valueDescription);
+          valueDescription: valueDescription ?? '');
       // _container.createCustomField(basicData, category.toUpperCase());
       if (user.customFields[category.toUpperCase()] == null) {
         user.customFields[category.toUpperCase()] = [];
