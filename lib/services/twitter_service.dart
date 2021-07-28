@@ -19,8 +19,6 @@ class TwitetrService {
     if (UserProvider().user != null && UserProvider().user!.twitter != null) {
       username = UserProvider().user!.twitter.value;
     }
-    //TODO: for testing only
-    // username = 'geekyants';
     if (username == null) {
       return;
     }
@@ -31,7 +29,6 @@ class TwitetrService {
   }
 
   Future<TwitterUser> getTwitterUser(String username) async {
-    ;
     var headers = {
       'Authorization': 'Bearer ${MixedConstants.twitterBearerToken}',
     };

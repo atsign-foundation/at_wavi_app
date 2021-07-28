@@ -29,4 +29,5 @@ class MixedConstants {
       '(.$appNamespace|atconnections|[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12})';
 
   static const String syncRegex = '.(wavi|persona)@';
+  static final String twitterBearerToken = '';
 }
