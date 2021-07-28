@@ -30,4 +30,7 @@ class MixedConstants {
 
   static const String syncRegex = '.(wavi|persona)@';
   static final String twitterBearerToken = '';
+  static const int responseTimeLimit = 30;
+  static final String following = 'at_following_by_self';
+  static final String followers = 'at_followers_of_self';
 }
