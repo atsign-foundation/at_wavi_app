@@ -1,6 +1,8 @@
 PODS:
   - at_backupkey_flutter (0.0.1):
     - Flutter
+  - at_contacts_flutter (0.0.1):
+    - Flutter
   - at_onboarding_flutter (0.0.1):
     - Flutter
   - DKImagePickerController/Core (4.3.2):
@@ -42,6 +44,16 @@ PODS:
     - Flutter
   - flutter_qr_reader (0.0.1):
     - Flutter
+  - geocoder (0.0.1):
+    - Flutter
+  - google_maps_flutter (0.0.1):
+    - Flutter
+    - GoogleMaps
+  - GoogleMaps (4.1.0):
+    - GoogleMaps/Maps (= 4.1.0)
+  - GoogleMaps/Base (4.1.0)
+  - GoogleMaps/Maps (4.1.0):
+    - GoogleMaps/Base
   - path_provider (0.0.1):
     - Flutter
   - "permission_handler (5.1.0+2)":
@@ -61,11 +73,14 @@ PODS:
 
 DEPENDENCIES:
   - at_backupkey_flutter (from `.symlinks/plugins/at_backupkey_flutter/ios`)
+  - at_contacts_flutter (from `.symlinks/plugins/at_contacts_flutter/ios`)
   - at_onboarding_flutter (from `.symlinks/plugins/at_onboarding_flutter/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
   - flutter_keychain (from `.symlinks/plugins/flutter_keychain/ios`)
   - flutter_qr_reader (from `.symlinks/plugins/flutter_qr_reader/ios`)
+  - geocoder (from `.symlinks/plugins/geocoder/ios`)
+  - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - receive_sharing_intent (from `.symlinks/plugins/receive_sharing_intent/ios`)
@@ -77,12 +92,15 @@ SPEC REPOS:
   trunk:
     - DKImagePickerController
     - DKPhotoGallery
+    - GoogleMaps
     - SDWebImage
     - SwiftyGif
 
 EXTERNAL SOURCES:
   at_backupkey_flutter:
     :path: ".symlinks/plugins/at_backupkey_flutter/ios"
+  at_contacts_flutter:
+    :path: ".symlinks/plugins/at_contacts_flutter/ios"
   at_onboarding_flutter:
     :path: ".symlinks/plugins/at_onboarding_flutter/ios"
   file_picker:
@@ -93,6 +111,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_keychain/ios"
   flutter_qr_reader:
     :path: ".symlinks/plugins/flutter_qr_reader/ios"
+  geocoder:
+    :path: ".symlinks/plugins/geocoder/ios"
+  google_maps_flutter:
+    :path: ".symlinks/plugins/google_maps_flutter/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
@@ -108,6 +130,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   at_backupkey_flutter: 2fc3d01138175e41bce8b574387a47544c53e01b
+  at_contacts_flutter: 11ad3deb3c2a8f1e9daf302ac5962dadd48e21fb
   at_onboarding_flutter: e8219b6d0bfb236d3837ec3528871aebdcc56e8d
   DKImagePickerController: b5eb7f7a388e4643264105d648d01f727110fc3d
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
@@ -115,6 +138,9 @@ SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_keychain: 01aabf894ffe8b01adfda1d9df21c210c1b4b452
   flutter_qr_reader: d930dde3b2cfe2b3d0bb7d66e5ff3e514300a5e5
+  geocoder: 3cfab70531a0b367e917bafe82df4c30f6d4c45a
+  google_maps_flutter: df4e7de95264aa0a2f11aac0fc7e313acb8ffc7e
+  GoogleMaps: 008e2c80e38605b56b560e8deb73d4194ff30bef
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   receive_sharing_intent: c0d87310754e74c0f9542947e7cbdf3a0335a3b1

@@ -6,4 +6,6 @@ class Routes {
   static const String WELCOME_SCREEN = 'welcome_screen';
   static const String FOLLOWING_SCREEN = 'following_screen';
   static const String SEARCH_SCREEN = 'search_screen';
+  static const String FAQS = 'faqs';
+  static const String TERMS_CONDITIONS_SCREEN = 'terms_conditions_screen';
 }

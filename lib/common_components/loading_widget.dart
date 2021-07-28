@@ -54,6 +54,32 @@ class LoadingDialog {
     }
   }
 
+  onlyText(String text, {TextStyle? style}) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Flexible(
+          child: Text(
+            text,
+            textScaleFactor: 1,
+            style: style ??
+                TextStyle(
+                    color: ColorConstants.DARK_GREY,
+                    fontSize: 20.toFont,
+                    fontWeight: FontWeight.w400,
+                    decoration: TextDecoration.none),
+          ),
+        ),
+        TypingIndicator(
+          showIndicator: true,
+          flashingCircleBrightColor: ColorConstants.LIGHT_GREY,
+          flashingCircleDarkColor: ColorConstants.DARK_GREY,
+        ),
+      ],
+    );
+  }
+
   // ignore: always_declare_return_types
   hide() {
     print('hide called');
