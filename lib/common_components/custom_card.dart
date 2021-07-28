@@ -2,6 +2,7 @@ import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:at_wavi_app/services/size_config.dart';
 
 class CustomCard extends StatelessWidget {
   final String? title, subtitle;
@@ -38,21 +39,19 @@ class CustomCard extends StatelessWidget {
                 : SizedBox(),
             SizedBox(height: 6),
             subtitle != null
-                ?
-                //TODO: keep either Html or plain Text
-                // Html renders text as it shows in browser.
-                // Html(
-                //     data: subtitle,
-                //   )
-                Text(
-                    subtitle!,
-                    style: isUrl
-                        ? TextStyles.lightText(ColorConstants.orange, size: 18)
-                        : _isDark
-                            ? TextStyles.lightText(themeData.primaryColor,
-                                size: 18)
-                            : TextStyles.lightText(themeData.highlightColor,
-                                size: 18),
+                ? Html(
+                    data: subtitle,
+                    style: {
+                      'body': Style(
+                        color: isUrl
+                            ? ColorConstants.orange
+                            : _isDark
+                                ? themeData.primaryColor
+                                : themeData.highlightColor,
+                        fontSize: FontSize(18.toFont),
+                        padding: EdgeInsets.all(0),
+                      )
+                    },
                   )
                 : SizedBox(),
           ],

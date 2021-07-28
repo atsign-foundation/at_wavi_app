@@ -9,10 +9,12 @@ import 'package:at_wavi_app/screens/home/widgets/home_empty_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
 import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
+import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/services/instagram_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
@@ -475,12 +477,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget homeContent() {
     if (_currentTab == HOME_TABS.DETAILS) {
-      // return HomeEmptyDetails()
-      return HomeDetails(themeData: _themeData!);
+      return CommonFunctions().isFieldsPresentForCategory(AtCategory.DETAILS)
+          ? HomeDetails(themeData: _themeData!)
+          : HomeEmptyDetails();
     } else if (_currentTab == HOME_TABS.CHANNELS) {
-      return HomeChannels(themeData: _themeData!);
+      return CommonFunctions().isFieldsPresentForCategory(AtCategory.GAMER) ||
+              CommonFunctions().isFieldsPresentForCategory(AtCategory.SOCIAL)
+          ? HomeChannels(themeData: _themeData!)
+          : HomeEmptyDetails();
     } else if (_currentTab == HOME_TABS.FEATURED) {
-      return HomeFeatured(themeData: _themeData!);
+      return CommonFunctions().isTwitterFeatured() ||
+              CommonFunctions().isInstagramFeatured()
+          ? HomeFeatured(themeData: _themeData!)
+          : HomeEmptyDetails();
     } else
       return SizedBox();
   }

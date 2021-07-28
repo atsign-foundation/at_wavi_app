@@ -55,48 +55,36 @@ class _HomeChannelsState extends State<HomeChannels> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              '@apps',
-              style: TextStyles.boldText(_themeData!.primaryColor, size: 18),
-            ),
-            SizedBox(height: 15.toHeight),
+            CommonFunctions().isFieldsPresentForCategory(AtCategory.SOCIAL)
+                ? Text(
+                    'Social Accounts',
+                    style:
+                        TextStyles.boldText(_themeData!.primaryColor, size: 18),
+                  )
+                : SizedBox(),
             SizedBox(
-                width: double.infinity,
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  color: _themeData!.highlightColor.withOpacity(0.1),
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.app_blocking,
-                        size: 35,
-                        color: _themeData!.primaryColor,
-                      ),
-                      Icon(
-                        Icons.app_blocking,
-                        size: 35,
-                        color: _themeData!.primaryColor,
-                      ),
-                    ],
-                  ),
-                )),
-            SizedBox(height: 40.toHeight),
-            Text(
-              'Social Accounts',
-              style: TextStyles.boldText(_themeData!.primaryColor, size: 18),
-            ),
-            SizedBox(height: 15.toHeight),
+                height: CommonFunctions()
+                        .isFieldsPresentForCategory(AtCategory.SOCIAL)
+                    ? 15.toHeight
+                    : 0),
             Column(
               children: CommonFunctions().getCustomCardForFields(
                 _themeData!,
                 AtCategory.SOCIAL,
               ),
             ),
-            SizedBox(height: 40.toHeight),
-            Text(
-              'Game Accounts',
-              style: TextStyles.boldText(_themeData!.primaryColor, size: 18),
-            ),
+            SizedBox(
+                height: CommonFunctions()
+                        .isFieldsPresentForCategory(AtCategory.SOCIAL)
+                    ? 40.toHeight
+                    : 0),
+            CommonFunctions().isFieldsPresentForCategory(AtCategory.GAMER)
+                ? Text(
+                    'Game Accounts',
+                    style:
+                        TextStyles.boldText(_themeData!.primaryColor, size: 18),
+                  )
+                : SizedBox(),
             SizedBox(height: 15.toHeight),
             Column(
               children: CommonFunctions().getCustomCardForFields(

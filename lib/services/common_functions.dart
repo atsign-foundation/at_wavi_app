@@ -136,4 +136,52 @@ class CommonFunctions {
 
     return twitterCards;
   }
+
+  bool isFieldsPresentForCategory(AtCategory category) {
+    var isPresent = false;
+    var userMap = User.toJson(UserProvider().user!);
+    List<String> fields = FieldNames().getFieldList(category);
+
+    for (var field in userMap.entries) {
+      if (field.key != null &&
+          fields.contains(field.key) &&
+          field.value != null &&
+          field.value.value != null) {
+        isPresent = true;
+      }
+    }
+
+    if (!isPresent) {
+      List<BasicData>? customFields =
+          UserProvider().user!.customFields[category.name];
+
+      if (customFields != null) {
+        for (var basicData in customFields) {
+          if (basicData.accountName != null && basicData.value != null) {
+            isPresent = true;
+          }
+        }
+      }
+    }
+
+    return isPresent;
+  }
+
+  bool isTwitterFeatured() {
+    if (UserProvider().user != null &&
+        UserProvider().user!.twitter.value != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool isInstagramFeatured() {
+    if (UserProvider().user != null &&
+        UserProvider().user!.instagram.value != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
