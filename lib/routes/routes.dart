@@ -4,6 +4,7 @@ import 'package:at_wavi_app/screens/add_link/create_custom_add_link/create_custo
 import 'package:at_wavi_app/screens/edit_persona/edit_persona.dart';
 import 'package:at_wavi_app/screens/following.dart';
 import 'package:at_wavi_app/screens/home/home.dart';
+import 'package:at_wavi_app/screens/location/location_widget.dart';
 import 'package:at_wavi_app/screens/search.dart';
 import 'package:at_wavi_app/screens/website_webview/website_webview.dart';
 import 'package:at_wavi_app/screens/welcome.dart';
@@ -42,6 +43,7 @@ class SetupRoutes {
       },
       Routes.FOLLOWING_SCREEN: (context) => Following(),
       Routes.SEARCH_SCREEN: (context) => Search(),
+      Routes.LOCATION_WIDGET: (context) => LocationWidget(),
       Routes.CREATE_CUSTOM_ADD_LINK: (context) {
         if ((ModalRoute.of(context) != null) &&
             (ModalRoute.of(context)!.settings.arguments != null)) {
