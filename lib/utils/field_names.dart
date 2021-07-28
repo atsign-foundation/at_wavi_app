@@ -1,3 +1,5 @@
+import 'package:at_wavi_app/utils/at_enum.dart';
+
 class FieldNames {
   FieldNames._();
   static FieldNames _instance = FieldNames._();
@@ -30,5 +32,20 @@ class FieldNames {
 
   List<String> get gameFields {
     return _gameFields;
+  }
+
+  List<String> getFieldList(AtCategory category) {
+    switch (category) {
+      case AtCategory.DETAILS:
+        return _basicDetails;
+      case AtCategory.ADDITIONAL_DETAILS:
+        return _additionalDetails;
+      case AtCategory.SOCIAL:
+        return _socialAccounts;
+      case AtCategory.GAMER:
+        return _gameFields;
+      default:
+        return [];
+    }
   }
 }
