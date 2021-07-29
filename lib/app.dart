@@ -1,7 +1,7 @@
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
-import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
@@ -20,6 +20,8 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(providers: [
       ChangeNotifierProvider<ThemeProvider>(
           create: (context) => ThemeProvider()),
+      ChangeNotifierProvider<FollowService>(
+          create: (context) => FollowService()),
       ChangeNotifierProvider<UserProvider>(create: (context) => UserProvider()),
       ChangeNotifierProvider<SetPrivateState>(
           create: (context) => SetPrivateState()),

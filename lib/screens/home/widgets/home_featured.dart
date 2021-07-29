@@ -1,3 +1,4 @@
+import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
@@ -99,6 +100,10 @@ class _HomeFeaturedState extends State<HomeFeatured> {
                       TextStyles.lightText(_themeData!.primaryColor, size: 16),
                 ),
               ],
+            ),
+            SizedBox(height: 15.toHeight),
+            Column(
+              children: CommonFunctions().getFeaturedTwitterCards(_themeData!),
             ),
           ],
         ),

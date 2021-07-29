@@ -55,10 +55,13 @@ class _HomeDetailsState extends State<HomeDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              'Basic Details',
-              style: TextStyles.boldText(_themeData!.primaryColor, size: 18),
-            ),
+            CommonFunctions().isFieldsPresentForCategory(AtCategory.DETAILS)
+                ? Text(
+                    'Basic Details',
+                    style:
+                        TextStyles.boldText(_themeData!.primaryColor, size: 18),
+                  )
+                : SizedBox(),
             SizedBox(height: 15.toHeight),
             Column(
               children: CommonFunctions().getCustomCardForFields(
@@ -66,9 +69,17 @@ class _HomeDetailsState extends State<HomeDetails> {
                 AtCategory.DETAILS,
               ),
             ),
-            SizedBox(height: 40.toHeight),
-            Text('Additional Details',
-                style: TextStyles.boldText(_themeData!.primaryColor, size: 18)),
+            SizedBox(
+                height: CommonFunctions()
+                        .isFieldsPresentForCategory(AtCategory.DETAILS)
+                    ? 40.toHeight
+                    : 0),
+            CommonFunctions()
+                    .isFieldsPresentForCategory(AtCategory.ADDITIONAL_DETAILS)
+                ? Text('Additional Details',
+                    style:
+                        TextStyles.boldText(_themeData!.primaryColor, size: 18))
+                : SizedBox(),
             SizedBox(height: 15.toHeight),
             Column(
               children: CommonFunctions().getCustomCardForFields(
