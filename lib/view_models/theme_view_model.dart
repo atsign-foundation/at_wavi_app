@@ -17,6 +17,12 @@ class ThemeProvider extends BaseModel {
 
   ThemeProvider();
 
+  resetThemeData() {
+    reset(SET_THEME);
+    currentAtsignThemeData = null;
+    highlightColor = null;
+  }
+
   setHighlightColor(Color _color) {
     darktheme = Themes.darkTheme(_color);
     lighttheme = Themes.lightTheme(_color);

@@ -1,9 +1,10 @@
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/follow_service.dart';
+import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
-import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,9 @@ class _MyAppState extends State<MyApp> {
           create: (context) => ThemeProvider()),
       ChangeNotifierProvider<FollowService>(
           create: (context) => FollowService()),
+      ChangeNotifierProvider<UserProvider>(create: (context) => UserProvider()),
+      ChangeNotifierProvider<SetPrivateState>(
+          create: (context) => SetPrivateState()),
     ], child: MaterialAppClass());
   }
 }
@@ -40,7 +44,7 @@ class MaterialAppClass extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: SetupRoutes.initialRoute,
       navigatorKey: NavService.navKey,
-      theme: Themes.lightTheme(ColorConstants.purple),
+      theme: Themes.lightTheme(Colors.transparent),
       routes: SetupRoutes.routes,
     );
   }

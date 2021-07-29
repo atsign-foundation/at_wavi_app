@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
@@ -17,6 +18,7 @@ import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
@@ -42,14 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
   ThemeData? _themeData;
   late StreamSubscription<dynamic> _intentDataStreamSubscription;
 
-  _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   void initState() {
+    initPackages();
     _receiveIntent();
     _getThemeData();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
@@ -58,6 +55,18 @@ class _HomeScreenState extends State<HomeScreen> {
           .fetchFollowings();
     });
     super.initState();
+  }
+
+  initPackages() async {
+    initializeContactsService(BackendService().atClientInstance,
+        BackendService().atClientInstance.currentAtSign!,
+        rootDomain: MixedConstants.ROOT_DOMAIN);
+  }
+
+  _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   _getThemeData() async {
@@ -195,7 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   shape: StadiumBorder(),
                                   builder: (BuildContext context) {
                                     return Container(
-                                      height: 546,
+                                      height: 350,
                                       padding: EdgeInsets.symmetric(
                                           vertical: 20, horizontal: 20),
                                       decoration: BoxDecoration(

@@ -7,7 +7,12 @@ class CustomInputField extends StatelessWidget {
   final double width, height;
   final IconData? icon, secondIcon;
   final Function? onTap, onIconTap, onSecondIconTap, onSubmitted;
-  final Color? iconColor, textColor, bgColor, hintTextColor, borderColor;
+  final Color? iconColor,
+      textColor,
+      bgColor,
+      hintTextColor,
+      borderColor,
+      focusedBorderColor;
   final ValueChanged<String>? value;
   final bool isReadOnly;
   final int? maxLines;
@@ -25,6 +30,7 @@ class CustomInputField extends StatelessWidget {
     this.bgColor,
     this.hintTextColor,
     this.borderColor,
+    this.focusedBorderColor,
     this.icon,
     this.secondIcon,
     this.onTap,
@@ -75,8 +81,8 @@ class CustomInputField extends StatelessWidget {
                 decoration: InputDecoration(
                   hintText: hintText,
                   enabledBorder: _outlineInputBorder(),
-                  focusedBorder:
-                      _outlineInputBorder(color: ColorConstants.LIGHT_GREY),
+                  focusedBorder: _outlineInputBorder(
+                      color: focusedBorderColor ?? ColorConstants.LIGHT_GREY),
                   // InputBorder.none,
                   border: _outlineInputBorder(),
                   // InputBorder.none,
