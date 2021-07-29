@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:at_common_flutter/at_common_flutter.dart';
 import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
+import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
@@ -97,20 +100,56 @@ class _FollowingState extends State<Following>
                           return Wrap(
                             children: List.generate(
                                 _provider.following.list!.length, (index) {
+                              AtsignDetails? atsignDetail;
+                              String? name;
+                              Uint8List? image;
+                              var i = FollowService()
+                                  .following
+                                  .atsignDetails
+                                  .indexWhere((element) =>
+                                      element.atcontact.atSign ==
+                                      _provider.following.list![index]!);
+                              if (i > -1) {
+                                atsignDetail =
+                                    FollowService().following.atsignDetails[i];
+                                if (atsignDetail.atcontact.tags != null &&
+                                    atsignDetail.atcontact.tags!['name'] !=
+                                        null) {
+                                  name = atsignDetail.atcontact.tags!['name'];
+                                }
+                                if (atsignDetail.atcontact.tags != null &&
+                                    atsignDetail.atcontact.tags!['image'] !=
+                                        null) {
+                                  List<int> intList = atsignDetail
+                                      .atcontact.tags!['image']
+                                      .cast<int>();
+                                  image = Uint8List.fromList(intList);
+                                }
+                              }
                               return Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 8.0),
                                 child: CustomPersonHorizontalTile(
-                                    title: 'User name',
-                                    subTitle: _provider.following.list![index],
-                                    trailingWidget: InkWell(
-                                      child: Text(
-                                        'Remove',
-                                        style: TextStyles.lightText(
-                                            ColorConstants.orange,
-                                            size: 16),
-                                      ),
-                                    )),
+                                  title: name != null ? name : null,
+                                  subTitle: _provider.following.list![index],
+                                  trailingWidget: InkWell(
+                                    onTap: () async {
+                                      await FollowService().unfollow(
+                                          _provider.following.list![index],
+                                          index);
+                                    },
+                                    child: _provider.following
+                                            .atsignDetails[index].isUnfollowing
+                                        ? CircularProgressIndicator()
+                                        : Text(
+                                            'Unfollow',
+                                            style: TextStyles.lightText(
+                                                ColorConstants.orange,
+                                                size: 16),
+                                          ),
+                                  ),
+                                  image: image,
+                                ),
                               );
                             }),
                           );
@@ -122,20 +161,58 @@ class _FollowingState extends State<Following>
                           return Wrap(
                             children: List.generate(
                                 _provider.followers.list!.length, (index) {
+                              AtsignDetails? atsignDetail;
+                              String? name;
+                              Uint8List? image;
+                              var i = FollowService()
+                                  .followers
+                                  .atsignDetails
+                                  .indexWhere((element) =>
+                                      element.atcontact.atSign ==
+                                      _provider.followers.list![index]!);
+                              if (i > -1) {
+                                atsignDetail =
+                                    FollowService().followers.atsignDetails[i];
+                                if (atsignDetail.atcontact.tags != null &&
+                                    atsignDetail.atcontact.tags!['name'] !=
+                                        null) {
+                                  name = atsignDetail.atcontact.tags!['name'];
+                                }
+                                if (atsignDetail.atcontact.tags != null &&
+                                    atsignDetail.atcontact.tags!['image'] !=
+                                        null) {
+                                  List<int> intList = atsignDetail
+                                      .atcontact.tags!['image']
+                                      .cast<int>();
+                                  image = Uint8List.fromList(intList);
+                                }
+                              }
+
                               return Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 8.0),
                                 child: CustomPersonHorizontalTile(
-                                    title: 'User name',
+                                    title: name != null ? name : null,
                                     subTitle: _provider.followers.list![index],
                                     trailingWidget: InkWell(
-                                      child: Text(
-                                        'Remove',
-                                        style: TextStyles.lightText(
-                                            ColorConstants.orange,
-                                            size: 16),
-                                      ),
-                                    )),
+                                      onTap: () async {
+                                        FollowService().removeFollower(
+                                            _provider.followers.list![index]!,
+                                            index);
+                                      },
+                                      child: _provider
+                                              .followers
+                                              .atsignDetails[index]
+                                              .isRmovingFromFollowers
+                                          ? CircularProgressIndicator()
+                                          : Text(
+                                              'Remove',
+                                              style: TextStyles.lightText(
+                                                  ColorConstants.orange,
+                                                  size: 16),
+                                            ),
+                                    ),
+                                    image: image),
                               );
                             }),
                           );
