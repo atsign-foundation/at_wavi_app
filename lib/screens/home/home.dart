@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
+import 'package:at_location_flutter/utils/constants/init_location_service.dart';
 import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
@@ -21,6 +22,8 @@ import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:at_location_flutter/utils/constants/constants.dart'
+    as location_package_constants;
 
 enum HOME_TABS { DETAILS, CHANNELS, FEATURED }
 
@@ -51,6 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
     initializeContactsService(BackendService().atClientInstance,
         BackendService().atClientInstance.currentAtSign!,
         rootDomain: MixedConstants.ROOT_DOMAIN);
+
+    location_package_constants.MixedConstants.setMapKey(MixedConstants.MAP_KEY);
+    location_package_constants.MixedConstants.setApiKey(MixedConstants.API_KEY);
   }
 
   _onItemTapped(int index) {

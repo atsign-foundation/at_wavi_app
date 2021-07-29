@@ -4,6 +4,7 @@ import 'package:at_wavi_app/common_components/add_custom_content_button.dart';
 import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/screens/location/widgets/select_location.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
@@ -161,6 +162,27 @@ class _LocationWidgetState extends State<LocationWidget> {
               height: 70,
               expands: false,
               maxLines: 1,
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    shape: StadiumBorder(),
+                    builder: (BuildContext context) {
+                      return Container(
+                        height: SizeConfig().screenHeight * 0.9,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: const Radius.circular(12.0),
+                            topRight: const Radius.circular(12.0),
+                          ),
+                        ),
+                        child: SelectLocation(),
+                      );
+                    });
+              },
               value: (str) => setState(() {
                 _data!.value = str;
               }),
