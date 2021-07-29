@@ -108,151 +108,161 @@ class _LocationWidgetState extends State<LocationWidget> {
                   child: _isPrivate ? Icon(Icons.lock) : Icon(Icons.public)),
             )
           ]),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 15.toHeight,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
-              child: Text('Tag',
-                  style: TextStyles.lightText(
-                      ColorConstants.black.withOpacity(0.5),
-                      size: 16)),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 16.toWidth, vertical: 0.toHeight),
-              child: CustomInputField(
-                borderColor: Colors.transparent,
-                focusedBorderColor: Colors.transparent,
-                width: double.infinity,
-                hintText: 'Enter the tag',
-                hintTextColor: ColorConstants.black.withOpacity(0.5),
-                bgColor: Colors.transparent,
-                textColor: ColorConstants.black,
-                initialValue: _locationNickname,
-                baseOffset: _locationNickname.length,
-                height: 70,
-                expands: false,
-                maxLines: 1,
-                value: (str) => setState(() {
-                  _locationNickname = str;
-                }),
+      body: SizedBox(
+        height: SizeConfig().screenHeight - 80.toHeight - 55,
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 15.toHeight,
               ),
-            ),
-            Divider(
-              thickness: 1,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
-              child: Text('Location',
-                  style: TextStyles.lightText(
-                      ColorConstants.black.withOpacity(0.5),
-                      size: 16)),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 16.toWidth, vertical: 12.toHeight),
-              child: CustomInputField(
-                borderColor: Colors.transparent,
-                focusedBorderColor: Colors.transparent,
-                width: double.infinity,
-                hintText: 'Search',
-                hintTextColor: ColorConstants.black.withOpacity(0.5),
-                bgColor: Colors.transparent,
-                textColor: ColorConstants.black,
-                initialValue: _locationString,
-                baseOffset: _locationString.length,
-                height: 70,
-                expands: false,
-                maxLines: 1,
-                onTap: () {
-                  showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      shape: StadiumBorder(),
-                      builder: (BuildContext context) {
-                        return Container(
-                          height: SizeConfig().screenHeight * 0.9,
-                          padding:
-                              EdgeInsets.symmetric(vertical: 20, horizontal: 0),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: const Radius.circular(12.0),
-                              topRight: const Radius.circular(12.0),
-                            ),
-                          ),
-                          child: SelectLocation(),
-                        );
-                      });
-                },
-                value: (str) => setState(() {
-                  _data!.value = str;
-                }),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
+                child: Text('Tag',
+                    style: TextStyles.lightText(
+                        ColorConstants.black.withOpacity(0.5),
+                        size: 16)),
               ),
-            ),
-            SizedBox(
-              child: ValueListenableBuilder(
-                valueListenable: LocationWidgetData().osmLocationModelNotifier!,
-                builder: (BuildContext context,
-                    OsmLocationModel? _osmLocationModel, Widget? child) {
-                  return _osmLocationModel == null
-                      ? SizedBox()
-                      : Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          height: 200,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: FlutterMap(
-                            options: MapOptions(
-                              boundsOptions:
-                                  FitBoundsOptions(padding: EdgeInsets.all(0)),
-                              center: _osmLocationModel.latLng!,
-                              zoom: _osmLocationModel.zoom!,
-                            ),
-                            layers: [
-                              TileLayerOptions(
-                                urlTemplate:
-                                    'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=${MixedConstants.MAP_KEY}',
-                                subdomains: ['a', 'b', 'c'],
-                                minNativeZoom: 2,
-                                maxNativeZoom: 18,
-                                minZoom: 1,
-                                tileProvider: NonCachingNetworkTileProvider(),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 16.toWidth, vertical: 0.toHeight),
+                child: CustomInputField(
+                  borderColor: Colors.transparent,
+                  focusedBorderColor: Colors.transparent,
+                  width: double.infinity,
+                  hintText: 'Enter the tag',
+                  hintTextColor: ColorConstants.black.withOpacity(0.5),
+                  bgColor: Colors.transparent,
+                  textColor: ColorConstants.black,
+                  initialValue: _locationNickname,
+                  baseOffset: _locationNickname.length,
+                  height: 70,
+                  expands: false,
+                  maxLines: 1,
+                  value: (str) => setState(() {
+                    _locationNickname = str;
+                  }),
+                ),
+              ),
+              Divider(
+                thickness: 1,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
+                child: Text('Location',
+                    style: TextStyles.lightText(
+                        ColorConstants.black.withOpacity(0.5),
+                        size: 16)),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 16.toWidth, vertical: 12.toHeight),
+                child: CustomInputField(
+                  isReadOnly: true,
+                  borderColor: Colors.transparent,
+                  focusedBorderColor: Colors.transparent,
+                  width: double.infinity,
+                  hintText: 'Search',
+                  hintTextColor: ColorConstants.black.withOpacity(0.5),
+                  bgColor: Colors.transparent,
+                  textColor: ColorConstants.black,
+                  initialValue: _locationString,
+                  baseOffset: _locationString.length,
+                  height: 70,
+                  expands: false,
+                  maxLines: 1,
+                  onTap: () {
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: StadiumBorder(),
+                        builder: (BuildContext context) {
+                          return Container(
+                            height: SizeConfig().screenHeight * 0.9,
+                            padding: EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: const Radius.circular(12.0),
+                                topRight: const Radius.circular(12.0),
                               ),
-                              MarkerLayerOptions(markers: [
-                                Marker(
-                                  width: 40,
-                                  height: 50,
-                                  point: _osmLocationModel.latLng!,
-                                  builder: (ctx) => Container(
-                                      child: createMarker(
-                                          diameterOfCircle:
-                                              _osmLocationModel.diameter!)),
-                                )
-                              ])
-                            ],
-                          ),
-                        );
-                },
+                            ),
+                            child: SelectLocation(),
+                          );
+                        });
+                  },
+                  value: (str) => setState(() {
+                    _data!.value = str;
+                  }),
+                ),
               ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
-              child: AddCustomContentButton(
-                text: 'Add more location',
+              SizedBox(
+                child: ValueListenableBuilder(
+                  valueListenable:
+                      LocationWidgetData().osmLocationModelNotifier!,
+                  builder: (BuildContext context,
+                      OsmLocationModel? _osmLocationModel, Widget? child) {
+                    return _osmLocationModel == null
+                        ? SizedBox()
+                        : AbsorbPointer(
+                            absorbing: true,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              height: 300,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: FlutterMap(
+                                options: MapOptions(
+                                  boundsOptions: FitBoundsOptions(
+                                      padding: EdgeInsets.all(0)),
+                                  center: _osmLocationModel.latLng!,
+                                  zoom: _osmLocationModel.zoom!,
+                                ),
+                                layers: [
+                                  TileLayerOptions(
+                                    urlTemplate:
+                                        'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=${MixedConstants.MAP_KEY}',
+                                    subdomains: ['a', 'b', 'c'],
+                                    minNativeZoom: 2,
+                                    maxNativeZoom: 18,
+                                    minZoom: 1,
+                                    tileProvider:
+                                        NonCachingNetworkTileProvider(),
+                                  ),
+                                  MarkerLayerOptions(markers: [
+                                    Marker(
+                                      width: 40,
+                                      height: 50,
+                                      point: _osmLocationModel.latLng!,
+                                      builder: (ctx) => Container(
+                                          child: createMarker(
+                                              diameterOfCircle:
+                                                  _osmLocationModel.diameter!)),
+                                    )
+                                  ])
+                                ],
+                              ),
+                            ),
+                          );
+                  },
+                ),
               ),
-            )
-          ],
+              SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
+                child: AddCustomContentButton(
+                  text: 'Add more location',
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
