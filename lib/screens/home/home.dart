@@ -194,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   shape: StadiumBorder(),
                                   builder: (BuildContext context) {
                                     return Container(
-                                      height: 430,
+                                      height: 350,
                                       padding: EdgeInsets.symmetric(
                                           vertical: 20, horizontal: 20),
                                       decoration: BoxDecoration(

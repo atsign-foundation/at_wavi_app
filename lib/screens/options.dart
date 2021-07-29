@@ -100,27 +100,28 @@ class _OptionsState extends State<Options> {
             ),
           ),
           SizedBox(height: 15),
-          Divider(height: 1),
-          Row(
-            children: <Widget>[
-              Icon(Icons.remove_red_eye_rounded, size: 25),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Text('Searchable Account'),
-                ),
-              ),
-              Transform.scale(
-                scale: 0.7,
-                child: CupertinoSwitch(
-                  activeColor: ColorConstants.black,
-                  value: true,
-                  onChanged: (value) {},
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 15),
+          // Divider(height: 1),
+          // Row(
+          //   children: <Widget>[
+          //     Icon(Icons.remove_red_eye_rounded, size: 25),
+          //     Expanded(
+          //       child: Padding(
+          //         padding: const EdgeInsets.only(left: 8.0),
+          //         child: Text('Searchable Account'),
+          //       ),
+          //     ),
+          //     Transform.scale(
+          //       scale: 0.7,
+          //       child: CupertinoSwitch(
+          //         activeColor: ColorConstants.black,
+          //         value: true,
+          //         onChanged: (value) {},
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // SizedBox(height: 15),
+          ////////////////////////
           // Divider(height: 1),
           // Row(
           //   children: <Widget>[

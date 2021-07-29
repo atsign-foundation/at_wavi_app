@@ -121,6 +121,7 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
               bgColor: Colors.transparent,
               textColor: ColorConstants.black,
               initialValue: _valueDescription,
+              baseOffset: _valueDescription.length,
               height: 200,
               maxLines: 2,
               expands: true,

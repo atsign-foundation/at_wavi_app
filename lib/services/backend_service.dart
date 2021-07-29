@@ -7,8 +7,10 @@ import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/constants.dart';
+import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:provider/provider.dart';
 
 class BackendService {
   static final BackendService _singleton = BackendService._internal();
@@ -43,7 +45,12 @@ class BackendService {
         currentAtSign = atSign;
         atClientServiceMap[atSign]!.makeAtSignPrimary(atSign!);
         startMonitor(atsign: atsign, value: value);
-        await UserProvider().fetchUserData(BackendService().currentAtSign!);
+        Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
+                listen: false)
+            .resetThemeData();
+        Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                listen: false)
+            .fetchUserData(BackendService().currentAtSign!);
         SetupRoutes.pushAndRemoveAll(
             NavService.navKey.currentContext!, Routes.HOME);
       },
