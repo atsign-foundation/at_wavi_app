@@ -42,14 +42,13 @@ class _SelectedLocationState extends State<SelectedLocation> {
   }
 
   calculateMarkerDimensions() {
-    // bottomOfCircle = (((bottom of icon + (size of icon/2))*2 - heightof circle)) / 2
+    /// bottomOfCircle = (((bottom of icon + (size of icon/2))*2 - height of circle)) / 2
     bottomOfCircle = ((((heightOfMarker / 2) + (widthOfMarker / 2)) * 2 -
             diameterOfCircle)) /
         2;
-    // leftOfCircle = (size of icon - width of circle)/2
-    leftOfCircle = (widthOfMarker - diameterOfCircle) / 2;
 
-    print('bottomOfCircle $bottomOfCircle leftOfCircle $leftOfCircle');
+    /// leftOfCircle = (size of icon - width of circle)/2
+    leftOfCircle = (widthOfMarker - diameterOfCircle) / 2;
   }
 
   @override
@@ -101,7 +100,6 @@ class _SelectedLocationState extends State<SelectedLocation> {
             FlutterMap(
               mapController: mapController,
               returnPositionTapped: (_latLng, _zoom) {
-                print('new latlng $_latLng, newZoom: $_zoom');
                 setState(() {
                   if (_absorbDoubleTapPointer) {
                     center = _latLng ?? LatLng(0, 0);
@@ -144,7 +142,7 @@ class _SelectedLocationState extends State<SelectedLocation> {
                 ),
                 padding: EdgeInsets.fromLTRB(
                     10.toWidth, 20.toHeight, 10.toHeight, 0),
-                height: 250,
+                height: 280,
                 width: SizeConfig().screenWidth,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,6 +154,8 @@ class _SelectedLocationState extends State<SelectedLocation> {
                           Row(
                             children: <Widget>[
                               Checkbox(
+                                fillColor: MaterialStateProperty.all<Color>(
+                                    ColorConstants.black),
                                 value: _absorbDoubleTapPointer,
                                 tristate: false,
                                 onChanged: (value) async {
@@ -169,9 +169,9 @@ class _SelectedLocationState extends State<SelectedLocation> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text('Double tap to move pointer',
+                                    Text('Enable double tap to move pointer',
                                         style: CustomTextStyles.customTextStyle(
-                                            ColorConstants.black)),
+                                            ColorConstants.DARK_GREY)),
                                     (_absorbDoubleTapPointer)
                                         ? Flexible(
                                             child: Text(
@@ -189,7 +189,7 @@ class _SelectedLocationState extends State<SelectedLocation> {
                               )
                             ],
                           ),
-                          SizedBox(height: 10.toHeight),
+                          // SizedBox(height: 10.toHeight),
                           Slider(
                             activeColor: ColorConstants.black,
                             inactiveColor: ColorConstants.LIGHT_GREY,
@@ -211,7 +211,7 @@ class _SelectedLocationState extends State<SelectedLocation> {
                               children: [
                                 Icon(
                                   Icons.location_on,
-                                  color: ColorConstants.orange,
+                                  color: ColorConstants.black,
                                 ),
                                 SizedBox(
                                   width: 10,
@@ -219,12 +219,31 @@ class _SelectedLocationState extends State<SelectedLocation> {
                                 Flexible(
                                   child: Text(widget.displayName,
                                       style: CustomTextStyles.customTextStyle(
-                                          ColorConstants.DARK_GREY)),
+                                          ColorConstants.black)),
                                 ),
                               ],
                             ),
                           ),
                           SizedBox(height: 20.toHeight),
+                          Flexible(
+                            child: RichText(
+                              text: TextSpan(
+                                text: 'NOTE: ',
+                                style: CustomTextStyles.customTextStyle(
+                                    ColorConstants.black,
+                                    size: 12),
+                                children: [
+                                  TextSpan(
+                                    text:
+                                        'The view you select (Position of the marker, zoom level and radius of the circle), will be shown to other users.',
+                                    style: CustomTextStyles.customTextStyle(
+                                        ColorConstants.DARK_GREY,
+                                        size: 12),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
