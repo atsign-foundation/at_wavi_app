@@ -1,9 +1,13 @@
+import 'package:at_contact/at_contact.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 
 class AtFollowsList {
   List<String?>? list = [];
 
   AtFollowsValue? _atKey;
+
+  /// contains details of atsigns of [list]
+  List<AtsignDetails> atsignDetails = [];
 
   ///default it is `false`. Set `true` to make [list] as private.
   bool isPrivate = false;
@@ -15,6 +19,11 @@ class AtFollowsList {
             ? atValue.value.split(',')
             : [];
     list!.toSet().toList();
+
+    // setting initial contact data as blank
+    list!.forEach((atsign) {
+      atsignDetails.add(AtsignDetails(atcontact: AtContact(atSign: atsign)));
+    });
   }
 
   add(String? value) {

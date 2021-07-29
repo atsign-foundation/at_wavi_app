@@ -150,4 +150,22 @@ class BackendService {
       ..atKey = atkey;
     return val;
   }
+
+  String? formatAtSign(String? atsign) {
+    if (atsign == null) {
+      return null;
+    } else if (atsign.contains(':')) {
+      throw Exception('Invalid Atsign');
+    }
+    atsign = atsign.trim().toLowerCase().replaceAll(' ', '');
+    atsign = !atsign.startsWith('@') ? '@' + atsign : atsign;
+    return atsign;
+  }
+
+  Future<bool> put(AtKey atKey, String? value) async {
+    return await atClientInstance.put(atKey, value).timeout(
+        Duration(seconds: MixedConstants.responseTimeLimit), onTimeout: () {
+      print('time out in put service ');
+    }());
+  }
 }
