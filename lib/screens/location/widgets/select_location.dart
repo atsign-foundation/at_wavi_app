@@ -275,7 +275,7 @@ void onLocationSelect(BuildContext context, LatLng? point,
     {String? displayName}) {
   SetupRoutes.push(NavService.navKey.currentContext!, Routes.SELECTED_LOCATION,
       arguments: {
-        'displayName': displayName,
+        'displayName': displayName ?? '[Current Location]',
         'point': point,
       });
-  }
+}
