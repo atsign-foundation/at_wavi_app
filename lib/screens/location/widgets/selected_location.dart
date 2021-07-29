@@ -4,6 +4,8 @@ import 'package:at_location_flutter/at_location_flutter.dart';
 import 'package:at_location_flutter/common_components/circle_marker_painter.dart';
 import 'package:at_location_flutter/common_components/marker_custom_painter.dart';
 import 'package:at_location_flutter/map_content/flutter_map/flutter_map.dart';
+import 'package:at_wavi_app/model/osm_location_model.dart';
+import 'package:at_wavi_app/screens/location/location_widget.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
@@ -270,11 +272,21 @@ class _SelectedLocationState extends State<SelectedLocation> {
     return Expanded(
       child: InkWell(
         onTap: () async {
-          if (zoom - 1 != 0) {
-            zoom = zoom - 1;
+          if (_text == 'Cancel') {
+            if (zoom - 1 != 0) {
+              zoom = zoom - 1;
+            }
+
+            mapController.move(center, zoom);
           }
 
-          mapController.move(center, zoom);
+          if (_text == 'Confirm') {
+            LocationWidgetData()
+                .update(OsmLocationModel(center, zoom, diameterOfCircle));
+
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          }
         },
         child: Container(
           height: 80.toHeight,
