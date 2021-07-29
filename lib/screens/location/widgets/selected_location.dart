@@ -1,6 +1,7 @@
 import 'package:at_common_flutter/services/size_config.dart';
 import 'package:at_common_flutter/widgets/custom_button.dart';
 import 'package:at_location_flutter/at_location_flutter.dart';
+import 'package:at_location_flutter/common_components/circle_marker_painter.dart';
 import 'package:at_location_flutter/common_components/marker_custom_painter.dart';
 import 'package:at_location_flutter/map_content/flutter_map/flutter_map.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -19,6 +20,13 @@ class SelectedLocation extends StatefulWidget {
 }
 
 class _SelectedLocationState extends State<SelectedLocation> {
+  /// Constants for marker and circle
+  late double heightOfMarker = 50,
+      widthOfMarker = 40,
+      diameterOfCircle = 100,
+      bottomOfCircle,
+      leftOfCircle; // widthOfMarker and size of icon is same
+
   var mapController = MapController();
   late Marker marker;
   late LatLng center;
@@ -33,11 +41,23 @@ class _SelectedLocationState extends State<SelectedLocation> {
     super.initState();
   }
 
+  calculateMarkerDimensions() {
+    // bottomOfCircle = (((bottom of icon + (size of icon/2))*2 - heightof circle)) / 2
+    bottomOfCircle = ((((heightOfMarker / 2) + (widthOfMarker / 2)) * 2 -
+            diameterOfCircle)) /
+        2;
+    // leftOfCircle = (size of icon - width of circle)/2
+    leftOfCircle = (widthOfMarker - diameterOfCircle) / 2;
+
+    print('bottomOfCircle $bottomOfCircle leftOfCircle $leftOfCircle');
+  }
+
   @override
   Widget build(BuildContext context) {
+    calculateMarkerDimensions();
     marker = Marker(
-      width: 40,
-      height: 50,
+      width: widthOfMarker,
+      height: heightOfMarker,
       point: center,
       builder: (ctx) => Container(
         // color: Colors.red,
@@ -45,11 +65,28 @@ class _SelectedLocationState extends State<SelectedLocation> {
           clipBehavior: Clip.none,
           children: [
             Positioned(
-              bottom: 25, // height/2 => so, it starts from center
+              bottom:
+                  heightOfMarker / 2, // height/2 => so, it starts from center
               child: Icon(
                 Icons.location_on,
                 color: ColorConstants.orange,
-                size: 40,
+                size: widthOfMarker, // same as width of marker
+              ),
+            ),
+            Positioned(
+              // 25 + 20 (bottom + size/2) for center
+              bottom:
+                  bottomOfCircle, // ((25 + (20))*2 - 200) => ((bottom of icon + (size of icon/2))*2 - heightof circle)
+              left:
+                  leftOfCircle, // (40-200)/2 => (size of icon - width of circle)/2
+              child: SizedBox(
+                width: diameterOfCircle,
+                height: diameterOfCircle,
+                child: CustomPaint(
+                  painter: CircleMarkerPainter(
+                      color: Color(0xFFF47B5D).withOpacity(0.2),
+                      paintingStyle: PaintingStyle.fill),
+                ),
               ),
             ),
           ],
@@ -62,6 +99,7 @@ class _SelectedLocationState extends State<SelectedLocation> {
         body: Stack(
           children: <Widget>[
             FlutterMap(
+              mapController: mapController,
               returnPositionTapped: (_latLng, _zoom) {
                 print('new latlng $_latLng, newZoom: $_zoom');
                 setState(() {
@@ -106,7 +144,7 @@ class _SelectedLocationState extends State<SelectedLocation> {
                 ),
                 padding: EdgeInsets.fromLTRB(
                     10.toWidth, 20.toHeight, 10.toHeight, 0),
-                height: 200,
+                height: 250,
                 width: SizeConfig().screenWidth,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,6 +188,21 @@ class _SelectedLocationState extends State<SelectedLocation> {
                                 ),
                               )
                             ],
+                          ),
+                          SizedBox(height: 10.toHeight),
+                          Slider(
+                            activeColor: ColorConstants.black,
+                            inactiveColor: ColorConstants.LIGHT_GREY,
+                            value: diameterOfCircle,
+                            min: 100,
+                            max: 400,
+                            divisions: 4,
+                            label: 'Adjust radius',
+                            onChanged: (double newValue) {
+                              setState(() {
+                                diameterOfCircle = newValue;
+                              });
+                            },
                           ),
                           SizedBox(height: 10.toHeight),
                           Flexible(
@@ -197,7 +250,13 @@ class _SelectedLocationState extends State<SelectedLocation> {
   Widget _bottomSheetButton(String _text, {bool isDark = false}) {
     return Expanded(
       child: InkWell(
-        onTap: () async {},
+        onTap: () async {
+          if (zoom - 1 != 0) {
+            zoom = zoom - 1;
+          }
+
+          mapController.move(center, zoom);
+        },
         child: Container(
           height: 80.toHeight,
           alignment: Alignment.center,
