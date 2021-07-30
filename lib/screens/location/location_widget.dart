@@ -19,6 +19,7 @@ import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:provider/provider.dart';
 
 class LocationWidget extends StatefulWidget {
@@ -47,7 +48,11 @@ class _LocationWidgetState extends State<LocationWidget> {
         .location
         .isPrivate;
 
-    LocationWidgetData().init(null);
+    LocationWidgetData().init(
+        jsonData: Provider.of<UserProvider>(context, listen: false)
+            .user!
+            .location
+            .value);
     super.initState();
   }
 
@@ -215,9 +220,9 @@ class _LocationWidgetState extends State<LocationWidget> {
                         }),
                       ),
                     ),
-                    _osmLocationModel == null
-                        ? SizedBox()
-                        : Container(
+                    ((_osmLocationModel != null) &&
+                            (_osmLocationModel.latLng != null))
+                        ? Container(
                             padding: EdgeInsets.symmetric(horizontal: 20),
                             height: 300,
                             width: double.infinity,
@@ -289,7 +294,8 @@ class _LocationWidgetState extends State<LocationWidget> {
                                 )
                               ],
                             ),
-                          ),
+                          )
+                        : SizedBox(),
                     SizedBox(
                       height: 15,
                     ),
@@ -344,11 +350,42 @@ class LocationWidgetData {
 
   ValueNotifier<OsmLocationModel?>? osmLocationModelNotifier;
 
-  init(OsmLocationModel? _initialData) {
-    osmLocationModelNotifier = ValueNotifier(_initialData);
+  init({OsmLocationModel? initialData, dynamic jsonData}) async {
+    osmLocationModelNotifier = ValueNotifier(initialData);
+    if (jsonData != null) {
+      var _decodedData = jsonDecode(jsonData);
+      osmLocationModelNotifier =
+          ValueNotifier(OsmLocationModel.fromJson(_decodedData));
+
+      if ((_decodedData['latitude'] == null &&
+              _decodedData['longitude'] == null) &&
+          (_decodedData['location'] != null)) {
+        createOsmDataFromGoogleData(_decodedData);
+      }
+    }
   }
 
   update(OsmLocationModel _data) {
     osmLocationModelNotifier!.value = _data;
+  }
+
+  createOsmDataFromGoogleData(_decodedData) async {
+    List<Address> addressList =
+        await Geocoder.local.findAddressesFromQuery(_decodedData['location']);
+    Coordinates coordinates = addressList[0].coordinates;
+    print('coordinates: ${coordinates.latitude} ${coordinates.longitude}');
+    var _radius =
+        _decodedData['radius'] != 'null' && _decodedData['radius'] != null
+            ? double.parse(_decodedData['radius'])
+            : null;
+    var _newOsmData = OsmLocationModel(
+        _decodedData['location'], _radius, 16, 100,
+        latitude: coordinates.latitude, longitude: coordinates.longitude);
+    await AtKeySetService().update(
+        BasicData(
+          value: _newOsmData.toJson(),
+        ),
+        FieldsEnum.LOCATION.name);
+    update(_newOsmData);
   }
 }
