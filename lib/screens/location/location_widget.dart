@@ -8,6 +8,8 @@ import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
 import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/routes/route_names.dart';
+import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/location/widgets/select_location.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -207,46 +209,77 @@ class _LocationWidgetState extends State<LocationWidget> {
                       OsmLocationModel? _osmLocationModel, Widget? child) {
                     return _osmLocationModel == null
                         ? SizedBox()
-                        : AbsorbPointer(
-                            absorbing: true,
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              height: 300,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: FlutterMap(
-                                options: MapOptions(
-                                  boundsOptions: FitBoundsOptions(
-                                      padding: EdgeInsets.all(0)),
-                                  center: _osmLocationModel.latLng!,
-                                  zoom: _osmLocationModel.zoom!,
-                                ),
-                                layers: [
-                                  TileLayerOptions(
-                                    urlTemplate:
-                                        'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=${MixedConstants.MAP_KEY}',
-                                    subdomains: ['a', 'b', 'c'],
-                                    minNativeZoom: 2,
-                                    maxNativeZoom: 18,
-                                    minZoom: 1,
-                                    tileProvider:
-                                        NonCachingNetworkTileProvider(),
+                        : Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            height: 300,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Stack(
+                              children: [
+                                AbsorbPointer(
+                                  absorbing: true,
+                                  child: FlutterMap(
+                                    options: MapOptions(
+                                      boundsOptions: FitBoundsOptions(
+                                          padding: EdgeInsets.all(0)),
+                                      center: _osmLocationModel.latLng!,
+                                      zoom: _osmLocationModel.zoom!,
+                                    ),
+                                    layers: [
+                                      TileLayerOptions(
+                                        urlTemplate:
+                                            'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=${MixedConstants.MAP_KEY}',
+                                        subdomains: ['a', 'b', 'c'],
+                                        minNativeZoom: 2,
+                                        maxNativeZoom: 18,
+                                        minZoom: 1,
+                                        tileProvider:
+                                            NonCachingNetworkTileProvider(),
+                                      ),
+                                      MarkerLayerOptions(markers: [
+                                        Marker(
+                                          width: 40,
+                                          height: 50,
+                                          point: _osmLocationModel.latLng!,
+                                          builder: (ctx) => Container(
+                                              child: createMarker(
+                                                  diameterOfCircle:
+                                                      _osmLocationModel
+                                                          .diameter!)),
+                                        )
+                                      ])
+                                    ],
                                   ),
-                                  MarkerLayerOptions(markers: [
-                                    Marker(
-                                      width: 40,
-                                      height: 50,
-                                      point: _osmLocationModel.latLng!,
-                                      builder: (ctx) => Container(
-                                          child: createMarker(
-                                              diameterOfCircle:
-                                                  _osmLocationModel.diameter!)),
-                                    )
-                                  ])
-                                ],
-                              ),
+                                ),
+                                Positioned(
+                                  right: 10,
+                                  top: 10,
+                                  child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                      color: ColorConstants.LIGHT_GREY,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: IconButton(
+                                        onPressed: () {
+                                          SetupRoutes.push(
+                                              context, Routes.PREVIEW_LOCATION,
+                                              arguments: {
+                                                'title': _locationNickname,
+                                                'latLng':
+                                                    _osmLocationModel.latLng!,
+                                                'zoom': _osmLocationModel.zoom!,
+                                                'diameterOfCircle':
+                                                    _osmLocationModel.diameter!,
+                                              });
+                                        },
+                                        icon: Icon(Icons.assistant_direction)),
+                                  ),
+                                )
+                              ],
                             ),
                           );
                   },
