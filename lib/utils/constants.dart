@@ -32,4 +32,8 @@ class MixedConstants {
 
   static const String MAP_KEY = 'B3Wus46C2WZFhwZKQkEx';
   static const String API_KEY = 'yRCeKfJDPQDTp11YI1db67J_fww80QP6R3Llckg-REw';
+  static final String twitterBearerToken = '';
+  static const int responseTimeLimit = 30;
+  static final String following = 'at_following_by_self';
+  static final String followers = 'at_followers_of_self';
 }

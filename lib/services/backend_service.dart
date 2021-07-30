@@ -3,6 +3,7 @@ import 'package:at_client/at_client.dart';
 import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_commons/at_commons.dart';
 import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
+import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
@@ -124,5 +125,49 @@ class BackendService {
         !scanKey.metadata!.isCached &&
         '@' + (scanKey.sharedBy ?? '') == atClientInstance.currentAtSign);
     return scanKeys;
+  }
+
+  Future<AtFollowsValue> scanAndGet(String regex) async {
+    var scanKey = await BackendService()
+        .atClientInstance
+        .getAtKeys(regex: regex)
+        .timeout(Duration(seconds: MixedConstants.responseTimeLimit),
+            onTimeout: () {}());
+
+    AtFollowsValue value =
+        scanKey.isNotEmpty ? await this.get(scanKey[0]) : AtFollowsValue();
+    return value;
+  }
+
+  Future<AtFollowsValue> get(AtKey atkey) async {
+    var response = await BackendService().atClientInstance.get(atkey).timeout(
+        Duration(seconds: MixedConstants.responseTimeLimit), onTimeout: () {
+      print('time out');
+    }());
+
+    AtFollowsValue val = AtFollowsValue();
+    val
+      ..metadata = response.metadata
+      ..value = response.value
+      ..atKey = atkey;
+    return val;
+  }
+
+  String? formatAtSign(String? atsign) {
+    if (atsign == null) {
+      return null;
+    } else if (atsign.contains(':')) {
+      throw Exception('Invalid Atsign');
+    }
+    atsign = atsign.trim().toLowerCase().replaceAll(' ', '');
+    atsign = !atsign.startsWith('@') ? '@' + atsign : atsign;
+    return atsign;
+  }
+
+  Future<bool> put(AtKey atKey, String? value) async {
+    return await atClientInstance.put(atKey, value).timeout(
+        Duration(seconds: MixedConstants.responseTimeLimit), onTimeout: () {
+      print('time out in put service ');
+    }());
   }
 }
