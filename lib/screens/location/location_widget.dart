@@ -335,17 +335,30 @@ class _LocationWidgetState extends State<LocationWidget> {
                                         .customFields['LOCATION']?[_int]
                                   });
                             },
-                            child: Text(
-                                '${(_int + 1).toString()}. ' +
-                                    (Provider.of<UserProvider>(context,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                    '${(_int + 1).toString()}. ' +
+                                        (Provider.of<UserProvider>(context,
+                                                    listen: false)
+                                                .user!
+                                                .customFields['LOCATION']?[_int]
+                                                .accountName ??
+                                            ''),
+                                    style: TextStyles.lightText(
+                                        ColorConstants.black,
+                                        size: 16)),
+                                Provider.of<UserProvider>(context,
                                                 listen: false)
                                             .user!
                                             .customFields['LOCATION']?[_int]
-                                            .accountName ??
-                                        ''),
-                                style: TextStyles.lightText(
-                                    ColorConstants.black,
-                                    size: 16)),
+                                            .isPrivate ??
+                                        false
+                                    ? Icon(Icons.lock)
+                                    : Icon(Icons.public)
+                              ],
+                            ),
                           );
                         },
                         separatorBuilder: (_context, _int) {

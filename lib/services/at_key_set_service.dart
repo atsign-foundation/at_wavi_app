@@ -6,8 +6,11 @@ import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'at_key_get_service.dart';
+import 'nav_service.dart';
 
 class AtKeySetService {
   AtKeySetService._();
@@ -158,6 +161,27 @@ class AtKeySetService {
       if (result == false) {
         return result;
       }
+    }
+
+    /// Will update user provider
+    if (result) {
+      var _providerUser = (Provider.of<UserProvider>(
+                  NavService.navKey.currentContext!,
+                  listen: false)
+              .user!
+              .customFields[category] ??
+          []);
+      for (var i = 0; i < _providerUser.length; i++) {
+        for (int j = 0; j < value.length; j++) {
+          if (_providerUser[i].accountName == value[j].accountName) {
+            _providerUser[i] = value[j];
+            break;
+          }
+        }
+      }
+      Provider.of<UserProvider>(NavService.navKey.currentContext!,
+              listen: false)
+          .notify();
     }
     return result ??= true;
   }

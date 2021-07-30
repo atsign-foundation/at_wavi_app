@@ -308,6 +308,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
         .updateCustomFields(AtCategory.LOCATION.name, [_data]);
 
     LoadingDialog().hide();
+    Navigator.of(context).pop();
   }
 
   _showToast(String _text, {bool isError = false, Color? bgColor}) {

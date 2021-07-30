@@ -18,4 +18,8 @@ class UserProvider extends BaseModel {
     }
     setStatus(FETCH_USER, Status.Done);
   }
+
+  void notify() {
+    notifyListeners();
+  }
 }
