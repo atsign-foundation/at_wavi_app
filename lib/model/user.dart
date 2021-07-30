@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -117,6 +119,25 @@ class BasicData {
       this.accountName,
       this.type,
       this.valueDescription});
+
+  BasicData.fromJson(Map<String, dynamic> json)
+      : value = json['value'],
+        isPrivate = json['isPrivate'] == 'false' ? false : true,
+        // latLng = json['latLng'],
+        accountName = json['accountName'],
+        valueDescription = json['valueDescription'],
+        type = json['type'];
+
+  toJson() {
+    return json.encode({
+      'value': value.toString(),
+      // 'location': 'NH 18, Chas, Bokaro, 827013, Jharkhand, India',
+      'isPrivate': isPrivate.toString(),
+      'accountName': accountName.toString(),
+      'valueDescription': valueDescription.toString(),
+      'type': type.toString(),
+    });
+  }
 
   @override
   String toString() {

@@ -11,11 +11,13 @@ import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/location/widgets/select_location.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
+import 'package:at_wavi_app/services/compare_basicdata.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 
 class CreateCustomLocation extends StatefulWidget {
   final BasicData? basicData;
@@ -34,7 +36,11 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
   @override
   initState() {
     // _isPrivate = false;
-    _data = widget.basicData ?? BasicData(isPrivate: false);
+    if (widget.basicData != null) {
+      _data = BasicData.fromJson(jsonDecode(widget.basicData!.toJson()));
+    } else {
+      _data = BasicData(isPrivate: false);
+    }
     _osmLocationModel =
         OsmLocationModel.fromJson(jsonDecode(_data.value ?? '{}'));
     // _accountName = _data.accountName ?? '';
@@ -299,13 +305,18 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
   }
 
   _updateLocation(OsmLocationModel _osmData) async {
-    print('_data.value ${_data.isPrivate} ${_data.accountName} ${_data.value}');
-
     LoadingDialog().show(text: 'Adding custom location');
 
     _data.type = CustomContentType.Text.name;
-    var _res = await AtKeySetService()
-        .updateCustomFields(AtCategory.LOCATION.name, [_data]);
+    if (!areBasicDataEqual(_data, widget.basicData ?? BasicData())) {
+      bool _previousKey = false;
+      if (widget.basicData != null) {
+        _previousKey = widget.basicData!.accountName != _data.accountName;
+      }
+      var _res = await AtKeySetService().updateCustomFields(
+          AtCategory.LOCATION.name, [_data],
+          previousKey: _previousKey ? widget.basicData!.accountName : null);
+    }
 
     LoadingDialog().hide();
     Navigator.of(context).pop();

@@ -13,6 +13,7 @@ import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/location/widgets/select_location.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
+import 'package:at_wavi_app/services/compare_basicdata.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -390,16 +391,31 @@ class _LocationWidgetState extends State<LocationWidget> {
   _updateLocation(OsmLocationModel _data) async {
     LoadingDialog().show(text: 'Adding custom content');
 
-    await AtKeySetService().update(
-        BasicData(
-          value: _locationNickname,
-        ),
-        FieldsEnum.LOCATIONNICKNAME.name);
-    await AtKeySetService().update(
-        BasicData(
-          value: _data.toJson(),
-        ),
-        FieldsEnum.LOCATION.name);
+    if (_locationNickname !=
+        Provider.of<UserProvider>(context, listen: false)
+            .user!
+            .locationNickName
+            .value) {
+      print('update nickname');
+      await AtKeySetService().update(
+          BasicData(
+            value: _locationNickname,
+          ),
+          FieldsEnum.LOCATIONNICKNAME.name);
+    }
+
+    if (_data.toJson() !=
+        Provider.of<UserProvider>(context, listen: false)
+            .user!
+            .location
+            .value) {
+      print('update location');
+      await AtKeySetService().update(
+          BasicData(
+            value: _data.toJson(),
+          ),
+          FieldsEnum.LOCATION.name);
+    }
 
     LoadingDialog().hide();
   }
