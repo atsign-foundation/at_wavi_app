@@ -165,54 +165,63 @@ class AtKeySetService {
 
     /// Will update user provider
     if (result) {
-      bool _removePreviousKey = false;
-      if (previousKey != null) {
-        if (scanKeys == null) {
-          scanKeys = await BackendService().atClientInstance.getAtKeys();
-        }
-
-        int previousAtKey = (scanKeys as List<AtKey>).indexWhere((element) =>
-            element.key == "custom_${previousKey.replaceAll(' ', '')}");
-        if (previousAtKey > -1) {
-          _removePreviousKey = await BackendService()
-              .atClientInstance
-              .delete(scanKeys[previousAtKey]);
-        }
-      }
-
-      var _providerUser = (Provider.of<UserProvider>(
-                  NavService.navKey.currentContext!,
-                  listen: false)
-              .user!
-              .customFields[category] ??
-          []);
-
-      if (_removePreviousKey) {
-        for (var i = 0; i < _providerUser.length; i++) {
-          for (int j = 0; j < value.length; j++) {
-            if (_providerUser[i].accountName == previousKey) {
-              _providerUser[i] = value[j];
-              break;
-            }
-          }
-        }
-      } else {
-        for (var i = 0; i < _providerUser.length; i++) {
-          for (int j = 0; j < value.length; j++) {
-            if (_providerUser[i].accountName == value[j].accountName) {
-              _providerUser[i] = value[j];
-              break;
-            }
-          }
-        }
-      }
-
-      Provider.of<UserProvider>(NavService.navKey.currentContext!,
-              listen: false)
-          .notify();
+      await updateProviderAndPreviousKey(category, value, scanKeys,
+          previousKey: previousKey);
     }
 
     return result ??= true;
+  }
+
+  updateProviderAndPreviousKey(
+      String category, List<BasicData> value, var scanKeys,
+      {String? previousKey}) async {
+    bool _removePreviousKey = false;
+    if (previousKey != null) {
+      if (scanKeys == null) {
+        scanKeys = await BackendService().atClientInstance.getAtKeys();
+      }
+
+      _removePreviousKey =
+          await deleteKey(previousKey, scanKeys: scanKeys, isCustomKey: true);
+    }
+
+    var _providerUser = (Provider.of<UserProvider>(
+                NavService.navKey.currentContext!,
+                listen: false)
+            .user!
+            .customFields[category] ??
+        []);
+
+    for (var i = 0; i < _providerUser.length; i++) {
+      for (int j = 0; j < value.length; j++) {
+        if (_providerUser[i].accountName ==
+            (_removePreviousKey ? previousKey : value[j].accountName)) {
+          _providerUser[i] = value[j];
+          break;
+        }
+      }
+    }
+
+    Provider.of<UserProvider>(NavService.navKey.currentContext!, listen: false)
+        .notify();
+  }
+
+  deleteKey(String key, {var scanKeys, bool isCustomKey = false}) async {
+    if (scanKeys == null) {
+      scanKeys = await BackendService().atClientInstance.getAtKeys();
+    }
+
+    String updatedKey = isCustomKey ? "custom_${key.replaceAll(' ', '')}" : key;
+
+    int previousAtKey = (scanKeys as List<AtKey>)
+        .indexWhere((element) => element.key == updatedKey);
+    if (previousAtKey > -1) {
+      return await BackendService()
+          .atClientInstance
+          .delete(scanKeys[previousAtKey]);
+    }
+
+    return false;
   }
 
   ///Returns jsonString of [basicData].
