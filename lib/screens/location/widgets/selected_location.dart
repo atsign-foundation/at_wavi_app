@@ -281,8 +281,9 @@ class _SelectedLocationState extends State<SelectedLocation> {
           }
 
           if (_text == 'Confirm') {
-            LocationWidgetData()
-                .update(OsmLocationModel(center, zoom, diameterOfCircle));
+            LocationWidgetData().update(OsmLocationModel(
+                null, null, zoom, diameterOfCircle,
+                latitude: center.latitude, longitude: center.longitude));
 
             Navigator.of(context).pop();
             Navigator.of(context).pop();
