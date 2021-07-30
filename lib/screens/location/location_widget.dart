@@ -303,6 +303,56 @@ class _LocationWidgetState extends State<LocationWidget> {
                             ),
                           )
                         : SizedBox(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.toWidth, vertical: 12.toHeight),
+                      child: Text('More Locations',
+                          style: TextStyles.lightText(
+                              ColorConstants.black.withOpacity(0.5),
+                              size: 16)),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.toWidth, vertical: 12.toHeight),
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: Provider.of<UserProvider>(context)
+                                .user!
+                                .customFields['LOCATION']
+                                ?.length ??
+                            0,
+                        itemBuilder: (_context, _int) {
+                          return InkWell(
+                            onTap: () {
+                              SetupRoutes.push(
+                                  context, Routes.CREATE_CUSTOM_LOCATION,
+                                  arguments: {
+                                    'basicData': Provider.of<UserProvider>(
+                                            context,
+                                            listen: false)
+                                        .user!
+                                        .customFields['LOCATION']?[_int]
+                                  });
+                            },
+                            child: Text(
+                                '${(_int + 1).toString()}. ' +
+                                    (Provider.of<UserProvider>(context,
+                                                listen: false)
+                                            .user!
+                                            .customFields['LOCATION']?[_int]
+                                            .accountName ??
+                                        ''),
+                                style: TextStyles.lightText(
+                                    ColorConstants.black,
+                                    size: 16)),
+                          );
+                        },
+                        separatorBuilder: (_context, _int) {
+                          return Divider();
+                        },
+                      ),
+                    ),
                     SizedBox(
                       height: 15,
                     ),

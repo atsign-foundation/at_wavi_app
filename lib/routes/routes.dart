@@ -83,7 +83,14 @@ class SetupRoutes {
         return SizedBox();
       },
       Routes.CREATE_CUSTOM_LOCATION: (context) {
-        return CreateCustomLocation();
+        if ((ModalRoute.of(context) != null) &&
+            (ModalRoute.of(context)!.settings.arguments != null)) {
+          Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return CreateCustomLocation(basicData: args['basicData']);
+        }
+
+        return SizedBox();
       },
       Routes.FAQS: (context) => WebsiteScreen(
             title: 'FAQ',
