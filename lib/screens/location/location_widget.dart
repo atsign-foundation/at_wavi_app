@@ -63,6 +63,12 @@ class _LocationWidgetState extends State<LocationWidget> {
   }
 
   @override
+  void dispose() {
+    LocationWidgetData().dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _locationString = (_data != null && (_data!.value != null))
         ? jsonDecode(_data!.value)['location']
@@ -234,6 +240,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                                 AbsorbPointer(
                                   absorbing: true,
                                   child: FlutterMap(
+                                    key: UniqueKey(),
                                     options: MapOptions(
                                       boundsOptions: FitBoundsOptions(
                                           padding: EdgeInsets.all(0)),
@@ -363,6 +370,10 @@ class LocationWidgetData {
         createOsmDataFromGoogleData(_decodedData);
       }
     }
+  }
+
+  dispose() {
+    osmLocationModelNotifier = null;
   }
 
   update(OsmLocationModel _data) {

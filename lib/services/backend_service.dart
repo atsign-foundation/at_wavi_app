@@ -5,6 +5,7 @@ import 'package:at_commons/at_commons.dart';
 import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
@@ -48,6 +49,7 @@ class BackendService {
         Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
                 listen: false)
             .resetThemeData();
+        AtKeyGetService().init();
         Provider.of<UserProvider>(NavService.navKey.currentContext!,
                 listen: false)
             .fetchUserData(BackendService().currentAtSign!);
