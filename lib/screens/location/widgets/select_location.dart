@@ -4,6 +4,7 @@ import 'package:at_location_flutter/at_location_flutter.dart';
 import 'package:at_location_flutter/common_components/custom_toast.dart';
 import 'package:at_location_flutter/location_modal/location_modal.dart';
 import 'package:at_location_flutter/service/my_location.dart';
+import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
@@ -14,6 +15,9 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 
 class SelectLocation extends StatefulWidget {
+  final Function(OsmLocationModel)? callbackFunction;
+  SelectLocation({this.callbackFunction});
+
   @override
   _SelectLocationState createState() => _SelectLocationState();
 }
@@ -269,13 +273,15 @@ class _SelectLocationState extends State<SelectLocation> {
       ),
     );
   }
-}
 
-void onLocationSelect(BuildContext context, LatLng? point,
-    {String? displayName}) {
-  SetupRoutes.push(NavService.navKey.currentContext!, Routes.SELECTED_LOCATION,
-      arguments: {
-        'displayName': displayName ?? '[Current Location]',
-        'point': point,
-      });
+  void onLocationSelect(BuildContext context, LatLng? point,
+      {String? displayName}) {
+    SetupRoutes.push(
+        NavService.navKey.currentContext!, Routes.SELECTED_LOCATION,
+        arguments: {
+          'displayName': displayName ?? '[Current Location]',
+          'point': point,
+          'callbackFunction': widget.callbackFunction,
+        });
+  }
 }

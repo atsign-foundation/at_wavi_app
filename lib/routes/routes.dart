@@ -5,6 +5,7 @@ import 'package:at_wavi_app/screens/edit_persona/edit_persona.dart';
 import 'package:at_wavi_app/screens/following.dart';
 import 'package:at_wavi_app/screens/home/home.dart';
 import 'package:at_wavi_app/screens/location/location_widget.dart';
+import 'package:at_wavi_app/screens/location/widgets/create_custom_location.dart';
 import 'package:at_wavi_app/screens/location/widgets/preview_location.dart';
 import 'package:at_wavi_app/screens/location/widgets/selected_location.dart';
 import 'package:at_wavi_app/screens/search.dart';
@@ -52,7 +53,8 @@ class SetupRoutes {
             (ModalRoute.of(context)!.settings.arguments != null)) {
           Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
               as Map<String, dynamic>;
-          return SelectedLocation(args['displayName'], args['point']);
+          return SelectedLocation(args['displayName'], args['point'],
+              callbackFunction: args['callbackFunction']);
         }
         return SelectedLocation('', LatLng(0, 0));
       },
@@ -79,6 +81,9 @@ class SetupRoutes {
         }
 
         return SizedBox();
+      },
+      Routes.CREATE_CUSTOM_LOCATION: (context) {
+        return CreateCustomLocation();
       },
       Routes.FAQS: (context) => WebsiteScreen(
             title: 'FAQ',

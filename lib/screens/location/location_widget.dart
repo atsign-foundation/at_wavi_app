@@ -310,6 +310,10 @@ class _LocationWidgetState extends State<LocationWidget> {
                       padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
                       child: AddCustomContentButton(
                         text: 'Add more location',
+                        onTap: () {
+                          SetupRoutes.push(
+                              context, Routes.CREATE_CUSTOM_LOCATION);
+                        },
                       ),
                     )
                   ],

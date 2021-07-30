@@ -16,7 +16,9 @@ import 'package:latlong2/latlong.dart';
 class SelectedLocation extends StatefulWidget {
   final LatLng point;
   final String displayName;
-  SelectedLocation(this.displayName, this.point);
+  final Function(OsmLocationModel)? callbackFunction;
+
+  SelectedLocation(this.displayName, this.point, {this.callbackFunction});
   @override
   _SelectedLocationState createState() => _SelectedLocationState();
 }
@@ -281,9 +283,15 @@ class _SelectedLocationState extends State<SelectedLocation> {
           }
 
           if (_text == 'Confirm') {
-            LocationWidgetData().update(OsmLocationModel(
+            var _finalData = OsmLocationModel(
                 null, null, zoom, diameterOfCircle,
-                latitude: center.latitude, longitude: center.longitude));
+                latitude: center.latitude, longitude: center.longitude);
+
+            if (widget.callbackFunction != null) {
+              widget.callbackFunction!(_finalData);
+            } else {
+              LocationWidgetData().update(_finalData);
+            }
 
             Navigator.of(context).pop();
             Navigator.of(context).pop();
