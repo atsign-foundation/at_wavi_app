@@ -329,7 +329,7 @@ packages:
     source: hosted
     version: "1.0.5"
   flutter_slidable:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_slidable
       url: "https://pub.dartlang.org"

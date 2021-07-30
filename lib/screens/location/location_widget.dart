@@ -20,6 +20,7 @@ import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:provider/provider.dart';
 
@@ -336,29 +337,53 @@ class _LocationWidgetState extends State<LocationWidget> {
                                         .customFields['LOCATION']?[_int]
                                   });
                             },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                    '${(_int + 1).toString()}. ' +
-                                        (Provider.of<UserProvider>(context,
-                                                    listen: false)
-                                                .user!
-                                                .customFields['LOCATION']?[_int]
-                                                .accountName ??
-                                            ''),
-                                    style: TextStyles.lightText(
-                                        ColorConstants.black,
-                                        size: 16)),
-                                Provider.of<UserProvider>(context,
+                            child: Slidable(
+                              actionPane: SlidableDrawerActionPane(),
+                              actionExtentRatio: 0.15,
+                              secondaryActions: <Widget>[
+                                IconSlideAction(
+                                  caption: '',
+                                  color: ColorConstants.white,
+                                  icon: Icons.delete,
+                                  onTap: () {
+                                    _deleteKey(Provider.of<UserProvider>(
+                                                context,
                                                 listen: false)
                                             .user!
                                             .customFields['LOCATION']?[_int]
-                                            .isPrivate ??
-                                        false
-                                    ? Icon(Icons.lock)
-                                    : Icon(Icons.public)
+                                            .accountName ??
+                                        '');
+                                  },
+                                ),
                               ],
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                        '${(_int + 1).toString()}. ' +
+                                            (Provider.of<UserProvider>(context,
+                                                        listen: false)
+                                                    .user!
+                                                    .customFields['LOCATION']
+                                                        ?[_int]
+                                                    .accountName ??
+                                                ''),
+                                        style: TextStyles.lightText(
+                                            ColorConstants.black,
+                                            size: 16)),
+                                  ),
+                                  Provider.of<UserProvider>(context,
+                                                  listen: false)
+                                              .user!
+                                              .customFields['LOCATION']?[_int]
+                                              .isPrivate ??
+                                          false
+                                      ? Icon(Icons.lock)
+                                      : Icon(Icons.public)
+                                ],
+                              ),
                             ),
                           );
                         },
@@ -417,6 +442,13 @@ class _LocationWidgetState extends State<LocationWidget> {
           FieldsEnum.LOCATION.name);
     }
 
+    LoadingDialog().hide();
+  }
+
+  _deleteKey(String key) async {
+    LoadingDialog().show(text: 'Deleting $key');
+    await AtKeySetService()
+        .deleteKey(key, AtCategory.LOCATION.name, isCustomKey: true);
     LoadingDialog().hide();
   }
 

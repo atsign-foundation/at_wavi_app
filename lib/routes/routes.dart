@@ -90,7 +90,7 @@ class SetupRoutes {
           return CreateCustomLocation(basicData: args['basicData']);
         }
 
-        return SizedBox();
+        return CreateCustomLocation();
       },
       Routes.FAQS: (context) => WebsiteScreen(
             title: 'FAQ',
