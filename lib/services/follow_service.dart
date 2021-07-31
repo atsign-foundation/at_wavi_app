@@ -21,7 +21,7 @@ class FollowService extends BaseModel {
     var followersValue =
         await BackendService().scanAndGet(MixedConstants.followers);
     this.followers.create(followersValue);
-    fetchAtsignDetails(this.followers.list!);
+    await fetchAtsignDetails(this.followers.list!);
     setStatus(FETCH_FOLLOWERS, Status.Done);
   }
 
@@ -30,7 +30,7 @@ class FollowService extends BaseModel {
     var followingValue =
         await BackendService().scanAndGet(MixedConstants.following);
     this.following.create(followingValue);
-    fetchAtsignDetails(this.following.list!, isFollowing: true);
+    await fetchAtsignDetails(this.following.list!, isFollowing: true);
     setStatus(FETCH_FOLLOWING, Status.Done);
   }
 
@@ -65,7 +65,6 @@ class FollowService extends BaseModel {
   removeFollower(String atsign, int index) async {
     followers.atsignDetails[index].isRmovingFromFollowers = true;
     notifyListeners();
-    await Future.delayed(Duration(seconds: 10));
     var atkey = _formKey();
     var followersList = followers.getKey!.value.split(',');
     followersList.remove(atsign);

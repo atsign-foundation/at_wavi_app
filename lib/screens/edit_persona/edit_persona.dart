@@ -2,6 +2,7 @@ import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/common_components/provider_callback.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/screens/edit_persona/content_edit.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
@@ -105,17 +106,7 @@ class _EditPersonaState extends State<EditPersona>
                       child: TabBarView(
                     controller: _controller,
                     children: [
-                      SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            // TODO: add content edit fields
-                            // Padding(
-                            //   padding: const EdgeInsets.all(8.0),
-                            //   child: editContentCard('Profile picture', () {}),
-                            // ),
-                          ],
-                        ),
-                      ),
+                      CotentEdit(),
                       SingleChildScrollView(
                         child: Column(
                           children: [
@@ -460,31 +451,5 @@ class _EditPersonaState extends State<EditPersona>
         },
       );
     }
-  }
-
-  Widget editContentCard(String title, Function onPressed) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(title, style: TextStyles.black18bold),
-            GestureDetector(
-              onTap: () {
-                onPressed();
-              },
-              child: Row(
-                children: [
-                  Text('Add',
-                      style: TextStyles.lightText(ColorConstants.black)),
-                  Icon(Icons.add)
-                ],
-              ),
-            )
-          ],
-        ),
-        Divider(height: 25)
-      ],
-    );
   }
 }
