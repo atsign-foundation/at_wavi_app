@@ -2,10 +2,12 @@ import 'dart:io';
 import 'package:at_client/at_client.dart';
 import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_commons/at_commons.dart';
+import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
@@ -46,6 +48,9 @@ class BackendService {
         currentAtSign = atSign;
         atClientServiceMap[atSign]!.makeAtSignPrimary(atSign!);
         startMonitor(atsign: atsign, value: value);
+        await FollowService().init();
+        initializeContactsService(
+            atClientInstance, atClientInstance.currentAtSign!);
         Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
                 listen: false)
             .resetThemeData();

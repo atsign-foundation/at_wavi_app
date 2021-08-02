@@ -105,13 +105,14 @@ class _FollowingState extends State<Following>
                               Uint8List? image;
                               var i = FollowService()
                                   .following
-                                  .atsignDetails
+                                  .atsignListDetails
                                   .indexWhere((element) =>
                                       element.atcontact.atSign ==
                                       _provider.following.list![index]!);
                               if (i > -1) {
-                                atsignDetail =
-                                    FollowService().following.atsignDetails[i];
+                                atsignDetail = FollowService()
+                                    .following
+                                    .atsignListDetails[i];
                                 if (atsignDetail.atcontact.tags != null &&
                                     atsignDetail.atcontact.tags!['name'] !=
                                         null) {
@@ -135,11 +136,13 @@ class _FollowingState extends State<Following>
                                   trailingWidget: InkWell(
                                     onTap: () async {
                                       await FollowService().unfollow(
-                                          _provider.following.list![index],
+                                          _provider.following.list![index]!,
                                           index);
                                     },
-                                    child: _provider.following
-                                            .atsignDetails[index].isUnfollowing
+                                    child: _provider
+                                            .following
+                                            .atsignListDetails[index]
+                                            .isUnfollowing
                                         ? CircularProgressIndicator()
                                         : Text(
                                             'Unfollow',
@@ -166,13 +169,14 @@ class _FollowingState extends State<Following>
                               Uint8List? image;
                               var i = FollowService()
                                   .followers
-                                  .atsignDetails
+                                  .atsignListDetails
                                   .indexWhere((element) =>
                                       element.atcontact.atSign ==
                                       _provider.followers.list![index]!);
                               if (i > -1) {
-                                atsignDetail =
-                                    FollowService().followers.atsignDetails[i];
+                                atsignDetail = FollowService()
+                                    .followers
+                                    .atsignListDetails[i];
                                 if (atsignDetail.atcontact.tags != null &&
                                     atsignDetail.atcontact.tags!['name'] !=
                                         null) {
@@ -202,7 +206,7 @@ class _FollowingState extends State<Following>
                                       },
                                       child: _provider
                                               .followers
-                                              .atsignDetails[index]
+                                              .atsignListDetails[index]
                                               .isRmovingFromFollowers
                                           ? CircularProgressIndicator()
                                           : Text(
