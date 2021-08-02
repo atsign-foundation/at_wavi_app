@@ -1,9 +1,8 @@
-import 'package:at_commons/at_commons.dart';
+import 'package:at_contact/at_contact.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
-import 'package:at_wavi_app/model/at_follows_list.dart';
+import 'package:at_follows_flutter/utils/at_follow_services.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
-import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 
 class FollowService extends BaseModel {
@@ -11,40 +10,64 @@ class FollowService extends BaseModel {
   static final FollowService _instance = FollowService._();
   factory FollowService() => _instance;
 
-  AtFollowsList followers = AtFollowsList();
-  AtFollowsList following = AtFollowsList();
+  AtFollowsData followers = AtFollowsData();
+  AtFollowsData following = AtFollowsData();
   final String FETCH_FOLLOWERS = 'fetch_followers';
   final String FETCH_FOLLOWING = 'fetch_followings';
 
-  Future<void> fetchFollowers() async {
+  init() async {
+    await AtFollowServices()
+        .initializeFollowService(BackendService().atClientServiceInstance);
+  }
+
+  getFollowers() async {
     setStatus(FETCH_FOLLOWERS, Status.Loading);
-    var followersValue =
-        await BackendService().scanAndGet(MixedConstants.followers);
-    this.followers.create(followersValue);
-    fetchAtsignDetails(this.followers.list!);
+    var followersList = AtFollowServices().getFollowersList();
+    if (followersList != null) {
+      followers.list = followersList.list;
+      followers.isPrivate = followersList.isPrivate;
+
+      followers.list!.forEach((element) {
+        followers.atsignListDetails
+            .add(AtsignDetails(atcontact: AtContact(atSign: element)));
+      });
+
+      // fetching details of  atsign list
+      await fetchAtsignDetails(this.followers.list!);
+    }
     setStatus(FETCH_FOLLOWERS, Status.Done);
   }
 
-  Future<void> fetchFollowings() async {
+  getFollowing() async {
     setStatus(FETCH_FOLLOWING, Status.Loading);
-    var followingValue =
-        await BackendService().scanAndGet(MixedConstants.following);
-    this.following.create(followingValue);
-    fetchAtsignDetails(this.following.list!, isFollowing: true);
+    var followingList = AtFollowServices().getFollowingList();
+    if (followingList != null) {
+      following.list = followingList.list;
+      following.isPrivate = followingList.isPrivate;
+
+      following.list!.forEach((element) {
+        following.atsignListDetails
+            .add(AtsignDetails(atcontact: AtContact(atSign: element)));
+      });
+
+      // fetching details for  atsign list
+      await fetchAtsignDetails(this.following.list!, isFollowing: true);
+    }
     setStatus(FETCH_FOLLOWING, Status.Done);
   }
 
-  Future unfollow(String? atsign, int index) async {
-    following.atsignDetails[index].isUnfollowing = true;
+  Future unfollow(String atsign, int index) async {
+    following.atsignListDetails[index].isUnfollowing = true;
     notifyListeners();
     try {
-      var result = await _unfollow(atsign);
+      var result = await AtFollowServices().unfollow(atsign);
+
       if (result) {
         following.list!.remove(atsign);
-        following.atsignDetails
+        following.atsignListDetails
             .removeWhere((element) => element.atcontact.atSign == atsign);
       } else {
-        following.atsignDetails[index].isUnfollowing = false;
+        following.atsignListDetails[index].isUnfollowing = false;
       }
     } on Error catch (err) {
       print('error in unfollow: $err');
@@ -54,63 +77,16 @@ class FollowService extends BaseModel {
     notifyListeners();
   }
 
-  Future<bool> _unfollow(String? atsign) async {
-    atsign = BackendService().formatAtSign(atsign);
-    var atKey = this._formKey(isFollowing: true);
-    var result = await _modifyKey(atsign, this.following, atKey);
-    notifyListeners();
-    return result;
-  }
-
   removeFollower(String atsign, int index) async {
-    followers.atsignDetails[index].isRmovingFromFollowers = true;
+    followers.atsignListDetails[index].isRmovingFromFollowers = true;
     notifyListeners();
-    await Future.delayed(Duration(seconds: 10));
-    var atkey = _formKey();
-    var followersList = followers.getKey!.value.split(',');
-    followersList.remove(atsign);
-    var res = await BackendService().put(
-        atkey, followersList.isNotEmpty ? followersList.toString() : 'null');
+    var res = await AtFollowServices().removeFollower(atsign);
     if (res) {
       followers.list!.remove(atsign);
     } else {
-      followers.atsignDetails[index].isRmovingFromFollowers = false;
+      followers.atsignListDetails[index].isRmovingFromFollowers = false;
     }
     notifyListeners();
-  }
-
-  Future<bool> _modifyKey(
-      String? atsign, AtFollowsList atFollowsList, AtKey atKey) async {
-    var result = false;
-    if (!atFollowsList.list!.contains(atsign)) {
-      return false;
-    }
-    atFollowsList.remove(atsign);
-    if (atFollowsList.toString().isEmpty) {
-      result = await BackendService().put(atKey, 'null');
-    } else {
-      result = await BackendService().put(atKey, atFollowsList.toString());
-    }
-    return result;
-  }
-
-  AtKey _formKey({bool isFollowing = false, String? atsign}) {
-    var atKey;
-    var atSign = atsign ?? BackendService().currentAtSign;
-    if (isFollowing) {
-      var atMetadata = Metadata()..isPublic = !following.isPrivate;
-      atKey = AtKey()
-        ..metadata = atMetadata
-        ..key = MixedConstants.following
-        ..sharedWith = atMetadata.isPublic! ? null : atSign;
-    } else {
-      var atMetadata = Metadata()..isPublic = !followers.isPrivate;
-      atKey = AtKey()
-        ..metadata = atMetadata
-        ..key = MixedConstants.followers
-        ..sharedWith = atMetadata.isPublic! ? null : atSign;
-    }
-    return atKey;
   }
 
   Future<List<AtsignDetails>> fetchAtsignDetails(List<String?> atsignList,
@@ -123,9 +99,9 @@ class FollowService extends BaseModel {
     });
 
     if (isFollowing) {
-      this.following.atsignDetails = atsignDetails;
+      this.following.atsignListDetails = atsignDetails;
     } else {
-      this.followers.atsignDetails = atsignDetails;
+      this.followers.atsignListDetails = atsignDetails;
     }
     notifyListeners();
     return atsignDetails;

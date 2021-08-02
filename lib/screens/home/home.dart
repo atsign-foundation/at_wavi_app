@@ -47,22 +47,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    initPackages();
     _receiveIntent();
     _getThemeData();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
-      await Provider.of<FollowService>(context, listen: false).fetchFollowers();
-      await Provider.of<FollowService>(context, listen: false)
-          .fetchFollowings();
+      await FollowService().getFollowers();
+      await FollowService().getFollowing();
     });
     super.initState();
   }
 
   initPackages() async {
-    initializeContactsService(BackendService().atClientInstance,
-        BackendService().atClientInstance.currentAtSign!,
-        rootDomain: MixedConstants.ROOT_DOMAIN);
-
     location_package_constants.MixedConstants.setMapKey(MixedConstants.MAP_KEY);
     location_package_constants.MixedConstants.setApiKey(MixedConstants.API_KEY);
   }
