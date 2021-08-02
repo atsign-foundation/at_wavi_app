@@ -9,4 +9,7 @@ class Routes {
   static const String LOCATION_WIDGET = 'location_widget';
   static const String FAQS = 'faqs';
   static const String TERMS_CONDITIONS_SCREEN = 'terms_conditions_screen';
+  static const String SELECTED_LOCATION = 'selected_location';
+  static const String PREVIEW_LOCATION = 'preview_location';
+  static const String CREATE_CUSTOM_LOCATION = 'create_custom_location';
 }

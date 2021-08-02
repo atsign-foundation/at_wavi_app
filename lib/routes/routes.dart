@@ -5,12 +5,16 @@ import 'package:at_wavi_app/screens/edit_persona/edit_persona.dart';
 import 'package:at_wavi_app/screens/following.dart';
 import 'package:at_wavi_app/screens/home/home.dart';
 import 'package:at_wavi_app/screens/location/location_widget.dart';
+import 'package:at_wavi_app/screens/location/widgets/create_custom_location.dart';
+import 'package:at_wavi_app/screens/location/widgets/preview_location.dart';
+import 'package:at_wavi_app/screens/location/widgets/selected_location.dart';
 import 'package:at_wavi_app/screens/search.dart';
 import 'package:at_wavi_app/screens/website_webview/website_webview.dart';
 import 'package:at_wavi_app/screens/welcome.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 
 class SetupRoutes {
   static String initialRoute = Routes.WELCOME_SCREEN;
@@ -44,6 +48,16 @@ class SetupRoutes {
       Routes.FOLLOWING_SCREEN: (context) => Following(),
       Routes.SEARCH_SCREEN: (context) => Search(),
       Routes.LOCATION_WIDGET: (context) => LocationWidget(),
+      Routes.SELECTED_LOCATION: (context) {
+        if ((ModalRoute.of(context) != null) &&
+            (ModalRoute.of(context)!.settings.arguments != null)) {
+          Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return SelectedLocation(args['displayName'], args['point'],
+              callbackFunction: args['callbackFunction']);
+        }
+        return SelectedLocation('', LatLng(0, 0));
+      },
       Routes.CREATE_CUSTOM_ADD_LINK: (context) {
         if ((ModalRoute.of(context) != null) &&
             (ModalRoute.of(context)!.settings.arguments != null)) {
@@ -53,6 +67,30 @@ class SetupRoutes {
         }
 
         return CreateCustomAddLink('', category: AtCategory.DETAILS);
+      },
+      Routes.PREVIEW_LOCATION: (context) {
+        if ((ModalRoute.of(context) != null) &&
+            (ModalRoute.of(context)!.settings.arguments != null)) {
+          Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return PreviewLocation(
+              title: args['title'],
+              latLng: args['latLng'],
+              zoom: args['zoom'],
+              diameterOfCircle: args['diameterOfCircle']);
+        }
+
+        return SizedBox();
+      },
+      Routes.CREATE_CUSTOM_LOCATION: (context) {
+        if ((ModalRoute.of(context) != null) &&
+            (ModalRoute.of(context)!.settings.arguments != null)) {
+          Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return CreateCustomLocation(basicData: args['basicData']);
+        }
+
+        return CreateCustomLocation();
       },
       Routes.FAQS: (context) => WebsiteScreen(
             title: 'FAQ',
