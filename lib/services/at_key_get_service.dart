@@ -14,6 +14,7 @@ class AtKeyGetService {
   User user = User(allPrivate: false, atsign: '');
 
   init() {
+    user = User(allPrivate: false, atsign: '');
     user.allPrivate = false;
     user.atsign = BackendService().atClientInstance.currentAtSign!;
   }

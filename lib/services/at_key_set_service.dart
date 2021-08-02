@@ -6,8 +6,11 @@ import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'at_key_get_service.dart';
+import 'nav_service.dart';
 
 class AtKeySetService {
   AtKeySetService._();
@@ -110,7 +113,7 @@ class AtKeySetService {
   /// category = screen name, later also gets stored as category in json
   /// Returns true on succesfully updating custom fields in secondary.
   Future<bool> updateCustomFields(String category, List<BasicData> value,
-      {bool? isCheck = true, var scanKeys}) async {
+      {bool? isCheck = true, var scanKeys, String? previousKey}) async {
     var result;
     for (var data in value) {
       String accountname = _formatCustomTitle(data.accountName ?? '');
@@ -158,8 +161,89 @@ class AtKeySetService {
       if (result == false) {
         return result;
       }
+
+      /// Will update user provider
+      if (result) {
+        await updateProviderAndPreviousKey(category, data, scanKeys,
+            previousKey: previousKey);
+      }
     }
+
     return result ??= true;
+  }
+
+  updateProviderAndPreviousKey(String category, BasicData value, var scanKeys,
+      {String? previousKey}) async {
+    bool _removePreviousKey = false;
+    bool _isNewKey = true;
+
+    if (previousKey != null) {
+      if (scanKeys == null) {
+        scanKeys = await BackendService().atClientInstance.getAtKeys();
+      }
+
+      _removePreviousKey = await deleteKey(previousKey, category,
+          scanKeys: scanKeys, isCustomKey: true, updateProvider: false);
+    }
+
+    var _providerUser = (Provider.of<UserProvider>(
+                NavService.navKey.currentContext!,
+                listen: false)
+            .user!
+            .customFields[category] ??
+        []);
+
+    for (var i = 0; i < _providerUser.length; i++) {
+      // for (int j = 0; j < value.length; j++) {
+      if (_providerUser[i].accountName ==
+          (_removePreviousKey ? previousKey : value.accountName)) {
+        _isNewKey = false;
+        _providerUser[i] = value;
+        break;
+      }
+      // }
+    }
+
+    if (_isNewKey) {
+      _providerUser.add(value);
+    }
+
+    Provider.of<UserProvider>(NavService.navKey.currentContext!, listen: false)
+        .notify();
+  }
+
+  /// [key] is the accountName => it includes space
+  deleteKey(String key, String category,
+      {var scanKeys,
+      bool isCustomKey = false,
+      bool updateProvider = true}) async {
+    if (scanKeys == null) {
+      scanKeys = await BackendService().atClientInstance.getAtKeys();
+    }
+
+    String updatedKey = isCustomKey ? "custom_${key.replaceAll(' ', '')}" : key;
+
+    int previousAtKey = (scanKeys as List<AtKey>)
+        .indexWhere((element) => element.key == updatedKey);
+    if (previousAtKey > -1) {
+      var _result = await BackendService()
+          .atClientInstance
+          .delete(scanKeys[previousAtKey]);
+
+      if (_result) {
+        (Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                        listen: false)
+                    .user!
+                    .customFields[category] ??
+                [])
+            .removeWhere((element) => element.accountName == key);
+        Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                listen: false)
+            .notify();
+      }
+    }
+
+    return false;
   }
 
   ///Returns jsonString of [basicData].
