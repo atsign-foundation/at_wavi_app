@@ -45,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    initPackages();
     _receiveIntent();
     _getThemeData();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
@@ -492,7 +493,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget homeContent() {
     if (_currentTab == HOME_TABS.DETAILS) {
-      return CommonFunctions().isFieldsPresentForCategory(AtCategory.DETAILS)
+      return CommonFunctions().isFieldsPresentForCategory(AtCategory.DETAILS) ||
+              CommonFunctions()
+                  .isFieldsPresentForCategory(AtCategory.ADDITIONAL_DETAILS)
           ? HomeDetails(themeData: _themeData)
           : HomeEmptyDetails();
     } else if (_currentTab == HOME_TABS.CHANNELS) {
