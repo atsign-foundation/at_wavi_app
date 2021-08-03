@@ -1,6 +1,7 @@
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/screens/add_link/add_link.dart';
 import 'package:at_wavi_app/screens/add_link/create_custom_add_link/create_custom_add_link.dart';
+import 'package:at_wavi_app/screens/edit_persona/edit_category_fields.dart';
 import 'package:at_wavi_app/screens/edit_persona/edit_persona.dart';
 import 'package:at_wavi_app/screens/following.dart';
 import 'package:at_wavi_app/screens/home/home.dart';
@@ -100,6 +101,19 @@ class SetupRoutes {
             title: 'Terms and Conditions',
             url: '${MixedConstants.WEBSITE_URL}/terms-conditions',
           ),
+      Routes.EDIT_CATEGORY_FIELDS: (context) {
+        if ((ModalRoute.of(context) != null) &&
+            (ModalRoute.of(context)!.settings.arguments != null)) {
+          Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+
+          return EditCategoryFields(
+            category: args['category'],
+            filedHeading: args['filedHeading'],
+          );
+        } else
+          return SizedBox();
+      },
     };
   }
 

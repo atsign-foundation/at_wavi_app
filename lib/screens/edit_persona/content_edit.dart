@@ -26,12 +26,12 @@ class _CotentEditState extends State<CotentEdit> {
     {
       'heading': 'Basic Details',
       'category': AtCategory.DETAILS,
-      'route': '',
+      'route': Routes.EDIT_CATEGORY_FIELDS,
     },
     {
       'heading': 'Additional Details',
       'category': AtCategory.ADDITIONAL_DETAILS,
-      'route': '',
+      'route': Routes.EDIT_CATEGORY_FIELDS,
     },
     {
       'heading': 'Location',
@@ -41,12 +41,12 @@ class _CotentEditState extends State<CotentEdit> {
     {
       'heading': 'Social Channels',
       'category': AtCategory.SOCIAL,
-      'route': '',
+      'route': Routes.EDIT_CATEGORY_FIELDS,
     },
     {
       'heading': 'Game Channels',
       'category': AtCategory.GAMER,
-      'route': '',
+      'route': Routes.EDIT_CATEGORY_FIELDS,
     },
   ];
   AtCategory? selectedcategory;
@@ -90,8 +90,17 @@ class _CotentEditState extends State<CotentEdit> {
                 InkWell(
                   onTap: () {
                     if (route != '') {
-                      SetupRoutes.push(
-                          NavService.navKey.currentContext!, route);
+                      if (route == Routes.LOCATION_WIDGET) {
+                        SetupRoutes.push(
+                            NavService.navKey.currentContext!, route);
+                      } else if (route == Routes.EDIT_CATEGORY_FIELDS) {
+                        SetupRoutes.push(
+                            NavService.navKey.currentContext!, route,
+                            arguments: {
+                              'category': category,
+                              'filedHeading': title,
+                            });
+                      }
                     }
                   },
                   child: Row(
