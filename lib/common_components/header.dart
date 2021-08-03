@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget {
   final Widget? leading, trailing, centerWidget;
-  Header({this.leading, this.trailing, this.centerWidget});
+  final int centerWidgetFlex;
+  Header(
+      {this.leading,
+      this.trailing,
+      this.centerWidget,
+      this.centerWidgetFlex = 1});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +20,7 @@ class Header extends StatelessWidget {
               : Expanded(child: SizedBox()),
           (centerWidget != null)
               ? Expanded(
+                  flex: centerWidgetFlex,
                   child:
                       Align(alignment: Alignment.center, child: centerWidget!))
               : Expanded(child: SizedBox()),
