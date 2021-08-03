@@ -59,18 +59,13 @@ class _EditPersonaState extends State<EditPersona>
             bottomSheet: _bottomSheet(),
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
+              iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
               toolbarHeight: 40,
-              title: Row(
-                children: [
-                  Icon(Icons.arrow_back, color: ColorConstants.black),
-                  // TODO: have to fix alignment
-                  // Text(
-                  //   'Edit Persona',
-                  //   style: CustomTextStyles.customBoldTextStyle(
-                  //       Theme.of(context).primaryColor,
-                  //       size: 16),
-                  // ),
-                ],
+              title: Text(
+                'Edit Persona',
+                style: CustomTextStyles.customBoldTextStyle(
+                    Theme.of(context).primaryColor,
+                    size: 16),
               ),
               centerTitle: false,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
