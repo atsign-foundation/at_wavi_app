@@ -142,8 +142,11 @@ class CommonFunctions {
   }
 
   bool isFieldsPresentForCategory(AtCategory category) {
-    var isPresent = false;
+    if (UserProvider().user == null) {
+      return false;
+    }
     var userMap = User.toJson(UserProvider().user!);
+    var isPresent = false;
     List<String> fields = FieldNames().getFieldList(category);
 
     for (var field in userMap.entries) {

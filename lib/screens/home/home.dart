@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
-import 'package:at_location_flutter/utils/constants/init_location_service.dart';
 import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
@@ -495,17 +493,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget homeContent() {
     if (_currentTab == HOME_TABS.DETAILS) {
       return CommonFunctions().isFieldsPresentForCategory(AtCategory.DETAILS)
-          ? HomeDetails(themeData: _themeData!)
+          ? HomeDetails(themeData: _themeData)
           : HomeEmptyDetails();
     } else if (_currentTab == HOME_TABS.CHANNELS) {
       return CommonFunctions().isFieldsPresentForCategory(AtCategory.GAMER) ||
               CommonFunctions().isFieldsPresentForCategory(AtCategory.SOCIAL)
-          ? HomeChannels(themeData: _themeData!)
+          ? HomeChannels(themeData: _themeData)
           : HomeEmptyDetails();
     } else if (_currentTab == HOME_TABS.FEATURED) {
       return CommonFunctions().isTwitterFeatured() ||
               CommonFunctions().isInstagramFeatured()
-          ? HomeFeatured(themeData: _themeData!)
+          ? HomeFeatured(themeData: _themeData)
           : HomeEmptyDetails();
     } else
       return SizedBox();
