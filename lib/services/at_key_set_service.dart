@@ -18,22 +18,26 @@ class AtKeySetService {
   static AtKeySetService _instance = AtKeySetService._();
   factory AtKeySetService() => _instance;
 
-  sendNotification() async {
-    var metaData = Metadata()
-      ..isPublic = true
-      ..ttr = -1
-      ..ccd = true
-      ..namespaceAware = true
-      ..isEncrypted = false;
-    var atKey = AtKey()
-      ..key = FieldsEnum.FIRSTNAME.name
-      ..sharedWith = '@new52plum'
-      ..metadata = metaData;
-    // await BackendService().atClientInstance.put(atKey, 'New name');
+  sendNotification(AtKey atKey, String sharedWith, data) async {
+    // var metaData = Metadata()
+    //   ..isPublic = true
+    //   ..ttr = -1
+    //   ..ccd = true
+    //   ..namespaceAware = true
+    //   ..isEncrypted = false;
+    // var atKey = AtKey()
+    //   ..key = FieldsEnum.FIRSTNAME.name
+    //   ..sharedWith = '@new52plum'
+    //   ..metadata = metaData;
+    atKey.sharedWith = sharedWith;
     var value = Notification(
         BackendService().atClientInstance.currentAtSign!,
-        '${BackendService().atClientInstance.currentAtSign!} updated their ${FieldsEnum.PHONE.label} to nitesh',
+        '${BackendService().atClientInstance.currentAtSign!} updated their ${atKey.key} to $data',
         DateTime.now());
+    if (atKey.key == FieldsEnum.IMAGE.name) {
+      value.message =
+          '${BackendService().atClientInstance.currentAtSign!} updated their profile picture';
+    }
     await BackendService()
         .atClientInstance
         .notify(atKey, value.toJson(), OperationEnum.update);
@@ -59,6 +63,7 @@ class AtKeySetService {
       return true;
     }
     var metaData = Metadata();
+    metaData.ttr = -1;
     metaData.isPublic = !data.isPrivate;
     metaData.isEncrypted = data.isPrivate;
     if (key == FieldsEnum.IMAGE.name) {
@@ -87,6 +92,9 @@ class AtKeySetService {
       }
     }
     result = await BackendService().atClientInstance.put(atKey, value);
+
+    /// Call it for all followers
+    await sendNotification(atKey, '@new52plum', value);
     return result;
   }
 
