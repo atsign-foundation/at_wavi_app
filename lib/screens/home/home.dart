@@ -248,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 116.toWidth,
                         decoration: BoxDecoration(
                           color: ColorConstants.white.withOpacity(0.8),
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(60),
                         ),
                         child: (UserProvider().user!.image.value != null)
                             ? CircleAvatar(
@@ -258,7 +258,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                         UserProvider().user!.image.value)
                                     .image,
                               )
-                            : Icon(Icons.person),
+                            : Icon(
+                                Icons.person,
+                                size: 50,
+                              ),
                       ),
                       SizedBox(
                         width: 10,

@@ -80,7 +80,11 @@ class _CotentEditState extends State<CotentEdit> {
           GestureDetector(
             onTap: () {
               setState(() {
-                selectedcategory = category;
+                if (selectedcategory == category) {
+                  selectedcategory = null;
+                } else {
+                  selectedcategory = category;
+                }
               });
             },
             child: Row(

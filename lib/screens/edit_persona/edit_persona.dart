@@ -35,7 +35,8 @@ class _EditPersonaState extends State<EditPersona>
 
   late ThemeColor _theme;
   late Color _highlightColor;
-  bool _updateTheme = false, _updateHighlightColor = false;
+  bool _updateTheme = false,
+      _updateHighlightColor = false; // used to track if to update new values
   late TabController _controller;
   int _tabIndex = 0;
 
