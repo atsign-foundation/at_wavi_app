@@ -8,6 +8,7 @@ import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -16,17 +17,19 @@ class CommonFunctions {
   static CommonFunctions _instance = CommonFunctions._internal();
   factory CommonFunctions() => _instance;
 
-  List<Widget> getCustomCardForFields(
-      ThemeData _themeData, AtCategory category) {
+  List<Widget> getCustomCardForFields(ThemeData _themeData, AtCategory category,
+      {bool isPreview = false}) {
     return [
-      ...getDefinedFieldsCard(_themeData, category),
-      ...getCustomFieldsCard(_themeData, category)
+      ...getDefinedFieldsCard(_themeData, category, isPreview: isPreview),
+      ...getCustomFieldsCard(_themeData, category, isPreview: isPreview)
     ];
   }
 
-  List<Widget> getDefinedFieldsCard(ThemeData _themeData, AtCategory category) {
+  List<Widget> getDefinedFieldsCard(ThemeData _themeData, AtCategory category,
+      {bool isPreview = false}) {
     var definedFieldsWidgets = <Widget>[];
-    var userMap = User.toJson(UserProvider().user!);
+    var userMap =
+        User.toJson(isPreview ? UserPreview().user() : UserProvider().user!);
     List<String> fields = FieldNames().getFieldList(category);
 
     for (var field in userMap.entries) {
@@ -54,12 +57,17 @@ class CommonFunctions {
     return definedFieldsWidgets;
   }
 
-  List<Widget> getCustomFieldsCard(ThemeData _themeData, AtCategory category) {
+  List<Widget> getCustomFieldsCard(ThemeData _themeData, AtCategory category,
+      {bool isPreview = false}) {
     var customFieldsWidgets = <Widget>[];
 
     /// getting custom fields for [category]
-    List<BasicData>? customFields =
-        UserProvider().user!.customFields[category.name];
+    List<BasicData>? customFields = [];
+    if (isPreview) {
+      customFields = UserPreview().user()!.customFields[category.name];
+    } else {
+      customFields = UserProvider().user!.customFields[category.name];
+    }
 
     if (customFields != null) {
       for (var basicData in customFields) {
@@ -141,11 +149,16 @@ class CommonFunctions {
     return twitterCards;
   }
 
-  bool isFieldsPresentForCategory(AtCategory category) {
+  bool isFieldsPresentForCategory(AtCategory category,
+      {bool isPreview = false}) {
+    if (isPreview && UserPreview().user() == null) {
+      return false;
+    }
     if (UserProvider().user == null) {
       return false;
     }
-    var userMap = User.toJson(UserProvider().user!);
+    var userMap =
+        User.toJson(isPreview ? UserPreview().user()! : UserProvider().user!);
     var isPresent = false;
     List<String> fields = FieldNames().getFieldList(category);
 
@@ -159,8 +172,13 @@ class CommonFunctions {
     }
 
     if (!isPresent) {
-      List<BasicData>? customFields =
-          UserProvider().user!.customFields[category.name];
+      List<BasicData>? customFields = [];
+
+      if (isPreview) {
+        customFields = UserPreview().user()!.customFields[category.name];
+      } else {
+        customFields = UserProvider().user!.customFields[category.name];
+      }
 
       if (customFields != null) {
         for (var basicData in customFields) {
@@ -174,7 +192,16 @@ class CommonFunctions {
     return isPresent;
   }
 
-  bool isTwitterFeatured() {
+  bool isTwitterFeatured({bool isPreview = false}) {
+    if (isPreview) {
+      if (UserPreview().user() != null &&
+          UserPreview().user()!.twitter.value != null) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     if (UserProvider().user != null &&
         UserProvider().user!.twitter.value != null) {
       return true;
@@ -183,7 +210,16 @@ class CommonFunctions {
     }
   }
 
-  bool isInstagramFeatured() {
+  bool isInstagramFeatured({bool isPreview = false}) {
+    if (isPreview) {
+      if (UserPreview().user() != null &&
+          UserPreview().user()!.instagram.value != null) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     if (UserProvider().user != null &&
         UserProvider().user!.instagram.value != null) {
       return true;

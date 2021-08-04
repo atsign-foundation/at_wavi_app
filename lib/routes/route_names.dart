@@ -13,4 +13,5 @@ class Routes {
   static const String PREVIEW_LOCATION = 'preview_location';
   static const String CREATE_CUSTOM_LOCATION = 'create_custom_location';
   static const String EDIT_CATEGORY_FIELDS = 'edit_category_fields';
+  static const String ADD_CUSTOM_FIELD = 'ADD_CUSTOM_FIELD';
 }

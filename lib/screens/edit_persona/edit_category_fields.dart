@@ -1,5 +1,4 @@
 import 'package:at_wavi_app/common_components/add_custom_content_button.dart';
-import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
@@ -8,10 +7,8 @@ import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
-import 'package:at_wavi_app/view_models/user_provider.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:at_common_flutter/at_common_flutter.dart';
-import 'package:at_wavi_app/services/size_config.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class EditCategoryFields extends StatefulWidget {
@@ -24,13 +21,16 @@ class EditCategoryFields extends StatefulWidget {
 }
 
 class _EditCategoryFieldsState extends State<EditCategoryFields> {
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          padding: EdgeInsets.only(top: 10, bottom: 10),
-          child: Column(
+    return Container(
+      color: ColorConstants.white,
+      padding: EdgeInsets.only(top: 10, bottom: 10),
+      child: SafeArea(
+        child: Scaffold(
+          body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SizedBox(height: 30),
@@ -61,26 +61,51 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                             onPrivateClicked: () {},
                             height: 160);
                       },
-                      child: Icon(Icons.public),
+                      child: GestureDetector(
+                        onTap: () {
+                          // print('basic data: ${}');
+                        },
+                        child: Icon(
+                            isAllFieldsPrivate() ? Icons.lock : Icons.public),
+                      ),
                     )
                   ],
                 ),
               ),
               SizedBox(height: 35),
-              Expanded(
-                  child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: getAllInputFields(),
-                ),
-              )),
+              Form(
+                key: _formKey,
+                child: Expanded(
+                    child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: getAllInputFields(),
+                  ),
+                )),
+              ),
               SizedBox(height: 20),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: AddCustomContentButton(
                   text: 'Add custom content',
                   onTap: () {
-                    SetupRoutes.push(context, Routes.CREATE_CUSTOM_LOCATION);
+                    SetupRoutes.push(context, Routes.ADD_CUSTOM_FIELD,
+                        arguments: {
+                          'onSave': (BasicData data) {
+                            List<BasicData>? customFields = UserPreview()
+                                .user()!
+                                .customFields[widget.category.name];
+                            if (customFields != null) {
+                              setState(() {
+                                customFields.add(data);
+                                UserPreview()
+                                        .user()!
+                                        .customFields[widget.category.name] =
+                                    customFields;
+                              });
+                            }
+                          }
+                        });
                   },
                 ),
               ),
@@ -97,7 +122,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
 
   List<Widget> getDefinedInputFields() {
     var definedFieldsWidgets = <Widget>[];
-    var userMap = User.toJson(UserProvider().user!);
+    var userMap = User.toJson(UserPreview().user());
     List<String> fields = FieldNames().getFieldList(widget.category);
 
     for (var field in userMap.entries) {
@@ -109,7 +134,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 1),
+              padding: EdgeInsets.symmetric(horizontal: 10),
               child: Text(
                 field.key,
                 style: TextStyles.lightText(
@@ -117,7 +142,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                     size: 16),
               ),
             ),
-            inputField(field.value.value),
+            inputField(field.value),
             Divider(thickness: 1, height: 1),
             SizedBox(height: 20)
           ],
@@ -132,7 +157,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   List<Widget> getCustomInputFields() {
     var customFieldsWidgets = <Widget>[];
     List<BasicData>? customFields =
-        UserProvider().user!.customFields[widget.category.name];
+        UserPreview().user()!.customFields[widget.category.name];
 
     if (customFields != null) {
       for (var basicData in customFields) {
@@ -169,7 +194,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                   size: 16),
             ),
           ),
-          inputField(basicData.value),
+          inputField(basicData),
           Divider(thickness: 1, height: 1),
           SizedBox(height: 20)
         ],
@@ -178,7 +203,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
     return SizedBox();
   }
 
-  Widget inputField(String value) {
+  Widget inputField(BasicData basicData, {bool isCustomField = false}) {
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.15,
@@ -193,7 +218,15 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
               style: TextStyle(color: Colors.white),
             ),
           ),
-          onTap: () {},
+          onTap: () {
+            if (!isCustomField) {
+              removeDefinedField(basicData);
+            }
+            List<BasicData>? customFields =
+                UserPreview().user()!.customFields[widget.category.name];
+            customFields!.remove(basicData);
+            setState(() {});
+          },
         ),
       ],
       child: Padding(
@@ -202,28 +235,113 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: CustomInputField(
-                height: 60,
-                inputFieldColor: Colors.white,
-                hintText: '',
-                initialValue: value,
-                value: (String s) {
-                  print('text : $s');
+              child: TextFormField(
+                autovalidateMode: basicData.value != ''
+                    ? AutovalidateMode.disabled
+                    : AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if (value == null || value == '') {
+                    return 'Please provide value';
+                  }
+                  return null;
                 },
+                initialValue: basicData.value,
+                onChanged: (String value) {
+                  basicData.value = value;
+                  _formKey.currentState!.validate();
+                },
+                decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    errorStyle: TextStyle(fontSize: 15),
+                    border: InputBorder.none,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    )),
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.done,
               ),
             ),
             GestureDetector(
               onTap: () {
                 showPublicPrivateBottomSheet(
-                    onPublicClicked: () {},
-                    onPrivateClicked: () {},
+                    onPublicClicked: () {
+                      setState(() {
+                        basicData.isPrivate = false;
+                      });
+                    },
+                    onPrivateClicked: () {
+                      setState(() {
+                        basicData.isPrivate = true;
+                      });
+                    },
                     height: 160);
               },
-              child: Icon(Icons.public),
+              child: Icon(basicData.isPrivate ? Icons.lock : Icons.public),
             ),
           ],
         ),
       ),
     );
+  }
+
+  bool isAllFieldsPrivate() {
+    List<BasicData>? customFields =
+        UserPreview().user()!.customFields[widget.category.name];
+
+    if (customFields != null) {
+      for (var basicData in customFields) {
+        if (basicData.accountName != null &&
+            basicData.value != null &&
+            !basicData.isPrivate) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  removeDefinedField(BasicData basicData) {
+    if (basicData.accountName == FieldsEnum.IMAGE.name) {
+      UserPreview().user()!.image = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.LASTNAME.name) {
+      UserPreview().user()!.lastname = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.FIRSTNAME.name) {
+      UserPreview().user()!.firstname = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.PHONE.name) {
+      UserPreview().user()!.phone = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.EMAIL.name) {
+      UserPreview().user()!.email = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.ABOUT.name) {
+      UserPreview().user()!.about = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.LOCATION.name) {
+      UserPreview().user()!.location = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.LOCATIONNICKNAME.name) {
+      UserPreview().user()!.locationNickName = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.PRONOUN.name) {
+      UserPreview().user()!.pronoun = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.TWITTER.name) {
+      UserPreview().user()!.twitter = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.FACEBOOK.name) {
+      UserPreview().user()!.facebook = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.LINKEDIN.name) {
+      UserPreview().user()!.linkedin = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.INSTAGRAM.name) {
+      UserPreview().user()!.instagram = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.YOUTUBE.name) {
+      UserPreview().user()!.youtube = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.TUMBLR.name) {
+      UserPreview().user()!.tumbler = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.MEDIUM.name) {
+      UserPreview().user()!.medium = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.PS4.name) {
+      UserPreview().user()!.ps4 = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.XBOX.name) {
+      UserPreview().user()!.xbox = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.STEAM.name) {
+      UserPreview().user()!.steam = new BasicData();
+    } else if (basicData.accountName == FieldsEnum.DISCORD.name) {
+      UserPreview().user()!.discord = new BasicData();
+    }
   }
 }

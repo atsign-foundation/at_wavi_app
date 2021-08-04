@@ -1,6 +1,7 @@
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/screens/add_link/add_link.dart';
 import 'package:at_wavi_app/screens/add_link/create_custom_add_link/create_custom_add_link.dart';
+import 'package:at_wavi_app/screens/edit_persona/add_custom_field.dart';
 import 'package:at_wavi_app/screens/edit_persona/edit_category_fields.dart';
 import 'package:at_wavi_app/screens/edit_persona/edit_persona.dart';
 import 'package:at_wavi_app/screens/following.dart';
@@ -110,6 +111,18 @@ class SetupRoutes {
           return EditCategoryFields(
             category: args['category'],
             filedHeading: args['filedHeading'],
+          );
+        } else
+          return SizedBox();
+      },
+      Routes.ADD_CUSTOM_FIELD: (context) {
+        if ((ModalRoute.of(context) != null) &&
+            (ModalRoute.of(context)!.settings.arguments != null)) {
+          Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+
+          return AddCustomField(
+            onSave: args['onSave'],
           );
         } else
           return SizedBox();

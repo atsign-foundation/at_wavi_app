@@ -34,7 +34,8 @@ enum HOME_TABS { DETAILS, CHANNELS, FEATURED }
 class HomeScreen extends StatefulWidget {
   final ThemeData? themeData;
   final bool isPreview;
-  HomeScreen({this.themeData, this.isPreview = false});
+  final User? previewUser;
+  HomeScreen({this.themeData, this.isPreview = false, this.previewUser});
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -499,12 +500,12 @@ class _HomeScreenState extends State<HomeScreen> {
       return CommonFunctions().isFieldsPresentForCategory(AtCategory.DETAILS) ||
               CommonFunctions()
                   .isFieldsPresentForCategory(AtCategory.ADDITIONAL_DETAILS)
-          ? HomeDetails(themeData: _themeData)
+          ? HomeDetails(themeData: _themeData, isPreview: widget.isPreview)
           : HomeEmptyDetails();
     } else if (_currentTab == HOME_TABS.CHANNELS) {
       return CommonFunctions().isFieldsPresentForCategory(AtCategory.GAMER) ||
               CommonFunctions().isFieldsPresentForCategory(AtCategory.SOCIAL)
-          ? HomeChannels(themeData: _themeData)
+          ? HomeChannels(themeData: _themeData, isPreview: widget.isPreview)
           : HomeEmptyDetails();
     } else if (_currentTab == HOME_TABS.FEATURED) {
       return CommonFunctions().isTwitterFeatured() ||
