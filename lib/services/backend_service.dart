@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:at_client/at_client.dart';
 import 'package:at_client_mobile/at_client_mobile.dart';
@@ -11,6 +12,7 @@ import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/constants.dart';
+import 'package:at_wavi_app/view_models/notification_provider.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -103,7 +105,32 @@ class BackendService {
     return true;
   }
 
-  _notificationCallBack() {}
+  _notificationCallBack(response) async {
+    print('_notificationCallBack: $response');
+    response = response.toString().replaceAll('notification:', '').trim();
+
+    var responseJson = jsonDecode(response);
+    var value = responseJson['value'];
+    var fromAtSign = responseJson['from'];
+    var notificationKey = responseJson['key'];
+    var decryptedMessage = await atClientInstance.encryptionService!
+        .decrypt(value, fromAtSign)
+        // ignore: return_of_invalid_type_from_catch_error
+        .catchError((e) => print('error in decrypting: $e'));
+
+    Provider.of<NotificationProvider>(NavService.navKey.currentContext!,
+            listen: false)
+        .addNotification(notificationKey, fromAtSign, decryptedMessage);
+  }
+
+  String formatIncomingKey(String key, String fromAtSign) {
+    var notificationKey = key.toString().replaceAll(fromAtSign, '');
+    notificationKey = notificationKey.toString().replaceAll(currentAtSign!, '');
+    notificationKey = notificationKey.toString().replaceAll('public', '');
+    notificationKey = notificationKey.toString().replaceAll('.wavi', '');
+    notificationKey = notificationKey.toString().replaceAll(':', '');
+    return notificationKey;
+  }
 
   ///Fetches privatekey for [atsign] from device keychain.
   Future<String?> getPrivateKey(String atsign) async {

@@ -65,7 +65,7 @@ PODS:
   - FMDB/standard (2.7.5)
   - geocoder (0.0.1):
     - Flutter
-  - geolocator (6.2.0):
+  - geolocator_apple (1.0.0):
     - Flutter
   - OrderedSet (5.0.0)
   - path_provider (0.0.1):
@@ -107,7 +107,7 @@ DEPENDENCIES:
   - flutter_qr_reader (from `.symlinks/plugins/flutter_qr_reader/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geocoder (from `.symlinks/plugins/geocoder/ios`)
-  - geolocator (from `.symlinks/plugins/geolocator/ios`)
+  - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - receive_sharing_intent (from `.symlinks/plugins/receive_sharing_intent/ios`)
@@ -155,8 +155,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluttertoast/ios"
   geocoder:
     :path: ".symlinks/plugins/geocoder/ios"
-  geolocator:
-    :path: ".symlinks/plugins/geolocator/ios"
+  geolocator_apple:
+    :path: ".symlinks/plugins/geolocator_apple/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
@@ -193,7 +193,7 @@ SPEC CHECKSUMS:
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geocoder: 3cfab70531a0b367e917bafe82df4c30f6d4c45a
-  geolocator: f5e3de65e241caba7ce3e8a618803387bda73384
+  geolocator_apple: 60a1c3f5930c090d2f5164ba8bf25f4f89121e3c
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0

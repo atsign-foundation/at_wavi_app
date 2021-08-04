@@ -3,6 +3,7 @@ import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/theme.dart';
+import 'package:at_wavi_app/view_models/notification_provider.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,8 @@ class _MyAppState extends State<MyApp> {
       ChangeNotifierProvider<UserProvider>(create: (context) => UserProvider()),
       ChangeNotifierProvider<SetPrivateState>(
           create: (context) => SetPrivateState()),
+      ChangeNotifierProvider<NotificationProvider>(
+          create: (context) => NotificationProvider()),
     ], child: MaterialAppClass());
   }
 }

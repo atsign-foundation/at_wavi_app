@@ -17,6 +17,22 @@ class AtKeySetService {
   static AtKeySetService _instance = AtKeySetService._();
   factory AtKeySetService() => _instance;
 
+  sendNotification() async {
+    var metaData = Metadata()
+      ..isPublic = true
+      ..ttr = -1
+      ..ccd = true
+      ..isEncrypted = false;
+    var atKey = AtKey()
+      ..key = FieldsEnum.LASTNAME.name
+      ..sharedWith = '@new52plum'
+      ..metadata = metaData;
+    // await BackendService().atClientInstance.put(atKey, 'New name');
+    await BackendService()
+        .atClientInstance
+        .notify(atKey, 'name', OperationEnum.update);
+  }
+
   /// Example for update() => Will update FirstName
   // AtKeySetService().update(
   // BasicData(
