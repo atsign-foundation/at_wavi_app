@@ -21,6 +21,7 @@ class _FollowingState extends State<Following>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
   int _tabIndex = 0;
+  String _searchedText = '';
 
   @override
   void initState() {
@@ -89,8 +90,12 @@ class _FollowingState extends State<Following>
                     padding: const EdgeInsets.only(right: 5.0, top: 6),
                     child: Image.asset(Images.atIcon),
                   ),
+                  initialValue: _searchedText,
                   value: (String s) {
-                    print('text : $s');
+                    setState(() {
+                      _searchedText = s;
+                    });
+                    print('s $s');
                   },
                 ),
                 SizedBox(height: 25.toHeight),
@@ -101,9 +106,20 @@ class _FollowingState extends State<Following>
                       SingleChildScrollView(
                         child: Consumer<FollowService>(
                             builder: (context, _provider, _) {
+                          var _providerList = _provider.following.list ?? [];
+                          List<String?> _filteredList;
+                          if (_searchedText.isNotEmpty) {
+                            _filteredList = _providerList
+                                .where((_atsign) =>
+                                    _atsign?.contains(_searchedText) ?? false)
+                                .toList();
+                          } else {
+                            _filteredList = _providerList;
+                          }
+
                           return Wrap(
-                            children: List.generate(
-                                _provider.following.list!.length, (index) {
+                            children:
+                                List.generate(_filteredList.length, (index) {
                               AtsignDetails? atsignDetail;
                               String? name;
                               Uint8List? image;
@@ -112,7 +128,7 @@ class _FollowingState extends State<Following>
                                   .atsignListDetails
                                   .indexWhere((element) =>
                                       element.atcontact.atSign ==
-                                      _provider.following.list![index]!);
+                                      _filteredList[index]!);
                               if (i > -1) {
                                 atsignDetail = FollowService()
                                     .following
@@ -136,12 +152,11 @@ class _FollowingState extends State<Following>
                                     const EdgeInsets.symmetric(vertical: 8.0),
                                 child: CustomPersonHorizontalTile(
                                   title: name != null ? name : null,
-                                  subTitle: _provider.following.list![index],
+                                  subTitle: _filteredList[index],
                                   trailingWidget: InkWell(
                                     onTap: () async {
                                       await FollowService().unfollow(
-                                          _provider.following.list![index]!,
-                                          index);
+                                          _filteredList[index]!, index);
                                     },
                                     child: _provider
                                             .following
@@ -165,9 +180,20 @@ class _FollowingState extends State<Following>
                       SingleChildScrollView(
                         child: Consumer<FollowService>(
                             builder: (context, _provider, _) {
+                          var _providerList = _provider.followers.list ?? [];
+                          List<String?> _filteredList;
+                          if (_searchedText.isNotEmpty) {
+                            _filteredList = _providerList
+                                .where((_atsign) =>
+                                    _atsign?.contains(_searchedText) ?? false)
+                                .toList();
+                          } else {
+                            _filteredList = _providerList;
+                          }
+
                           return Wrap(
-                            children: List.generate(
-                                _provider.followers.list!.length, (index) {
+                            children:
+                                List.generate(_filteredList.length, (index) {
                               AtsignDetails? atsignDetail;
                               String? name;
                               Uint8List? image;
@@ -176,7 +202,7 @@ class _FollowingState extends State<Following>
                                   .atsignListDetails
                                   .indexWhere((element) =>
                                       element.atcontact.atSign ==
-                                      _provider.followers.list![index]!);
+                                      _filteredList[index]!);
                               if (i > -1) {
                                 atsignDetail = FollowService()
                                     .followers
@@ -201,12 +227,11 @@ class _FollowingState extends State<Following>
                                     const EdgeInsets.symmetric(vertical: 8.0),
                                 child: CustomPersonHorizontalTile(
                                     title: name != null ? name : null,
-                                    subTitle: _provider.followers.list![index],
+                                    subTitle: _filteredList[index],
                                     trailingWidget: InkWell(
                                       onTap: () async {
                                         FollowService().removeFollower(
-                                            _provider.followers.list![index]!,
-                                            index);
+                                            _filteredList[index]!, index);
                                       },
                                       child: _provider
                                               .followers
