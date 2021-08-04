@@ -1,7 +1,5 @@
+import 'dart:convert';
 import 'package:at_wavi_app/model/notification.dart';
-import 'package:at_wavi_app/services/backend_service.dart';
-import 'package:at_wavi_app/utils/at_enum.dart';
-
 import 'base_model.dart';
 
 class NotificationProvider extends BaseModel {
@@ -10,22 +8,18 @@ class NotificationProvider extends BaseModel {
   factory NotificationProvider() => _instance;
 
   List<Notification> notifications = [];
+  // ignore: non_constant_identifier_names
   String ADD_NOTIFICATION = 'add_notification';
 
-  addNotification(String key, String fromAtSign, String decryptedMessage) {
-    setStatus(ADD_NOTIFICATION, Status.Loading);
-    var notificationKey = BackendService().formatIncomingKey(key, fromAtSign);
-    print('notificationKey $notificationKey');
-
-    var field = valueOf(notificationKey);
-
-    if (field is FieldsEnum) {
-      print('$fromAtSign updated their ${field.label} to $decryptedMessage');
+  addNotification(String decryptedMessage) {
+    try {
+      setStatus(ADD_NOTIFICATION, Status.Loading);
       notifications.insert(
-          0,
-          Notification(fromAtSign,
-              '$fromAtSign updated their ${field.label} to $decryptedMessage'));
+          0, Notification.fromJson(jsonDecode(decryptedMessage)));
+      setStatus(ADD_NOTIFICATION, Status.Done);
+    } catch (e) {
+      print('Error in addNotification $e');
+      setStatus(ADD_NOTIFICATION, Status.Error);
     }
-    setStatus(ADD_NOTIFICATION, Status.Done);
   }
 }

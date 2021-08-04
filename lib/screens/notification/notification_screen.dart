@@ -60,7 +60,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       height: 5,
                                     ),
                                     Text(
-                                      '30 mins ago',
+                                      DateTime.now()
+                                              .difference(_provider
+                                                  .notifications[index]
+                                                  .dateTime)
+                                              .inMinutes
+                                              .toString() +
+                                          ' mins ago',
                                       style: CustomTextStyles.customTextStyle(
                                           ColorConstants.LIGHT_GREY,
                                           size: 12),

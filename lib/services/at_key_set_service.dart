@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:at_base2e15/at_base2e15.dart';
 import 'package:at_commons/at_commons.dart';
+import 'package:at_wavi_app/model/notification.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -22,15 +23,20 @@ class AtKeySetService {
       ..isPublic = true
       ..ttr = -1
       ..ccd = true
+      ..namespaceAware = true
       ..isEncrypted = false;
     var atKey = AtKey()
-      ..key = FieldsEnum.LASTNAME.name
+      ..key = FieldsEnum.FIRSTNAME.name
       ..sharedWith = '@new52plum'
       ..metadata = metaData;
     // await BackendService().atClientInstance.put(atKey, 'New name');
+    var value = Notification(
+        BackendService().atClientInstance.currentAtSign!,
+        '${BackendService().atClientInstance.currentAtSign!} updated their ${FieldsEnum.PHONE.label} to nitesh',
+        DateTime.now());
     await BackendService()
         .atClientInstance
-        .notify(atKey, 'name', OperationEnum.update);
+        .notify(atKey, value.toJson(), OperationEnum.update);
   }
 
   /// Example for update() => Will update FirstName

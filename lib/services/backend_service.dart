@@ -113,6 +113,9 @@ class BackendService {
     var value = responseJson['value'];
     var fromAtSign = responseJson['from'];
     var notificationKey = responseJson['key'];
+    if (!notificationKey.toString().contains('.wavi')) {
+      return;
+    }
     var decryptedMessage = await atClientInstance.encryptionService!
         .decrypt(value, fromAtSign)
         // ignore: return_of_invalid_type_from_catch_error
@@ -120,7 +123,7 @@ class BackendService {
 
     Provider.of<NotificationProvider>(NavService.navKey.currentContext!,
             listen: false)
-        .addNotification(notificationKey, fromAtSign, decryptedMessage);
+        .addNotification(decryptedMessage);
   }
 
   String formatIncomingKey(String key, String fromAtSign) {
