@@ -38,11 +38,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ContactInitial(
-                                initials:
-                                    _provider.notifications[index].fromAtsign,
-                                size: 55,
-                              ),
+                              _provider.notifications[index].image != null
+                                  ? ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                      child: Image.memory(
+                                        _provider.notifications[index].image!,
+                                        width: 55,
+                                        height: 55,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    )
+                                  : ContactInitial(
+                                      initials: _provider
+                                          .notifications[index].fromAtsign,
+                                      size: 55,
+                                    ),
                               SizedBox(width: 12),
                               Flexible(
                                 child: Column(

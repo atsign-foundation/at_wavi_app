@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'dart:typed_data';
+
 class Notification {
   String fromAtsign, message;
   DateTime dateTime;
   Notification(this.fromAtsign, this.message, this.dateTime);
+  Uint8List? image;
 
   Notification.fromJson(Map<String, dynamic> json)
       : fromAtsign = json['fromAtsign'],
