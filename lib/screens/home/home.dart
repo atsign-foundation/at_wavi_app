@@ -9,7 +9,9 @@ import 'package:at_wavi_app/screens/home/widgets/Home_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_channel.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_empty_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
+import 'package:at_wavi_app/screens/notification/notification_screen.dart';
 import 'package:at_wavi_app/screens/options.dart';
+import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/services/follow_service.dart';
@@ -172,324 +174,347 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // header
-                  Header(
-                    leading: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        'My Profile',
-                        style: TextStyle(
-                            fontSize: 18.toFont,
-                            color: _themeData!.primaryColor,
-                            fontWeight: FontWeight.w800),
-                      ),
-                    ),
-                    trailing: Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: InkWell(
-                              onTap: () {
-                                SetupRoutes.push(context, Routes.SEARCH_SCREEN);
-                              },
-                              child: Icon(Icons.search,
-                                  color: _themeData!.primaryColor),
+            child: _selectedIndex == 1
+                ? NotificationScreen()
+                : SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        // header
+                        Header(
+                          leading: Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Text(
+                              'My Profile',
+                              style: TextStyle(
+                                  fontSize: 18.toFont,
+                                  color: _themeData!.primaryColor,
+                                  fontWeight: FontWeight.w800),
                             ),
                           ),
-                          SizedBox(height: 18.5.toHeight),
-                          Divider(
-                            color: _themeData!.highlightColor,
-                          ),
-                          SizedBox(height: 18.5.toHeight),
-                          GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  shape: StadiumBorder(),
-                                  builder: (BuildContext context) {
-                                    return Container(
-                                      height: 350,
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 20, horizontal: 20),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: const Radius.circular(12.0),
-                                          topRight: const Radius.circular(12.0),
-                                        ),
-                                      ),
-                                      child: Options(),
-                                    );
-                                  });
-                            },
-                            child: Icon(Icons.more_vert,
-                                color: _themeData!.primaryColor),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 30.toHeight),
-
-                  // content
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        width: 116.toWidth,
-                        height: 116.toWidth,
-                        decoration: BoxDecoration(
-                          color: ColorConstants.white.withOpacity(0.8),
-                          borderRadius: BorderRadius.circular(60),
-                        ),
-                        child: (UserProvider().user!.image.value != null)
-                            ? CircleAvatar(
-                                radius: 50.toFont,
-                                backgroundColor: Colors.transparent,
-                                backgroundImage: Image.memory(
-                                        UserProvider().user!.image.value)
-                                    .image,
-                              )
-                            : Icon(
-                                Icons.person,
-                                size: 50,
-                              ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(_name,
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: _themeData!.primaryColor,
-                                    fontWeight: FontWeight.w600)),
-                            SizedBox(height: 8.toHeight),
-                            BackendService().currentAtSign != null
-                                ? Text(
-                                    BackendService().currentAtSign!,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: ColorConstants.orange,
-                                      fontSize: 18.toFont,
-                                    ),
-                                  )
-                                : SizedBox(),
-                            SizedBox(height: 18.5.toHeight),
-                            Divider(
-                              color: _themeData!.highlightColor,
-                            ),
-                            SizedBox(height: 18.5.toHeight),
-                            Consumer<FollowService>(
-                                builder: (context, _provider, _) {
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${_provider.followers.list!.length}',
-                                          style: TextStyle(
-                                              fontSize: 18.toFont,
-                                              color: _isDark
-                                                  ? _themeData!.primaryColor
-                                                  : _themeData!.highlightColor,
-                                              fontWeight: FontWeight.w800),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            SetupRoutes.push(context,
-                                                Routes.FOLLOWING_SCREEN);
-                                          },
-                                          child: Text(
-                                            'Followers',
-                                            style: TextStyle(
-                                                fontSize: 14.toFont,
-                                                color: _themeData!.primaryColor
-                                                    .withOpacity(0.5)),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                          trailing: Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      SetupRoutes.push(
+                                          context, Routes.SEARCH_SCREEN);
+                                    },
+                                    child: Icon(Icons.search,
+                                        color: _themeData!.primaryColor),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 10.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${_provider.following.list!.length}',
+                                ),
+                                SizedBox(height: 18.5.toHeight),
+                                Divider(
+                                  color: _themeData!.highlightColor,
+                                ),
+                                SizedBox(height: 18.5.toHeight),
+                                GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        shape: StadiumBorder(),
+                                        builder: (BuildContext context) {
+                                          return Container(
+                                            height: 350,
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 20, horizontal: 20),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft:
+                                                    const Radius.circular(12.0),
+                                                topRight:
+                                                    const Radius.circular(12.0),
+                                              ),
+                                            ),
+                                            child: Options(),
+                                          );
+                                        });
+                                  },
+                                  child: Icon(Icons.more_vert,
+                                      color: _themeData!.primaryColor),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 30.toHeight),
+
+                        // content
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              width: 116.toWidth,
+                              height: 116.toWidth,
+                              decoration: BoxDecoration(
+                                color: ColorConstants.white.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(60),
+                              ),
+                              child: (UserProvider().user!.image.value != null)
+                                  ? CircleAvatar(
+                                      radius: 50.toFont,
+                                      backgroundColor: Colors.transparent,
+                                      backgroundImage: Image.memory(
+                                              UserProvider().user!.image.value)
+                                          .image,
+                                    )
+                                  : Icon(
+                                      Icons.person,
+                                      size: 50,
+                                    ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(_name,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: _themeData!.primaryColor,
+                                          fontWeight: FontWeight.w600)),
+                                  SizedBox(height: 8.toHeight),
+                                  BackendService().currentAtSign != null
+                                      ? Text(
+                                          BackendService().currentAtSign!,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                              fontSize: 18.toFont,
-                                              color: _isDark
-                                                  ? _themeData!.primaryColor
-                                                  : _themeData!.highlightColor,
-                                              fontWeight: FontWeight.w800),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            SetupRoutes.push(context,
-                                                Routes.FOLLOWING_SCREEN);
-                                          },
-                                          child: Text(
-                                            'Following',
-                                            style: TextStyle(
-                                                fontSize: 14.toFont,
-                                                color: _themeData!.primaryColor
-                                                    .withOpacity(0.5)),
+                                            color: ColorConstants.orange,
+                                            fontSize: 18.toFont,
+                                          ),
+                                        )
+                                      : SizedBox(),
+                                  SizedBox(height: 18.5.toHeight),
+                                  Divider(
+                                    color: _themeData!.highlightColor,
+                                  ),
+                                  SizedBox(height: 18.5.toHeight),
+                                  Consumer<FollowService>(
+                                      builder: (context, _provider, _) {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 10.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '${_provider.followers.list!.length}',
+                                                style: TextStyle(
+                                                    fontSize: 18.toFont,
+                                                    color: _isDark
+                                                        ? _themeData!
+                                                            .primaryColor
+                                                        : _themeData!
+                                                            .highlightColor,
+                                                    fontWeight:
+                                                        FontWeight.w800),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  SetupRoutes.push(context,
+                                                      Routes.FOLLOWING_SCREEN);
+                                                },
+                                                child: Text(
+                                                  'Followers',
+                                                  style: TextStyle(
+                                                      fontSize: 14.toFont,
+                                                      color: _themeData!
+                                                          .primaryColor
+                                                          .withOpacity(0.5)),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 10.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '${_provider.following.list!.length}',
+                                                style: TextStyle(
+                                                    fontSize: 18.toFont,
+                                                    color: _isDark
+                                                        ? _themeData!
+                                                            .primaryColor
+                                                        : _themeData!
+                                                            .highlightColor,
+                                                    fontWeight:
+                                                        FontWeight.w800),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  SetupRoutes.push(context,
+                                                      Routes.FOLLOWING_SCREEN);
+                                                },
+                                                child: Text(
+                                                  'Following',
+                                                  style: TextStyle(
+                                                      fontSize: 14.toFont,
+                                                      color: _themeData!
+                                                          .primaryColor
+                                                          .withOpacity(0.5)),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
                                       ],
-                                    ),
-                                  )
+                                    );
+                                  }),
                                 ],
-                              );
-                            }),
+                              ),
+                            )
                           ],
                         ),
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 20.toHeight),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          height: 55.toHeight,
-                          child: TextButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  _themeData!.highlightColor.withOpacity(0.1)),
+                        SizedBox(height: 20.toHeight),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: SizedBox(
+                                height: 55.toHeight,
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            _themeData!.highlightColor
+                                                .withOpacity(0.1)),
+                                  ),
+                                  onPressed: widget.isPreview
+                                      ? () {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            backgroundColor: ColorConstants.RED,
+                                            content: Text(
+                                              'This is a Preview',
+                                              style: CustomTextStyles
+                                                  .customTextStyle(
+                                                ColorConstants.white,
+                                              ),
+                                            ),
+                                          ));
+                                        }
+                                      : () {
+                                          AtKeySetService().sendNotification();
+                                          // SetupRoutes.push(
+                                          //     NavService.navKey.currentContext!,
+                                          //     Routes.EDIT_PERSONA);
+                                        },
+                                  child: Text(
+                                    'Edit Profile',
+                                    style: TextStyle(
+                                        fontSize: 16.toFont,
+                                        color: _themeData!.primaryColor
+                                            .withOpacity(0.5)),
+                                  ),
+                                ),
+                              ),
                             ),
-                            onPressed: widget.isPreview
-                                ? () {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      backgroundColor: ColorConstants.RED,
-                                      content: Text(
-                                        'This is a Preview',
-                                        style: CustomTextStyles.customTextStyle(
-                                          ColorConstants.white,
-                                        ),
-                                      ),
-                                    ));
-                                  }
-                                : () {
-                                    SetupRoutes.push(
-                                        NavService.navKey.currentContext!,
-                                        Routes.EDIT_PERSONA);
-                                  },
-                            child: Text(
-                              'Edit Profile',
-                              style: TextStyle(
-                                  fontSize: 16.toFont,
-                                  color: _themeData!.primaryColor
-                                      .withOpacity(0.5)),
-                            ),
-                          ),
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: SizedBox(
+                                height: 55.toHeight,
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            _themeData!.highlightColor
+                                                .withOpacity(0.1)),
+                                  ),
+                                  onPressed: widget.isPreview
+                                      ? () {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            backgroundColor: ColorConstants.RED,
+                                            content: Text(
+                                              'This is a Preview',
+                                              style: CustomTextStyles
+                                                  .customTextStyle(
+                                                ColorConstants.white,
+                                              ),
+                                            ),
+                                          ));
+                                        }
+                                      : () async {
+                                          await TwitetrService().getTweets();
+                                        },
+                                  child: Text('Share Profile',
+                                      style: TextStyle(
+                                          fontSize: 16.toFont,
+                                          color: _themeData!.primaryColor
+                                              .withOpacity(0.5))),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                      ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        child: SizedBox(
-                          height: 55.toHeight,
-                          child: TextButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  _themeData!.highlightColor.withOpacity(0.1)),
-                            ),
-                            onPressed: widget.isPreview
-                                ? () {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      backgroundColor: ColorConstants.RED,
-                                      content: Text(
-                                        'This is a Preview',
-                                        style: CustomTextStyles.customTextStyle(
-                                          ColorConstants.white,
-                                        ),
-                                      ),
-                                    ));
-                                  }
-                                : () async {
-                                    await TwitetrService().getTweets();
-                                  },
-                            child: Text('Share Profile',
-                                style: TextStyle(
-                                    fontSize: 16.toFont,
-                                    color: _themeData!.primaryColor
-                                        .withOpacity(0.5))),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 25.toHeight),
+                        SizedBox(height: 25.toHeight),
 
-                  Container(
-                    height: 70.toHeight,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: _themeData!.primaryColor.withOpacity(0.1)),
-                      borderRadius: BorderRadius.circular(60),
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                _currentTab = HOME_TABS.DETAILS;
-                              });
-                            },
-                            child: tab('Details', HOME_TABS.DETAILS),
+                        Container(
+                          height: 70.toHeight,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color:
+                                    _themeData!.primaryColor.withOpacity(0.1)),
+                            borderRadius: BorderRadius.circular(60),
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _currentTab = HOME_TABS.DETAILS;
+                                    });
+                                  },
+                                  child: tab('Details', HOME_TABS.DETAILS),
+                                ),
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _currentTab = HOME_TABS.CHANNELS;
+                                      });
+                                    },
+                                    child: tab('Channels', HOME_TABS.CHANNELS)),
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _currentTab = HOME_TABS.FEATURED;
+                                    });
+                                  },
+                                  child: tab('Featured', HOME_TABS.FEATURED),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Expanded(
-                          child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _currentTab = HOME_TABS.CHANNELS;
-                                });
-                              },
-                              child: tab('Channels', HOME_TABS.CHANNELS)),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                _currentTab = HOME_TABS.FEATURED;
-                              });
-                            },
-                            child: tab('Featured', HOME_TABS.FEATURED),
-                          ),
-                        ),
+                        SizedBox(height: 20.toHeight),
+                        homeContent()
                       ],
                     ),
                   ),
-                  SizedBox(height: 20.toHeight),
-                  homeContent()
-                ],
-              ),
-            ),
           ),
         ),
       );
