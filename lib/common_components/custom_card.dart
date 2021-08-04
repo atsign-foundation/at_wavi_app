@@ -16,7 +16,7 @@ class CustomCard extends StatelessWidget {
       required this.themeData});
 
   void setThemeData(BuildContext context) {
-    _isDark = themeData.scaffoldBackgroundColor == ColorConstants.white;
+    _isDark = themeData.scaffoldBackgroundColor == ColorConstants.black;
   }
 
   @override

@@ -151,7 +151,7 @@ class CommonFunctions {
           fields.contains(field.key) &&
           field.value != null &&
           field.value.value != null) {
-        isPresent = true;
+        return true;
       }
     }
 
@@ -162,7 +162,7 @@ class CommonFunctions {
       if (customFields != null) {
         for (var basicData in customFields) {
           if (basicData.accountName != null && basicData.value != null) {
-            isPresent = true;
+            return true;
           }
         }
       }

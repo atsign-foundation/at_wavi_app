@@ -4,6 +4,7 @@ import 'package:at_common_flutter/at_common_flutter.dart';
 import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
+import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
@@ -43,6 +44,7 @@ class _FollowingState extends State<Following>
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Header(
+                  centerWidgetFlex: 4,
                   leading: InkWell(
                     onTap: () {
                       Navigator.of(context).pop();
@@ -50,8 +52,10 @@ class _FollowingState extends State<Following>
                     child: Icon(Icons.arrow_back),
                   ),
                   centerWidget: Text(
-                    '@lauren',
-                    style: TextStyles.boldText(ColorConstants.white, size: 18),
+                    BackendService().atClientInstance.currentAtSign!,
+                    style: TextStyles.boldText(ColorConstants.black, size: 18),
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   trailing: Icon(Icons.public),
                 ),
