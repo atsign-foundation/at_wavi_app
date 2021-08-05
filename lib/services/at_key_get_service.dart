@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:at_base2e15/at_base2e15.dart';
 import 'package:at_commons/at_commons.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
@@ -21,6 +22,7 @@ class AtKeyGetService {
 
   ///fetches [atsign] profile.
   Future<User?> getProfile({String? atsign}) async {
+    bool _containsPrivateAccountKey = false;
     try {
       // _setUser(atsign: atsign);
       atsign = atsign ?? BackendService().atClientInstance.currentAtSign;
@@ -29,15 +31,13 @@ class AtKeyGetService {
       for (var key in scanKeys) {
         await _performLookupAndSetUser(key);
         // if (!result) errorCallBack(false);
-      }
-      print('firstname ${user.firstname.value}');
-      print('user.customFields ${user.customFields}');
-      user.customFields.forEach((key, value) {
-        if (user.customFields[key] != null) {
-          print(
-              'user.customFields[key] ${key} accountName:${value[0].accountName} type:${value[0].type} value:${value[0].value} valueDescription ${value[0].valueDescription} ');
+
+        if (key.key!.contains(FieldsEnum.PRIVATEACCOUNT.name)) {
+          _containsPrivateAccountKey = true;
         }
-      });
+      }
+
+      await createPrivateAccountKey(atsign!, _containsPrivateAccountKey);
       return user;
       // _container.updateWidgets();
       // successCallBack(true);
@@ -47,6 +47,22 @@ class AtKeyGetService {
       // errorCallBack(err);
       print('Error in getProfile $err');
       return null;
+    }
+  }
+
+  /// check & create 'PRIVATEACCOUNT key
+  createPrivateAccountKey(
+      String atsign, bool _containsPrivateAccountKey) async {
+    try {
+      if (atsign == BackendService().atClientInstance.currentAtSign) {
+        if (!_containsPrivateAccountKey) {
+          await AtKeySetService().update(
+              BasicData(value: user.allPrivate.toString()),
+              FieldsEnum.PRIVATEACCOUNT.name);
+        }
+      }
+    } catch (err) {
+      print('Error in createPrivateAccountKey $err');
     }
   }
 
