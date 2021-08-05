@@ -121,8 +121,8 @@ class AtKeyGetService {
     var json = jsonDecode(response);
     if (json != 'null' && json != null) {
       String category = json[CustomFieldConstants.category];
-      var type = _getType(json[CustomFieldConstants.type]);
-      var value = _getCustomContentValue(type: type, json: json);
+      var type = getType(json[CustomFieldConstants.type]);
+      var value = getCustomContentValue(type: type, json: json);
       String label = json[CustomFieldConstants.label];
       String? valueDescription = json[CustomFieldConstants.valueDescription];
       BasicData basicData = BasicData(
@@ -144,7 +144,7 @@ class AtKeyGetService {
   }
 
   ///Feches type of customField.
-  _getType(type) {
+  getType(type) {
     if (type is String) {
       return type;
     }
@@ -157,7 +157,7 @@ class AtKeyGetService {
   }
 
   ///parses customField value from [json] based on type.
-  _getCustomContentValue({required var type, required var json}) {
+  getCustomContentValue({required var type, required var json}) {
     if (type == CustomContentType.Image.name) {
       return Base2e15.decode(json[CustomFieldConstants.value]);
     } else if (type == CustomContentType.Youtube.name) {

@@ -15,6 +15,7 @@ import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
+import 'package:at_wavi_app/services/search_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -23,6 +24,7 @@ import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -47,12 +49,27 @@ class _HomeScreenState extends State<HomeScreen> {
   ThemeData? _themeData;
   late StreamSubscription<dynamic> _intentDataStreamSubscription;
   late String _name;
+  late User _currentUser;
+
+  bool _isSearchScreen = false;
 
   @override
   void initState() {
-    _name = UserProvider().user!.firstname.value ?? '';
-    if (UserProvider().user!.lastname.value != null) {
-      _name = '$_name ${UserProvider().user!.lastname.value}';
+    if (widget.isPreview) {
+      _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
+    } else {
+      _currentUser = Provider.of<UserProvider>(context, listen: false).user!;
+    }
+
+    if ((widget.isPreview) &&
+        (_currentUser.atsign !=
+            BackendService().atClientInstance.currentAtSign)) {
+      _isSearchScreen = true;
+    }
+
+    _name = _currentUser.firstname.value ?? '';
+    if (_currentUser.lastname.value != null) {
+      _name = '$_name ${_currentUser.lastname.value}';
     }
 
     if (_name.isEmpty) {
@@ -188,7 +205,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: Icon(Icons.arrow_back),
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: _themeData!.primaryColor,
+                                ),
                               )
                             : SizedBox(),
                         SizedBox(width: 5),
@@ -268,13 +288,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: ColorConstants.white.withOpacity(0.8),
                           borderRadius: BorderRadius.circular(60),
                         ),
-                        child: (UserProvider().user!.image.value != null)
+                        child: (_currentUser.image.value != null)
                             ? CircleAvatar(
                                 radius: 50.toFont,
                                 backgroundColor: Colors.transparent,
-                                backgroundImage: Image.memory(
-                                        UserProvider().user!.image.value)
-                                    .image,
+                                backgroundImage:
+                                    Image.memory(_currentUser.image.value)
+                                        .image,
                               )
                             : Icon(
                                 Icons.person,
@@ -410,10 +430,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ));
                                   }
-                                : () {
-                                    SetupRoutes.push(
-                                        NavService.navKey.currentContext!,
-                                        Routes.EDIT_PERSONA);
+                                : () async {
+                                    var _res = await SearchService()
+                                        .getAtsignDetails('atsign');
+                                    // Provider.of<UserPreview>(context,
+                                    //         listen: false)
+                                    //     .setSearchedUser(_res);
+                                    UserPreview().setUser = _res;
+                                    await SetupRoutes.push(context, Routes.HOME,
+                                        arguments: {
+                                          // 'themeData': _modifiedTheme,
+                                          'isPreview': true,
+                                        });
+
+                                    ///////////////
+                                    // SetupRoutes.push(
+                                    //     NavService.navKey.currentContext!,
+                                    //     Routes.EDIT_PERSONA);
                                   },
                             child: Text(
                               widget.isPreview ? 'Follow' : 'Edit Profile',
