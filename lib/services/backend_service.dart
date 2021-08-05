@@ -121,6 +121,8 @@ class BackendService {
         // ignore: return_of_invalid_type_from_catch_error
         .catchError((e) => print('error in decrypting: $e'));
 
+    // if (notificationKey.toString().contains('notification_alert')) {}
+
     Provider.of<NotificationProvider>(NavService.navKey.currentContext!,
             listen: false)
         .addNotification(decryptedMessage);

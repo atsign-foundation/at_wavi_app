@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:at_contact/at_contact.dart';
 import 'package:at_contacts_flutter/at_contacts_flutter.dart';
 import 'package:at_wavi_app/model/notification.dart';
+import 'package:at_wavi_app/services/backend_service.dart';
 import 'base_model.dart';
 
 class NotificationProvider extends BaseModel {
@@ -13,6 +14,21 @@ class NotificationProvider extends BaseModel {
   List<Notification> notifications = [];
   // ignore: non_constant_identifier_names
   String ADD_NOTIFICATION = 'add_notification';
+
+  /// To get previous notifications
+  init() async {
+    var _list = await BackendService().atClientInstance.notifyList(
+        fromDate: DateTime.now().subtract(Duration(days: 1)).toString());
+    _list = _list.replaceAll('data:', '');
+
+    /// TODO: Convert _list to list of Srings
+    List<String> values = [];
+
+    await Future.forEach(values, (_value) async {
+      var _jsonData = jsonDecode(_value.toString());
+      await addNotification(_jsonData['value']);
+    });
+  }
 
   addNotification(String decryptedMessage) async {
     try {

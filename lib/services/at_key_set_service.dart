@@ -30,6 +30,11 @@ class AtKeySetService {
     //   ..sharedWith = '@new52plum'
     //   ..metadata = metaData;
     atKey.sharedWith = sharedWith;
+
+    /// TODO: Change keys to 'notification_alert'
+    // AtKey newAtKey = AtKey()..key = 'notification_alert';
+
+    /// Creating the entire model here, now we need not send it in pieces and assemble it at receiver's side
     var value = Notification(
         BackendService().atClientInstance.currentAtSign!,
         '${BackendService().atClientInstance.currentAtSign!} updated their ${atKey.key} to $data',
