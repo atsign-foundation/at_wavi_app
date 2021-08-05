@@ -1,6 +1,10 @@
+import 'dart:ffi';
+import 'dart:typed_data';
+
 import 'package:at_common_flutter/at_common_flutter.dart';
 import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
@@ -15,7 +19,10 @@ class AddCustomField extends StatefulWidget {
 }
 
 class _AddCustomFieldState extends State<AddCustomField> {
-  BasicData basicData = BasicData(isPrivate: false);
+  BasicData basicData =
+      BasicData(isPrivate: false, type: CustomContentType.Text.name);
+  bool isImageSelected = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -74,7 +81,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
                           }
                           return null;
                         },
-                        initialValue: basicData.value,
+                        initialValue: basicData.accountName,
                         onChanged: (String value) {
                           basicData.accountName = value;
                         },
@@ -110,9 +117,9 @@ class _AddCustomFieldState extends State<AddCustomField> {
                           }
                           return null;
                         },
-                        initialValue: basicData.value,
+                        initialValue: basicData.valueDescription,
                         onChanged: (String value) {
-                          basicData.value = value;
+                          basicData.valueDescription = value;
                         },
                         decoration: InputDecoration(
                             fillColor: Colors.white,
@@ -134,9 +141,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
                           children: [
                             Text('Add Media'),
                             GestureDetector(
-                              onTap: () {
-                                print('add media');
-                              },
+                              onTap: _selectImage,
                               child: Row(
                                 children: [
                                   Text(
@@ -156,6 +161,52 @@ class _AddCustomFieldState extends State<AddCustomField> {
                         ),
                       ),
                       Divider(thickness: 1, height: 1),
+                      SizedBox(height: 10),
+                      isImageSelected
+                          ? Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Media'),
+                                  SizedBox(height: 10),
+                                  Stack(
+                                    children: [
+                                      Image.memory(basicData.value!),
+                                      Positioned(
+                                        right: 5,
+                                        top: 5,
+                                        child: InkWell(
+                                          onTap: () {
+                                            basicData.value = null;
+                                            isImageSelected = false;
+                                            setState(() {});
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: ColorConstants.black,
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: Icon(Icons.highlight_remove,
+                                                size: 30, color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  InkWell(
+                                    onTap: _selectImage,
+                                    child: Text('Change Image',
+                                        style: TextStyle(
+                                          color: ColorConstants.orange,
+                                          fontSize: 18.toFont,
+                                        )),
+                                  )
+                                ],
+                              ),
+                            )
+                          : SizedBox(),
                       SizedBox(height: 10),
                       Padding(
                         padding:
@@ -202,16 +253,35 @@ class _AddCustomFieldState extends State<AddCustomField> {
                 buttonText: 'Save',
                 fontColor: ColorConstants.white,
                 borderRadius: 0,
-                onPressed: () {
-                  basicData.type = CustomContentType.Text.name;
-                  widget.onSave(basicData);
-                  Navigator.of(context).pop();
-                },
+                onPressed: _onSave,
               )
             ],
           ),
         ),
       ),
     );
+  }
+
+  _selectImage() async {
+    basicData.value = await ImagePicker().pickImage();
+    if (basicData.value != null) {
+      isImageSelected = true;
+      // when image is selected , we are converting custom content's type image.
+      // and the text entered will go to value description
+      basicData.type = CustomContentType.Image.name;
+      setState(() {});
+    }
+  }
+
+  _onSave() {
+    if (isImageSelected) {
+      basicData.type = CustomContentType.Image.name;
+    } else {
+      basicData.value = basicData.valueDescription;
+      basicData.valueDescription = null;
+    }
+
+    widget.onSave(basicData);
+    Navigator.of(context).pop();
   }
 }

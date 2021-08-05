@@ -392,7 +392,19 @@ class _EditPersonaState extends State<EditPersona>
   }
 
   _saveButtonCall() async {
-    await AtKeySetService().saveUserData(UserPreview().user()!);
+    await providerCallback<AtKeySetService>(
+      context,
+      task: (provider) async {
+        await provider.saveUserData(UserPreview().user()!);
+      },
+      onError: (provider) {},
+      showDialog: false,
+      text: 'Saving',
+      taskName: (provider) => provider.UPDATE_USER,
+      onSuccess: (provider) async {
+        Navigator.of(context).pop();
+      },
+    );
   }
 
   _publishButtonCall() async {

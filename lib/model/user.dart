@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:flutter/cupertino.dart';
@@ -188,6 +189,11 @@ class BasicData {
         json['accountName'] != null &&
         json['value'] != 'null' &&
         json['accountName'] != 'null') {
+      if (json['type'] == CustomContentType.Image.name) {
+        json['value'] = jsonDecode(json['value']);
+        json['value'] = json['value']!.cast<int>();
+        json['value'] = Uint8List.fromList(json['value']);
+      }
       return BasicData(
           value: json['value'],
           isPrivate: json['isPrivate'] == 'false' ? false : true,
