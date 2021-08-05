@@ -1,5 +1,7 @@
 import 'dart:async';
 
+// import 'package:at_common_flutter/widgets/custom_input_field.dart';
+import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
@@ -22,6 +24,7 @@ import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
+import 'package:at_wavi_app/utils/images.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
@@ -43,19 +46,25 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int _selectedIndex = 0;
   HOME_TABS _currentTab = HOME_TABS.DETAILS;
   bool _isDark = false;
   ThemeData? _themeData;
-  late StreamSubscription<dynamic> _intentDataStreamSubscription;
   late String _name;
   late User _currentUser;
 
   bool _isSearchScreen = false;
 
+  bool hideHeader = false, loadingSearchedAtsign = false;
+  String searchedAtsign = '';
+  late AnimationController _inputBoxController;
+
   @override
   void initState() {
+    _inputBoxController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+
     if (widget.isPreview) {
       _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
     } else {
@@ -81,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     initPackages();
-    _receiveIntent();
+
     _getThemeData();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
       await FollowService().getFollowers();
@@ -119,48 +128,19 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  _receiveIntent() async {
-    // For sharing images coming from outside the app while the app is in the memory
-    _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
-        .listen((List<SharedMediaFile> value) {
-      print("Incoming Shared file in home :" +
-          (value.map((f) => f.path).join(",")));
+  _animate() {
+    if (_inputBoxController.isCompleted) {
+      setState(() {
+        hideHeader = false;
+      });
+      _inputBoxController.reverse();
+      return;
+    }
 
-      if (value != null) {}
-    }, onError: (err) {
-      print("getIntentDataStream error: $err");
+    setState(() {
+      hideHeader = true;
     });
-
-    // For sharing images coming from outside the app while the app is closed
-    ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
-      print('Incoming images Value in home  is $value');
-      if (value != null) {}
-    });
-
-    // For sharing or opening urls/text coming from outside the app while the app is in the memory
-    _intentDataStreamSubscription =
-        ReceiveSharingIntent.getTextStream().listen((String value) {
-      print('Incoming text Value in home  is $value');
-      if (value != null) {
-        SetupRoutes.push(context, Routes.ADD_LINK, arguments: {'url': value});
-      }
-    }, onError: (err) {
-      print("getLinkStream error: $err");
-    });
-
-    // For sharing or opening urls/text coming from outside the app while the app is closed
-    ReceiveSharingIntent.getInitialText().then((String? value) {
-      if (value != null) {
-        SetupRoutes.push(context, Routes.ADD_LINK, arguments: {'url': value});
-      }
-      print('Incoming text in home  when app is closed $value');
-    });
-  }
-
-  @override
-  void dispose() {
-    _intentDataStreamSubscription.cancel();
-    super.dispose();
+    _inputBoxController.forward();
   }
 
   @override
@@ -198,84 +178,202 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // header
-                  Header(
-                    leading: Row(
-                      children: [
-                        widget.isPreview
-                            ? InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Icon(
-                                  Icons.arrow_back,
-                                  color: _themeData!.primaryColor,
-                                ),
-                              )
-                            : SizedBox(),
-                        SizedBox(width: 5),
-                        Text(
-                          widget.isPreview ? 'Preview' : 'My Profile',
-                          style: TextStyle(
-                              fontSize: 18.toFont,
-                              color: _themeData!.primaryColor,
-                              fontWeight: FontWeight.w800),
-                        ),
-                      ],
-                    ),
-                    trailing: widget.isPreview
-                        ? null
-                        : Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: InkWell(
-                                    onTap: () {
-                                      SetupRoutes.push(
-                                          context, Routes.SEARCH_SCREEN);
-                                    },
-                                    child: Icon(Icons.search,
-                                        color: _themeData!.primaryColor),
+
+                  // true
+                  //     ? CustomInputField(
+                  //         width: 343.toWidth,
+                  //         height: 60.toHeight,
+                  //         hintText: '',
+                  //         prefix: Padding(
+                  //           padding: const EdgeInsets.only(right: 5.0, top: 6),
+                  //           child: Image.asset(Images.atIcon),
+                  //         ),
+                  //         value: (String s) {
+                  //           print('text : $s');
+                  //         },
+                  //       )
+                  //     :
+                  Stack(
+                    children: [
+                      hideHeader
+                          ? SizedBox()
+                          : Header(
+                              leading: Row(
+                                children: [
+                                  widget.isPreview
+                                      ? InkWell(
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Icon(
+                                            Icons.arrow_back,
+                                            color: _themeData!.primaryColor,
+                                          ),
+                                        )
+                                      : SizedBox(),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    widget.isPreview ? 'Preview' : 'My Profile',
+                                    style: TextStyle(
+                                        fontSize: 18.toFont,
+                                        color: _themeData!.primaryColor,
+                                        fontWeight: FontWeight.w800),
                                   ),
-                                ),
-                                SizedBox(height: 18.5.toHeight),
-                                Divider(
-                                  color: _themeData!.highlightColor,
-                                ),
-                                SizedBox(height: 18.5.toHeight),
-                                GestureDetector(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                        context: context,
-                                        isScrollControlled: true,
-                                        shape: StadiumBorder(),
-                                        builder: (BuildContext context) {
-                                          return Container(
-                                            height: 350,
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 20, horizontal: 20),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.only(
-                                                topLeft:
-                                                    const Radius.circular(12.0),
-                                                topRight:
-                                                    const Radius.circular(12.0),
-                                              ),
+                                ],
+                              ),
+                              trailing: widget.isPreview
+                                  ? null
+                                  : Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 10.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 8.0),
+                                            child: InkWell(
+                                              onTap: () {
+                                                _animate();
+                                                // SetupRoutes.push(
+                                                //     context, Routes.SEARCH_SCREEN);
+                                              },
+                                              child: Icon(Icons.search,
+                                                  color:
+                                                      _themeData!.primaryColor),
                                             ),
-                                            child: Options(),
-                                          );
-                                        });
-                                  },
-                                  child: Icon(Icons.more_vert,
-                                      color: _themeData!.primaryColor),
-                                )
-                              ],
+                                          ),
+                                          SizedBox(height: 18.5.toHeight),
+                                          Divider(
+                                            color: _themeData!.highlightColor,
+                                          ),
+                                          SizedBox(height: 18.5.toHeight),
+                                          GestureDetector(
+                                            onTap: () {
+                                              showModalBottomSheet(
+                                                  context: context,
+                                                  isScrollControlled: true,
+                                                  shape: StadiumBorder(),
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Container(
+                                                      height: 350,
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 20,
+                                                              horizontal: 20),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                          topLeft: const Radius
+                                                              .circular(12.0),
+                                                          topRight: const Radius
+                                                              .circular(12.0),
+                                                        ),
+                                                      ),
+                                                      child: Options(),
+                                                    );
+                                                  });
+                                            },
+                                            child: Icon(Icons.more_vert,
+                                                color:
+                                                    _themeData!.primaryColor),
+                                          )
+                                        ],
+                                      ),
+                                    ),
                             ),
-                          ),
+                      _isSearchScreen
+                          ? SizedBox()
+                          : Positioned(
+                              child: SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(1, 0),
+                                  end: Offset.zero,
+                                ).animate(_inputBoxController),
+                                child: CustomInputField(
+                                  padding: EdgeInsets.only(right: 10),
+                                  width: 343.toWidth,
+                                  // height: 60.toHeight,
+                                  bgColor: _themeData!.primaryColor,
+                                  hintText: '',
+                                  height: 50,
+                                  expands: false,
+                                  maxLines: 1,
+                                  icon: loadingSearchedAtsign
+                                      ? Icons.access_time
+                                      : Icons.search,
+                                  secondIcon: Icons.cancel,
+                                  borderColor: Colors.transparent,
+                                  focusedBorderColor: Colors.transparent,
+                                  textColor:
+                                      _themeData!.scaffoldBackgroundColor,
+                                  initialValue: searchedAtsign,
+                                  baseOffset: searchedAtsign.length,
+                                  value: (String s) {
+                                    setState(() {
+                                      searchedAtsign = s;
+                                    });
+                                  },
+                                  onIconTap: () async {
+                                    if (loadingSearchedAtsign) {
+                                      return;
+                                    }
+
+                                    setState(() {
+                                      loadingSearchedAtsign = true;
+                                    });
+                                    var _isPresent = await CommonFunctions()
+                                        .checkAtsign(searchedAtsign);
+
+                                    if (_isPresent) {
+                                      var _res = await SearchService()
+                                          .getAtsignDetails(searchedAtsign);
+
+                                      setState(() {
+                                        loadingSearchedAtsign = false;
+                                      });
+                                      // Provider.of<UserPreview>(context,
+                                      //         listen: false)
+                                      //     .setSearchedUser(_res);
+                                      UserPreview().setUser = _res;
+                                      await SetupRoutes.push(
+                                          context, Routes.HOME,
+                                          arguments: {
+                                            'themeData': SearchService()
+                                                .currentAtsignThemeData,
+                                            'isPreview': true,
+                                          });
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        backgroundColor: ColorConstants.RED,
+                                        content: Text(
+                                          '$searchedAtsign not found',
+                                          style:
+                                              CustomTextStyles.customTextStyle(
+                                            ColorConstants.white,
+                                          ),
+                                        ),
+                                      ));
+                                      setState(() {
+                                        loadingSearchedAtsign = false;
+                                      });
+                                    }
+                                  },
+                                  onSecondIconTap: _animate,
+                                ),
+                              ),
+                            )
+                    ],
                   ),
+
+                  hideHeader && loadingSearchedAtsign
+                      ? LinearProgressIndicator()
+                      : SizedBox(),
+
                   SizedBox(height: 30.toHeight),
 
                   // content
@@ -364,24 +462,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                     }
                                   }
                                 : () async {
-                                    var _res = await SearchService()
-                                        .getAtsignDetails(
-                                            'minorgettingplayed7');
-                                    // Provider.of<UserPreview>(context,
-                                    //         listen: false)
-                                    //     .setSearchedUser(_res);
-                                    UserPreview().setUser = _res;
-                                    await SetupRoutes.push(context, Routes.HOME,
-                                        arguments: {
-                                          'themeData': SearchService()
-                                              .currentAtsignThemeData,
-                                          'isPreview': true,
-                                        });
+                                    // var _res = await SearchService()
+                                    //     .getAtsignDetails(
+                                    //         'minorgettingplayed7');
+                                    // // Provider.of<UserPreview>(context,
+                                    // //         listen: false)
+                                    // //     .setSearchedUser(_res);
+                                    // UserPreview().setUser = _res;
+                                    // await SetupRoutes.push(context, Routes.HOME,
+                                    //     arguments: {
+                                    //       'themeData': SearchService()
+                                    //           .currentAtsignThemeData,
+                                    //       'isPreview': true,
+                                    //     });
 
                                     ///////////////
-                                    // SetupRoutes.push(
-                                    //     NavService.navKey.currentContext!,
-                                    //     Routes.EDIT_PERSONA);
+                                    SetupRoutes.push(
+                                        NavService.navKey.currentContext!,
+                                        Routes.EDIT_PERSONA);
                                   },
                             child: Text(
                               widget.isPreview ? 'Follow' : 'Edit Profile',
@@ -420,6 +518,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     }
                                   }
                                 : () async {
+                                    _animate();
                                     // await TwitetrService().getTweets();
                                     // await AtKeyGetService().deleteKeys();
                                   },

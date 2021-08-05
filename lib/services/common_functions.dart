@@ -2,12 +2,14 @@ import 'dart:typed_data';
 
 import 'package:at_contact/at_contact.dart';
 import 'package:at_contacts_flutter/at_contacts_flutter.dart';
+import 'package:at_lookup/at_lookup.dart';
 import 'package:at_wavi_app/common_components/custom_card.dart';
 import 'package:at_wavi_app/common_components/custom_media_card.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
@@ -274,5 +276,16 @@ class CommonFunctions {
       image = Uint8List.fromList(intList);
       return image;
     }
+  }
+
+  Future<bool> checkAtsign(String? receiver) async {
+    if (receiver == null) {
+      return false;
+    } else if (!receiver.contains('@')) {
+      receiver = '@' + receiver;
+    }
+    var checkPresence = await AtLookupImpl.findSecondary(
+        receiver, MixedConstants.ROOT_DOMAIN, 64);
+    return checkPresence != null;
   }
 }
