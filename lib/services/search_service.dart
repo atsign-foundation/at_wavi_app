@@ -13,21 +13,28 @@ class SearchService {
   SearchService._();
   static SearchService _instance = SearchService._();
   factory SearchService() => _instance;
-  final String url = 'https://wavi.ng/api/?atp=minorgettingplayed7';
+  final String url = 'https://wavi.ng/api/?atp=';
 
   late User user;
   ThemeColor? themeColor;
   ThemeData? currentAtsignThemeData;
   Color? highlightColor;
 
+  int? followers_count;
+  int? following_count;
+  late bool isPrivateAccount;
+
   List<String> keysToIgnore = [
     // '',
-    'at_followers_of_self.wavi',
-    'at_following_by_self.wavi',
+    // 'at_followers_of_self.wavi',
+    // 'at_following_by_self.wavi',
     'privateaccount.wavi'
   ];
+  String privateAccountKey = 'privateaccount.wavi';
   String themeKey = 'theme.wavi';
   String themeColorKey = 'theme_color.wavi';
+  String followers_key = 'at_followers_of_self.wavi';
+  String following_key = 'at_following_by_self.wavi';
 
   updateThemeData(_data) {
     if ((_data ?? '').toLowerCase() == 'dark') {
@@ -53,14 +60,30 @@ class SearchService {
   }
 
   Future<User> getAtsignDetails(String atsign) async {
+    isPrivateAccount = false;
     user = User(allPrivate: false, atsign: atsign);
-    var _response = await http.get(Uri.parse(url));
+    var _response = await http.get(Uri.parse('$url$atsign'));
     var _jsonData = jsonDecode(_response.body);
     print('_jsonData ${_jsonData}');
 
     _jsonData.forEach((_data) {
       var _keyValuePair = _data;
       for (var field in _keyValuePair.entries) {
+        if (field.key.contains(privateAccountKey)) {
+          isPrivateAccount = _keyValuePair[field.key] == 'true';
+          continue;
+        }
+
+        if (field.key.contains(followers_key)) {
+          followers_count = _keyValuePair[field.key].split(',').length;
+          continue;
+        }
+
+        if (field.key.contains(following_key)) {
+          following_count = _keyValuePair[field.key].split(',').length;
+          continue;
+        }
+
         if (field.key.contains(themeKey)) {
           updateThemeData(_keyValuePair[field.key]);
           continue;

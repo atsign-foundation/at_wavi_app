@@ -328,77 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: _themeData!.highlightColor,
                             ),
                             SizedBox(height: 18.5.toHeight),
-                            Consumer<FollowService>(
-                                builder: (context, _provider, _) {
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${_provider.followers.list!.length}',
-                                          style: TextStyle(
-                                              fontSize: 18.toFont,
-                                              color: _isDark
-                                                  ? _themeData!.primaryColor
-                                                  : _themeData!.highlightColor,
-                                              fontWeight: FontWeight.w800),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            SetupRoutes.push(context,
-                                                Routes.FOLLOWING_SCREEN);
-                                          },
-                                          child: Text(
-                                            'Followers',
-                                            style: TextStyle(
-                                                fontSize: 14.toFont,
-                                                color: _themeData!.primaryColor
-                                                    .withOpacity(0.5)),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 10.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${_provider.following.list!.length}',
-                                          style: TextStyle(
-                                              fontSize: 18.toFont,
-                                              color: _isDark
-                                                  ? _themeData!.primaryColor
-                                                  : _themeData!.highlightColor,
-                                              fontWeight: FontWeight.w800),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            SetupRoutes.push(context,
-                                                Routes.FOLLOWING_SCREEN);
-                                          },
-                                          child: Text(
-                                            'Following',
-                                            style: TextStyle(
-                                                fontSize: 14.toFont,
-                                                color: _themeData!.primaryColor
-                                                    .withOpacity(0.5)),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              );
-                            }),
+                            followersFollowingRow(),
                           ],
                         ),
                       )
@@ -473,20 +403,24 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             onPressed: widget.isPreview
                                 ? () {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      backgroundColor: ColorConstants.RED,
-                                      content: Text(
-                                        'This is a Preview',
-                                        style: CustomTextStyles.customTextStyle(
-                                          ColorConstants.white,
+                                    if (_isSearchScreen) {
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        backgroundColor: ColorConstants.RED,
+                                        content: Text(
+                                          'This is a Preview',
+                                          style:
+                                              CustomTextStyles.customTextStyle(
+                                            ColorConstants.white,
+                                          ),
                                         ),
-                                      ),
-                                    ));
+                                      ));
+                                    }
                                   }
                                 : () async {
                                     // await TwitetrService().getTweets();
-                                    await AtKeyGetService().deleteKeys();
+                                    // await AtKeyGetService().deleteKeys();
                                   },
                             child: Text('Share Profile',
                                 style: TextStyle(
@@ -550,6 +484,80 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
     }
+  }
+
+  Widget followersFollowingRow() {
+    return Consumer<FollowService>(builder: (context, _provider, _) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _isSearchScreen
+                      ? (SearchService().followers_count ?? '-').toString()
+                      : '${_provider.followers.list!.length}',
+                  style: TextStyle(
+                      fontSize: 18.toFont,
+                      color: _isDark
+                          ? _themeData!.primaryColor
+                          : _themeData!.highlightColor,
+                      fontWeight: FontWeight.w800),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (!_isSearchScreen) {
+                      SetupRoutes.push(context, Routes.FOLLOWING_SCREEN);
+                    }
+                  },
+                  child: Text(
+                    'Followers',
+                    style: TextStyle(
+                        fontSize: 14.toFont,
+                        color: _themeData!.primaryColor.withOpacity(0.5)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _isSearchScreen
+                      ? (SearchService().following_count ?? '-').toString()
+                      : '${_provider.following.list!.length}',
+                  style: TextStyle(
+                      fontSize: 18.toFont,
+                      color: _isDark
+                          ? _themeData!.primaryColor
+                          : _themeData!.highlightColor,
+                      fontWeight: FontWeight.w800),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (!_isSearchScreen) {
+                      SetupRoutes.push(context, Routes.FOLLOWING_SCREEN);
+                    }
+                  },
+                  child: Text(
+                    'Following',
+                    style: TextStyle(
+                        fontSize: 14.toFont,
+                        color: _themeData!.primaryColor.withOpacity(0.5)),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      );
+    });
   }
 
   Widget tab(String title, HOME_TABS tab) {
