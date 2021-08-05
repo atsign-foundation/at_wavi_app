@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -14,8 +16,9 @@ class SearchService {
   final String url = 'https://wavi.ng/api/?atp=minorgettingplayed7';
 
   late User user;
-  late ThemeColor themeColor;
-  late ThemeData currentAtsignThemeData;
+  ThemeColor? themeColor;
+  ThemeData? currentAtsignThemeData;
+  Color? highlightColor;
 
   List<String> keysToIgnore = [
     // '',
@@ -26,6 +29,29 @@ class SearchService {
   String themeKey = 'theme.wavi';
   String themeColorKey = 'theme_color.wavi';
 
+  updateThemeData(_data) {
+    if ((_data ?? '').toLowerCase() == 'dark') {
+      currentAtsignThemeData =
+          Themes.darkTheme(highlightColor ?? ColorConstants.purple);
+      themeColor = ThemeColor.Dark;
+    } else {
+      currentAtsignThemeData =
+          Themes.lightTheme(highlightColor ?? ColorConstants.purple);
+      themeColor = ThemeColor.Light;
+    }
+  }
+
+  updateHighlightColor(String _color) {
+    highlightColor = (_color != null)
+        ? ThemeProvider().convertToHighlightColor(_color)
+        : ColorConstants.purple;
+    if (themeColor != null) {
+      currentAtsignThemeData = themeColor == ThemeColor.Dark
+          ? Themes.darkTheme(highlightColor!)
+          : Themes.lightTheme(highlightColor!);
+    }
+  }
+
   Future<User> getAtsignDetails(String atsign) async {
     user = User(allPrivate: false, atsign: atsign);
     var _response = await http.get(Uri.parse(url));
@@ -33,11 +59,15 @@ class SearchService {
     print('_jsonData ${_jsonData}');
 
     _jsonData.forEach((_data) {
-      // if (_data.toString() != '{: null}') {
       var _keyValuePair = _data;
       for (var field in _keyValuePair.entries) {
-        if ((field.key.contains(themeKey)) ||
-            (field.key.contains(themeColorKey))) {
+        if (field.key.contains(themeKey)) {
+          updateThemeData(_keyValuePair[field.key]);
+          continue;
+        }
+
+        if (field.key.contains(themeColorKey)) {
+          updateHighlightColor(_keyValuePair[field.key]);
           continue;
         }
 
@@ -49,17 +79,7 @@ class SearchService {
           }
         }
       }
-      // }
     });
-
-    print('${user.firstname.accountName} ${user.firstname.value}');
-
-    // print("_data ${(_jsonData[_jsonData.length - 1]).runtimeType}");
-    // var _keyValuePair = _jsonData[3];
-    // print('_keyValuePair ${_keyValuePair['theme_color.wavi']}');
-    // for (var field in _keyValuePair.entries) {
-    //   print('field ${field.key}');
-    // }
 
     return user;
   }

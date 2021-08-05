@@ -434,14 +434,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   }
                                 : () async {
                                     var _res = await SearchService()
-                                        .getAtsignDetails('atsign');
+                                        .getAtsignDetails(
+                                            'minorgettingplayed7');
                                     // Provider.of<UserPreview>(context,
                                     //         listen: false)
                                     //     .setSearchedUser(_res);
                                     UserPreview().setUser = _res;
                                     await SetupRoutes.push(context, Routes.HOME,
                                         arguments: {
-                                          // 'themeData': _modifiedTheme,
+                                          'themeData': SearchService()
+                                              .currentAtsignThemeData,
                                           'isPreview': true,
                                         });
 
