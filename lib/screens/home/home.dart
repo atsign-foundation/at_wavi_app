@@ -8,6 +8,7 @@ import 'package:at_wavi_app/screens/home/widgets/Home_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_channel.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_empty_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
+import 'package:at_wavi_app/screens/home/widgets/home_private_account.dart';
 import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
@@ -434,49 +435,62 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(height: 25.toHeight),
 
-                  Container(
-                    height: 70.toHeight,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: _themeData!.primaryColor.withOpacity(0.1)),
-                      borderRadius: BorderRadius.circular(60),
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                _currentTab = HOME_TABS.DETAILS;
-                              });
-                            },
-                            child: tab('Details', HOME_TABS.DETAILS),
+                  _isSearchScreen && SearchService().isPrivateAccount
+                      ? HomePrivateAccount(_themeData!)
+                      : SizedBox(),
+
+                  _isSearchScreen && SearchService().isPrivateAccount
+                      ? SizedBox()
+                      : Container(
+                          height: 70.toHeight,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color:
+                                    _themeData!.primaryColor.withOpacity(0.1)),
+                            borderRadius: BorderRadius.circular(60),
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _currentTab = HOME_TABS.DETAILS;
+                                    });
+                                  },
+                                  child: tab('Details', HOME_TABS.DETAILS),
+                                ),
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _currentTab = HOME_TABS.CHANNELS;
+                                      });
+                                    },
+                                    child: tab('Channels', HOME_TABS.CHANNELS)),
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _currentTab = HOME_TABS.FEATURED;
+                                    });
+                                  },
+                                  child: tab('Featured', HOME_TABS.FEATURED),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Expanded(
-                          child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _currentTab = HOME_TABS.CHANNELS;
-                                });
-                              },
-                              child: tab('Channels', HOME_TABS.CHANNELS)),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                _currentTab = HOME_TABS.FEATURED;
-                              });
-                            },
-                            child: tab('Featured', HOME_TABS.FEATURED),
-                          ),
-                        ),
-                      ],
-                    ),
+                  SizedBox(
+                    height: _isSearchScreen && SearchService().isPrivateAccount
+                        ? 0
+                        : 20.toHeight,
                   ),
-                  SizedBox(height: 20.toHeight),
-                  homeContent()
+                  _isSearchScreen && SearchService().isPrivateAccount
+                      ? SizedBox()
+                      : homeContent()
                 ],
               ),
             ),
