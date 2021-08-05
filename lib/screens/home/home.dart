@@ -46,9 +46,22 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isDark = false;
   ThemeData? _themeData;
   late StreamSubscription<dynamic> _intentDataStreamSubscription;
+  late String _name;
 
   @override
   void initState() {
+    _name = UserProvider().user!.firstname.value ?? '';
+    if (UserProvider().user!.lastname.value != null) {
+      _name = '$_name ${UserProvider().user!.lastname.value}';
+    }
+
+    if (_name.isEmpty) {
+      _name = BackendService()
+          .atClientInstance
+          .currentAtSign!
+          .replaceFirst('@', '');
+    }
+
     initPackages();
     _receiveIntent();
     _getThemeData();
@@ -135,7 +148,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-
     if (_themeData == null) {
       return CircularProgressIndicator();
     } else {
@@ -249,16 +261,34 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      SizedBox(
+                      Container(
                         width: 116.toWidth,
-                        height: 116.toHeight,
-                        child: Icon(Icons.person),
+                        height: 116.toWidth,
+                        decoration: BoxDecoration(
+                          color: ColorConstants.white.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(60),
+                        ),
+                        child: (UserProvider().user!.image.value != null)
+                            ? CircleAvatar(
+                                radius: 50.toFont,
+                                backgroundColor: Colors.transparent,
+                                backgroundImage: Image.memory(
+                                        UserProvider().user!.image.value)
+                                    .image,
+                              )
+                            : Icon(
+                                Icons.person,
+                                size: 50,
+                              ),
+                      ),
+                      SizedBox(
+                        width: 10,
                       ),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Lauren London',
+                            Text(_name,
                                 style: TextStyle(
                                     fontSize: 18,
                                     color: _themeData!.primaryColor,
