@@ -10,6 +10,7 @@ import 'package:at_wavi_app/screens/home/widgets/home_empty_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
 import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
+import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/services/follow_service.dart';
@@ -34,8 +35,7 @@ enum HOME_TABS { DETAILS, CHANNELS, FEATURED }
 class HomeScreen extends StatefulWidget {
   final ThemeData? themeData;
   final bool isPreview;
-  final User? previewUser;
-  HomeScreen({this.themeData, this.isPreview = false, this.previewUser});
+  HomeScreen({this.themeData, this.isPreview = false});
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -141,23 +141,25 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       return Scaffold(
         backgroundColor: _themeData!.scaffoldBackgroundColor,
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: _themeData!.scaffoldBackgroundColor,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: '',
-            )
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: ColorConstants.orange,
-          onTap: _onItemTapped,
-          // elevation: 0,
-        ),
+        bottomNavigationBar: widget.isPreview
+            ? null
+            : BottomNavigationBar(
+                backgroundColor: _themeData!.scaffoldBackgroundColor,
+                items: const <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.person),
+                    label: '',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.notifications),
+                    label: '',
+                  )
+                ],
+                currentIndex: _selectedIndex,
+                selectedItemColor: ColorConstants.orange,
+                onTap: _onItemTapped,
+                // elevation: 0,
+              ),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(15.0),
@@ -167,64 +169,79 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: <Widget>[
                   // header
                   Header(
-                    leading: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        'My Profile',
-                        style: TextStyle(
-                            fontSize: 18.toFont,
-                            color: _themeData!.primaryColor,
-                            fontWeight: FontWeight.w800),
-                      ),
+                    leading: Row(
+                      children: [
+                        widget.isPreview
+                            ? InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Icon(Icons.arrow_back),
+                              )
+                            : SizedBox(),
+                        SizedBox(width: 5),
+                        Text(
+                          widget.isPreview ? 'Preview' : 'My Profile',
+                          style: TextStyle(
+                              fontSize: 18.toFont,
+                              color: _themeData!.primaryColor,
+                              fontWeight: FontWeight.w800),
+                        ),
+                      ],
                     ),
-                    trailing: Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: InkWell(
-                              onTap: () {
-                                SetupRoutes.push(context, Routes.SEARCH_SCREEN);
-                              },
-                              child: Icon(Icons.search,
-                                  color: _themeData!.primaryColor),
+                    trailing: widget.isPreview
+                        ? null
+                        : Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      SetupRoutes.push(
+                                          context, Routes.SEARCH_SCREEN);
+                                    },
+                                    child: Icon(Icons.search,
+                                        color: _themeData!.primaryColor),
+                                  ),
+                                ),
+                                SizedBox(height: 18.5.toHeight),
+                                Divider(
+                                  color: _themeData!.highlightColor,
+                                ),
+                                SizedBox(height: 18.5.toHeight),
+                                GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        shape: StadiumBorder(),
+                                        builder: (BuildContext context) {
+                                          return Container(
+                                            height: 350,
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 20, horizontal: 20),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft:
+                                                    const Radius.circular(12.0),
+                                                topRight:
+                                                    const Radius.circular(12.0),
+                                              ),
+                                            ),
+                                            child: Options(),
+                                          );
+                                        });
+                                  },
+                                  child: Icon(Icons.more_vert,
+                                      color: _themeData!.primaryColor),
+                                )
+                              ],
                             ),
                           ),
-                          SizedBox(height: 18.5.toHeight),
-                          Divider(
-                            color: _themeData!.highlightColor,
-                          ),
-                          SizedBox(height: 18.5.toHeight),
-                          GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  shape: StadiumBorder(),
-                                  builder: (BuildContext context) {
-                                    return Container(
-                                      height: 350,
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 20, horizontal: 20),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: const Radius.circular(12.0),
-                                          topRight: const Radius.circular(12.0),
-                                        ),
-                                      ),
-                                      child: Options(),
-                                    );
-                                  });
-                            },
-                            child: Icon(Icons.more_vert,
-                                color: _themeData!.primaryColor),
-                          )
-                        ],
-                      ),
-                    ),
                   ),
                   SizedBox(height: 30.toHeight),
 
@@ -369,7 +386,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Routes.EDIT_PERSONA);
                                   },
                             child: Text(
-                              'Edit Profile',
+                              widget.isPreview ? 'Follow' : 'Edit Profile',
                               style: TextStyle(
                                   fontSize: 16.toFont,
                                   color: _themeData!.primaryColor
@@ -401,7 +418,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ));
                                   }
                                 : () async {
-                                    await TwitetrService().getTweets();
+                                    // await TwitetrService().getTweets();
+                                    await AtKeyGetService().deleteKeys();
                                   },
                             child: Text('Share Profile',
                                 style: TextStyle(
