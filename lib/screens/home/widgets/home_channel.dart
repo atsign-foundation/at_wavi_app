@@ -10,7 +10,9 @@ import 'package:provider/provider.dart';
 
 class HomeChannels extends StatefulWidget {
   final ThemeData? themeData;
-  HomeChannels({this.themeData});
+  final bool isPreview;
+
+  HomeChannels({this.themeData, this.isPreview = false});
   @override
   _HomeChannelsState createState() => _HomeChannelsState();
 }
@@ -55,7 +57,8 @@ class _HomeChannelsState extends State<HomeChannels> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            CommonFunctions().isFieldsPresentForCategory(AtCategory.SOCIAL)
+            CommonFunctions().isFieldsPresentForCategory(AtCategory.SOCIAL,
+                    isPreview: widget.isPreview)
                 ? Text(
                     'Social Accounts',
                     style:
@@ -63,22 +66,23 @@ class _HomeChannelsState extends State<HomeChannels> {
                   )
                 : SizedBox(),
             SizedBox(
-                height: CommonFunctions()
-                        .isFieldsPresentForCategory(AtCategory.SOCIAL)
+                height: CommonFunctions().isFieldsPresentForCategory(
+                        AtCategory.SOCIAL,
+                        isPreview: widget.isPreview)
                     ? 15.toHeight
                     : 0),
             Column(
               children: CommonFunctions().getCustomCardForFields(
-                _themeData!,
-                AtCategory.SOCIAL,
-              ),
+                  _themeData!, AtCategory.SOCIAL,
+                  isPreview: widget.isPreview),
             ),
             SizedBox(
                 height: CommonFunctions()
                         .isFieldsPresentForCategory(AtCategory.SOCIAL)
                     ? 40.toHeight
                     : 0),
-            CommonFunctions().isFieldsPresentForCategory(AtCategory.GAMER)
+            CommonFunctions().isFieldsPresentForCategory(AtCategory.GAMER,
+                    isPreview: widget.isPreview)
                 ? Text(
                     'Game Accounts',
                     style:
@@ -88,9 +92,8 @@ class _HomeChannelsState extends State<HomeChannels> {
             SizedBox(height: 15.toHeight),
             Column(
               children: CommonFunctions().getCustomCardForFields(
-                _themeData!,
-                AtCategory.GAMER,
-              ),
+                  _themeData!, AtCategory.GAMER,
+                  isPreview: widget.isPreview),
             ),
             SizedBox(height: 15.toHeight),
           ],

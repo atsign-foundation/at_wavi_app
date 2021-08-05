@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 
 class HomeDetails extends StatefulWidget {
   final ThemeData? themeData;
-  HomeDetails({this.themeData});
+  final bool isPreview;
+  HomeDetails({this.themeData, this.isPreview = false});
   @override
   _HomeDetailsState createState() => _HomeDetailsState();
 }
@@ -65,17 +66,18 @@ class _HomeDetailsState extends State<HomeDetails> {
             SizedBox(height: 15.toHeight),
             Column(
               children: CommonFunctions().getCustomCardForFields(
-                _themeData!,
-                AtCategory.DETAILS,
-              ),
+                  _themeData!, AtCategory.DETAILS,
+                  isPreview: widget.isPreview),
             ),
             SizedBox(
-                height: CommonFunctions()
-                        .isFieldsPresentForCategory(AtCategory.DETAILS)
+                height: CommonFunctions().isFieldsPresentForCategory(
+                        AtCategory.DETAILS,
+                        isPreview: widget.isPreview)
                     ? 40.toHeight
                     : 0),
-            CommonFunctions()
-                    .isFieldsPresentForCategory(AtCategory.ADDITIONAL_DETAILS)
+            CommonFunctions().isFieldsPresentForCategory(
+                    AtCategory.ADDITIONAL_DETAILS,
+                    isPreview: widget.isPreview)
                 ? Text('Additional Details',
                     style:
                         TextStyles.boldText(_themeData!.primaryColor, size: 18))
@@ -83,9 +85,8 @@ class _HomeDetailsState extends State<HomeDetails> {
             SizedBox(height: 15.toHeight),
             Column(
               children: CommonFunctions().getCustomCardForFields(
-                _themeData!,
-                AtCategory.ADDITIONAL_DETAILS,
-              ),
+                  _themeData!, AtCategory.ADDITIONAL_DETAILS,
+                  isPreview: widget.isPreview),
             ),
           ],
         ),

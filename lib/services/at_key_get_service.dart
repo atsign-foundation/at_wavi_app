@@ -12,12 +12,21 @@ class AtKeyGetService {
   AtKeyGetService._();
   static AtKeyGetService _instance = AtKeyGetService._();
   factory AtKeyGetService() => _instance;
+  Map<dynamic, dynamic> _tempObject = {};
   User user = User(allPrivate: false, atsign: '');
 
   init() {
     user = User(allPrivate: false, atsign: '');
     user.allPrivate = false;
     user.atsign = BackendService().atClientInstance.currentAtSign!;
+  }
+
+// TODO: for testing only
+  deleteKeys() async {
+    var scanKeys = await BackendService().getAtKeys();
+    for (var key in scanKeys) {
+      await BackendService().atClientInstance.delete(key);
+    }
   }
 
   ///fetches [atsign] profile.
@@ -95,15 +104,12 @@ class AtKeyGetService {
       if (isPublic != null && isPublic) {
         isPrivate = false;
       }
-      // _tempObject[key] = value;
+      _tempObject[key] = value;
       if (isCustom) {
         _setCustomField(value, isPrivate);
         return true;
       }
-      // var data = _container.get(key);
-      // if (data == null || data.isPrivate != true) {
       set(key, value, isPrivate: isPrivate);
-      // }
     } catch (ex) {
       // _logger.severe('setting the $key key for user throws ${ex.toString()}');
     }
@@ -163,6 +169,10 @@ class AtKeyGetService {
     } else {
       return json[CustomFieldConstants.value];
     }
+  }
+
+  Map<dynamic, dynamic> objectReference() {
+    return _tempObject;
   }
 
   dynamic set(property, value, {isPrivate, valueDescription}) {
