@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:at_wavi_app/common_components/add_custom_content_button.dart';
 import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
 import 'package:at_wavi_app/model/user.dart';
@@ -199,6 +201,25 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
           SizedBox(height: 20)
         ],
       );
+
+      // to show image content
+    } else if (basicData.type == CustomContentType.Image.name) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              basicData.accountName!,
+              style: TextStyles.lightText(ColorConstants.black.withOpacity(0.5),
+                  size: 16),
+            ),
+          ),
+          imageField(basicData),
+          Divider(thickness: 1, height: 1),
+          SizedBox(height: 20)
+        ],
+      );
     }
     return SizedBox();
   }
@@ -280,6 +301,23 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
               child: Icon(basicData.isPrivate ? Icons.lock : Icons.public),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget imageField(BasicData basicData) {
+    var intList = basicData.value!.cast<int>();
+    Uint8List customImage = Uint8List.fromList(intList);
+
+    return SizedBox(
+      width: double.infinity,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        height: 200,
+        child: Image.memory(
+          customImage,
+          fit: BoxFit.fill,
         ),
       ),
     );
