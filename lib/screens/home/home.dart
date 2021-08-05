@@ -1,6 +1,5 @@
 import 'dart:async';
 
-// import 'package:at_common_flutter/widgets/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/model/user.dart';
@@ -132,6 +131,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     if (_inputBoxController.isCompleted) {
       setState(() {
         hideHeader = false;
+        searchedAtsign = '';
       });
       _inputBoxController.reverse();
       return;
@@ -177,205 +177,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  // header
-
-                  // true
-                  //     ? CustomInputField(
-                  //         width: 343.toWidth,
-                  //         height: 60.toHeight,
-                  //         hintText: '',
-                  //         prefix: Padding(
-                  //           padding: const EdgeInsets.only(right: 5.0, top: 6),
-                  //           child: Image.asset(Images.atIcon),
-                  //         ),
-                  //         value: (String s) {
-                  //           print('text : $s');
-                  //         },
-                  //       )
-                  //     :
-                  Stack(
-                    children: [
-                      hideHeader
-                          ? SizedBox()
-                          : Header(
-                              leading: Row(
-                                children: [
-                                  widget.isPreview
-                                      ? InkWell(
-                                          onTap: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Icon(
-                                            Icons.arrow_back,
-                                            color: _themeData!.primaryColor,
-                                          ),
-                                        )
-                                      : SizedBox(),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    widget.isPreview ? 'Preview' : 'My Profile',
-                                    style: TextStyle(
-                                        fontSize: 18.toFont,
-                                        color: _themeData!.primaryColor,
-                                        fontWeight: FontWeight.w800),
-                                  ),
-                                ],
-                              ),
-                              trailing: widget.isPreview
-                                  ? null
-                                  : Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 10.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 8.0),
-                                            child: InkWell(
-                                              onTap: () {
-                                                _animate();
-                                                // SetupRoutes.push(
-                                                //     context, Routes.SEARCH_SCREEN);
-                                              },
-                                              child: Icon(Icons.search,
-                                                  color:
-                                                      _themeData!.primaryColor),
-                                            ),
-                                          ),
-                                          SizedBox(height: 18.5.toHeight),
-                                          Divider(
-                                            color: _themeData!.highlightColor,
-                                          ),
-                                          SizedBox(height: 18.5.toHeight),
-                                          GestureDetector(
-                                            onTap: () {
-                                              showModalBottomSheet(
-                                                  context: context,
-                                                  isScrollControlled: true,
-                                                  shape: StadiumBorder(),
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return Container(
-                                                      height: 350,
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 20,
-                                                              horizontal: 20),
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          topLeft: const Radius
-                                                              .circular(12.0),
-                                                          topRight: const Radius
-                                                              .circular(12.0),
-                                                        ),
-                                                      ),
-                                                      child: Options(),
-                                                    );
-                                                  });
-                                            },
-                                            child: Icon(Icons.more_vert,
-                                                color:
-                                                    _themeData!.primaryColor),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                            ),
-                      _isSearchScreen
-                          ? SizedBox()
-                          : Positioned(
-                              child: SlideTransition(
-                                position: Tween<Offset>(
-                                  begin: const Offset(1, 0),
-                                  end: Offset.zero,
-                                ).animate(_inputBoxController),
-                                child: CustomInputField(
-                                  padding: EdgeInsets.only(right: 10),
-                                  width: 343.toWidth,
-                                  // height: 60.toHeight,
-                                  bgColor: _themeData!.primaryColor,
-                                  hintText: '',
-                                  height: 50,
-                                  expands: false,
-                                  maxLines: 1,
-                                  icon: loadingSearchedAtsign
-                                      ? Icons.access_time
-                                      : Icons.search,
-                                  secondIcon: Icons.cancel,
-                                  borderColor: Colors.transparent,
-                                  focusedBorderColor: Colors.transparent,
-                                  textColor:
-                                      _themeData!.scaffoldBackgroundColor,
-                                  initialValue: searchedAtsign,
-                                  baseOffset: searchedAtsign.length,
-                                  value: (String s) {
-                                    setState(() {
-                                      searchedAtsign = s;
-                                    });
-                                  },
-                                  onIconTap: () async {
-                                    if (loadingSearchedAtsign) {
-                                      return;
-                                    }
-
-                                    setState(() {
-                                      loadingSearchedAtsign = true;
-                                    });
-                                    var _isPresent = await CommonFunctions()
-                                        .checkAtsign(searchedAtsign);
-
-                                    if (_isPresent) {
-                                      var _res = await SearchService()
-                                          .getAtsignDetails(searchedAtsign);
-
-                                      setState(() {
-                                        loadingSearchedAtsign = false;
-                                      });
-                                      // Provider.of<UserPreview>(context,
-                                      //         listen: false)
-                                      //     .setSearchedUser(_res);
-                                      UserPreview().setUser = _res;
-                                      await SetupRoutes.push(
-                                          context, Routes.HOME,
-                                          arguments: {
-                                            'themeData': SearchService()
-                                                .currentAtsignThemeData,
-                                            'isPreview': true,
-                                          });
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        backgroundColor: ColorConstants.RED,
-                                        content: Text(
-                                          '$searchedAtsign not found',
-                                          style:
-                                              CustomTextStyles.customTextStyle(
-                                            ColorConstants.white,
-                                          ),
-                                        ),
-                                      ));
-                                      setState(() {
-                                        loadingSearchedAtsign = false;
-                                      });
-                                    }
-                                  },
-                                  onSecondIconTap: _animate,
-                                ),
-                              ),
-                            )
-                    ],
-                  ),
-
+                  header(),
                   hideHeader && loadingSearchedAtsign
                       ? LinearProgressIndicator()
                       : SizedBox(),
-
                   SizedBox(height: 30.toHeight),
-
                   // content
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -462,21 +268,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     }
                                   }
                                 : () async {
-                                    // var _res = await SearchService()
-                                    //     .getAtsignDetails(
-                                    //         'minorgettingplayed7');
-                                    // // Provider.of<UserPreview>(context,
-                                    // //         listen: false)
-                                    // //     .setSearchedUser(_res);
-                                    // UserPreview().setUser = _res;
-                                    // await SetupRoutes.push(context, Routes.HOME,
-                                    //     arguments: {
-                                    //       'themeData': SearchService()
-                                    //           .currentAtsignThemeData,
-                                    //       'isPreview': true,
-                                    //     });
-
-                                    ///////////////
                                     SetupRoutes.push(
                                         NavService.navKey.currentContext!,
                                         Routes.EDIT_PERSONA);
@@ -597,6 +388,172 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
       );
     }
+  }
+
+  Widget header() {
+    return Stack(
+      children: [
+        hideHeader
+            ? SizedBox()
+            : Header(
+                leading: Row(
+                  children: [
+                    widget.isPreview
+                        ? InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: _themeData!.primaryColor,
+                            ),
+                          )
+                        : SizedBox(),
+                    SizedBox(width: 5),
+                    Text(
+                      widget.isPreview ? 'Preview' : 'My Profile',
+                      style: TextStyle(
+                          fontSize: 18.toFont,
+                          color: _themeData!.primaryColor,
+                          fontWeight: FontWeight.w800),
+                    ),
+                  ],
+                ),
+                trailing: widget.isPreview
+                    ? null
+                    : Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: InkWell(
+                                onTap: () {
+                                  _animate();
+                                  // SetupRoutes.push(
+                                  //     context, Routes.SEARCH_SCREEN);
+                                },
+                                child: Icon(Icons.search,
+                                    color: _themeData!.primaryColor),
+                              ),
+                            ),
+                            SizedBox(height: 18.5.toHeight),
+                            Divider(
+                              color: _themeData!.highlightColor,
+                            ),
+                            SizedBox(height: 18.5.toHeight),
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    shape: StadiumBorder(),
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        height: 350,
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 20, horizontal: 20),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft:
+                                                const Radius.circular(12.0),
+                                            topRight:
+                                                const Radius.circular(12.0),
+                                          ),
+                                        ),
+                                        child: Options(),
+                                      );
+                                    });
+                              },
+                              child: Icon(Icons.more_vert,
+                                  color: _themeData!.primaryColor),
+                            )
+                          ],
+                        ),
+                      ),
+              ),
+        _isSearchScreen
+            ? SizedBox()
+            : Positioned(
+                child: SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(1, 0),
+                    end: Offset.zero,
+                  ).animate(_inputBoxController),
+                  child: CustomInputField(
+                    padding: EdgeInsets.only(right: 10),
+                    width: 343.toWidth,
+                    // height: 60.toHeight,
+                    bgColor: _themeData!.primaryColor,
+                    hintText: '',
+                    height: 50,
+                    expands: false,
+                    maxLines: 1,
+                    icon: loadingSearchedAtsign
+                        ? Icons.access_time
+                        : Icons.search,
+                    secondIcon: Icons.cancel,
+                    borderColor: Colors.transparent,
+                    focusedBorderColor: Colors.transparent,
+                    textColor: _themeData!.scaffoldBackgroundColor,
+                    initialValue: searchedAtsign,
+                    baseOffset: searchedAtsign.length,
+                    value: (String s) {
+                      setState(() {
+                        searchedAtsign = s;
+                      });
+                    },
+                    onIconTap: () async {
+                      if (loadingSearchedAtsign) {
+                        return;
+                      }
+
+                      setState(() {
+                        loadingSearchedAtsign = true;
+                      });
+                      var _isPresent =
+                          await CommonFunctions().checkAtsign(searchedAtsign);
+
+                      if (_isPresent) {
+                        var _res = await SearchService()
+                            .getAtsignDetails(searchedAtsign);
+
+                        setState(() {
+                          loadingSearchedAtsign = false;
+                        });
+                        // Provider.of<UserPreview>(context,
+                        //         listen: false)
+                        //     .setSearchedUser(_res);
+                        UserPreview().setUser = _res;
+                        await SetupRoutes.push(context, Routes.HOME,
+                            arguments: {
+                              'themeData':
+                                  SearchService().currentAtsignThemeData,
+                              'isPreview': true,
+                            });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: ColorConstants.RED,
+                          content: Text(
+                            '$searchedAtsign not found',
+                            style: CustomTextStyles.customTextStyle(
+                              ColorConstants.white,
+                            ),
+                          ),
+                        ));
+                        setState(() {
+                          loadingSearchedAtsign = false;
+                        });
+                      }
+                    },
+                    onSecondIconTap: _animate,
+                  ),
+                ),
+              )
+      ],
+    );
   }
 
   Widget followersFollowingRow() {
