@@ -392,7 +392,8 @@ class _EditPersonaState extends State<EditPersona>
   }
 
   _saveButtonCall() async {
-    await AtKeySetService().saveUserData(UserPreview().user()!);
+    await AtKeySetService()
+        .saveUserData(Provider.of<UserPreview>(context, listen: false).user()!);
   }
 
   _publishButtonCall() async {

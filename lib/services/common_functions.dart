@@ -5,12 +5,14 @@ import 'package:at_contacts_flutter/at_contacts_flutter.dart';
 import 'package:at_wavi_app/common_components/custom_card.dart';
 import 'package:at_wavi_app/common_components/custom_media_card.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CommonFunctions {
   CommonFunctions._internal();
@@ -28,8 +30,11 @@ class CommonFunctions {
   List<Widget> getDefinedFieldsCard(ThemeData _themeData, AtCategory category,
       {bool isPreview = false}) {
     var definedFieldsWidgets = <Widget>[];
-    var userMap =
-        User.toJson(isPreview ? UserPreview().user() : UserProvider().user!);
+    var userMap = User.toJson(isPreview
+        ? Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                listen: false)
+            .user()
+        : UserProvider().user!);
     List<String> fields = FieldNames().getFieldList(category);
 
     for (var field in userMap.entries) {
@@ -64,7 +69,10 @@ class CommonFunctions {
     /// getting custom fields for [category]
     List<BasicData>? customFields = [];
     if (isPreview) {
-      customFields = UserPreview().user()!.customFields[category.name];
+      customFields = Provider.of<UserPreview>(NavService.navKey.currentContext!,
+              listen: false)
+          .user()!
+          .customFields[category.name];
     } else {
       customFields = UserProvider().user!.customFields[category.name];
     }
@@ -151,14 +159,21 @@ class CommonFunctions {
 
   bool isFieldsPresentForCategory(AtCategory category,
       {bool isPreview = false}) {
-    if (isPreview && UserPreview().user() == null) {
+    if (isPreview &&
+        Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                    listen: false)
+                .user() ==
+            null) {
       return false;
     }
     if (UserProvider().user == null) {
       return false;
     }
-    var userMap =
-        User.toJson(isPreview ? UserPreview().user()! : UserProvider().user!);
+    var userMap = User.toJson(isPreview
+        ? Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                listen: false)
+            .user()!
+        : UserProvider().user!);
     var isPresent = false;
     List<String> fields = FieldNames().getFieldList(category);
 
@@ -175,7 +190,11 @@ class CommonFunctions {
       List<BasicData>? customFields = [];
 
       if (isPreview) {
-        customFields = UserPreview().user()!.customFields[category.name];
+        customFields = Provider.of<UserPreview>(
+                NavService.navKey.currentContext!,
+                listen: false)
+            .user()!
+            .customFields[category.name];
       } else {
         customFields = UserProvider().user!.customFields[category.name];
       }
@@ -194,8 +213,16 @@ class CommonFunctions {
 
   bool isTwitterFeatured({bool isPreview = false}) {
     if (isPreview) {
-      if (UserPreview().user() != null &&
-          UserPreview().user()!.twitter.value != null) {
+      if (Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                      listen: false)
+                  .user() !=
+              null &&
+          Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                      listen: false)
+                  .user()!
+                  .twitter
+                  .value !=
+              null) {
         return true;
       } else {
         return false;
@@ -212,8 +239,16 @@ class CommonFunctions {
 
   bool isInstagramFeatured({bool isPreview = false}) {
     if (isPreview) {
-      if (UserPreview().user() != null &&
-          UserPreview().user()!.instagram.value != null) {
+      if (Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                      listen: false)
+                  .user() !=
+              null &&
+          Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                      listen: false)
+                  .user()!
+                  .instagram
+                  .value !=
+              null) {
         return true;
       } else {
         return false;

@@ -13,6 +13,7 @@ import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CotentEdit extends StatefulWidget {
   @override
@@ -157,12 +158,14 @@ class _CotentEditState extends State<CotentEdit> {
   }
 
   List<Widget> getDefinedFieldsCard() {
-    if (selectedcategory == null || UserPreview().user() == null) {
+    if (selectedcategory == null ||
+        Provider.of<UserPreview>(context, listen: false).user() == null) {
       return [SizedBox()];
     }
 
     var definedFieldsWidgets = <Widget>[];
-    var userMap = User.toJson(UserPreview().user());
+    var userMap =
+        User.toJson(Provider.of<UserPreview>(context, listen: false).user());
     List<String> fields = FieldNames().getFieldList(selectedcategory!);
 
     for (var field in userMap.entries) {
@@ -187,14 +190,17 @@ class _CotentEditState extends State<CotentEdit> {
   }
 
   List<Widget> getCustomFieldsCard() {
-    if (selectedcategory == null || UserPreview().user() == null) {
+    if (selectedcategory == null ||
+        Provider.of<UserPreview>(context, listen: false).user() == null) {
       return [SizedBox()];
     }
     var customFieldsWidgets = <Widget>[];
 
     /// getting custom fields for [selectedcategory]
     List<BasicData>? customFields =
-        UserPreview().user()!.customFields[selectedcategory!.name];
+        Provider.of<UserPreview>(context, listen: false)
+            .user()!
+            .customFields[selectedcategory!.name];
 
     if (customFields != null) {
       for (var basicData in customFields) {

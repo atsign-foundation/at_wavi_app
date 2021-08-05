@@ -314,17 +314,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: _themeData!.primaryColor,
                                     fontWeight: FontWeight.w600)),
                             SizedBox(height: 8.toHeight),
-                            BackendService().currentAtSign != null
-                                ? Text(
-                                    BackendService().currentAtSign!,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: ColorConstants.orange,
-                                      fontSize: 18.toFont,
-                                    ),
-                                  )
-                                : SizedBox(),
+                            Text(
+                              _currentUser.atsign,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: ColorConstants.orange,
+                                fontSize: 18.toFont,
+                              ),
+                            ),
                             SizedBox(height: 18.5.toHeight),
                             Divider(
                               color: _themeData!.highlightColor,
@@ -419,16 +417,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             onPressed: widget.isPreview
                                 ? () {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      backgroundColor: ColorConstants.RED,
-                                      content: Text(
-                                        'This is a Preview',
-                                        style: CustomTextStyles.customTextStyle(
-                                          ColorConstants.white,
+                                    if (_isSearchScreen) {
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        backgroundColor: ColorConstants.RED,
+                                        content: Text(
+                                          'This is a Preview',
+                                          style:
+                                              CustomTextStyles.customTextStyle(
+                                            ColorConstants.white,
+                                          ),
                                         ),
-                                      ),
-                                    ));
+                                      ));
+                                    }
                                   }
                                 : () async {
                                     var _res = await SearchService()
@@ -578,19 +580,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget homeContent() {
     if (_currentTab == HOME_TABS.DETAILS) {
-      return CommonFunctions().isFieldsPresentForCategory(AtCategory.DETAILS) ||
-              CommonFunctions()
-                  .isFieldsPresentForCategory(AtCategory.ADDITIONAL_DETAILS)
+      return CommonFunctions().isFieldsPresentForCategory(AtCategory.DETAILS,
+                  isPreview: widget.isPreview) ||
+              CommonFunctions().isFieldsPresentForCategory(
+                  AtCategory.ADDITIONAL_DETAILS,
+                  isPreview: widget.isPreview)
           ? HomeDetails(themeData: _themeData, isPreview: widget.isPreview)
           : HomeEmptyDetails();
     } else if (_currentTab == HOME_TABS.CHANNELS) {
-      return CommonFunctions().isFieldsPresentForCategory(AtCategory.GAMER) ||
-              CommonFunctions().isFieldsPresentForCategory(AtCategory.SOCIAL)
+      return CommonFunctions().isFieldsPresentForCategory(AtCategory.GAMER,
+                  isPreview: widget.isPreview) ||
+              CommonFunctions().isFieldsPresentForCategory(AtCategory.SOCIAL,
+                  isPreview: widget.isPreview)
           ? HomeChannels(themeData: _themeData, isPreview: widget.isPreview)
           : HomeEmptyDetails();
     } else if (_currentTab == HOME_TABS.FEATURED) {
-      return CommonFunctions().isTwitterFeatured() ||
-              CommonFunctions().isInstagramFeatured()
+      return CommonFunctions().isTwitterFeatured(isPreview: widget.isPreview) ||
+              CommonFunctions().isInstagramFeatured(isPreview: widget.isPreview)
           ? HomeFeatured(themeData: _themeData)
           : HomeEmptyDetails();
     } else
