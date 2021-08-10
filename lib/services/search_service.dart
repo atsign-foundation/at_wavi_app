@@ -59,6 +59,7 @@ class SearchService {
     }
   }
 
+  /// TODO: throws an error for image, serach 'colin/kevin'
   Future<User> getAtsignDetails(String atsign) async {
     isPrivateAccount = false;
     user = User(allPrivate: false, atsign: atsign);
@@ -140,6 +141,9 @@ class SearchService {
     // print('property $property');
     var field = valueOf(property);
     if (field is FieldsEnum) {
+      if (field == FieldsEnum.IMAGE) {
+        value = base64Decode(value);
+      }
       var data =
           formData(property, value, private: false, valueDescription: '');
       switch (field) {
