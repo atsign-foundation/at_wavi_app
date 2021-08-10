@@ -142,7 +142,12 @@ class SearchService {
     var field = valueOf(property);
     if (field is FieldsEnum) {
       if (field == FieldsEnum.IMAGE) {
-        value = base64Decode(value);
+        try {
+          value = base64Decode(value);
+        } catch (e) {
+          value = null;
+          print('Error in image decoding setDefinedFields $e');
+        }
       }
       var data =
           formData(property, value, private: false, valueDescription: '');

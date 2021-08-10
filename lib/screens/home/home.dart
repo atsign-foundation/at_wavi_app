@@ -82,10 +82,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
 
     if (_name.isEmpty) {
-      _name = BackendService()
-          .atClientInstance
-          .currentAtSign!
-          .replaceFirst('@', '');
+      _name = _currentUser.atsign.replaceFirst('@', '');
     }
 
     initPackages();
