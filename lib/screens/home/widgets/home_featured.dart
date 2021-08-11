@@ -1,3 +1,4 @@
+import 'package:at_wavi_app/screens/website_webview/website_webview.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
@@ -95,11 +96,26 @@ class _HomeFeaturedState extends State<HomeFeatured> {
                   style:
                       TextStyles.boldText(_themeData!.primaryColor, size: 18),
                 ),
-                Text(
-                  'See more',
-                  style:
-                      TextStyles.lightText(_themeData!.primaryColor, size: 16),
-                ),
+                widget.twitterUsername != null
+                    ? InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebsiteScreen(
+                                title: 'Twitter',
+                                url:
+                                    'https://twitter.com/${widget.twitterUsername}',
+                              ),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'See more',
+                          style: TextStyles.linkText(),
+                        ),
+                      )
+                    : SizedBox(),
               ],
             ),
             SizedBox(height: 15.toHeight),
