@@ -399,7 +399,8 @@ class _EditPersonaState extends State<EditPersona>
     await providerCallback<AtKeySetService>(
       context,
       task: (provider) async {
-        await provider.saveUserData(UserPreview().user()!);
+        await provider.saveUserData(
+            Provider.of<UserPreview>(context, listen: false).user()!);
       },
       onError: (provider) {},
       showDialog: false,

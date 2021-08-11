@@ -18,6 +18,7 @@ class CustomInputField extends StatelessWidget {
   final int? maxLines;
   final bool expands;
   final int baseOffset;
+  final EdgeInsets? padding;
 
   var textController = TextEditingController();
 
@@ -43,6 +44,7 @@ class CustomInputField extends StatelessWidget {
     this.maxLines,
     this.expands = false,
     this.baseOffset = 0,
+    this.padding,
   });
 
   @override
@@ -63,6 +65,7 @@ class CustomInputField extends StatelessWidget {
         }
       },
       child: Container(
+        padding: padding ?? EdgeInsets.all(0),
         width: width,
         height: height,
         decoration: BoxDecoration(

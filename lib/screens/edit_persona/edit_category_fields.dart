@@ -13,6 +13,7 @@ import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 
 class EditCategoryFields extends StatefulWidget {
   final AtCategory category;
@@ -138,7 +139,8 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
 
   List<Widget> getDefinedInputFields() {
     var definedFieldsWidgets = <Widget>[];
-    var userMap = User.toJson(UserPreview().user());
+    var userMap =
+        User.toJson(Provider.of<UserPreview>(context, listen: false).user());
     List<FieldsEnum> fields = FieldNames().getFieldListEnum(widget.category);
 
     for (int i = 0; i < fields.length; i++) {
@@ -177,7 +179,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   List<Widget> getCustomInputFields() {
     var customFieldsWidgets = <Widget>[];
     List<BasicData>? customFields =
-        UserPreview().user()!.customFields[widget.category.name];
+        Provider.of<UserPreview>(context, listen: false)
+            .user()!
+            .customFields[widget.category.name];
 
     if (customFields != null) {
       for (var basicData in customFields) {
@@ -289,9 +293,10 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                   SetupRoutes.push(context, Routes.ADD_CUSTOM_FIELD,
                       arguments: {
                         'onSave': (BasicData data) {
-                          List<BasicData>? customFields = UserPreview()
-                              .user()!
-                              .customFields[widget.category.name];
+                          List<BasicData>? customFields =
+                              Provider.of<UserPreview>(context, listen: false)
+                                  .user()!
+                                  .customFields[widget.category.name];
                           var index = customFields!.indexOf(basicData);
                           setState(() {
                             customFields[index] = data;
@@ -318,7 +323,10 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                         BasicData(accountName: basicData.accountName));
                   }
                   List<BasicData>? customFields =
-                      UserPreview().user()!.customFields[widget.category.name];
+                      Provider.of<UserPreview>(context, listen: false)
+                          .user()!
+                          .customFields[widget.category.name];
+
                   var index = customFields!.indexOf(basicData);
                   customFields[index] = BasicData(
                       accountName:
@@ -420,7 +428,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
 
   bool isAllFieldsPrivate() {
     List<BasicData>? customFields =
-        UserPreview().user()!.customFields[widget.category.name];
+        Provider.of<UserPreview>(context, listen: false)
+            .user()!
+            .customFields[widget.category.name];
 
     if (customFields != null) {
       for (var basicData in customFields) {
@@ -439,45 +449,64 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   /// when updating send complete [BasicData].
   updateDefinedFields(BasicData basicData) {
     if (basicData.accountName == FieldsEnum.IMAGE.name) {
-      UserPreview().user()!.image = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.image =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.LASTNAME.name) {
-      UserPreview().user()!.lastname = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.lastname =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.FIRSTNAME.name) {
-      UserPreview().user()!.firstname = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.firstname =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.PHONE.name) {
-      UserPreview().user()!.phone = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.phone =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.EMAIL.name) {
-      UserPreview().user()!.email = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.email =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.ABOUT.name) {
-      UserPreview().user()!.about = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.about =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.LOCATION.name) {
-      UserPreview().user()!.location = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.location =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.LOCATIONNICKNAME.name) {
-      UserPreview().user()!.locationNickName = basicData;
+      Provider.of<UserPreview>(context, listen: false)
+          .user()!
+          .locationNickName = basicData;
     } else if (basicData.accountName == FieldsEnum.PRONOUN.name) {
-      UserPreview().user()!.pronoun = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.pronoun =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.TWITTER.name) {
-      UserPreview().user()!.twitter = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.twitter =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.FACEBOOK.name) {
-      UserPreview().user()!.facebook = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.facebook =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.LINKEDIN.name) {
-      UserPreview().user()!.linkedin = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.linkedin =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.INSTAGRAM.name) {
-      UserPreview().user()!.instagram = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.instagram =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.YOUTUBE.name) {
-      UserPreview().user()!.youtube = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.youtube =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.TUMBLR.name) {
-      UserPreview().user()!.tumbler = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.tumbler =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.MEDIUM.name) {
-      UserPreview().user()!.medium = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.medium =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.PS4.name) {
-      UserPreview().user()!.ps4 = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.ps4 = basicData;
     } else if (basicData.accountName == FieldsEnum.XBOX.name) {
-      UserPreview().user()!.xbox = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.xbox = basicData;
     } else if (basicData.accountName == FieldsEnum.STEAM.name) {
-      UserPreview().user()!.steam = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.steam =
+          basicData;
     } else if (basicData.accountName == FieldsEnum.DISCORD.name) {
-      UserPreview().user()!.discord = basicData;
+      Provider.of<UserPreview>(context, listen: false).user()!.discord =
+          basicData;
     }
   }
 }

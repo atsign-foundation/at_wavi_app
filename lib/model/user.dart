@@ -228,7 +228,7 @@ BasicData formData(name, value, {private, type, valueDescription}) {
       accountName: name,
       // icon: setIcon(name),
       isPrivate: private ?? false,
-      type: TextInputType.text,
+      type: type ?? TextInputType.text,
       value: value,
       valueDescription: valueDescription);
   return basicdata;

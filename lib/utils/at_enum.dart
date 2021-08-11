@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 enum FieldsEnum {
+  PRIVATEACCOUNT,
   ATSIGN,
   IMAGE,
   FIRSTNAME,
@@ -27,6 +28,8 @@ enum FieldsEnum {
 extension FieldsEnumValues on FieldsEnum {
   String get label {
     switch (this) {
+      case FieldsEnum.PRIVATEACCOUNT:
+        return 'PRIVATEACCOUNT';
       case FieldsEnum.FIRSTNAME:
         return 'FIRSTNAME';
       case FieldsEnum.LASTNAME:
@@ -82,6 +85,9 @@ extension FieldsEnumValues on FieldsEnum {
 
   String get hintText {
     switch (this) {
+      case FieldsEnum.PRIVATEACCOUNT:
+        return 'Private Account';
+
       case FieldsEnum.FIRSTNAME:
         return 'First name';
 

@@ -19,7 +19,8 @@ class ChangePrivacyService {
     //storing detail fields
     for (FieldsEnum field in FieldsEnum.values) {
       var data = this.get(field.name);
-      if (field == FieldsEnum.ATSIGN) {
+      if ((field == FieldsEnum.ATSIGN) ||
+          (field == FieldsEnum.PRIVATEACCOUNT)) {
         continue;
       }
       if (data.value != null) {
@@ -46,15 +47,16 @@ class ChangePrivacyService {
     return true;
   }
 
-  setAllPrivate(private, User user) async {
+  setAllPrivate(bool private, User user) async {
     try {
       Provider.of<SetPrivateState>(NavService.navKey.currentContext!,
               listen: false)
           .setLoadingState(true);
       this.user = user;
-      user.allPrivate = private;
+
       for (var field in FieldsEnum.values) {
-        if ((field == FieldsEnum.ATSIGN)) {
+        if ((field == FieldsEnum.ATSIGN) ||
+            (field == FieldsEnum.PRIVATEACCOUNT)) {
           continue;
         }
         await setPrivacy(field.name, private);
@@ -71,15 +73,19 @@ class ChangePrivacyService {
       }
 
       await storeInSecondary(true);
+      // update PRIVATEACCOUNT key
+      await AtKeySetService().update(
+          BasicData(value: private.toString()), FieldsEnum.PRIVATEACCOUNT.name);
 
       Provider.of<UserProvider>(NavService.navKey.currentContext!,
               listen: false)
           .user!
           .allPrivate = private;
-
       Provider.of<SetPrivateState>(NavService.navKey.currentContext!,
               listen: false)
           .setLoadingState(false);
+
+      user.allPrivate = private;
     } catch (e) {
       print('Error in setAllPrivate $e');
       Provider.of<SetPrivateState>(NavService.navKey.currentContext!,
@@ -113,6 +119,7 @@ class ChangePrivacyService {
   Map<dynamic, dynamic> _toMap() {
     return {
       FieldsEnum.ATSIGN.name: user.atsign,
+      FieldsEnum.PRIVATEACCOUNT.name: user.allPrivate,
       FieldsEnum.IMAGE.name: user.image,
       FieldsEnum.FIRSTNAME.name: user.firstname,
       FieldsEnum.LASTNAME.name: user.lastname,
