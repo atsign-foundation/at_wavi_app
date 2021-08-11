@@ -6,6 +6,7 @@ import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
@@ -106,7 +107,8 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                                     customFields;
                               });
                             }
-                          }
+                          },
+                          'isEdit': false
                         });
                   },
                 ),
@@ -207,13 +209,41 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-              basicData.accountName!,
-              style: TextStyles.lightText(ColorConstants.black.withOpacity(0.5),
-                  size: 16),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  basicData.accountName!,
+                  style: TextStyles.lightText(
+                      ColorConstants.black.withOpacity(0.5),
+                      size: 16),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  SetupRoutes.push(context, Routes.ADD_CUSTOM_FIELD,
+                      arguments: {
+                        'onSave': (BasicData data) {
+                          List<BasicData>? customFields = UserPreview()
+                              .user()!
+                              .customFields[widget.category.name];
+                          var index = customFields!.indexOf(basicData);
+                          setState(() {
+                            customFields[index] = data;
+                          });
+                        },
+                        'basicData': basicData,
+                        'isEdit': true
+                      });
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.edit),
+                ),
+              )
+            ],
           ),
           imageField(basicData),
           Divider(thickness: 1, height: 1),
@@ -226,9 +256,34 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
 
   Widget inputField(BasicData basicData, {bool isCustomField = false}) {
     return Slidable(
+      key: UniqueKey(),
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.15,
       secondaryActions: <Widget>[
+        IconSlideAction(
+          caption: '',
+          // color: ColorConstants.red,
+          iconWidget: Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Text(
+              'Edit',
+            ),
+          ),
+          onTap: () {
+            SetupRoutes.push(context, Routes.ADD_CUSTOM_FIELD, arguments: {
+              'onSave': (BasicData data) {
+                List<BasicData>? customFields =
+                    UserPreview().user()!.customFields[widget.category.name];
+                var index = customFields!.indexOf(basicData);
+                setState(() {
+                  customFields[index] = data;
+                });
+              },
+              'basicData': basicData,
+              'isEdit': true
+            });
+          },
+        ),
         IconSlideAction(
           caption: '',
           color: ColorConstants.red,
@@ -245,7 +300,11 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
             }
             List<BasicData>? customFields =
                 UserPreview().user()!.customFields[widget.category.name];
-            customFields!.remove(basicData);
+            var index = customFields!.indexOf(basicData);
+            customFields[index] = BasicData(
+                accountName:
+                    customFields[index].accountName! + AtText.IS_DELETED,
+                isPrivate: customFields[index].isPrivate);
             setState(() {});
           },
         ),
@@ -312,13 +371,23 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
 
     return SizedBox(
       width: double.infinity,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        height: 200,
-        child: Image.memory(
-          customImage,
-          fit: BoxFit.fill,
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          basicData.valueDescription != null
+              ? Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Text(basicData.valueDescription!))
+              : SizedBox(),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            height: 200,
+            child: Image.memory(
+              customImage,
+              fit: BoxFit.fill,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -12,7 +12,9 @@ import 'package:flutter/material.dart';
 
 class AddCustomField extends StatefulWidget {
   ValueChanged<BasicData> onSave;
-  AddCustomField({required this.onSave});
+  final bool isEdit;
+  BasicData? basicData;
+  AddCustomField({required this.onSave, this.isEdit = false, this.basicData});
 
   @override
   _AddCustomFieldState createState() => _AddCustomFieldState();
@@ -22,6 +24,23 @@ class _AddCustomFieldState extends State<AddCustomField> {
   BasicData basicData =
       BasicData(isPrivate: false, type: CustomContentType.Text.name);
   bool isImageSelected = false;
+
+  @override
+  void initState() {
+    if (widget.isEdit && widget.basicData != null) {
+      basicData = widget.basicData!;
+
+      if (widget.basicData!.type != CustomContentType.Image.name) {
+        basicData.valueDescription = basicData.value;
+        basicData.value = null;
+      }
+
+      if (widget.basicData!.type == CustomContentType.Image.name) {
+        isImageSelected = true;
+      }
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +127,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
                         ),
                       ),
                       TextFormField(
-                        autovalidateMode: basicData.value != ''
+                        autovalidateMode: basicData.valueDescription != ''
                             ? AutovalidateMode.disabled
                             : AutovalidateMode.onUserInteraction,
                         validator: (value) {
@@ -280,8 +299,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
       basicData.value = basicData.valueDescription;
       basicData.valueDescription = null;
     }
-
-    widget.onSave(basicData);
     Navigator.of(context).pop();
+    widget.onSave(basicData);
   }
 }
