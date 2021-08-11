@@ -79,6 +79,7 @@ class User {
 
   static Map<dynamic, dynamic> toJson(User? user) {
     return {
+      'allPrivate': user?.allPrivate,
       FieldsEnum.ATSIGN.name: user?.atsign,
       FieldsEnum.IMAGE.name: user?.image,
       FieldsEnum.FIRSTNAME.name: user?.firstname,
@@ -100,7 +101,69 @@ class User {
       FieldsEnum.XBOX.name: user?.xbox,
       FieldsEnum.STEAM.name: user?.steam,
       FieldsEnum.DISCORD.name: user?.discord,
+      'customFields': user?.customFields
     };
+  }
+
+  static fromJson(Map<dynamic, dynamic> userMap) {
+    try {
+      Map<String, List<BasicData>> customFields = {};
+
+      for (AtCategory atCategory in AtCategory.values) {
+        List<BasicData> basicDataList = [];
+        if (userMap['customFields'][atCategory.name] != null) {
+          userMap['customFields'][atCategory.name].forEach((data) {
+            var basicData = BasicData.fromJson(jsonDecode(data));
+            if (basicData.accountName != null && basicData.value != null) {
+              basicDataList.add(basicData);
+            }
+          });
+        }
+        customFields[atCategory.name] = basicDataList;
+      }
+
+      return User(
+        allPrivate: userMap['allPrivate'],
+        atsign: userMap[FieldsEnum.ATSIGN.name],
+        image: BasicData.fromJson(json.decode(userMap[FieldsEnum.IMAGE.name])),
+        firstname:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.FIRSTNAME.name])),
+        lastname:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.LASTNAME.name])),
+        location:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.LOCATION.name])),
+        locationNickName: BasicData.fromJson(
+            json.decode(userMap[FieldsEnum.LOCATIONNICKNAME.name])),
+        pronoun:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.PRONOUN.name])),
+        phone: BasicData.fromJson(json.decode(userMap[FieldsEnum.PHONE.name])),
+        email: BasicData.fromJson(json.decode(userMap[FieldsEnum.EMAIL.name])),
+        about: BasicData.fromJson(json.decode(userMap[FieldsEnum.ABOUT.name])),
+        twitter:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.TWITTER.name])),
+        facebook:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.FACEBOOK.name])),
+        linkedin:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.LINKEDIN.name])),
+        instagram:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.INSTAGRAM.name])),
+        youtube:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.YOUTUBE.name])),
+        tumbler:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.TUMBLR.name])),
+        medium:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.MEDIUM.name])),
+        ps4: BasicData.fromJson(json.decode(userMap[FieldsEnum.PS4.name])),
+        xbox: BasicData.fromJson(json.decode(userMap[FieldsEnum.XBOX.name])),
+        steam: BasicData.fromJson(json.decode(userMap[FieldsEnum.STEAM.name])),
+        discord:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.DISCORD.name])),
+        customFields: customFields,
+      );
+    } catch (e) {
+      print('error : in User from json: $e');
+      return User();
+    }
   }
 }
 
@@ -120,13 +183,21 @@ class BasicData {
       this.type,
       this.valueDescription});
 
-  BasicData.fromJson(Map<String, dynamic> json)
-      : value = json['value'],
-        isPrivate = json['isPrivate'] == 'false' ? false : true,
-        // latLng = json['latLng'],
-        accountName = json['accountName'],
-        valueDescription = json['valueDescription'],
-        type = json['type'];
+  factory BasicData.fromJson(Map<String, dynamic> json) {
+    if (json['value'] != null &&
+        json['accountName'] != null &&
+        json['value'] != 'null' &&
+        json['accountName'] != 'null') {
+      return BasicData(
+          value: json['value'],
+          isPrivate: json['isPrivate'] == 'false' ? false : true,
+          accountName: json['accountName'],
+          valueDescription: json['valueDescription'],
+          type: json['type']);
+    } else {
+      return BasicData();
+    }
+  }
 
   toJson() {
     return json.encode({
@@ -150,7 +221,7 @@ BasicData formData(name, value, {private, type, valueDescription}) {
       accountName: name,
       // icon: setIcon(name),
       isPrivate: private ?? false,
-      type: TextInputType.text,
+      type: type ?? TextInputType.text,
       value: value,
       valueDescription: valueDescription);
   return basicdata;

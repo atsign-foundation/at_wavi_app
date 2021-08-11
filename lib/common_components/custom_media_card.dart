@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:at_wavi_app/model/user.dart';
@@ -29,6 +30,9 @@ class _CustomMediaCardState extends State<CustomMediaCard> {
   void initState() {
     if (widget.basicData.type == CustomContentType.Image.name) {
       _isImage = true;
+      if (widget.basicData.value is String) {
+        widget.basicData.value = json.decode(widget.basicData.value);
+      }
       var intList = widget.basicData.value!.cast<int>();
       customImage = Uint8List.fromList(intList);
     } else if (widget.basicData.type == CustomContentType.Youtube.name) {

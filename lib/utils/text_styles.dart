@@ -84,4 +84,10 @@ class TextStyles {
 
   static TextStyle orange16 =
       TextStyle(fontSize: 16.toFont, color: ColorConstants.orange);
+
+  static TextStyle linkText({int size = 16}) => TextStyle(
+      color: Colors.blue,
+      fontSize: size.toFont,
+      letterSpacing: 0.1,
+      decoration: TextDecoration.underline);
 }

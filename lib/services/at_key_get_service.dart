@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:at_base2e15/at_base2e15.dart';
 import 'package:at_commons/at_commons.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
@@ -11,6 +12,7 @@ class AtKeyGetService {
   AtKeyGetService._();
   static AtKeyGetService _instance = AtKeyGetService._();
   factory AtKeyGetService() => _instance;
+  Map<dynamic, dynamic> _tempObject = {};
   User user = User(allPrivate: false, atsign: '');
 
   init() {
@@ -19,8 +21,17 @@ class AtKeyGetService {
     user.atsign = BackendService().atClientInstance.currentAtSign!;
   }
 
+// TODO: for testing only
+  deleteKeys() async {
+    var scanKeys = await BackendService().getAtKeys();
+    for (var key in scanKeys) {
+      await BackendService().atClientInstance.delete(key);
+    }
+  }
+
   ///fetches [atsign] profile.
   Future<User?> getProfile({String? atsign}) async {
+    bool _containsPrivateAccountKey = false;
     try {
       // _setUser(atsign: atsign);
       atsign = atsign ?? BackendService().atClientInstance.currentAtSign;
@@ -29,15 +40,13 @@ class AtKeyGetService {
       for (var key in scanKeys) {
         await _performLookupAndSetUser(key);
         // if (!result) errorCallBack(false);
-      }
-      print('firstname ${user.firstname.value}');
-      print('user.customFields ${user.customFields}');
-      user.customFields.forEach((key, value) {
-        if (user.customFields[key] != null) {
-          print(
-              'user.customFields[key] ${key} accountName:${value[0].accountName} type:${value[0].type} value:${value[0].value} valueDescription ${value[0].valueDescription} ');
+
+        if (key.key!.contains(FieldsEnum.PRIVATEACCOUNT.name)) {
+          _containsPrivateAccountKey = true;
         }
-      });
+      }
+
+      await createPrivateAccountKey(atsign!, _containsPrivateAccountKey);
       return user;
       // _container.updateWidgets();
       // successCallBack(true);
@@ -47,6 +56,22 @@ class AtKeyGetService {
       // errorCallBack(err);
       print('Error in getProfile $err');
       return null;
+    }
+  }
+
+  /// check & create 'PRIVATEACCOUNT key
+  createPrivateAccountKey(
+      String atsign, bool _containsPrivateAccountKey) async {
+    try {
+      if (atsign == BackendService().atClientInstance.currentAtSign) {
+        if (!_containsPrivateAccountKey) {
+          await AtKeySetService().update(
+              BasicData(value: user.allPrivate.toString()),
+              FieldsEnum.PRIVATEACCOUNT.name);
+        }
+      }
+    } catch (err) {
+      print('Error in createPrivateAccountKey $err');
     }
   }
 
@@ -79,15 +104,12 @@ class AtKeyGetService {
       if (isPublic != null && isPublic) {
         isPrivate = false;
       }
-      // _tempObject[key] = value;
+      _tempObject[key] = value;
       if (isCustom) {
         _setCustomField(value, isPrivate);
         return true;
       }
-      // var data = _container.get(key);
-      // if (data == null || data.isPrivate != true) {
       set(key, value, isPrivate: isPrivate);
-      // }
     } catch (ex) {
       // _logger.severe('setting the $key key for user throws ${ex.toString()}');
     }
@@ -99,8 +121,8 @@ class AtKeyGetService {
     var json = jsonDecode(response);
     if (json != 'null' && json != null) {
       String category = json[CustomFieldConstants.category];
-      var type = _getType(json[CustomFieldConstants.type]);
-      var value = _getCustomContentValue(type: type, json: json);
+      var type = getType(json[CustomFieldConstants.type]);
+      var value = getCustomContentValue(type: type, json: json);
       String label = json[CustomFieldConstants.label];
       String? valueDescription = json[CustomFieldConstants.valueDescription];
       BasicData basicData = BasicData(
@@ -122,7 +144,7 @@ class AtKeyGetService {
   }
 
   ///Feches type of customField.
-  _getType(type) {
+  getType(type) {
     if (type is String) {
       return type;
     }
@@ -135,9 +157,10 @@ class AtKeyGetService {
   }
 
   ///parses customField value from [json] based on type.
-  _getCustomContentValue({required var type, required var json}) {
+  getCustomContentValue({required var type, required var json}) {
     if (type == CustomContentType.Image.name) {
-      return Base2e15.decode(json[CustomFieldConstants.value]);
+      // return Base2e15.decode(json[CustomFieldConstants.value]);
+      return base64Decode(json[CustomFieldConstants.value]);
     } else if (type == CustomContentType.Youtube.name) {
       if (json[CustomFieldConstants.valueLabel] != null &&
           json[CustomFieldConstants.valueLabel] != '') {
@@ -147,6 +170,10 @@ class AtKeyGetService {
     } else {
       return json[CustomFieldConstants.value];
     }
+  }
+
+  Map<dynamic, dynamic> objectReference() {
+    return _tempObject;
   }
 
   dynamic set(property, value, {isPrivate, valueDescription}) {

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:at_base2e15/at_base2e15.dart';
 import 'package:at_commons/at_commons.dart';
@@ -6,6 +7,7 @@ import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
+import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -53,10 +55,10 @@ class AtKeySetService {
       }
       var isDeleted = await _deleteChangedKeys(atKey, scanKeys);
       if (value.isEmpty) {
-        // _tempObject.remove(key.split('.')[0]);
+        AtKeyGetService().objectReference().remove(key.split('.')[0]);
         return await BackendService().atClientInstance.delete(atKey);
       }
-      if (isDeleted == null) {
+      if (!isDeleted) {
         /// If revious value is same as new value then dont update
         var notUpdate = _checkCriteria(key.split('.')[0], data.value);
         if (notUpdate) {
@@ -70,9 +72,11 @@ class AtKeySetService {
 
   ///Returns `true` if tempObject's value for [key] is equal to [value].
   bool _checkCriteria(dynamic key, var value) {
-    // return _tempObject.containsKey(key) ? _tempObject[key] == value : false;
+    key = key.replaceAll(' ', '');
+    return AtKeyGetService().objectReference().containsKey(key)
+        ? AtKeyGetService().objectReference()[key] == value
+        : false;
     // / check if this value is same as the previous value
-    return false;
   }
 
   ///deletes old key for atKey if public status is changed.
@@ -81,9 +85,9 @@ class AtKeySetService {
     List<AtKey> tempScanKeys = [];
     tempScanKeys.addAll(atKeys);
 
-    tempScanKeys.retainWhere((scanKey) => scanKey.key == atKey.key
-        //  && !scanKey.metadata.isPublic == atKey.metadata!.isPublic
-        );
+    tempScanKeys.retainWhere((scanKey) =>
+        scanKey.key == atKey.key &&
+        !scanKey.metadata!.isPublic! == atKey.metadata!.isPublic);
     print('tempScanKeys.length: ${tempScanKeys.length}');
     if (tempScanKeys.isNotEmpty) {
       await Future.forEach(tempScanKeys, (element) async {
@@ -139,17 +143,13 @@ class AtKeySetService {
           scanKeys = await BackendService().atClientInstance.getAtKeys();
         }
         var isDeleted = await _deleteChangedKeys(atKey, scanKeys);
-        // if (!atKey.metadata!.isPublic!) {
-        //   await BackendService().atClientInstance.delete(atKey);
-        // }
-        // print('isDeleted $isDeleted');
         if (data.value == null) {
-          // _tempObject.remove(key.split('.')[0]);
+          AtKeyGetService().objectReference().remove(key.split('.')[0]);
           result = await BackendService().atClientInstance.delete(atKey);
           if (!result) return result;
           continue;
         }
-        if (isDeleted == null) {
+        if (!isDeleted) {
           var notUpdate = _checkCriteria(key, jsonValue);
           if (notUpdate) {
             continue;
@@ -263,8 +263,16 @@ class AtKeySetService {
   _setCustomContentValue({required var type, required var json}) {
     json[CustomFieldConstants.valueLabel] = '';
     if (type == CustomContentType.Image.name) {
-      json[CustomFieldConstants.value] =
-          Base2e15.encode(json[CustomFieldConstants.value]);
+      if (json[CustomFieldConstants.value] is String) {
+        json[CustomFieldConstants.value] =
+            json.decode(json[CustomFieldConstants.value]);
+        var intList = json[CustomFieldConstants.value]!.cast<int>();
+        var customImage = Uint8List.fromList(intList);
+        json[CustomFieldConstants.value] = Base2e15.encode(customImage);
+      } else {
+        json[CustomFieldConstants.value] =
+            Base2e15.encode(json[CustomFieldConstants.value]);
+      }
       return json;
     } else if (type == CustomContentType.Youtube.name) {
       json[CustomFieldConstants.valueLabel] = json[CustomFieldConstants.value];
@@ -282,5 +290,68 @@ class AtKeySetService {
   ///Replaces sepcial characters with '_'.
   String _formatCustomTitle(String data) {
     return data.trim().toLowerCase().replaceAll(RegExp(r'(:|@|;|\?|!|,)'), '_');
+  }
+
+  Future<bool> _updateDefinedFields(
+    User userData,
+    bool isCheck,
+    List<AtKey> scanKeys,
+  ) async {
+    bool isUpdated = false;
+    var userMap = User.toJson(userData);
+
+    for (FieldsEnum field in FieldsEnum.values) {
+      var data;
+      if (userMap.containsKey(field.name)) {
+        data = userMap[field.name];
+      }
+
+      if (field == FieldsEnum.ATSIGN) {
+        continue;
+      }
+      if (data.value != null) {
+        isUpdated = await update(data, field.name,
+            isCheck: isCheck, scanKeys: scanKeys);
+      }
+    }
+    return isUpdated;
+  }
+
+  Future<bool> _updateCustomData(
+    User _user,
+    bool isCheck,
+    List<AtKey> scanKeys,
+  ) async {
+    Map<String, List<BasicData>> customFields = _user.customFields;
+    bool isUpdated = false;
+    if (customFields != null) {
+      for (var field in customFields.entries) {
+        if (field.value == null) {
+          continue;
+        }
+        isUpdated = await updateCustomFields(field.key, field.value,
+            isCheck: isCheck, scanKeys: scanKeys);
+        if (!isUpdated) return isUpdated;
+      }
+    }
+    return isUpdated;
+  }
+
+  _getAtkeys() async {
+    var keys = await BackendService()
+        .atClientInstance
+        .getAtKeys(regex: MixedConstants.syncRegex);
+
+    keys.retainWhere((scanKey) =>
+        !scanKey.metadata!.isCached &&
+        '@' + (scanKey.sharedBy ?? '') == BackendService().currentAtSign);
+
+    return keys;
+  }
+
+  saveUserData(User user) async {
+    var atKeys = await _getAtkeys();
+    await _updateDefinedFields(user, true, atKeys);
+    await _updateCustomData(user, true, atKeys);
   }
 }

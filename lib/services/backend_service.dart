@@ -10,6 +10,7 @@ import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
+import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
@@ -42,6 +43,7 @@ class BackendService {
       atClientPreference: atClientPrefernce,
       domain: MixedConstants.ROOT_DOMAIN,
       appAPIKey: MixedConstants.devAPIKey,
+      appColor: ColorConstants.peach,
       onboard: (value, atsign) async {
         String? atSign = value[atsign]!.atClient!.currentAtSign;
         atClientInstance = value[atsign]!.atClient!;

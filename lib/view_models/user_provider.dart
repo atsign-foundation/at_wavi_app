@@ -1,5 +1,6 @@
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
+import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 
 class UserProvider extends BaseModel {
@@ -15,7 +16,9 @@ class UserProvider extends BaseModel {
     user = await AtKeyGetService().getProfile(atsign: atsign);
     if (user == null) {
       setStatus(FETCH_USER, Status.Error);
+      return;
     }
+    await TwitetrService().getTweets();
     setStatus(FETCH_USER, Status.Done);
   }
 

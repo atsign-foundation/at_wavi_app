@@ -26,9 +26,6 @@ showPublicPrivateBottomSheet(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Select',
-                  style: CustomTextStyles.customBoldTextStyle(
-                      ColorConstants.black)),
               SizedBox(
                 height: 50,
                 child: InkWell(

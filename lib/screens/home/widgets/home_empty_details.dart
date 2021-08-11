@@ -1,3 +1,6 @@
+import 'package:at_wavi_app/routes/route_names.dart';
+import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:at_wavi_app/services/size_config.dart';
@@ -25,7 +28,13 @@ sharing your profile with others.''',
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 25.toHeight),
-            Text('Add Details', style: TextStyles.orange18bold),
+            GestureDetector(
+              onTap: () {
+                SetupRoutes.push(
+                    NavService.navKey.currentContext!, Routes.EDIT_PERSONA);
+              },
+              child: Text('Add Details', style: TextStyles.orange18bold),
+            ),
           ],
         ),
       ),

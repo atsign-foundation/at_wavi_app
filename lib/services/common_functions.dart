@@ -2,31 +2,41 @@ import 'dart:typed_data';
 
 import 'package:at_contact/at_contact.dart';
 import 'package:at_contacts_flutter/at_contacts_flutter.dart';
+import 'package:at_lookup/at_lookup.dart';
 import 'package:at_wavi_app/common_components/custom_card.dart';
 import 'package:at_wavi_app/common_components/custom_media_card.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CommonFunctions {
   CommonFunctions._internal();
   static CommonFunctions _instance = CommonFunctions._internal();
   factory CommonFunctions() => _instance;
 
-  List<Widget> getCustomCardForFields(
-      ThemeData _themeData, AtCategory category) {
+  List<Widget> getCustomCardForFields(ThemeData _themeData, AtCategory category,
+      {bool isPreview = false}) {
     return [
-      ...getDefinedFieldsCard(_themeData, category),
-      ...getCustomFieldsCard(_themeData, category)
+      ...getDefinedFieldsCard(_themeData, category, isPreview: isPreview),
+      ...getCustomFieldsCard(_themeData, category, isPreview: isPreview)
     ];
   }
 
-  List<Widget> getDefinedFieldsCard(ThemeData _themeData, AtCategory category) {
+  List<Widget> getDefinedFieldsCard(ThemeData _themeData, AtCategory category,
+      {bool isPreview = false}) {
     var definedFieldsWidgets = <Widget>[];
-    var userMap = User.toJson(UserProvider().user!);
+    var userMap = User.toJson(isPreview
+        ? Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                listen: false)
+            .user()
+        : UserProvider().user!);
     List<String> fields = FieldNames().getFieldList(category);
 
     for (var field in userMap.entries) {
@@ -54,12 +64,20 @@ class CommonFunctions {
     return definedFieldsWidgets;
   }
 
-  List<Widget> getCustomFieldsCard(ThemeData _themeData, AtCategory category) {
+  List<Widget> getCustomFieldsCard(ThemeData _themeData, AtCategory category,
+      {bool isPreview = false}) {
     var customFieldsWidgets = <Widget>[];
 
     /// getting custom fields for [category]
-    List<BasicData>? customFields =
-        UserProvider().user!.customFields[category.name];
+    List<BasicData>? customFields = [];
+    if (isPreview) {
+      customFields = Provider.of<UserPreview>(NavService.navKey.currentContext!,
+              listen: false)
+          .user()!
+          .customFields[category.name];
+    } else {
+      customFields = UserProvider().user!.customFields[category.name];
+    }
 
     if (customFields != null) {
       for (var basicData in customFields) {
@@ -110,14 +128,18 @@ class CommonFunctions {
     return fieldCard;
   }
 
-  List<Widget> getFeaturedTwitterCards(ThemeData _themeData) {
+  List<Widget> getFeaturedTwitterCards(String username, ThemeData _themeData) {
     var twitterCards = <Widget>[];
-    if (TwitetrService().tweetList.isNotEmpty) {
-      int sliceIndex = TwitetrService().tweetList.length > 5
+    if (TwitetrService().searchedUserTweets[username] != null &&
+        TwitetrService().searchedUserTweets[username]!.isNotEmpty) {
+      int sliceIndex = TwitetrService().searchedUserTweets[username]!.length > 5
           ? 5
-          : TwitetrService().tweetList.length;
+          : TwitetrService().searchedUserTweets[username]!.length;
 
-      TwitetrService().tweetList.sublist(0, sliceIndex).forEach((tweet) {
+      TwitetrService()
+          .searchedUserTweets[username]!
+          .sublist(0, sliceIndex)
+          .forEach((tweet) {
         var twitterCard = Column(
           children: [
             SizedBox(
@@ -141,9 +163,24 @@ class CommonFunctions {
     return twitterCards;
   }
 
-  bool isFieldsPresentForCategory(AtCategory category) {
+  bool isFieldsPresentForCategory(AtCategory category,
+      {bool isPreview = false}) {
+    if (isPreview &&
+        Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                    listen: false)
+                .user() ==
+            null) {
+      return false;
+    }
+    if (UserProvider().user == null) {
+      return false;
+    }
+    var userMap = User.toJson(isPreview
+        ? Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                listen: false)
+            .user()!
+        : UserProvider().user!);
     var isPresent = false;
-    var userMap = User.toJson(UserProvider().user!);
     List<String> fields = FieldNames().getFieldList(category);
 
     for (var field in userMap.entries) {
@@ -156,8 +193,17 @@ class CommonFunctions {
     }
 
     if (!isPresent) {
-      List<BasicData>? customFields =
-          UserProvider().user!.customFields[category.name];
+      List<BasicData>? customFields = [];
+
+      if (isPreview) {
+        customFields = Provider.of<UserPreview>(
+                NavService.navKey.currentContext!,
+                listen: false)
+            .user()!
+            .customFields[category.name];
+      } else {
+        customFields = UserProvider().user!.customFields[category.name];
+      }
 
       if (customFields != null) {
         for (var basicData in customFields) {
@@ -171,7 +217,24 @@ class CommonFunctions {
     return isPresent;
   }
 
-  bool isTwitterFeatured() {
+  bool isTwitterFeatured({bool isPreview = false}) {
+    if (isPreview) {
+      if (Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                      listen: false)
+                  .user() !=
+              null &&
+          Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                      listen: false)
+                  .user()!
+                  .twitter
+                  .value !=
+              null) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     if (UserProvider().user != null &&
         UserProvider().user!.twitter.value != null) {
       return true;
@@ -180,7 +243,24 @@ class CommonFunctions {
     }
   }
 
-  bool isInstagramFeatured() {
+  bool isInstagramFeatured({bool isPreview = false}) {
+    if (isPreview) {
+      if (Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                      listen: false)
+                  .user() !=
+              null &&
+          Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                      listen: false)
+                  .user()!
+                  .instagram
+                  .value !=
+              null) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     if (UserProvider().user != null &&
         UserProvider().user!.instagram.value != null) {
       return true;
@@ -200,5 +280,16 @@ class CommonFunctions {
       image = Uint8List.fromList(intList);
       return image;
     }
+  }
+
+  Future<bool> checkAtsign(String? receiver) async {
+    if (receiver == null) {
+      return false;
+    } else if (!receiver.contains('@')) {
+      receiver = '@' + receiver;
+    }
+    var checkPresence = await AtLookupImpl.findSecondary(
+        receiver, MixedConstants.ROOT_DOMAIN, 64);
+    return checkPresence != null;
   }
 }

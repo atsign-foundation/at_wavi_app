@@ -10,21 +10,32 @@ class TwitetrService {
   static final TwitetrService _instance = TwitetrService._();
   factory TwitetrService() => _instance;
   TwitterUser? twitterUser;
-  List<Tweet> tweetList = [];
+  // List<Tweet> tweetList = [];
+  // will store twitter username and tweets for that username
+  Map<String, List<Tweet>> searchedUserTweets = {};
 
   final String twitterEndpoint = 'https://api.twitter.com/2/';
 
-  getTweets() async {
+  getTweets({String? searchedUsername}) async {
     String? username;
-    if (UserProvider().user != null && UserProvider().user!.twitter != null) {
+    if (searchedUsername != null) {
+      username = searchedUsername;
+    } else if (UserProvider().user != null &&
+        UserProvider().user!.twitter != null) {
       username = UserProvider().user!.twitter.value;
     }
+    // username = 'swyx';
+
     if (username == null) {
       return;
     }
-    await getTwitterUser(username);
+    twitterUser = await getTwitterUser(username);
     if (twitterUser!.id != null) {
-      await getTwitterRecentPosts(twitterUser!.id!);
+      // tweetList = await getTwitterRecentPosts(twitterUser!.id!);
+      List<Tweet> _tweetList = await getTwitterRecentPosts(twitterUser!.id!);
+      searchedUserTweets[username] = _tweetList;
+    } else {
+      searchedUserTweets[username] = [];
     }
   }
 
@@ -41,16 +52,21 @@ class TwitetrService {
     if (response.statusCode == 200) {
       var responseString = await response.stream.bytesToString();
       var user = jsonDecode(responseString);
-      twitterUser = TwitterUser.fromJson(user['data']);
-      return twitterUser!;
+      TwitterUser _twitterUser;
+      if (user['data'] != null) {
+        _twitterUser = TwitterUser.fromJson(user['data']);
+      } else {
+        _twitterUser = TwitterUser(null, null, null);
+      }
+      return _twitterUser;
     } else {
-      twitterUser = TwitterUser(null, null, null);
-      return twitterUser!;
+      var _twitterUser = TwitterUser(null, null, null);
+      return _twitterUser;
     }
   }
 
   Future<List<Tweet>> getTwitterRecentPosts(String id) async {
-    tweetList = [];
+    var _tweetList = <Tweet>[];
     var headers = {
       'Authorization': 'Bearer ${MixedConstants.twitterBearerToken}',
     };
@@ -65,10 +81,10 @@ class TwitetrService {
       var tweets = jsonDecode(responseString);
       if (tweets['data'] != null) {
         tweets['data'].forEach((el) {
-          tweetList.add(Tweet.fromJson(el)!);
+          _tweetList.add(Tweet.fromJson(el)!);
         });
       }
-      return tweetList;
+      return _tweetList;
     } else {
       return [];
     }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:at_wavi_app/common_components/content_edit_field_card.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
@@ -8,8 +10,10 @@ import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CotentEdit extends StatefulWidget {
   @override
@@ -26,12 +30,12 @@ class _CotentEditState extends State<CotentEdit> {
     {
       'heading': 'Basic Details',
       'category': AtCategory.DETAILS,
-      'route': '',
+      'route': Routes.EDIT_CATEGORY_FIELDS,
     },
     {
       'heading': 'Additional Details',
       'category': AtCategory.ADDITIONAL_DETAILS,
-      'route': '',
+      'route': Routes.EDIT_CATEGORY_FIELDS,
     },
     {
       'heading': 'Location',
@@ -41,15 +45,23 @@ class _CotentEditState extends State<CotentEdit> {
     {
       'heading': 'Social Channels',
       'category': AtCategory.SOCIAL,
-      'route': '',
+      'route': Routes.EDIT_CATEGORY_FIELDS,
     },
     {
       'heading': 'Game Channels',
       'category': AtCategory.GAMER,
-      'route': '',
+      'route': Routes.EDIT_CATEGORY_FIELDS,
     },
   ];
   AtCategory? selectedcategory;
+
+  @override
+  initState() {
+    var userJson = User.toJson(UserProvider().user!);
+    User previewUser = User.fromJson(json.decode(json.encode(userJson)));
+    UserPreview().setUser = previewUser;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +106,17 @@ class _CotentEditState extends State<CotentEdit> {
                 InkWell(
                   onTap: () {
                     if (route != '') {
-                      SetupRoutes.push(
-                          NavService.navKey.currentContext!, route);
+                      if (route == Routes.LOCATION_WIDGET) {
+                        SetupRoutes.push(
+                            NavService.navKey.currentContext!, route);
+                      } else if (route == Routes.EDIT_CATEGORY_FIELDS) {
+                        SetupRoutes.push(
+                            NavService.navKey.currentContext!, route,
+                            arguments: {
+                              'category': category,
+                              'filedHeading': title,
+                            });
+                      }
                     }
                   },
                   child: Row(
@@ -114,7 +135,6 @@ class _CotentEditState extends State<CotentEdit> {
                             )
                           : Icon(
                               Icons.add,
-                              // size: 20,
                             )
                     ],
                   ),
@@ -138,11 +158,14 @@ class _CotentEditState extends State<CotentEdit> {
   }
 
   List<Widget> getDefinedFieldsCard() {
-    if (selectedcategory == null) {
+    if (selectedcategory == null ||
+        Provider.of<UserPreview>(context, listen: false).user() == null) {
       return [SizedBox()];
     }
+
     var definedFieldsWidgets = <Widget>[];
-    var userMap = User.toJson(UserProvider().user!);
+    var userMap =
+        User.toJson(Provider.of<UserPreview>(context, listen: false).user());
     List<String> fields = FieldNames().getFieldList(selectedcategory!);
 
     for (var field in userMap.entries) {
@@ -167,14 +190,17 @@ class _CotentEditState extends State<CotentEdit> {
   }
 
   List<Widget> getCustomFieldsCard() {
-    if (selectedcategory == null) {
+    if (selectedcategory == null ||
+        Provider.of<UserPreview>(context, listen: false).user() == null) {
       return [SizedBox()];
     }
     var customFieldsWidgets = <Widget>[];
 
     /// getting custom fields for [selectedcategory]
     List<BasicData>? customFields =
-        UserProvider().user!.customFields[selectedcategory!.name];
+        Provider.of<UserPreview>(context, listen: false)
+            .user()!
+            .customFields[selectedcategory!.name];
 
     if (customFields != null) {
       for (var basicData in customFields) {
@@ -187,9 +213,7 @@ class _CotentEditState extends State<CotentEdit> {
               SizedBox(height: 25)
             ],
           );
-          customFieldsWidgets.add(
-            widget,
-          );
+          customFieldsWidgets.add(widget);
         }
       }
     }
