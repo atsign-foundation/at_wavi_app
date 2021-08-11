@@ -67,7 +67,8 @@ class _CotentEditState extends State<CotentEdit> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding:
+          const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0, bottom: 50),
       child: SingleChildScrollView(
         child: Column(
           children: contentHeadings.map((contentHeading) {

@@ -44,7 +44,19 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                   children: <Widget>[
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pop();
+                        if (_formKey.currentState!.validate()) {
+                          Navigator.of(context).pop();
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: ColorConstants.RED,
+                            content: Text(
+                              'Please fill all custom details',
+                              style: CustomTextStyles.customTextStyle(
+                                ColorConstants.white,
+                              ),
+                            ),
+                          ));
+                        }
                       },
                       child: Row(
                         children: [
@@ -127,34 +139,38 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   List<Widget> getDefinedInputFields() {
     var definedFieldsWidgets = <Widget>[];
     var userMap = User.toJson(UserPreview().user());
-    List<String> fields = FieldNames().getFieldList(widget.category);
+    List<FieldsEnum> fields = FieldNames().getFieldListEnum(widget.category);
 
-    for (var field in userMap.entries) {
-      if (field.key != null &&
-          fields.contains(field.key) &&
-          field.value != null &&
-          field.value.value != null) {
-        var widget = Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                field.key,
-                style: TextStyles.lightText(
-                    ColorConstants.black.withOpacity(0.5),
-                    size: 16),
-              ),
-            ),
-            inputField(field.value),
-            Divider(thickness: 1, height: 1),
-            SizedBox(height: 20)
-          ],
+    for (int i = 0; i < fields.length; i++) {
+      BasicData basicData = userMap[fields[i].name];
+      if (basicData.value == null && basicData.accountName == null) {
+        basicData = BasicData(
+          accountName: fields[i].name,
+          value: '',
+          type: CustomContentType.Text.name,
         );
-
-        definedFieldsWidgets.add(widget);
       }
+
+      var widget = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              basicData.accountName!,
+              style: TextStyles.lightText(ColorConstants.black.withOpacity(0.5),
+                  size: 16),
+            ),
+          ),
+          inputField(basicData),
+          Divider(thickness: 1, height: 1),
+          SizedBox(height: 20)
+        ],
+      );
+
+      definedFieldsWidgets.add(widget);
     }
+
     return definedFieldsWidgets;
   }
 
@@ -198,7 +214,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                   size: 16),
             ),
           ),
-          inputField(basicData),
+          inputField(basicData, isCustomField: true),
           Divider(thickness: 1, height: 1),
           SizedBox(height: 20)
         ],
@@ -259,56 +275,60 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
       key: UniqueKey(),
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.15,
-      secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: '',
-          // color: ColorConstants.red,
-          iconWidget: Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Text(
-              'Edit',
-            ),
-          ),
-          onTap: () {
-            SetupRoutes.push(context, Routes.ADD_CUSTOM_FIELD, arguments: {
-              'onSave': (BasicData data) {
-                List<BasicData>? customFields =
-                    UserPreview().user()!.customFields[widget.category.name];
-                var index = customFields!.indexOf(basicData);
-                setState(() {
-                  customFields[index] = data;
-                });
-              },
-              'basicData': basicData,
-              'isEdit': true
-            });
-          },
-        ),
-        IconSlideAction(
-          caption: '',
-          color: ColorConstants.red,
-          iconWidget: Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Text(
-              'Delete',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          onTap: () {
-            if (!isCustomField) {
-              removeDefinedField(basicData);
-            }
-            List<BasicData>? customFields =
-                UserPreview().user()!.customFields[widget.category.name];
-            var index = customFields!.indexOf(basicData);
-            customFields[index] = BasicData(
-                accountName:
-                    customFields[index].accountName! + AtText.IS_DELETED,
-                isPrivate: customFields[index].isPrivate);
-            setState(() {});
-          },
-        ),
-      ],
+      secondaryActions: isCustomField
+          ? <Widget>[
+              IconSlideAction(
+                caption: '',
+                iconWidget: Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    'Edit',
+                  ),
+                ),
+                onTap: () {
+                  SetupRoutes.push(context, Routes.ADD_CUSTOM_FIELD,
+                      arguments: {
+                        'onSave': (BasicData data) {
+                          List<BasicData>? customFields = UserPreview()
+                              .user()!
+                              .customFields[widget.category.name];
+                          var index = customFields!.indexOf(basicData);
+                          setState(() {
+                            customFields[index] = data;
+                          });
+                        },
+                        'basicData': basicData,
+                        'isEdit': true
+                      });
+                },
+              ),
+              IconSlideAction(
+                caption: '',
+                color: ColorConstants.red,
+                iconWidget: Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    'Delete',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                onTap: () {
+                  if (!isCustomField) {
+                    updateDefinedFields(
+                        BasicData(accountName: basicData.accountName));
+                  }
+                  List<BasicData>? customFields =
+                      UserPreview().user()!.customFields[widget.category.name];
+                  var index = customFields!.indexOf(basicData);
+                  customFields[index] = BasicData(
+                      accountName:
+                          customFields[index].accountName! + AtText.IS_DELETED,
+                      isPrivate: customFields[index].isPrivate);
+                  setState(() {});
+                },
+              ),
+            ]
+          : null,
       child: Padding(
         padding: const EdgeInsets.only(right: 8.0),
         child: Row(
@@ -316,11 +336,14 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
           children: [
             Expanded(
               child: TextFormField(
-                autovalidateMode: basicData.value != ''
-                    ? AutovalidateMode.disabled
-                    : AutovalidateMode.onUserInteraction,
+                key: UniqueKey(),
+                autovalidateMode: isCustomField
+                    ? basicData.value != ''
+                        ? AutovalidateMode.disabled
+                        : AutovalidateMode.onUserInteraction
+                    : AutovalidateMode.disabled,
                 validator: (value) {
-                  if (value == null || value == '') {
+                  if (value == null || value == '' && isCustomField) {
                     return 'Please provide value';
                   }
                   return null;
@@ -328,6 +351,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                 initialValue: basicData.value,
                 onChanged: (String value) {
                   basicData.value = value;
+                  if (!isCustomField) {
+                    updateDefinedFields(basicData);
+                  }
                   _formKey.currentState!.validate();
                 },
                 decoration: InputDecoration(
@@ -408,47 +434,50 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
     return true;
   }
 
-  removeDefinedField(BasicData basicData) {
+  /// [updateDefinedFields]can be used to either update or delete value
+  /// when deleting send [BasicData] with just accountname
+  /// when updating send complete [BasicData].
+  updateDefinedFields(BasicData basicData) {
     if (basicData.accountName == FieldsEnum.IMAGE.name) {
-      UserPreview().user()!.image = new BasicData();
+      UserPreview().user()!.image = basicData;
     } else if (basicData.accountName == FieldsEnum.LASTNAME.name) {
-      UserPreview().user()!.lastname = new BasicData();
+      UserPreview().user()!.lastname = basicData;
     } else if (basicData.accountName == FieldsEnum.FIRSTNAME.name) {
-      UserPreview().user()!.firstname = new BasicData();
+      UserPreview().user()!.firstname = basicData;
     } else if (basicData.accountName == FieldsEnum.PHONE.name) {
-      UserPreview().user()!.phone = new BasicData();
+      UserPreview().user()!.phone = basicData;
     } else if (basicData.accountName == FieldsEnum.EMAIL.name) {
-      UserPreview().user()!.email = new BasicData();
+      UserPreview().user()!.email = basicData;
     } else if (basicData.accountName == FieldsEnum.ABOUT.name) {
-      UserPreview().user()!.about = new BasicData();
+      UserPreview().user()!.about = basicData;
     } else if (basicData.accountName == FieldsEnum.LOCATION.name) {
-      UserPreview().user()!.location = new BasicData();
+      UserPreview().user()!.location = basicData;
     } else if (basicData.accountName == FieldsEnum.LOCATIONNICKNAME.name) {
-      UserPreview().user()!.locationNickName = new BasicData();
+      UserPreview().user()!.locationNickName = basicData;
     } else if (basicData.accountName == FieldsEnum.PRONOUN.name) {
-      UserPreview().user()!.pronoun = new BasicData();
+      UserPreview().user()!.pronoun = basicData;
     } else if (basicData.accountName == FieldsEnum.TWITTER.name) {
-      UserPreview().user()!.twitter = new BasicData();
+      UserPreview().user()!.twitter = basicData;
     } else if (basicData.accountName == FieldsEnum.FACEBOOK.name) {
-      UserPreview().user()!.facebook = new BasicData();
+      UserPreview().user()!.facebook = basicData;
     } else if (basicData.accountName == FieldsEnum.LINKEDIN.name) {
-      UserPreview().user()!.linkedin = new BasicData();
+      UserPreview().user()!.linkedin = basicData;
     } else if (basicData.accountName == FieldsEnum.INSTAGRAM.name) {
-      UserPreview().user()!.instagram = new BasicData();
+      UserPreview().user()!.instagram = basicData;
     } else if (basicData.accountName == FieldsEnum.YOUTUBE.name) {
-      UserPreview().user()!.youtube = new BasicData();
+      UserPreview().user()!.youtube = basicData;
     } else if (basicData.accountName == FieldsEnum.TUMBLR.name) {
-      UserPreview().user()!.tumbler = new BasicData();
+      UserPreview().user()!.tumbler = basicData;
     } else if (basicData.accountName == FieldsEnum.MEDIUM.name) {
-      UserPreview().user()!.medium = new BasicData();
+      UserPreview().user()!.medium = basicData;
     } else if (basicData.accountName == FieldsEnum.PS4.name) {
-      UserPreview().user()!.ps4 = new BasicData();
+      UserPreview().user()!.ps4 = basicData;
     } else if (basicData.accountName == FieldsEnum.XBOX.name) {
-      UserPreview().user()!.xbox = new BasicData();
+      UserPreview().user()!.xbox = basicData;
     } else if (basicData.accountName == FieldsEnum.STEAM.name) {
-      UserPreview().user()!.steam = new BasicData();
+      UserPreview().user()!.steam = basicData;
     } else if (basicData.accountName == FieldsEnum.DISCORD.name) {
-      UserPreview().user()!.discord = new BasicData();
+      UserPreview().user()!.discord = basicData;
     }
   }
 }

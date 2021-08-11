@@ -91,7 +91,7 @@ class AtKeySetService extends BaseModel {
     tempScanKeys.retainWhere((scanKey) =>
         scanKey.key == atKey.key &&
         !scanKey.metadata!.isPublic! == atKey.metadata!.isPublic);
-    print('tempScanKeys.length: ${tempScanKeys.length}');
+
     if (tempScanKeys.isNotEmpty) {
       await Future.forEach(tempScanKeys, (element) async {
         response =
