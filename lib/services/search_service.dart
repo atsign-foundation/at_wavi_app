@@ -61,6 +61,9 @@ class SearchService {
 
   /// TODO: throws an error for image, serach 'colin/kevin'
   Future<User> getAtsignDetails(String atsign) async {
+    currentAtsignThemeData =
+        Themes.lightTheme(highlightColor ?? ColorConstants.purple);
+
     isPrivateAccount = false;
     user = User(allPrivate: false, atsign: atsign);
     var _response = await http.get(Uri.parse('$url$atsign'));
