@@ -8,8 +8,9 @@ import 'package:at_wavi_app/services/size_config.dart';
 import 'package:provider/provider.dart';
 
 class HomeFeatured extends StatefulWidget {
+  final String? twitterUsername;
   final ThemeData? themeData;
-  HomeFeatured({this.themeData});
+  HomeFeatured({this.twitterUsername, this.themeData});
 
   @override
   _HomeFeaturedState createState() => _HomeFeaturedState();
@@ -103,7 +104,10 @@ class _HomeFeaturedState extends State<HomeFeatured> {
             ),
             SizedBox(height: 15.toHeight),
             Column(
-              children: CommonFunctions().getFeaturedTwitterCards(_themeData!),
+              children: widget.twitterUsername != null
+                  ? CommonFunctions().getFeaturedTwitterCards(
+                      widget.twitterUsername!, _themeData!)
+                  : [],
             ),
           ],
         ),

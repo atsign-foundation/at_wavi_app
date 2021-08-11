@@ -13,7 +13,7 @@ class TwitterUser {
     return map;
   }
 
-  static TwitterUser? fromJson(Map json) {
+  static TwitterUser fromJson(Map json) {
     return TwitterUser(json['id'], json['name'], json['username']);
   }
 }
