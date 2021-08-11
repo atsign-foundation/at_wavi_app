@@ -1,5 +1,4 @@
-import 'dart:ffi';
-import 'dart:typed_data';
+import 'dart:convert';
 
 import 'package:at_common_flutter/at_common_flutter.dart';
 import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
@@ -8,13 +7,22 @@ import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddCustomField extends StatefulWidget {
-  ValueChanged<BasicData> onSave;
+  // ValueChanged<BasicData> onSave;
+  Function onSave;
   final bool isEdit;
   BasicData? basicData;
-  AddCustomField({required this.onSave, this.isEdit = false, this.basicData});
+  final AtCategory? category;
+  AddCustomField({
+    required this.onSave,
+    this.isEdit = false,
+    required this.basicData,
+    this.category,
+  });
 
   @override
   _AddCustomFieldState createState() => _AddCustomFieldState();
@@ -28,7 +36,8 @@ class _AddCustomFieldState extends State<AddCustomField> {
   @override
   void initState() {
     if (widget.isEdit && widget.basicData != null) {
-      basicData = widget.basicData!;
+      var basicDataJson = widget.basicData!.toJson();
+      basicData = BasicData.fromJson(json.decode(basicDataJson));
 
       if (widget.basicData!.type != CustomContentType.Image.name) {
         basicData.valueDescription = basicData.value;
@@ -296,10 +305,29 @@ class _AddCustomFieldState extends State<AddCustomField> {
     if (isImageSelected) {
       basicData.type = CustomContentType.Image.name;
     } else {
+      basicData.type = CustomContentType.Text.name;
       basicData.value = basicData.valueDescription;
       basicData.valueDescription = null;
     }
+    var index;
+    // calculating index of current data
+    List<BasicData>? customFields =
+        Provider.of<UserPreview>(context, listen: false)
+            .user()!
+            .customFields[widget.category!.name];
+    index = customFields!.indexWhere(
+        (element) => element.accountName == widget.basicData!.accountName);
+
+    checkForAccountNameChange();
     Navigator.of(context).pop();
-    widget.onSave(basicData);
+    widget.onSave(basicData, widget.isEdit ? index : -1);
+  }
+
+  checkForAccountNameChange() {
+    if (widget.basicData!.accountName!.trim() !=
+            basicData.accountName!.trim() &&
+        widget.category != null) {
+      UserPreview().deleteCustomField(widget.category!, widget.basicData!);
+    }
   }
 }

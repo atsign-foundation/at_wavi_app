@@ -307,6 +307,8 @@ class AtKeySetService extends BaseModel {
       var data;
       if (userMap.containsKey(field.name)) {
         data = userMap[field.name];
+      } else {
+        continue;
       }
 
       if (field == FieldsEnum.ATSIGN) {

@@ -73,17 +73,16 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                     GestureDetector(
                       onTap: () {
                         showPublicPrivateBottomSheet(
-                            onPublicClicked: () {},
-                            onPrivateClicked: () {},
+                            onPublicClicked: () {
+                              changeFiledsVisibility(false);
+                            },
+                            onPrivateClicked: () {
+                              changeFiledsVisibility(true);
+                            },
                             height: 160);
                       },
-                      child: GestureDetector(
-                        onTap: () {
-                          // print('basic data: ${}');
-                        },
-                        child: Icon(
-                            isAllFieldsPrivate() ? Icons.lock : Icons.public),
-                      ),
+                      child: Icon(
+                          isAllFieldsPrivate() ? Icons.lock : Icons.public),
                     )
                   ],
                 ),
@@ -107,7 +106,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                   onTap: () {
                     SetupRoutes.push(context, Routes.ADD_CUSTOM_FIELD,
                         arguments: {
-                          'onSave': (BasicData data) {
+                          'onSave': (BasicData data, int index) {
                             List<BasicData>? customFields = UserPreview()
                                 .user()!
                                 .customFields[widget.category.name];
@@ -121,7 +120,8 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                               });
                             }
                           },
-                          'isEdit': false
+                          'isEdit': false,
+                          'category': widget.category
                         });
                   },
                 ),
@@ -245,17 +245,21 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                 onTap: () {
                   SetupRoutes.push(context, Routes.ADD_CUSTOM_FIELD,
                       arguments: {
-                        'onSave': (BasicData data) {
+                        'onSave': (BasicData updatedData, int index) {
                           List<BasicData>? customFields = UserPreview()
                               .user()!
                               .customFields[widget.category.name];
-                          var index = customFields!.indexOf(basicData);
-                          setState(() {
-                            customFields[index] = data;
-                          });
+                          if (index > -1) {
+                            setState(() {
+                              customFields![index] = updatedData;
+                            });
+                          } else {
+                            customFields!.add(updatedData);
+                          }
                         },
                         'basicData': basicData,
-                        'isEdit': true
+                        'isEdit': true,
+                        'category': widget.category
                       });
                 },
                 child: Padding(
@@ -275,6 +279,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   }
 
   Widget inputField(BasicData basicData, {bool isCustomField = false}) {
+    print('basicData.isPrivate : ${basicData.isPrivate}');
     return Slidable(
       key: UniqueKey(),
       actionPane: SlidableDrawerActionPane(),
@@ -292,18 +297,22 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                 onTap: () {
                   SetupRoutes.push(context, Routes.ADD_CUSTOM_FIELD,
                       arguments: {
-                        'onSave': (BasicData data) {
+                        'onSave': (BasicData data, int index) {
                           List<BasicData>? customFields =
                               Provider.of<UserPreview>(context, listen: false)
                                   .user()!
                                   .customFields[widget.category.name];
-                          var index = customFields!.indexOf(basicData);
-                          setState(() {
-                            customFields[index] = data;
-                          });
+                          if (index > -1) {
+                            setState(() {
+                              customFields![index] = data;
+                            });
+                          } else {
+                            customFields!.add(data);
+                          }
                         },
                         'basicData': basicData,
-                        'isEdit': true
+                        'isEdit': true,
+                        'category': widget.category
                       });
                 },
               ),
@@ -391,7 +400,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                     },
                     height: 160);
               },
-              child: Icon(basicData.isPrivate ? Icons.lock : Icons.public),
+              child: Icon(
+                basicData.isPrivate ? Icons.lock : Icons.public,
+              ),
             ),
           ],
         ),
@@ -427,6 +438,16 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   }
 
   bool isAllFieldsPrivate() {
+    var userMap =
+        User.toJson(Provider.of<UserPreview>(context, listen: false).user());
+    List<FieldsEnum> fields = FieldNames().getFieldListEnum(widget.category);
+
+    for (int i = 0; i < fields.length; i++) {
+      if (!userMap[fields[i].name].isPrivate) {
+        return false;
+      }
+    }
+
     List<BasicData>? customFields =
         Provider.of<UserPreview>(context, listen: false)
             .user()!
@@ -442,6 +463,30 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
       }
     }
     return true;
+  }
+
+  changeFiledsVisibility(bool isPrivate) {
+    var userMap =
+        User.toJson(Provider.of<UserPreview>(context, listen: false).user());
+    List<FieldsEnum> fields = FieldNames().getFieldListEnum(widget.category);
+
+    List<BasicData>? customFields =
+        Provider.of<UserPreview>(context, listen: false)
+            .user()!
+            .customFields[widget.category.name];
+
+    for (int i = 0; i < fields.length; i++) {
+      BasicData basicData = userMap[fields[i].name];
+      basicData.isPrivate = isPrivate;
+    }
+
+    if (customFields != null) {
+      for (var basicData in customFields) {
+        basicData.isPrivate = isPrivate;
+      }
+    }
+
+    setState(() {});
   }
 
   /// [updateDefinedFields]can be used to either update or delete value
