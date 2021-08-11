@@ -16,6 +16,7 @@ class UserProvider extends BaseModel {
     user = await AtKeyGetService().getProfile(atsign: atsign);
     if (user == null) {
       setStatus(FETCH_USER, Status.Error);
+      return;
     }
     await TwitetrService().getTweets();
     setStatus(FETCH_USER, Status.Done);
