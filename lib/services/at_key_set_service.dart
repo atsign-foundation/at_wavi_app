@@ -130,6 +130,7 @@ class AtKeySetService extends BaseModel {
           : null;
       String jsonValue = _encodeToJsonString(data, category);
       var metadata = Metadata()
+        ..ccd = true
         ..isPublic = !data.isPrivate
         ..isEncrypted = data.isPrivate;
       var atKey = AtKey()
@@ -138,6 +139,7 @@ class AtKeySetService extends BaseModel {
             : key.replaceAll(' ', '')
         ..sharedWith = sharedWith
         ..metadata = metadata;
+
       if (data.value == null && isCheck == null) {
         continue;
       }
@@ -147,6 +149,7 @@ class AtKeySetService extends BaseModel {
         }
         var isDeleted = await _deleteChangedKeys(atKey, scanKeys);
         if (data.value == null) {
+          atKey.key = atKey.key!.replaceAll(' ', '');
           AtKeyGetService().objectReference().remove(key.split('.')[0]);
           result = await BackendService().atClientInstance.delete(atKey);
           if (!result) return result;
