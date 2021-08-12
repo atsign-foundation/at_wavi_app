@@ -198,6 +198,8 @@ extension AtCategoryValues on AtCategory {
 
 enum Operation { EDIT, DELETE, PRINT, SAVE }
 
+List<String> tooltipOperations = [Operation.EDIT.name, Operation.DELETE.name];
+
 extension OperationValues on Operation {
   String get name {
     switch (this) {
@@ -371,6 +373,28 @@ extension values on CustomContentType {
       default:
         return TextInputType.text;
     }
+  }
+}
+
+CustomContentType customContentNameToType(String name) {
+  switch (name) {
+    case 'Text':
+      return CustomContentType.Text;
+
+    case 'Link':
+      return CustomContentType.Link;
+
+    case 'Number':
+      return CustomContentType.Number;
+
+    case 'Image':
+      return CustomContentType.Image;
+
+    case 'Youtube':
+      return CustomContentType.Youtube;
+
+    default:
+      return CustomContentType.Text;
   }
 }
 

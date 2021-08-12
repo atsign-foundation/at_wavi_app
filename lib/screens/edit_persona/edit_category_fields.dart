@@ -74,10 +74,10 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                       onTap: () {
                         showPublicPrivateBottomSheet(
                             onPublicClicked: () {
-                              changeFiledsVisibility(false);
+                              changeFiledsVisibilityOfCategory(false);
                             },
                             onPrivateClicked: () {
-                              changeFiledsVisibility(true);
+                              changeFiledsVisibilityOfCategory(true);
                             },
                             height: 160);
                       },
@@ -233,7 +233,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.only(left: 10),
                 child: Text(
                   basicData.accountName!,
                   style: TextStyles.lightText(
@@ -241,31 +241,21 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                       size: 16),
                 ),
               ),
-              InkWell(
-                onTap: () {
-                  SetupRoutes.push(context, Routes.ADD_CUSTOM_FIELD,
-                      arguments: {
-                        'onSave': (BasicData updatedData, int index) {
-                          List<BasicData>? customFields = UserPreview()
-                              .user()!
-                              .customFields[widget.category.name];
-                          if (index > -1) {
-                            setState(() {
-                              customFields![index] = updatedData;
-                            });
-                          } else {
-                            customFields!.add(updatedData);
-                          }
-                        },
-                        'basicData': basicData,
-                        'isEdit': true,
-                        'category': widget.category
-                      });
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Icon(Icons.edit),
-                ),
+              Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      changeVisibility(basicData);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
+                      child: Icon(
+                        basicData.isPrivate ? Icons.lock : Icons.public,
+                      ),
+                    ),
+                  ),
+                  toolTipMenu(basicData),
+                ],
               )
             ],
           ),
@@ -279,73 +269,73 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   }
 
   Widget inputField(BasicData basicData, {bool isCustomField = false}) {
-    print('basicData.isPrivate : ${basicData.isPrivate}');
     return Slidable(
       key: UniqueKey(),
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.15,
-      secondaryActions: isCustomField
-          ? <Widget>[
-              IconSlideAction(
-                caption: '',
-                iconWidget: Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Text(
-                    'Edit',
-                  ),
-                ),
-                onTap: () {
-                  SetupRoutes.push(context, Routes.ADD_CUSTOM_FIELD,
-                      arguments: {
-                        'onSave': (BasicData data, int index) {
-                          List<BasicData>? customFields =
-                              Provider.of<UserPreview>(context, listen: false)
-                                  .user()!
-                                  .customFields[widget.category.name];
-                          if (index > -1) {
-                            setState(() {
-                              customFields![index] = data;
-                            });
-                          } else {
-                            customFields!.add(data);
-                          }
-                        },
-                        'basicData': basicData,
-                        'isEdit': true,
-                        'category': widget.category
-                      });
-                },
-              ),
-              IconSlideAction(
-                caption: '',
-                color: ColorConstants.red,
-                iconWidget: Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Text(
-                    'Delete',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                onTap: () {
-                  if (!isCustomField) {
-                    updateDefinedFields(
-                        BasicData(accountName: basicData.accountName));
-                  }
-                  List<BasicData>? customFields =
-                      Provider.of<UserPreview>(context, listen: false)
-                          .user()!
-                          .customFields[widget.category.name];
+      secondaryActions: null,
+      // TODO: if slidable action is not required remove this commneted part
+      // ? <Widget>[
+      //     IconSlideAction(
+      //       caption: '',
+      //       iconWidget: Padding(
+      //         padding: const EdgeInsets.only(top: 10.0),
+      //         child: Text(
+      //           'Edit',
+      //         ),
+      //       ),
+      //       onTap: () {
+      //         SetupRoutes.push(context, Routes.ADD_CUSTOM_FIELD,
+      //             arguments: {
+      //               'onSave': (BasicData data, int index) {
+      //                 List<BasicData>? customFields =
+      //                     Provider.of<UserPreview>(context, listen: false)
+      //                         .user()!
+      //                         .customFields[widget.category.name];
+      //                 if (index > -1) {
+      //                   setState(() {
+      //                     customFields![index] = data;
+      //                   });
+      //                 } else {
+      //                   customFields!.add(data);
+      //                 }
+      //               },
+      //               'basicData': basicData,
+      //               'isEdit': true,
+      //               'category': widget.category
+      //             });
+      //       },
+      //     ),
+      //     IconSlideAction(
+      //       caption: '',
+      //       color: ColorConstants.red,
+      //       iconWidget: Padding(
+      //         padding: const EdgeInsets.only(top: 10.0),
+      //         child: Text(
+      //           'Delete',
+      //           style: TextStyle(color: Colors.white),
+      //         ),
+      //       ),
+      //       onTap: () {
+      //         if (!isCustomField) {
+      //           updateDefinedFields(
+      //               BasicData(accountName: basicData.accountName));
+      //         }
+      //         List<BasicData>? customFields =
+      //             Provider.of<UserPreview>(context, listen: false)
+      //                 .user()!
+      //                 .customFields[widget.category.name];
 
-                  var index = customFields!.indexOf(basicData);
-                  customFields[index] = BasicData(
-                      accountName:
-                          customFields[index].accountName! + AtText.IS_DELETED,
-                      isPrivate: customFields[index].isPrivate);
-                  setState(() {});
-                },
-              ),
-            ]
-          : null,
+      //         var index = customFields!.indexOf(basicData);
+      //         customFields[index] = BasicData(
+      //             accountName:
+      //                 customFields[index].accountName! + AtText.IS_DELETED,
+      //             isPrivate: customFields[index].isPrivate);
+      //         setState(() {});
+      //       },
+      //     ),
+      //   ]
+      // : null,
       child: Padding(
         padding: const EdgeInsets.only(right: 8.0),
         child: Row(
@@ -387,23 +377,18 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
             ),
             GestureDetector(
               onTap: () {
-                showPublicPrivateBottomSheet(
-                    onPublicClicked: () {
-                      setState(() {
-                        basicData.isPrivate = false;
-                      });
-                    },
-                    onPrivateClicked: () {
-                      setState(() {
-                        basicData.isPrivate = true;
-                      });
-                    },
-                    height: 160);
+                changeVisibility(basicData);
               },
               child: Icon(
                 basicData.isPrivate ? Icons.lock : Icons.public,
               ),
             ),
+            isCustomField
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 5.0),
+                    child: toolTipMenu(basicData),
+                  )
+                : SizedBox(),
           ],
         ),
       ),
@@ -465,7 +450,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
     return true;
   }
 
-  changeFiledsVisibility(bool isPrivate) {
+  changeFiledsVisibilityOfCategory(bool isPrivate) {
     var userMap =
         User.toJson(Provider.of<UserPreview>(context, listen: false).user());
     List<FieldsEnum> fields = FieldNames().getFieldListEnum(widget.category);
@@ -487,6 +472,62 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
     }
 
     setState(() {});
+  }
+
+  changeVisibility(BasicData basicData) {
+    showPublicPrivateBottomSheet(
+        onPublicClicked: () {
+          setState(() {
+            basicData.isPrivate = false;
+          });
+        },
+        onPrivateClicked: () {
+          setState(() {
+            basicData.isPrivate = true;
+          });
+        },
+        height: 160);
+  }
+
+  onEditToolTip(BasicData basicData) {
+    SetupRoutes.push(context, Routes.ADD_CUSTOM_FIELD, arguments: {
+      'onSave': (BasicData updatedData, int index) {
+        List<BasicData>? customFields =
+            UserPreview().user()!.customFields[widget.category.name];
+        if (index > -1) {
+          setState(() {
+            customFields![index] = updatedData;
+          });
+        } else {
+          customFields!.add(updatedData);
+        }
+      },
+      'basicData': basicData,
+      'isEdit': true,
+      'category': widget.category
+    });
+  }
+
+  Widget toolTipMenu(BasicData basicData) {
+    return PopupMenuButton(
+        padding: EdgeInsets.zero,
+        child: Padding(
+          padding: const EdgeInsets.only(right: 5.0),
+          child: Icon(Icons.edit),
+        ),
+        onSelected: (value) {
+          if (value == 'Edit') {
+            onEditToolTip(basicData);
+          } else {
+            UserPreview().deletCustomField(widget.category, basicData);
+          }
+          setState(() {});
+        },
+        itemBuilder: (BuildContext context) {
+          return tooltipOperations.map((String choice) {
+            return PopupMenuItem(value: choice, child: Text(choice));
+          }).toList();
+        });
   }
 
   /// [updateDefinedFields]can be used to either update or delete value

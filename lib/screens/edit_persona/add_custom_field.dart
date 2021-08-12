@@ -32,6 +32,8 @@ class _AddCustomFieldState extends State<AddCustomField> {
   BasicData basicData =
       BasicData(isPrivate: false, type: CustomContentType.Text.name);
   bool isImageSelected = false;
+  var contentDropDown = CustomContentType.values;
+  CustomContentType _fieldType = CustomContentType.Text;
 
   @override
   void initState() {
@@ -47,6 +49,8 @@ class _AddCustomFieldState extends State<AddCustomField> {
       if (widget.basicData!.type == CustomContentType.Image.name) {
         isImageSelected = true;
       }
+
+      _fieldType = customContentNameToType(widget.basicData!.type);
     }
     super.initState();
   }
@@ -245,28 +249,88 @@ class _AddCustomFieldState extends State<AddCustomField> {
                             SizedBox(height: 10),
                             Text('View'),
                             SizedBox(height: 5),
-                            GestureDetector(
-                              onTap: () {
-                                showPublicPrivateBottomSheet(
-                                    onPublicClicked: () {
-                                      setState(() {
-                                        basicData.isPrivate = false;
-                                      });
-                                    },
-                                    onPrivateClicked: () {
-                                      setState(() {
-                                        basicData.isPrivate = true;
-                                      });
-                                    },
-                                    height: 160);
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(Icons.public),
-                                  SizedBox(width: 5),
-                                  Text('Public'),
-                                ],
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    showPublicPrivateBottomSheet(
+                                        onPublicClicked: () {
+                                          setState(() {
+                                            basicData.isPrivate = false;
+                                          });
+                                        },
+                                        onPrivateClicked: () {
+                                          setState(() {
+                                            basicData.isPrivate = true;
+                                          });
+                                        },
+                                        height: 160);
+                                  },
+                                  child: Row(
+                                    children: <Widget>[
+                                      Icon(basicData.isPrivate
+                                          ? Icons.lock
+                                          : Icons.public),
+                                      SizedBox(width: 5),
+                                      Text(basicData.isPrivate
+                                          ? 'Private'
+                                          : 'Public'),
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                      width: 200,
+                                      color: Colors.white,
+                                      child: DropdownButtonFormField<
+                                          CustomContentType>(
+                                        autovalidateMode:
+                                            AutovalidateMode.disabled,
+                                        hint: Text('-Select-'),
+                                        decoration: InputDecoration(
+                                            enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: ColorConstants
+                                                        .greyText))),
+                                        value: _fieldType,
+                                        icon: Icon(
+                                          Icons.keyboard_arrow_down,
+                                          color: Colors.black,
+                                          size: 30.0,
+                                        ),
+                                        elevation: 16,
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.black),
+                                        validator: (value) {
+                                          if (value == null) {
+                                            return 'Please select content type';
+                                          }
+                                          return null;
+                                        },
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            _fieldType = newValue!;
+                                            basicData.type = _fieldType.name;
+                                          });
+                                        },
+                                        items: contentDropDown.map<
+                                                DropdownMenuItem<
+                                                    CustomContentType>>(
+                                            (CustomContentType value) {
+                                          return DropdownMenuItem<
+                                              CustomContentType>(
+                                            value: value,
+                                            child: Text(value.label),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
                             )
                           ],
                         ),
@@ -305,29 +369,31 @@ class _AddCustomFieldState extends State<AddCustomField> {
     if (isImageSelected) {
       basicData.type = CustomContentType.Image.name;
     } else {
-      basicData.type = CustomContentType.Text.name;
       basicData.value = basicData.valueDescription;
       basicData.valueDescription = null;
     }
     var index;
     // calculating index of current data
-    List<BasicData>? customFields =
-        Provider.of<UserPreview>(context, listen: false)
-            .user()!
-            .customFields[widget.category!.name];
-    index = customFields!.indexWhere(
-        (element) => element.accountName == widget.basicData!.accountName);
+    if (widget.isEdit) {
+      List<BasicData>? customFields =
+          Provider.of<UserPreview>(context, listen: false)
+              .user()!
+              .customFields[widget.category!.name];
+      index = customFields!.indexWhere(
+          (element) => element.accountName == widget.basicData!.accountName);
+      checkForAccountNameChange();
+    }
 
-    checkForAccountNameChange();
     Navigator.of(context).pop();
-    widget.onSave(basicData, widget.isEdit ? index : -1);
+    widget.onSave(basicData, widget.isEdit && index != null ? index : -1);
   }
 
   checkForAccountNameChange() {
-    if (widget.basicData!.accountName!.trim() !=
+    if (widget.basicData != null &&
+        widget.basicData!.accountName!.trim() !=
             basicData.accountName!.trim() &&
         widget.category != null) {
-      UserPreview().deleteCustomField(widget.category!, widget.basicData!);
+      UserPreview().addFieldToDelete(widget.category!, widget.basicData!);
     }
   }
 }
