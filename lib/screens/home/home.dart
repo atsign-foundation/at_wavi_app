@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/empty_widget.dart';
 import 'package:at_wavi_app/common_components/header.dart';
+import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
@@ -89,10 +90,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     initPackages();
 
     _getThemeData();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
-      await FollowService().getFollowers();
-      await FollowService().getFollowing();
-    });
+    // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+    //   await Provider.of<FollowService>(NavService.navKey.currentContext!,
+    // listen: false)().getFollowers();
+    //   await Provider.of<FollowService>(NavService.navKey.currentContext!,
+    // listen: false)().getFollowing();
+    // });
     super.initState();
   }
 
@@ -249,8 +252,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   _themeData!.highlightColor.withOpacity(0.1)),
                             ),
                             onPressed: widget.isPreview
-                                ? () {
+                                ? () async {
                                     if (_isSearchScreen) {
+                                      LoadingDialog().show(text: 'Updating');
+                                      await Provider.of<FollowService>(
+                                              NavService.navKey.currentContext!,
+                                              listen: false)
+                                          .performFollowUnfollow(
+                                              _currentUser.atsign);
+                                      LoadingDialog().hide();
+                                      setState(() {});
                                     } else {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
@@ -271,7 +282,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         Routes.EDIT_PERSONA);
                                   },
                             child: Text(
-                              widget.isPreview ? 'Follow' : 'Edit Profile',
+                              _isSearchScreen
+                                  ? (Provider.of<FollowService>(
+                                              NavService.navKey.currentContext!,
+                                              listen: false)
+                                          .isFollowing(_currentUser.atsign)
+                                      ? 'Following'
+                                      : 'Follow')
+                                  : 'Edit Profile',
                               style: TextStyle(
                                   fontSize: 16.toFont,
                                   color: _themeData!.primaryColor

@@ -51,14 +51,17 @@ class BackendService {
         currentAtSign = atSign;
         atClientServiceMap[atSign]!.makeAtSignPrimary(atSign!);
         startMonitor(atsign: atsign, value: value);
-        await FollowService().init();
+
         initializeContactsService(
             atClientInstance, atClientInstance.currentAtSign!);
+        await Provider.of<FollowService>(NavService.navKey.currentContext!,
+                listen: false)
+            .init();
         Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
                 listen: false)
             .resetThemeData();
         AtKeyGetService().init();
-        Provider.of<UserProvider>(NavService.navKey.currentContext!,
+        await Provider.of<UserProvider>(NavService.navKey.currentContext!,
                 listen: false)
             .fetchUserData(BackendService().currentAtSign!);
         SetupRoutes.pushAndRemoveAll(

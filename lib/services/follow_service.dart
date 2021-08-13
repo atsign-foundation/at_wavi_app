@@ -6,9 +6,9 @@ import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 
 class FollowService extends BaseModel {
-  FollowService._();
-  static final FollowService _instance = FollowService._();
-  factory FollowService() => _instance;
+  // FollowService._();
+  // static final FollowService _instance = FollowService._();
+  // factory FollowService() => _instance;
 
   AtFollowsData followers = AtFollowsData();
   AtFollowsData following = AtFollowsData();
@@ -18,6 +18,8 @@ class FollowService extends BaseModel {
   init() async {
     await AtFollowServices()
         .initializeFollowService(BackendService().atClientServiceInstance);
+    await getFollowers();
+    await getFollowing();
   }
 
   getFollowers() async {
@@ -66,6 +68,7 @@ class FollowService extends BaseModel {
         following.list!.remove(atsign);
         following.atsignListDetails
             .removeWhere((element) => element.atcontact.atSign == atsign);
+        following.atsignListDetails[index].isUnfollowing = false;
       } else {
         following.atsignListDetails[index].isUnfollowing = false;
       }
@@ -105,5 +108,34 @@ class FollowService extends BaseModel {
     }
     notifyListeners();
     return atsignDetails;
+  }
+
+  bool isFollowing(String atsign) {
+    for (var _atsign in following.list ?? []) {
+      if ((atsign == _atsign) || (('@' + atsign) == _atsign)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  performFollowUnfollow(String atsign, {bool? isFollowingAtsign}) async {
+    try {
+      if (isFollowingAtsign == null) {
+        isFollowingAtsign = isFollowing(atsign);
+      }
+      if (isFollowingAtsign) {
+        await unfollow(
+            atsign,
+            ((following.list ?? []).indexOf(atsign) < 0
+                ? 0
+                : (following.list ?? []).indexOf(atsign)));
+      } else {
+        await AtFollowServices().follow(atsign);
+        await getFollowers();
+      }
+    } catch (e) {
+      print('Error in performFollowUnfollow $e');
+    }
   }
 }
