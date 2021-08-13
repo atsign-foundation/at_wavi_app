@@ -17,6 +17,10 @@ class UserPreview extends BaseModel {
     this._user = user;
   }
 
+  setSearchedUser(User? user) {
+    this._user = user;
+  }
+
   User? user() {
     return _user;
   }

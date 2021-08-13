@@ -517,6 +517,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         var _res = await SearchService()
                             .getAtsignDetails(searchedAtsign);
 
+                        if (_res.twitter.value != null) {
+                          await TwitetrService()
+                              .getTweets(searchedUsername: _res.twitter.value);
+                        }
+
                         setState(() {
                           loadingSearchedAtsign = false;
                         });
@@ -674,7 +679,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     } else if (_currentTab == HOME_TABS.FEATURED) {
       return CommonFunctions().isTwitterFeatured(isPreview: widget.isPreview) ||
               CommonFunctions().isInstagramFeatured(isPreview: widget.isPreview)
-          ? HomeFeatured(themeData: _themeData)
+          ? HomeFeatured(
+              twitterUsername: _currentUser.twitter.value,
+              themeData: _themeData)
           : HomeEmptyDetails();
     } else
       return SizedBox();

@@ -130,14 +130,18 @@ class CommonFunctions {
     return fieldCard;
   }
 
-  List<Widget> getFeaturedTwitterCards(ThemeData _themeData) {
+  List<Widget> getFeaturedTwitterCards(String username, ThemeData _themeData) {
     var twitterCards = <Widget>[];
-    if (TwitetrService().tweetList.isNotEmpty) {
-      int sliceIndex = TwitetrService().tweetList.length > 5
+    if (TwitetrService().searchedUserTweets[username] != null &&
+        TwitetrService().searchedUserTweets[username]!.isNotEmpty) {
+      int sliceIndex = TwitetrService().searchedUserTweets[username]!.length > 5
           ? 5
-          : TwitetrService().tweetList.length;
+          : TwitetrService().searchedUserTweets[username]!.length;
 
-      TwitetrService().tweetList.sublist(0, sliceIndex).forEach((tweet) {
+      TwitetrService()
+          .searchedUserTweets[username]!
+          .sublist(0, sliceIndex)
+          .forEach((tweet) {
         var twitterCard = Column(
           children: [
             SizedBox(
