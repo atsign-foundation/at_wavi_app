@@ -9,8 +9,10 @@ import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
+import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -287,5 +289,18 @@ class CommonFunctions {
     var checkPresence = await AtLookupImpl.findSecondary(
         receiver, MixedConstants.ROOT_DOMAIN, 64);
     return checkPresence != null;
+  }
+
+  showSnackBar(String msg) {
+    ScaffoldMessenger.of(NavService.navKey.currentContext!)
+        .showSnackBar(SnackBar(
+      backgroundColor: ColorConstants.RED,
+      content: Text(
+        msg,
+        style: CustomTextStyles.customTextStyle(
+          ColorConstants.white,
+        ),
+      ),
+    ));
   }
 }
