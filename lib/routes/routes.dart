@@ -123,6 +123,9 @@ class SetupRoutes {
 
           return AddCustomField(
             onSave: args['onSave'],
+            isEdit: args['isEdit'],
+            basicData: args['basicData'],
+            category: args['category'],
           );
         } else
           return SizedBox();

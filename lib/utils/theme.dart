@@ -6,7 +6,7 @@ class Themes {
     return ThemeData(
       brightness: Brightness.light,
       primaryColor: ColorConstants.black,
-      canvasColor: Colors.transparent,
+      canvasColor: Colors.white,
       highlightColor: _highlightColor,
       scaffoldBackgroundColor: ColorConstants.white,
       fontFamily: 'HelveticaNeu',
@@ -17,7 +17,7 @@ class Themes {
   static ThemeData darkTheme(Color _highlightColor) {
     return ThemeData(
       brightness: Brightness.dark,
-      canvasColor: Colors.transparent,
+      canvasColor: Colors.white,
       primaryColor: ColorConstants.white,
       highlightColor: _highlightColor,
       scaffoldBackgroundColor: ColorConstants.black,

@@ -8,16 +8,19 @@ import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/utils/constants.dart';
+import 'package:at_wavi_app/view_models/base_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'at_key_get_service.dart';
 import 'nav_service.dart';
 
-class AtKeySetService {
+class AtKeySetService extends BaseModel {
   AtKeySetService._();
   static AtKeySetService _instance = AtKeySetService._();
   factory AtKeySetService() => _instance;
+
+  final String UPDATE_USER = 'update_user';
 
   /// Example for update() => Will update FirstName
   // AtKeySetService().update(
@@ -88,7 +91,7 @@ class AtKeySetService {
     tempScanKeys.retainWhere((scanKey) =>
         scanKey.key == atKey.key &&
         !scanKey.metadata!.isPublic! == atKey.metadata!.isPublic);
-    print('tempScanKeys.length: ${tempScanKeys.length}');
+
     if (tempScanKeys.isNotEmpty) {
       await Future.forEach(tempScanKeys, (element) async {
         response =
@@ -127,6 +130,7 @@ class AtKeySetService {
           : null;
       String jsonValue = _encodeToJsonString(data, category);
       var metadata = Metadata()
+        ..ccd = true
         ..isPublic = !data.isPrivate
         ..isEncrypted = data.isPrivate;
       var atKey = AtKey()
@@ -135,6 +139,7 @@ class AtKeySetService {
             : key.replaceAll(' ', '')
         ..sharedWith = sharedWith
         ..metadata = metadata;
+
       if (data.value == null && isCheck == null) {
         continue;
       }
@@ -144,6 +149,7 @@ class AtKeySetService {
         }
         var isDeleted = await _deleteChangedKeys(atKey, scanKeys);
         if (data.value == null) {
+          atKey.key = atKey.key!.replaceAll(' ', '');
           AtKeyGetService().objectReference().remove(key.split('.')[0]);
           result = await BackendService().atClientInstance.delete(atKey);
           if (!result) return result;
@@ -304,6 +310,8 @@ class AtKeySetService {
       var data;
       if (userMap.containsKey(field.name)) {
         data = userMap[field.name];
+      } else {
+        continue;
       }
 
       if (field == FieldsEnum.ATSIGN) {
@@ -350,8 +358,15 @@ class AtKeySetService {
   }
 
   saveUserData(User user) async {
-    var atKeys = await _getAtkeys();
-    await _updateDefinedFields(user, true, atKeys);
-    await _updateCustomData(user, true, atKeys);
+    setStatus(UPDATE_USER, Status.Loading);
+    try {
+      var atKeys = await _getAtkeys();
+      await _updateDefinedFields(user, true, atKeys);
+      await _updateCustomData(user, true, atKeys);
+      setStatus(UPDATE_USER, Status.Done);
+    } catch (e) {
+      print('error in saveUserData : $e');
+      setStatus(UPDATE_USER, Status.Error);
+    }
   }
 }
