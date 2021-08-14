@@ -1,3 +1,4 @@
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 
 class FieldNames {
@@ -68,33 +69,81 @@ class FieldNames {
     return _gameFieldsEnum;
   }
 
-  List<String> getFieldList(AtCategory category) {
-    switch (category) {
-      case AtCategory.DETAILS:
-        return _basicDetails;
-      case AtCategory.ADDITIONAL_DETAILS:
-        return _additionalDetails;
-      case AtCategory.SOCIAL:
-        return _socialAccounts;
-      case AtCategory.GAMER:
-        return _gameFields;
-      default:
-        return [];
+  List<String> getFieldList(AtCategory category, {bool isPreview = false}) {
+    var sortedFileds = <String>[];
+
+    if (category == AtCategory.DETAILS) {
+      sortedFileds = _basicDetails;
+    } else if (category == AtCategory.ADDITIONAL_DETAILS) {
+      sortedFileds = _additionalDetails;
+    } else if (category == AtCategory.SOCIAL) {
+      sortedFileds = _socialAccounts;
+    } else if (category == AtCategory.GAMER) {
+      sortedFileds = _gameFields;
     }
+    return sortFieldList(sortedFileds, category, isPreview: isPreview);
   }
 
-  List<FieldsEnum> getFieldListEnum(AtCategory category) {
-    switch (category) {
-      case AtCategory.DETAILS:
-        return _basicDetailsEnum;
-      case AtCategory.ADDITIONAL_DETAILS:
-        return _additionalDetailsEnum;
-      case AtCategory.SOCIAL:
-        return _socialAccountsEnum;
-      case AtCategory.GAMER:
-        return _gameFieldsEnum;
-      default:
-        return [];
+  List<FieldsEnum> getFieldListEnum(AtCategory category,
+      {bool isPreview = false}) {
+    var sortedList = <FieldsEnum>[];
+    if (category == AtCategory.DETAILS) {
+      sortedList = _basicDetailsEnum;
+    } else if (category == AtCategory.ADDITIONAL_DETAILS) {
+      sortedList = _additionalDetailsEnum;
+    } else if (category == AtCategory.SOCIAL) {
+      sortedList = _socialAccountsEnum;
+    } else if (category == AtCategory.DETAILS) {
+      sortedList = _basicDetailsEnum;
+    } else if (category == AtCategory.GAMER) {
+      sortedList = _gameFieldsEnum;
     }
+
+    // sorting fields
+    return sortFieldEnum(sortedList, category, isPreview: isPreview);
+  }
+
+  List<FieldsEnum> sortFieldEnum(
+      List<FieldsEnum> fieldList, AtCategory category,
+      {bool isPreview = false}) {
+    var fieldOrder =
+        FieldOrderService().getFieldList(category, isPreview: isPreview);
+
+    // if no reorder has been done
+    if (fieldOrder.isEmpty) {
+      return fieldList;
+    }
+
+    for (int i = 0; i < fieldOrder.length; i++) {
+      var index = fieldList.indexWhere((el) => el.name == fieldOrder[i]);
+      if (index != -1) {
+        // swapping fieldsin new position
+        var indexElement = fieldList[index];
+        fieldList[index] = fieldList[i];
+        fieldList[i] = indexElement;
+      }
+    }
+    return fieldList;
+  }
+
+  List<String> sortFieldList(List<String> fieldList, AtCategory category,
+      {bool isPreview = false}) {
+    var fieldOrder =
+        FieldOrderService().getFieldList(category, isPreview: isPreview);
+
+    if (fieldOrder.isEmpty) {
+      return fieldList;
+    }
+
+    for (int i = 0; i < fieldOrder.length; i++) {
+      var index = fieldList.indexWhere((el) => el == fieldOrder[i]);
+      if (index != -1) {
+        // swapping fieldsin new position
+        var indexElement = fieldList[index];
+        fieldList[index] = fieldList[i];
+        fieldList[i] = indexElement;
+      }
+    }
+    return fieldList;
   }
 }

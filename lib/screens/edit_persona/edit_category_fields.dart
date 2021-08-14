@@ -5,8 +5,8 @@ import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
-import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
@@ -81,8 +81,27 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                             },
                             height: 160);
                       },
-                      child: Icon(
-                          isAllFieldsPrivate() ? Icons.lock : Icons.public),
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              if (!FieldOrderService()
+                                  .previewOrders
+                                  .containsKey(widget.category.name)) {
+                                FieldOrderService()
+                                    .initCategoryFields(widget.category);
+                              }
+
+                              SetupRoutes.push(context, Routes.REORDER_FIELDS,
+                                  arguments: {'category': widget.category});
+                            },
+                            child: Icon(Icons.reorder),
+                          ),
+                          SizedBox(width: 10),
+                          Icon(
+                              isAllFieldsPrivate() ? Icons.lock : Icons.public),
+                        ],
+                      ),
                     )
                   ],
                 ),

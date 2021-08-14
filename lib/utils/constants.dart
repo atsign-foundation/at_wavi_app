@@ -6,7 +6,7 @@ class MixedConstants {
   // static const String ROOT_DOMAIN = 'vip.ve.atsign.zone';
 
   // for staging server
-  // static const String ROOT_DOMAIN = 'root.atsign.wtf';
+  // static const String ROOT_DOMAIN = 'root.atsign.wtf';u]
   // for production server
   static const String ROOT_DOMAIN = 'root.atsign.org';
 
@@ -34,4 +34,5 @@ class MixedConstants {
   static const String API_KEY = 'yRCeKfJDPQDTp11YI1db67J_fww80QP6R3Llckg-REw';
   static final String twitterBearerToken = '';
   static const int responseTimeLimit = 30;
+  static const String fieldOrderKey = 'field_order_of_self';
 }
