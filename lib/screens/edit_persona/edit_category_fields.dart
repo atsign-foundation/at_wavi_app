@@ -174,7 +174,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
     var definedFieldsWidgets = <Widget>[];
     var userMap =
         User.toJson(Provider.of<UserPreview>(context, listen: false).user());
-    List<FieldsEnum> fields = FieldNames().getFieldListEnum(widget.category);
+    List<FieldsEnum> fields = [
+      ...FieldNames().getFieldListEnum(widget.category)
+    ];
 
     for (int i = 0; i < fields.length; i++) {
       BasicData basicData = userMap[fields[i].name];
@@ -524,7 +526,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   bool isAllFieldsPrivate() {
     var userMap =
         User.toJson(Provider.of<UserPreview>(context, listen: false).user());
-    List<FieldsEnum> fields = FieldNames().getFieldListEnum(widget.category);
+    List<FieldsEnum> fields = [
+      ...FieldNames().getFieldListEnum(widget.category)
+    ];
 
     for (int i = 0; i < fields.length; i++) {
       if (!userMap[fields[i].name].isPrivate) {
@@ -552,7 +556,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   changeFiledsVisibilityOfCategory(bool isPrivate) {
     var userMap =
         User.toJson(Provider.of<UserPreview>(context, listen: false).user());
-    List<FieldsEnum> fields = FieldNames().getFieldListEnum(widget.category);
+    List<FieldsEnum> fields = [
+      ...FieldNames().getFieldListEnum(widget.category)
+    ];
 
     List<BasicData>? customFields =
         Provider.of<UserPreview>(context, listen: false)

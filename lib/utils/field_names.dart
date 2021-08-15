@@ -77,13 +77,13 @@ class FieldNames {
     var fields = <String>[];
 
     if (category == AtCategory.DETAILS) {
-      fields = _basicDetails;
+      fields = [..._basicDetails];
     } else if (category == AtCategory.ADDITIONAL_DETAILS) {
-      fields = _additionalDetails;
+      fields = [..._additionalDetails];
     } else if (category == AtCategory.SOCIAL) {
-      fields = _socialAccounts;
+      fields = [..._socialAccounts];
     } else if (category == AtCategory.GAMER) {
-      fields = _gameFields;
+      fields = [..._gameFields];
     }
 
     var sortedFields = [...fields];
@@ -108,24 +108,23 @@ class FieldNames {
       {bool isPreview = false}) {
     var sortedList = <FieldsEnum>[];
     if (category == AtCategory.DETAILS) {
-      sortedList = _basicDetailsEnum;
+      sortedList = [..._basicDetailsEnum];
     } else if (category == AtCategory.ADDITIONAL_DETAILS) {
-      sortedList = _additionalDetailsEnum;
+      sortedList = [..._additionalDetailsEnum];
     } else if (category == AtCategory.SOCIAL) {
-      sortedList = _socialAccountsEnum;
+      sortedList = [..._socialAccountsEnum];
     } else if (category == AtCategory.GAMER) {
-      sortedList = _gameFieldsEnum;
+      sortedList = [..._gameFieldsEnum];
     }
-
-    // sorting fields
-    return sortFieldEnum(sortedList, category, isPreview: isPreview);
+    return sortedList;
   }
 
   List<FieldsEnum> sortFieldEnum(
       List<FieldsEnum> fieldList, AtCategory category,
       {bool isPreview = false}) {
-    var fieldOrder =
-        FieldOrderService().getFieldList(category, isPreview: isPreview);
+    var fieldOrder = [
+      ...FieldOrderService().getFieldList(category, isPreview: isPreview)
+    ];
 
     // if no reorder has been done
     if (fieldOrder.isEmpty) {
@@ -146,8 +145,9 @@ class FieldNames {
 
   List<String> sortFieldList(List<String> fieldList, AtCategory category,
       {bool isPreview = false}) {
-    var fieldOrder =
-        FieldOrderService().getFieldList(category, isPreview: isPreview);
+    var fieldOrder = [
+      ...FieldOrderService().getFieldList(category, isPreview: isPreview)
+    ];
 
     if (fieldOrder.isEmpty) {
       return fieldList;

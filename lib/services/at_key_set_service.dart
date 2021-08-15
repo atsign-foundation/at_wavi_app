@@ -5,6 +5,7 @@ import 'package:at_base2e15/at_base2e15.dart';
 import 'package:at_commons/at_commons.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/utils/constants.dart';
@@ -361,6 +362,7 @@ class AtKeySetService extends BaseModel {
     setStatus(UPDATE_USER, Status.Loading);
     try {
       var atKeys = await _getAtkeys();
+      await FieldOrderService().updateFieldsOrder();
       await _updateDefinedFields(user, true, atKeys);
       await _updateCustomData(user, true, atKeys);
       setStatus(UPDATE_USER, Status.Done);

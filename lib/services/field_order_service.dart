@@ -38,9 +38,34 @@ class FieldOrderService {
       ..metadata!.ccd = true;
 
     var atValue = await BackendService().get(atKey);
-    print('reorder value : $atValue');
     if (atValue.value != null && atValue.value != '') {
-      _fieldOrders = jsonDecode(atValue.value);
+      Map<String, dynamic> fielsOrder = jsonDecode(atValue.value);
+      for (var field in fielsOrder.entries) {
+        _fieldOrders[field.key] =
+            jsonDecode(fielsOrder[field.key]).cast<String>();
+      }
+    }
+  }
+
+  updateFieldsOrder() async {
+    AtKey atKey = AtKey()
+      ..key = MixedConstants.fieldOrderKey
+      ..metadata = Metadata()
+      ..metadata!.isPublic = true
+      ..metadata!.ccd = true;
+
+    var fieldOrder = {};
+    for (var field in FieldOrderService().previewOrders.entries) {
+      fieldOrder[field.key] =
+          jsonEncode(FieldOrderService().previewOrders[field.key]);
+    }
+
+    var response = await BackendService().put(atKey, jsonEncode(fieldOrder));
+    if (response) {
+      FieldOrderService().setFieldOrder = {
+        ...FieldOrderService().previewOrders
+      };
+      FieldOrderService().setPreviewOrder = {};
     }
   }
 
