@@ -4,7 +4,8 @@ import 'package:at_wavi_app/services/size_config.dart';
 
 class EmptyWidget extends StatefulWidget {
   final ThemeData themeData;
-  EmptyWidget(this.themeData);
+  final bool limitedContent;
+  EmptyWidget(this.themeData, {this.limitedContent = false});
 
   @override
   _EmptyWidgetState createState() => _EmptyWidgetState();
@@ -18,22 +19,30 @@ class _EmptyWidgetState extends State<EmptyWidget> {
         padding: const EdgeInsets.all(25),
         child: Column(
           children: <Widget>[
-            Icon(
-              Icons.note_outlined,
-              size: 25,
-              color: widget.themeData.primaryColor,
-            ),
+            widget.limitedContent
+                ? SizedBox()
+                : Icon(
+                    Icons.note_outlined,
+                    size: 25,
+                    color: widget.themeData.primaryColor,
+                  ),
             SizedBox(height: 10.toHeight),
             Text('No Details',
-                style: CustomTextStyles.customBoldTextStyle(
-                    widget.themeData.primaryColor,
-                    size: 18)),
+                style: widget.limitedContent
+                    ? CustomTextStyles.customTextStyle(
+                        widget.themeData.primaryColor,
+                        size: 18)
+                    : CustomTextStyles.customBoldTextStyle(
+                        widget.themeData.primaryColor,
+                        size: 18)),
             SizedBox(height: 10.toHeight),
-            Text(
-              "This user has not added any information.",
-              style: TextStyles.grey15,
-              textAlign: TextAlign.center,
-            ),
+            widget.limitedContent
+                ? SizedBox()
+                : Text(
+                    "This user has not added any information.",
+                    style: TextStyles.grey15,
+                    textAlign: TextAlign.center,
+                  ),
           ],
         ),
       ),

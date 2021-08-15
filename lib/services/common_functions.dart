@@ -5,6 +5,7 @@ import 'package:at_contacts_flutter/at_contacts_flutter.dart';
 import 'package:at_lookup/at_lookup.dart';
 import 'package:at_wavi_app/common_components/custom_card.dart';
 import 'package:at_wavi_app/common_components/custom_media_card.dart';
+import 'package:at_wavi_app/common_components/empty_widget.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
@@ -158,6 +159,11 @@ class CommonFunctions {
 
         twitterCards.add(twitterCard);
       });
+    } else {
+      twitterCards.add(EmptyWidget(
+        _themeData,
+        limitedContent: true,
+      ));
     }
 
     return twitterCards;

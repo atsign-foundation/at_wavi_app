@@ -703,6 +703,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               CommonFunctions().isInstagramFeatured(isPreview: widget.isPreview)
           ? HomeFeatured(
               twitterUsername: _currentUser.twitter.value,
+              instagramUsername: _currentUser.instagram.value,
               themeData: _themeData)
           : getEmptyWidget(_themeData!);
     } else
