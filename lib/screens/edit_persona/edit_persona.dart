@@ -7,6 +7,7 @@ import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/edit_persona/content_edit.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
@@ -50,6 +51,7 @@ class _EditPersonaState extends State<EditPersona>
   void initState() {
     _controller =
         TabController(length: 2, vsync: this, initialIndex: _tabIndex);
+    FieldOrderService().setPreviewOrder = FieldOrderService().fieldOrders;
     super.initState();
   }
 

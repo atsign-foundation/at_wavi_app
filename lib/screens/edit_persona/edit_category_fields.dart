@@ -28,6 +28,14 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    if (!FieldOrderService().previewOrders.containsKey(widget.category.name)) {
+      FieldOrderService().initCategoryFields(widget.category);
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       color: ColorConstants.white,
@@ -85,15 +93,16 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                         children: [
                           InkWell(
                             onTap: () {
-                              if (!FieldOrderService()
-                                  .previewOrders
-                                  .containsKey(widget.category.name)) {
-                                FieldOrderService()
-                                    .initCategoryFields(widget.category);
-                              }
-
-                              SetupRoutes.push(context, Routes.REORDER_FIELDS,
-                                  arguments: {'category': widget.category});
+                              SetupRoutes.push(
+                                context,
+                                Routes.REORDER_FIELDS,
+                                arguments: {
+                                  'category': widget.category,
+                                  'onSave': () {
+                                    setState(() {});
+                                  }
+                                },
+                              );
                             },
                             child: Icon(Icons.reorder),
                           ),
@@ -138,6 +147,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                                     customFields;
                               });
                             }
+
+                            FieldOrderService().addNewField(
+                                widget.category, data.accountName!);
                           },
                           'isEdit': false,
                           'category': widget.category
@@ -153,7 +165,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   }
 
   List<Widget> getAllInputFields() {
-    return [...getDefinedInputFields(), ...getCustomInputFields()];
+    return [
+      ...getAllFieldsCard(),
+    ];
   }
 
   List<Widget> getDefinedInputFields() {
@@ -188,6 +202,72 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
           SizedBox(height: 20)
         ],
       );
+
+      definedFieldsWidgets.add(widget);
+    }
+
+    return definedFieldsWidgets;
+  }
+
+  List<Widget> getAllFieldsCard() {
+    var definedFieldsWidgets = <Widget>[];
+    var userMap =
+        User.toJson(Provider.of<UserPreview>(context, listen: false).user());
+    List<BasicData>? customFields =
+        Provider.of<UserPreview>(context, listen: false)
+            .user()!
+            .customFields[widget.category.name];
+
+    var fields = <String>[];
+    fields = [...FieldNames().getFieldList(widget.category, isPreview: true)];
+
+    for (int i = 0; i < fields.length; i++) {
+      bool isCustomField = false;
+      BasicData basicData = BasicData();
+
+      if (userMap.containsKey(fields[i])) {
+        basicData = userMap[fields[i]];
+        if (basicData.accountName == null) basicData.accountName = fields[i];
+        if (basicData.value == null) basicData.value = '';
+      } else {
+        var index =
+            customFields!.indexWhere((el) => el.accountName == fields[i]);
+        if (index != -1) {
+          basicData = customFields[index];
+          isCustomField = true;
+        }
+      }
+
+      Widget widget;
+      if (!isCustomField) {
+        widget = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                basicData.accountName!,
+                style: TextStyles.lightText(
+                    ColorConstants.black.withOpacity(0.5),
+                    size: 16),
+              ),
+            ),
+            inputField(basicData),
+            Divider(thickness: 1, height: 1),
+            SizedBox(height: 20)
+          ],
+        );
+      } else {
+        widget = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: checkForCustomContentType(basicData),
+            ),
+          ],
+        );
+      }
 
       definedFieldsWidgets.add(widget);
     }
@@ -539,6 +619,8 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
             onEditToolTip(basicData);
           } else {
             UserPreview().deletCustomField(widget.category, basicData);
+            FieldOrderService()
+                .deleteField(widget.category, basicData.accountName!);
           }
           setState(() {});
         },

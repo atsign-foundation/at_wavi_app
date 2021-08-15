@@ -1,14 +1,18 @@
+import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
+import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
+import 'package:provider/provider.dart';
 
 class FieldNames {
   FieldNames._();
   static FieldNames _instance = FieldNames._();
   factory FieldNames() => _instance;
 
-  var _basicDetails = ['phone', 'email'];
-  var _additionalDetails = ['pronoun', 'about'];
-  var _socialAccounts = [
+  static const _basicDetails = ['phone', 'email'];
+  static const _additionalDetails = ['pronoun', 'about'];
+  static const _socialAccounts = [
     'twitter',
     'facebook',
     'linkedin',
@@ -17,11 +21,11 @@ class FieldNames {
     'tumblr',
     'medium'
   ];
-  var _gameFields = ['ps4', 'xbox', 'steam', 'discord'];
+  static const _gameFields = ['ps4', 'xbox', 'steam', 'discord'];
 
-  var _basicDetailsEnum = [FieldsEnum.PHONE, FieldsEnum.EMAIL];
-  var _additionalDetailsEnum = [FieldsEnum.PRONOUN, FieldsEnum.ABOUT];
-  var _socialAccountsEnum = [
+  static const _basicDetailsEnum = [FieldsEnum.PHONE, FieldsEnum.EMAIL];
+  static const _additionalDetailsEnum = [FieldsEnum.PRONOUN, FieldsEnum.ABOUT];
+  static const _socialAccountsEnum = [
     FieldsEnum.TWITTER,
     FieldsEnum.FACEBOOK,
     FieldsEnum.LINKEDIN,
@@ -30,7 +34,7 @@ class FieldNames {
     FieldsEnum.TUMBLR,
     FieldsEnum.MEDIUM
   ];
-  var _gameFieldsEnum = [
+  static const _gameFieldsEnum = [
     FieldsEnum.PS4,
     FieldsEnum.XBOX,
     FieldsEnum.STEAM,
@@ -70,18 +74,34 @@ class FieldNames {
   }
 
   List<String> getFieldList(AtCategory category, {bool isPreview = false}) {
-    var sortedFileds = <String>[];
+    var fields = <String>[];
 
     if (category == AtCategory.DETAILS) {
-      sortedFileds = _basicDetails;
+      fields = _basicDetails;
     } else if (category == AtCategory.ADDITIONAL_DETAILS) {
-      sortedFileds = _additionalDetails;
+      fields = _additionalDetails;
     } else if (category == AtCategory.SOCIAL) {
-      sortedFileds = _socialAccounts;
+      fields = _socialAccounts;
     } else if (category == AtCategory.GAMER) {
-      sortedFileds = _gameFields;
+      fields = _gameFields;
     }
-    return sortFieldList(sortedFileds, category, isPreview: isPreview);
+
+    var sortedFields = [...fields];
+
+    List<BasicData>? customFields = Provider.of<UserPreview>(
+            NavService.navKey.currentContext!,
+            listen: false)
+        .user()!
+        .customFields[category.name];
+
+    if (customFields != null) {
+      for (var field in customFields) {
+        if (field.accountName != null && field.accountName != '') {
+          sortedFields.add(field.accountName!);
+        }
+      }
+    }
+    return sortFieldList([...sortedFields], category, isPreview: isPreview);
   }
 
   List<FieldsEnum> getFieldListEnum(AtCategory category,
@@ -93,8 +113,6 @@ class FieldNames {
       sortedList = _additionalDetailsEnum;
     } else if (category == AtCategory.SOCIAL) {
       sortedList = _socialAccountsEnum;
-    } else if (category == AtCategory.DETAILS) {
-      sortedList = _basicDetailsEnum;
     } else if (category == AtCategory.GAMER) {
       sortedList = _gameFieldsEnum;
     }

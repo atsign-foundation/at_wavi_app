@@ -139,6 +139,7 @@ class SetupRoutes {
 
           return ReorderFields(
             category: args['category'],
+            onSave: args['onSave'],
           );
         } else
           return SizedBox();

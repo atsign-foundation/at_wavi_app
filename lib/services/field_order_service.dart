@@ -22,6 +22,14 @@ class FieldOrderService {
 
   Map<String, List<String>> get fieldOrders => _fieldOrders;
 
+  set setPreviewOrder(Map<String, List<String>> data) {
+    _previewFieldOrders = {...data};
+  }
+
+  set setFieldOrder(Map<String, List<String>> data) {
+    _fieldOrders = {...data};
+  }
+
   getFieldOrder() async {
     AtKey atKey = AtKey()
       ..key = MixedConstants.fieldOrderKey
@@ -38,7 +46,7 @@ class FieldOrderService {
 
   /// updates[category] order with [fileds]
   updateField(AtCategory category, List<String> fields) {
-    _previewFieldOrders[category.name] = fields;
+    _previewFieldOrders[category.name] = [...fields];
   }
 
   /// deletes [field] of [category] in [_previewFieldOrders]
@@ -46,8 +54,28 @@ class FieldOrderService {
     if (!_previewFieldOrders.containsKey(category.name)) {
       return false;
     }
-
     _previewFieldOrders[category.name]!.removeWhere((el) => el == field);
+  }
+
+  addNewField(AtCategory category, String field) {
+    if (_previewFieldOrders[category.name] != null) {
+      _previewFieldOrders[category.name] = [
+        ..._previewFieldOrders[category.name]!,
+        field
+      ];
+    } else {
+      _previewFieldOrders[category.name] = [field];
+    }
+  }
+
+  updateSingleField(AtCategory category, String oldField, String newField) {
+    if (_previewFieldOrders[category.name] != null &&
+        _previewFieldOrders[category.name]!.isNotEmpty) {
+      var index = _previewFieldOrders[category.name]!
+          .indexWhere((el) => el == oldField);
+
+      _previewFieldOrders[category.name]![index] = newField;
+    }
   }
 
   List<String> getFieldList(AtCategory category, {bool isPreview = false}) {
@@ -64,7 +92,7 @@ class FieldOrderService {
     if (_previewFieldOrders.containsKey(category.name)) {
       return;
     }
-    var fields = FieldNames().getFieldList(category);
+    var fields = [...FieldNames().getFieldList(category)];
     List<BasicData>? customFields = Provider.of<UserPreview>(
             NavService.navKey.currentContext!,
             listen: false)
@@ -74,7 +102,8 @@ class FieldOrderService {
     if (customFields != null) {
       for (var field in customFields) {
         if (field.accountName != null && field.accountName != '') {
-          fields.add(field.accountName!);
+          var i = fields.indexWhere((el) => el == field.accountName!);
+          if (i == -1) fields.add(field.accountName!);
         }
       }
     }
