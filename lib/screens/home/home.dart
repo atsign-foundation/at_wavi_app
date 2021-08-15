@@ -539,6 +539,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         var _res = await SearchService()
                             .getAtsignDetails(searchedAtsign);
 
+                        if (_res == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: ColorConstants.RED,
+                            content: Text(
+                              'Something went wrong',
+                              style: CustomTextStyles.customTextStyle(
+                                ColorConstants.white,
+                              ),
+                            ),
+                          ));
+                          setState(() {
+                            loadingSearchedAtsign = false;
+                          });
+                          return;
+                        }
+
                         if (_res.twitter.value != null) {
                           await TwitetrService()
                               .getTweets(searchedUsername: _res.twitter.value);

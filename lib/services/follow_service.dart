@@ -1,6 +1,7 @@
 import 'package:at_contact/at_contact.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_follows_flutter/utils/at_follow_services.dart';
+import 'package:at_wavi_app/common_components/confirmation_dialog.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
@@ -58,8 +59,15 @@ class FollowService extends BaseModel {
     setStatus(FETCH_FOLLOWING, Status.Done);
   }
 
-  Future unfollow(String atsign, int index) async {
-    following.atsignListDetails[index].isUnfollowing = true;
+  Future unfollow(String atsign) async {
+    var _choice = await confirmationDialog(atsign);
+    if (!_choice) {
+      return;
+    }
+
+    int index = getIndexOfAtsign(atsign);
+    // following.atsignListDetails[index].isUnfollowing = true;
+    setUnfollowingLoading(index, true);
     notifyListeners();
     try {
       var result = await AtFollowServices().unfollow(atsign);
@@ -68,9 +76,11 @@ class FollowService extends BaseModel {
         following.list!.remove(atsign);
         following.atsignListDetails
             .removeWhere((element) => element.atcontact.atSign == atsign);
-        following.atsignListDetails[index].isUnfollowing = false;
+        // following.atsignListDetails[index].isUnfollowing = false;
+        setUnfollowingLoading(index, false);
       } else {
-        following.atsignListDetails[index].isUnfollowing = false;
+        // following.atsignListDetails[index].isUnfollowing = false;
+        setUnfollowingLoading(index, false);
       }
     } on Error catch (err) {
       print('error in unfollow: $err');
@@ -80,14 +90,17 @@ class FollowService extends BaseModel {
     notifyListeners();
   }
 
-  removeFollower(String atsign, int index) async {
-    followers.atsignListDetails[index].isRmovingFromFollowers = true;
+  removeFollower(String atsign) async {
+    int index = getIndexOfAtsign(atsign);
+    // followers.atsignListDetails[index].isRmovingFromFollowers = true;
+    setRemoveFollowerLoading(index, true);
     notifyListeners();
     var res = await AtFollowServices().removeFollower(atsign);
     if (res) {
       followers.list!.remove(atsign);
     } else {
-      followers.atsignListDetails[index].isRmovingFromFollowers = false;
+      // followers.atsignListDetails[index].isRmovingFromFollowers = false;
+      setRemoveFollowerLoading(index, false);
     }
     notifyListeners();
   }
@@ -125,17 +138,44 @@ class FollowService extends BaseModel {
         isFollowingAtsign = isFollowing(atsign);
       }
       if (isFollowingAtsign) {
-        await unfollow(
-            atsign,
-            ((following.list ?? []).indexOf(atsign) < 0
-                ? 0
-                : (following.list ?? []).indexOf(atsign)));
+        await unfollow(atsign);
       } else {
         await AtFollowServices().follow(atsign);
-        await getFollowers();
       }
+      await getFollowers();
     } catch (e) {
       print('Error in performFollowUnfollow $e');
+    }
+  }
+
+  int getIndexOfAtsign(String _atsign, {bool forFollowersList = false}) {
+    print('_atsign $_atsign');
+    List _list = forFollowersList ? followers.list! : following.list!;
+    print('followers.list ${followers.list!.length}');
+    print('following.list! ${following.list!.length}');
+    for (int i = 0; i < _list.length; i++) {
+      print('_list[i] ${_list[i]}');
+
+      if (_list[i] == _atsign) {
+        return i;
+      }
+    }
+
+    return -1;
+  }
+
+  setUnfollowingLoading(int index, bool loadingState) {
+    print('index $index');
+
+    if (index > -1) {
+      print('index > -1');
+      following.atsignListDetails[index].isUnfollowing = loadingState;
+    }
+  }
+
+  setRemoveFollowerLoading(int index, bool loadingState) {
+    if (index > -1) {
+      followers.atsignListDetails[index].isRmovingFromFollowers = loadingState;
     }
   }
 }

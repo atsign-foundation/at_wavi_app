@@ -106,20 +106,27 @@ class _FollowingState extends State<Following>
                       SingleChildScrollView(
                         child: Consumer<FollowService>(
                             builder: (context, _provider, _) {
-                          var _providerList = _provider.following.list ?? [];
-                          List<String?> _filteredList;
-                          if (_searchedText.isNotEmpty) {
-                            _filteredList = _providerList
-                                .where((_atsign) =>
-                                    _atsign?.contains(_searchedText) ?? false)
-                                .toList();
-                          } else {
-                            _filteredList = _providerList;
-                          }
+                          print('Consumer<FollowService> built');
+                          // var _providerList = _provider.following.list ?? [];
+                          List<String?> _filteredList =
+                              _provider.following.list ?? [];
+                          // if (_searchedText.isNotEmpty) {
+                          //   _filteredList = _providerList
+                          //       .where((_atsign) =>
+                          //           _atsign?.contains(_searchedText) ?? false)
+                          //       .toList();
+                          // } else {
+                          //   _filteredList = _providerList;
+                          // }
 
                           return Wrap(
                             children:
                                 List.generate(_filteredList.length, (index) {
+                              if (!_filteredList[index]!
+                                  .contains(_searchedText)) {
+                                return SizedBox();
+                              }
+
                               AtsignDetails? atsignDetail;
                               String? name;
                               Uint8List? image;
@@ -155,8 +162,8 @@ class _FollowingState extends State<Following>
                                   subTitle: _filteredList[index],
                                   trailingWidget: InkWell(
                                     onTap: () async {
-                                      await FollowService().unfollow(
-                                          _filteredList[index]!, index);
+                                      await FollowService()
+                                          .unfollow(_filteredList[index]!);
                                     },
                                     child: _provider
                                             .following
@@ -180,20 +187,25 @@ class _FollowingState extends State<Following>
                       SingleChildScrollView(
                         child: Consumer<FollowService>(
                             builder: (context, _provider, _) {
-                          var _providerList = _provider.followers.list ?? [];
-                          List<String?> _filteredList;
-                          if (_searchedText.isNotEmpty) {
-                            _filteredList = _providerList
-                                .where((_atsign) =>
-                                    _atsign?.contains(_searchedText) ?? false)
-                                .toList();
-                          } else {
-                            _filteredList = _providerList;
-                          }
+                          // var _providerList = _provider.followers.list ?? [];
+                          List<String?> _filteredList =
+                              _provider.followers.list ?? [];
+                          // if (_searchedText.isNotEmpty) {
+                          //   _filteredList = _providerList
+                          //       .where((_atsign) =>
+                          //           _atsign?.contains(_searchedText) ?? false)
+                          //       .toList();
+                          // } else {
+                          //   _filteredList = _providerList;
+                          // }
 
                           return Wrap(
                             children:
                                 List.generate(_filteredList.length, (index) {
+                              if (!_filteredList[index]!
+                                  .contains(_searchedText)) {
+                                return SizedBox();
+                              }
                               AtsignDetails? atsignDetail;
                               String? name;
                               Uint8List? image;
@@ -231,7 +243,7 @@ class _FollowingState extends State<Following>
                                     trailingWidget: InkWell(
                                       onTap: () async {
                                         FollowService().removeFollower(
-                                            _filteredList[index]!, index);
+                                            _filteredList[index]!);
                                       },
                                       child: _provider
                                               .followers
