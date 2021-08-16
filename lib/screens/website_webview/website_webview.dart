@@ -16,7 +16,7 @@ class WebsiteScreen extends StatefulWidget {
 }
 
 class _WebsiteScreenState extends State<WebsiteScreen> {
-  late WebViewController controller;
+  WebViewController? controller;
   late bool loading;
   @override
   void initState() {
@@ -63,8 +63,10 @@ class _WebsiteScreenState extends State<WebsiteScreen> {
             });
             await Future.delayed(
                 Duration(milliseconds: 500)); // To let complete page load
-            controller.evaluateJavascript(
-                "(document.getElementsByClassName('share-btn')[3]).click()");
+            if (controller != null) {
+              controller!.evaluateJavascript(
+                  "(document.getElementsByClassName('share-btn')[3]).click()");
+            }
           },
         ),
         loading
