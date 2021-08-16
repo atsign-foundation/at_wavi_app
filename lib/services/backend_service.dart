@@ -7,6 +7,7 @@ import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
@@ -58,9 +59,10 @@ class BackendService {
                 listen: false)
             .resetThemeData();
         AtKeyGetService().init();
-        Provider.of<UserProvider>(NavService.navKey.currentContext!,
+        await Provider.of<UserProvider>(NavService.navKey.currentContext!,
                 listen: false)
             .fetchUserData(BackendService().currentAtSign!);
+        await FieldOrderService().getFieldOrder();
         SetupRoutes.pushAndRemoveAll(
             NavService.navKey.currentContext!, Routes.HOME);
       },

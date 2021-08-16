@@ -4,6 +4,7 @@ import 'package:at_common_flutter/at_common_flutter.dart';
 import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -389,6 +390,10 @@ class _AddCustomFieldState extends State<AddCustomField> {
   }
 
   _onSave() {
+    if (_fieldType == CustomContentType.Image && !isImageSelected) {
+      CommonFunctions().showSnackBar('Please add image');
+      return;
+    }
     checkFormValidation();
     if (!_formKey.currentState!.validate()) {
       return;
@@ -405,6 +410,8 @@ class _AddCustomFieldState extends State<AddCustomField> {
     // when custom field is being updated and title is getting changed
     if (widget.basicData != null &&
         widget.basicData!.accountName != basicData.accountName) {
+      FieldOrderService().updateSingleField(widget.category!,
+          widget.basicData!.accountName!, basicData.accountName!);
       if (UserPreview().iskeyNameTaken(basicData)) {
         CommonFunctions().showSnackBar('This title is already taken');
         return;

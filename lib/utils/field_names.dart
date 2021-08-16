@@ -1,13 +1,19 @@
+import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
+import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class FieldNames {
   FieldNames._();
   static FieldNames _instance = FieldNames._();
   factory FieldNames() => _instance;
 
-  var _basicDetails = ['phone', 'email'];
-  var _additionalDetails = ['pronoun', 'about'];
-  var _socialAccounts = [
+  static const _basicDetails = ['firstname', 'lastname', 'phone', 'email'];
+  static const _additionalDetails = ['pronoun', 'about'];
+  static const _socialAccounts = [
     'twitter',
     'facebook',
     'linkedin',
@@ -16,11 +22,11 @@ class FieldNames {
     'tumblr',
     'medium'
   ];
-  var _gameFields = ['ps4', 'xbox', 'steam', 'discord'];
+  static const _gameFields = ['ps4', 'xbox', 'steam', 'discord'];
 
-  var _basicDetailsEnum = [FieldsEnum.PHONE, FieldsEnum.EMAIL];
-  var _additionalDetailsEnum = [FieldsEnum.PRONOUN, FieldsEnum.ABOUT];
-  var _socialAccountsEnum = [
+  static const _basicDetailsEnum = [FieldsEnum.PHONE, FieldsEnum.EMAIL];
+  static const _additionalDetailsEnum = [FieldsEnum.PRONOUN, FieldsEnum.ABOUT];
+  static const _socialAccountsEnum = [
     FieldsEnum.TWITTER,
     FieldsEnum.FACEBOOK,
     FieldsEnum.LINKEDIN,
@@ -29,7 +35,7 @@ class FieldNames {
     FieldsEnum.TUMBLR,
     FieldsEnum.MEDIUM
   ];
-  var _gameFieldsEnum = [
+  static const _gameFieldsEnum = [
     FieldsEnum.PS4,
     FieldsEnum.XBOX,
     FieldsEnum.STEAM,
@@ -68,33 +74,112 @@ class FieldNames {
     return _gameFieldsEnum;
   }
 
-  List<String> getFieldList(AtCategory category) {
-    switch (category) {
-      case AtCategory.DETAILS:
-        return _basicDetails;
-      case AtCategory.ADDITIONAL_DETAILS:
-        return _additionalDetails;
-      case AtCategory.SOCIAL:
-        return _socialAccounts;
-      case AtCategory.GAMER:
-        return _gameFields;
-      default:
-        return [];
+  List<String> getFieldList(AtCategory category, {bool isPreview = false}) {
+    var fields = <String>[];
+
+    if (category == AtCategory.DETAILS) {
+      fields = [..._basicDetails];
+    } else if (category == AtCategory.ADDITIONAL_DETAILS) {
+      fields = [..._additionalDetails];
+    } else if (category == AtCategory.SOCIAL) {
+      fields = [..._socialAccounts];
+    } else if (category == AtCategory.GAMER) {
+      fields = [..._gameFields];
     }
+
+    var sortedFields = [...fields];
+
+    List<BasicData>? customFields;
+    if (isPreview) {
+      customFields = [
+        ...Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                listen: false)
+            .user()!
+            .customFields[category.name]!
+      ];
+    } else {
+      if (Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                  listen: false)
+              .user!
+              .customFields[category.name] !=
+          null) {
+        customFields = [
+          ...Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                  listen: false)
+              .user!
+              .customFields[category.name]!
+        ];
+      }
+    }
+
+    if (customFields != null) {
+      for (var field in customFields) {
+        if (field.accountName != null && field.accountName != '') {
+          sortedFields.add(field.accountName!);
+        }
+      }
+    }
+    return sortFieldList([...sortedFields], category, isPreview: isPreview);
   }
 
-  List<FieldsEnum> getFieldListEnum(AtCategory category) {
-    switch (category) {
-      case AtCategory.DETAILS:
-        return _basicDetailsEnum;
-      case AtCategory.ADDITIONAL_DETAILS:
-        return _additionalDetailsEnum;
-      case AtCategory.SOCIAL:
-        return _socialAccountsEnum;
-      case AtCategory.GAMER:
-        return _gameFieldsEnum;
-      default:
-        return [];
+  List<FieldsEnum> getFieldListEnum(AtCategory category,
+      {bool isPreview = false}) {
+    var sortedList = <FieldsEnum>[];
+    if (category == AtCategory.DETAILS) {
+      sortedList = [..._basicDetailsEnum];
+    } else if (category == AtCategory.ADDITIONAL_DETAILS) {
+      sortedList = [..._additionalDetailsEnum];
+    } else if (category == AtCategory.SOCIAL) {
+      sortedList = [..._socialAccountsEnum];
+    } else if (category == AtCategory.GAMER) {
+      sortedList = [..._gameFieldsEnum];
     }
+    return sortedList;
+  }
+
+  List<FieldsEnum> sortFieldEnum(
+      List<FieldsEnum> fieldList, AtCategory category,
+      {bool isPreview = false}) {
+    var fieldOrder = [
+      ...FieldOrderService().getFieldList(category, isPreview: isPreview)
+    ];
+
+    // if no reorder has been done
+    if (fieldOrder.isEmpty) {
+      return fieldList;
+    }
+
+    for (int i = 0; i < fieldOrder.length; i++) {
+      var index = fieldList.indexWhere((el) => el.name == fieldOrder[i]);
+      if (index != -1) {
+        // swapping fieldsin new position
+        var indexElement = fieldList[index];
+        fieldList[index] = fieldList[i];
+        fieldList[i] = indexElement;
+      }
+    }
+    return fieldList;
+  }
+
+  List<String> sortFieldList(List<String> fieldList, AtCategory category,
+      {bool isPreview = false}) {
+    var fieldOrder = [
+      ...FieldOrderService().getFieldList(category, isPreview: isPreview)
+    ];
+
+    if (fieldOrder.isEmpty) {
+      return fieldList;
+    }
+
+    for (int i = 0; i < fieldOrder.length; i++) {
+      var index = fieldList.indexWhere((el) => el == fieldOrder[i]);
+      if (index != -1) {
+        // swapping fieldsin new position
+        var indexElement = fieldList[index];
+        fieldList[index] = fieldList[i];
+        fieldList[i] = indexElement;
+      }
+    }
+    return fieldList;
   }
 }

@@ -5,8 +5,8 @@ import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
-import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
@@ -26,6 +26,41 @@ class EditCategoryFields extends StatefulWidget {
 
 class _EditCategoryFieldsState extends State<EditCategoryFields> {
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    checkForMissingReorderFields();
+    super.initState();
+  }
+
+// if any field is added by at_settings app and that field in missing in reorder list
+// those fields will be added in last of reorder list
+  checkForMissingReorderFields() {
+    var customFields = Provider.of<UserPreview>(context, listen: false)
+        .user()!
+        .customFields[widget.category.name];
+    var reorderFilelds =
+        FieldOrderService().previewOrders[widget.category.name];
+
+    var remainingFields = <String>[];
+
+    if (customFields != null) {
+      for (int i = 0; i < customFields.length; i++) {
+        int index = reorderFilelds!
+            .indexWhere((element) => element == customFields[i].accountName);
+        if (index == -1 && customFields[i].accountName != null) {
+          remainingFields.add(customFields[i].accountName!);
+        }
+      }
+    }
+
+    if (remainingFields.isNotEmpty) {
+      FieldOrderService().updateField(widget.category, [
+        ...FieldOrderService().previewOrders[widget.category.name]!,
+        ...remainingFields
+      ]);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +116,28 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                             },
                             height: 160);
                       },
-                      child: Icon(
-                          isAllFieldsPrivate() ? Icons.lock : Icons.public),
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              SetupRoutes.push(
+                                context,
+                                Routes.REORDER_FIELDS,
+                                arguments: {
+                                  'category': widget.category,
+                                  'onSave': () {
+                                    setState(() {});
+                                  }
+                                },
+                              );
+                            },
+                            child: Icon(Icons.reorder),
+                          ),
+                          SizedBox(width: 10),
+                          Icon(
+                              isAllFieldsPrivate() ? Icons.lock : Icons.public),
+                        ],
+                      ),
                     )
                   ],
                 ),
@@ -119,6 +174,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                                     customFields;
                               });
                             }
+
+                            FieldOrderService().addNewField(
+                                widget.category, data.accountName!);
                           },
                           'isEdit': false,
                           'category': widget.category
@@ -134,14 +192,18 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   }
 
   List<Widget> getAllInputFields() {
-    return [...getDefinedInputFields(), ...getCustomInputFields()];
+    return [
+      ...getAllFieldsCard(),
+    ];
   }
 
   List<Widget> getDefinedInputFields() {
     var definedFieldsWidgets = <Widget>[];
     var userMap =
         User.toJson(Provider.of<UserPreview>(context, listen: false).user());
-    List<FieldsEnum> fields = FieldNames().getFieldListEnum(widget.category);
+    List<FieldsEnum> fields = [
+      ...FieldNames().getFieldListEnum(widget.category)
+    ];
 
     for (int i = 0; i < fields.length; i++) {
       BasicData basicData = userMap[fields[i].name];
@@ -169,6 +231,72 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
           SizedBox(height: 20)
         ],
       );
+
+      definedFieldsWidgets.add(widget);
+    }
+
+    return definedFieldsWidgets;
+  }
+
+  List<Widget> getAllFieldsCard() {
+    var definedFieldsWidgets = <Widget>[];
+    var userMap =
+        User.toJson(Provider.of<UserPreview>(context, listen: false).user());
+    List<BasicData>? customFields =
+        Provider.of<UserPreview>(context, listen: false)
+            .user()!
+            .customFields[widget.category.name];
+
+    var fields = <String>[];
+    fields = [...FieldNames().getFieldList(widget.category, isPreview: true)];
+
+    for (int i = 0; i < fields.length; i++) {
+      bool isCustomField = false;
+      BasicData basicData = BasicData();
+
+      if (userMap.containsKey(fields[i])) {
+        basicData = userMap[fields[i]];
+        if (basicData.accountName == null) basicData.accountName = fields[i];
+        if (basicData.value == null) basicData.value = '';
+      } else {
+        var index =
+            customFields!.indexWhere((el) => el.accountName == fields[i]);
+        if (index != -1) {
+          basicData = customFields[index];
+          isCustomField = true;
+        }
+      }
+
+      Widget widget;
+      if (!isCustomField) {
+        widget = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                basicData.accountName!,
+                style: TextStyles.lightText(
+                    ColorConstants.black.withOpacity(0.5),
+                    size: 16),
+              ),
+            ),
+            inputField(basicData),
+            Divider(thickness: 1, height: 1),
+            SizedBox(height: 20)
+          ],
+        );
+      } else {
+        widget = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: checkForCustomContentType(basicData),
+            ),
+          ],
+        );
+      }
 
       definedFieldsWidgets.add(widget);
     }
@@ -425,7 +553,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   bool isAllFieldsPrivate() {
     var userMap =
         User.toJson(Provider.of<UserPreview>(context, listen: false).user());
-    List<FieldsEnum> fields = FieldNames().getFieldListEnum(widget.category);
+    List<FieldsEnum> fields = [
+      ...FieldNames().getFieldListEnum(widget.category)
+    ];
 
     for (int i = 0; i < fields.length; i++) {
       if (!userMap[fields[i].name].isPrivate) {
@@ -453,7 +583,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   changeFiledsVisibilityOfCategory(bool isPrivate) {
     var userMap =
         User.toJson(Provider.of<UserPreview>(context, listen: false).user());
-    List<FieldsEnum> fields = FieldNames().getFieldListEnum(widget.category);
+    List<FieldsEnum> fields = [
+      ...FieldNames().getFieldListEnum(widget.category)
+    ];
 
     List<BasicData>? customFields =
         Provider.of<UserPreview>(context, listen: false)
@@ -520,6 +652,8 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
             onEditToolTip(basicData);
           } else {
             UserPreview().deletCustomField(widget.category, basicData);
+            FieldOrderService()
+                .deleteField(widget.category, basicData.accountName!);
           }
           setState(() {});
         },
