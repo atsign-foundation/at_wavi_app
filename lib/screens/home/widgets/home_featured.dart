@@ -1,3 +1,4 @@
+import 'package:at_wavi_app/common_components/empty_widget.dart';
 import 'package:at_wavi_app/screens/website_webview/website_webview.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -9,9 +10,9 @@ import 'package:at_wavi_app/services/size_config.dart';
 import 'package:provider/provider.dart';
 
 class HomeFeatured extends StatefulWidget {
-  final String? twitterUsername;
+  final String? twitterUsername, instagramUsername;
   final ThemeData? themeData;
-  HomeFeatured({this.twitterUsername, this.themeData});
+  HomeFeatured({this.twitterUsername, this.instagramUsername, this.themeData});
 
   @override
   _HomeFeaturedState createState() => _HomeFeaturedState();
@@ -60,33 +61,39 @@ class _HomeFeaturedState extends State<HomeFeatured> {
                   'Instagram',
                   style:
                       TextStyles.boldText(_themeData!.primaryColor, size: 18),
-                ),
-                Text(
-                  'See more',
-                  style:
-                      TextStyles.lightText(_themeData!.primaryColor, size: 16),
-                ),
+                )
               ],
             ),
             SizedBox(height: 15.toHeight),
-            Container(
-              color: _themeData!.highlightColor.withOpacity(0.1),
-              child: Align(
-                alignment: Alignment.center,
-                child: Wrap(
-                  alignment: WrapAlignment.start,
-                  runAlignment: WrapAlignment.start,
-                  runSpacing: 10.0,
-                  spacing: 20.0,
-                  children: List.generate(6, (index) {
-                    return Icon(
-                      Icons.image,
-                      size: 80,
-                    );
-                  }),
-                ),
-              ),
-            ),
+            widget.instagramUsername != null
+                ? Container(
+                    alignment: Alignment.center,
+                    height: 100,
+                    width: double.infinity,
+                    color: _themeData!.highlightColor.withOpacity(0.1),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WebsiteScreen(
+                              title: 'Instagram',
+                              url:
+                                  'https://instagram.com/${widget.instagramUsername}',
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Click here to login',
+                        style: TextStyles.linkText(),
+                      ),
+                    ),
+                  )
+                : EmptyWidget(
+                    _themeData!,
+                    limitedContent: true,
+                  ),
             SizedBox(height: 40.toHeight),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,12 +126,14 @@ class _HomeFeaturedState extends State<HomeFeatured> {
               ],
             ),
             SizedBox(height: 15.toHeight),
-            Column(
-              children: widget.twitterUsername != null
-                  ? CommonFunctions().getFeaturedTwitterCards(
-                      widget.twitterUsername!, _themeData!)
-                  : [],
-            ),
+            widget.twitterUsername != null
+                ? Column(
+                    children: CommonFunctions().getFeaturedTwitterCards(
+                        widget.twitterUsername!, _themeData!))
+                : EmptyWidget(
+                    _themeData!,
+                    limitedContent: true,
+                  ),
           ],
         ),
       );

@@ -60,55 +60,59 @@ class SearchService {
   }
 
   /// TODO: throws an error for image, serach 'colin/kevin'
-  Future<User> getAtsignDetails(String atsign) async {
-    currentAtsignThemeData =
-        Themes.lightTheme(highlightColor ?? ColorConstants.purple);
+  Future<User?> getAtsignDetails(String atsign) async {
+    try {
+      currentAtsignThemeData =
+          Themes.lightTheme(highlightColor ?? ColorConstants.purple);
 
-    isPrivateAccount = false;
-    user = User(allPrivate: false, atsign: atsign);
-    var _response = await http.get(Uri.parse('$url$atsign'));
-    var _jsonData = jsonDecode(_response.body);
-    print('_jsonData ${_jsonData}');
+      isPrivateAccount = false;
+      user = User(allPrivate: false, atsign: atsign);
+      var _response = await http.get(Uri.parse('$url$atsign'));
+      var _jsonData = jsonDecode(_response.body);
+      print('_jsonData ${_jsonData}');
 
-    _jsonData.forEach((_data) {
-      var _keyValuePair = _data;
-      for (var field in _keyValuePair.entries) {
-        if (field.key.contains(privateAccountKey)) {
-          isPrivateAccount = _keyValuePair[field.key] == 'true';
-          continue;
-        }
+      _jsonData.forEach((_data) {
+        var _keyValuePair = _data;
+        for (var field in _keyValuePair.entries) {
+          if (field.key.contains(privateAccountKey)) {
+            isPrivateAccount = _keyValuePair[field.key] == 'true';
+            continue;
+          }
 
-        if (field.key.contains(followers_key)) {
-          followers_count = _keyValuePair[field.key].split(',').length;
-          continue;
-        }
+          if (field.key.contains(followers_key)) {
+            followers_count = _keyValuePair[field.key].split(',').length;
+            continue;
+          }
 
-        if (field.key.contains(following_key)) {
-          following_count = _keyValuePair[field.key].split(',').length;
-          continue;
-        }
+          if (field.key.contains(following_key)) {
+            following_count = _keyValuePair[field.key].split(',').length;
+            continue;
+          }
 
-        if (field.key.contains(themeKey)) {
-          updateThemeData(_keyValuePair[field.key]);
-          continue;
-        }
+          if (field.key.contains(themeKey)) {
+            updateThemeData(_keyValuePair[field.key]);
+            continue;
+          }
 
-        if (field.key.contains(themeColorKey)) {
-          updateHighlightColor(_keyValuePair[field.key]);
-          continue;
-        }
+          if (field.key.contains(themeColorKey)) {
+            updateHighlightColor(_keyValuePair[field.key]);
+            continue;
+          }
 
-        if (!keysToIgnore.contains(field.key)) {
-          if (field.key.contains('custom_')) {
-            setCustomField(_keyValuePair[field.key], false);
-          } else {
-            setDefinedFields(field.key, _keyValuePair[field.key]);
+          if (!keysToIgnore.contains(field.key)) {
+            if (field.key.contains('custom_')) {
+              setCustomField(_keyValuePair[field.key], false);
+            } else {
+              setDefinedFields(field.key, _keyValuePair[field.key]);
+            }
           }
         }
-      }
-    });
+      });
 
-    return user;
+      return user;
+    } catch (e) {
+      print('Error in $e');
+    }
   }
 
   void setCustomField(String response, isPrivate) {
