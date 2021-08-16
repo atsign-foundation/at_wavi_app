@@ -1,15 +1,20 @@
+import 'dart:convert';
+
 import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/common_components/provider_callback.dart';
+import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/edit_persona/content_edit.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -46,6 +51,7 @@ class _EditPersonaState extends State<EditPersona>
   void initState() {
     _controller =
         TabController(length: 2, vsync: this, initialIndex: _tabIndex);
+    FieldOrderService().setPreviewOrder = {...FieldOrderService().fieldOrders};
     super.initState();
   }
 
@@ -392,8 +398,23 @@ class _EditPersonaState extends State<EditPersona>
   }
 
   _saveButtonCall() async {
-    await AtKeySetService()
-        .saveUserData(Provider.of<UserPreview>(context, listen: false).user()!);
+    await providerCallback<AtKeySetService>(
+      context,
+      task: (provider) async {
+        await provider.saveUserData(
+            Provider.of<UserPreview>(context, listen: false).user()!);
+      },
+      onError: (provider) {},
+      showDialog: false,
+      text: 'Saving',
+      taskName: (provider) => provider.UPDATE_USER,
+      onSuccess: (provider) async {
+        var userJson = User.toJson(UserPreview().user()!);
+        User previewUser = User.fromJson(json.decode(json.encode(userJson)));
+        UserProvider().user = previewUser;
+        Navigator.of(context).pop();
+      },
+    );
   }
 
   _publishButtonCall() async {

@@ -159,8 +159,11 @@ class AtKeyGetService {
   ///parses customField value from [json] based on type.
   getCustomContentValue({required var type, required var json}) {
     if (type == CustomContentType.Image.name) {
-      // return Base2e15.decode(json[CustomFieldConstants.value]);
-      return base64Decode(json[CustomFieldConstants.value]);
+      try {
+        return base64Decode(json[CustomFieldConstants.value]);
+      } catch (e) {
+        return Base2e15.decode(json[CustomFieldConstants.value]);
+      }
     } else if (type == CustomContentType.Youtube.name) {
       if (json[CustomFieldConstants.valueLabel] != null &&
           json[CustomFieldConstants.valueLabel] != '') {

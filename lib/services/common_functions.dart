@@ -10,8 +10,10 @@ import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
+import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +26,7 @@ class CommonFunctions {
 
   List<Widget> getCustomCardForFields(ThemeData _themeData, AtCategory category,
       {bool isPreview = false}) {
-    return [
-      ...getDefinedFieldsCard(_themeData, category, isPreview: isPreview),
-      ...getCustomFieldsCard(_themeData, category, isPreview: isPreview)
-    ];
+    return [...getAllfieldsCard(_themeData, category, isPreview: isPreview)];
   }
 
   List<Widget> getDefinedFieldsCard(ThemeData _themeData, AtCategory category,
@@ -101,6 +100,85 @@ class CommonFunctions {
     }
 
     return customFieldsWidgets;
+  }
+
+  List<Widget> getAllfieldsCard(ThemeData _themeData, AtCategory category,
+      {bool isPreview = false}) {
+    var allFieldsWidget = <Widget>[];
+    var userMap = User.toJson(isPreview
+        ? Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                listen: false)
+            .user()
+        : UserProvider().user!);
+
+    List<BasicData>? customFields = [];
+    if (isPreview) {
+      customFields = Provider.of<UserPreview>(NavService.navKey.currentContext!,
+              listen: false)
+          .user()!
+          .customFields[category.name];
+    } else {
+      customFields = UserProvider().user!.customFields[category.name];
+    }
+
+    List<String> fields = [
+      ...FieldNames().getFieldList(category, isPreview: isPreview)
+    ];
+
+    for (int i = 0; i < fields.length; i++) {
+      // not displaying name in home tab fields
+      if (fields[i] == FieldsEnum.FIRSTNAME.name ||
+          fields[i] == FieldsEnum.LASTNAME.name) {
+        continue;
+      }
+      bool isCustomField = false;
+      BasicData basicData = BasicData();
+
+      if (userMap.containsKey(fields[i])) {
+        basicData = userMap[fields[i]];
+        if (basicData.accountName == null) basicData.accountName = fields[i];
+      } else {
+        var index =
+            customFields!.indexWhere((el) => el.accountName == fields[i]);
+        if (index != -1) {
+          basicData = customFields[index];
+          isCustomField = true;
+        }
+      }
+
+      if (basicData.value == null || basicData.value == '') continue;
+
+      Widget widget;
+      if (!isCustomField) {
+        widget = Column(
+          children: [
+            SizedBox(
+                width: double.infinity,
+                child: CustomCard(
+                  title: basicData.accountName,
+                  subtitle: basicData.value,
+                  themeData: _themeData,
+                )),
+            Divider(
+                height: 1, color: _themeData.highlightColor.withOpacity(0.5))
+          ],
+        );
+      } else {
+        widget = Column(
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: checkForCustomContentType(basicData, _themeData),
+            ),
+            Divider(
+                height: 1, color: _themeData.highlightColor.withOpacity(0.5))
+          ],
+        );
+      }
+      allFieldsWidget.add(widget);
+    }
+
+    return allFieldsWidget;
   }
 
   Widget checkForCustomContentType(BasicData basicData, ThemeData _themeData) {
@@ -297,5 +375,18 @@ class CommonFunctions {
     var checkPresence = await AtLookupImpl.findSecondary(
         receiver, MixedConstants.ROOT_DOMAIN, 64);
     return checkPresence != null;
+  }
+
+  showSnackBar(String msg) {
+    ScaffoldMessenger.of(NavService.navKey.currentContext!)
+        .showSnackBar(SnackBar(
+      backgroundColor: ColorConstants.RED,
+      content: Text(
+        msg,
+        style: CustomTextStyles.customTextStyle(
+          ColorConstants.white,
+        ),
+      ),
+    ));
   }
 }

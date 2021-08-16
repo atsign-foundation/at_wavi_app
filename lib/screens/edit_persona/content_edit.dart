@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:at_wavi_app/common_components/content_edit_field_card.dart';
+import 'package:at_wavi_app/common_components/media_content_edit_card.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
+import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -66,19 +68,19 @@ class _CotentEditState extends State<CotentEdit> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: contentHeadings.map((contentHeading) {
-                return editContentCardHeading(
-                  contentHeading['heading'] as String,
-                  contentHeading['category'] as AtCategory,
-                  contentHeading['route'] as String,
-                );
-              }).toList(),
-            ),
-          )),
+      padding:
+          const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0, bottom: 50),
+      child: SingleChildScrollView(
+        child: Column(
+          children: contentHeadings.map((contentHeading) {
+            return editContentCardHeading(
+              contentHeading['heading'] as String,
+              contentHeading['category'] as AtCategory,
+              contentHeading['route'] as String,
+            );
+          }).toList(),
+        ),
+      ),
     );
   }
 
@@ -122,26 +124,70 @@ class _CotentEditState extends State<CotentEdit> {
                   child: Row(
                     children: [
                       Text(
-                        CommonFunctions().isFieldsPresentForCategory(category)
-                            ? 'Edit'
-                            : 'Add',
+                        category == AtCategory.IMAGE
+                            ? ''
+                            : CommonFunctions()
+                                    .isFieldsPresentForCategory(category)
+                                ? 'Edit'
+                                : 'Add',
                         style: TextStyles.lightText(ColorConstants.black),
                       ),
                       SizedBox(width: 7),
-                      CommonFunctions().isFieldsPresentForCategory(category)
-                          ? Icon(
-                              (Icons.edit),
-                              size: 20,
+                      category == AtCategory.IMAGE
+                          ? InkWell(
+                              onTap: () async {
+                                var pickedImage =
+                                    await ImagePicker().pickImage();
+                                if (pickedImage != null) {
+                                  setState(() {
+                                    UserPreview().user()!.image.value =
+                                        pickedImage;
+                                  });
+                                }
+                              },
+                              child: Icon(
+                                (Icons.edit),
+                                size: 20,
+                              ),
                             )
-                          : Icon(
-                              Icons.add,
-                            )
+                          : CommonFunctions()
+                                  .isFieldsPresentForCategory(category)
+                              ? Icon(
+                                  (Icons.edit),
+                                  size: 20,
+                                )
+                              : Icon(
+                                  Icons.add,
+                                )
                     ],
                   ),
                 )
               ],
             ),
           ),
+          category == AtCategory.IMAGE ? SizedBox(height: 25) : SizedBox(),
+          category == AtCategory.IMAGE
+              ? UserPreview().user()!.image.value != null
+                  ? Container(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage:
+                              Image.memory(UserPreview().user()!.image.value)
+                                  .image,
+                        ),
+                      ),
+                    )
+                  : Align(
+                      alignment: Alignment.center,
+                      child: Icon(
+                        Icons.person,
+                        size: 50,
+                      ),
+                    )
+              : SizedBox(),
           Divider(height: 25),
           selectedcategory == category
               ? Column(
@@ -225,13 +271,19 @@ class _CotentEditState extends State<CotentEdit> {
     Widget fieldCard = SizedBox();
     if (basicData.type == CustomContentType.Text.name ||
         basicData.type == CustomContentType.Number.name ||
-        basicData.type == CustomContentType.Link.name) {
+        basicData.type == CustomContentType.Link.name ||
+        basicData.type == CustomContentType.Youtube.name) {
       fieldCard = SizedBox(
         width: double.infinity,
         child: ContentEditFieldCard(
           title: basicData.accountName!,
           subtitle: basicData.value,
         ),
+      );
+    } else if (basicData.type == CustomContentType.Image.name) {
+      fieldCard = SizedBox(
+        width: double.infinity,
+        child: MediaContentEditCard(basicData: basicData),
       );
     }
 

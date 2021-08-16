@@ -4,6 +4,7 @@ import 'package:at_wavi_app/screens/add_link/create_custom_add_link/create_custo
 import 'package:at_wavi_app/screens/edit_persona/add_custom_field.dart';
 import 'package:at_wavi_app/screens/edit_persona/edit_category_fields.dart';
 import 'package:at_wavi_app/screens/edit_persona/edit_persona.dart';
+import 'package:at_wavi_app/screens/edit_persona/reorder_fields.dart';
 import 'package:at_wavi_app/screens/following.dart';
 import 'package:at_wavi_app/screens/home/home.dart';
 import 'package:at_wavi_app/screens/location/location_widget.dart';
@@ -122,6 +123,22 @@ class SetupRoutes {
               as Map<String, dynamic>;
 
           return AddCustomField(
+            onSave: args['onSave'],
+            isEdit: args['isEdit'],
+            basicData: args['basicData'],
+            category: args['category'],
+          );
+        } else
+          return SizedBox();
+      },
+      Routes.REORDER_FIELDS: (context) {
+        if ((ModalRoute.of(context) != null) &&
+            (ModalRoute.of(context)!.settings.arguments != null)) {
+          Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+
+          return ReorderFields(
+            category: args['category'],
             onSave: args['onSave'],
           );
         } else
