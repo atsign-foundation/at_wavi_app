@@ -44,9 +44,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
 
     var remainingFields = <String>[];
 
-    if (customFields != null) {
+    if ((customFields != null) && (reorderFilelds != null)) {
       for (int i = 0; i < customFields.length; i++) {
-        int index = reorderFilelds!
+        int index = reorderFilelds
             .indexWhere((element) => element == customFields[i].accountName);
         if (index == -1 && customFields[i].accountName != null) {
           remainingFields.add(customFields[i].accountName!);
