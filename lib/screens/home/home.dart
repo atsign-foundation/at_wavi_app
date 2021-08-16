@@ -13,6 +13,7 @@ import 'package:at_wavi_app/screens/home/widgets/home_empty_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_private_account.dart';
 import 'package:at_wavi_app/screens/options.dart';
+import 'package:at_wavi_app/screens/website_webview/website_webview.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
@@ -310,6 +311,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             onPressed: widget.isPreview
                                 ? () {
                                     if (_isSearchScreen) {
+                                      shareProfile();
                                     } else {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
@@ -324,10 +326,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       ));
                                     }
                                   }
-                                : () async {
-                                    _animate();
-                                    // await TwitetrService().getTweets();
-                                    // await AtKeyGetService().deleteKeys();
+                                : () {
+                                    shareProfile();
                                   },
                             child: Text('Share Profile',
                                 style: TextStyle(
@@ -728,5 +728,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Widget getEmptyWidget(ThemeData themeData) {
     return _isSearchScreen ? EmptyWidget(themeData) : HomeEmptyDetails();
+  }
+
+  shareProfile() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => WebsiteScreen(
+          title: 'Wavi.ng',
+          url: 'https://wavi.ng/${_currentUser.atsign}',
+        ),
+      ),
+    );
   }
 }
