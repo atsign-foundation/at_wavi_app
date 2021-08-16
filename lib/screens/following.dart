@@ -5,7 +5,7 @@ import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
-import 'package:at_wavi_app/services/follow_service.dart';
+import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
@@ -106,31 +106,41 @@ class _FollowingState extends State<Following>
                       SingleChildScrollView(
                         child: Consumer<FollowService>(
                             builder: (context, _provider, _) {
-                          var _providerList = _provider.following.list ?? [];
-                          List<String?> _filteredList;
-                          if (_searchedText.isNotEmpty) {
-                            _filteredList = _providerList
-                                .where((_atsign) =>
-                                    _atsign?.contains(_searchedText) ?? false)
-                                .toList();
-                          } else {
-                            _filteredList = _providerList;
-                          }
+                          print('Consumer<FollowService> built');
+                          // var _providerList = _provider.following.list ?? [];
+                          List<String?> _filteredList =
+                              _provider.following.list ?? [];
+                          // if (_searchedText.isNotEmpty) {
+                          //   _filteredList = _providerList
+                          //       .where((_atsign) =>
+                          //           _atsign?.contains(_searchedText) ?? false)
+                          //       .toList();
+                          // } else {
+                          //   _filteredList = _providerList;
+                          // }
 
                           return Wrap(
                             children:
                                 List.generate(_filteredList.length, (index) {
+                              if (!_filteredList[index]!
+                                  .contains(_searchedText)) {
+                                return SizedBox();
+                              }
+
                               AtsignDetails? atsignDetail;
                               String? name;
                               Uint8List? image;
-                              var i = FollowService()
+                              var i = Provider.of<FollowService>(context,
+                                      listen: false)
                                   .following
                                   .atsignListDetails
                                   .indexWhere((element) =>
                                       element.atcontact.atSign ==
                                       _filteredList[index]!);
                               if (i > -1) {
-                                atsignDetail = FollowService()
+                                atsignDetail = Provider.of<FollowService>(
+                                        context,
+                                        listen: false)
                                     .following
                                     .atsignListDetails[i];
                                 if (atsignDetail.atcontact.tags != null &&
@@ -155,8 +165,9 @@ class _FollowingState extends State<Following>
                                   subTitle: _filteredList[index],
                                   trailingWidget: InkWell(
                                     onTap: () async {
-                                      await FollowService().unfollow(
-                                          _filteredList[index]!, index);
+                                      await Provider.of<FollowService>(context,
+                                              listen: false)
+                                          .unfollow(_filteredList[index]!);
                                     },
                                     child: _provider
                                             .following
@@ -180,31 +191,39 @@ class _FollowingState extends State<Following>
                       SingleChildScrollView(
                         child: Consumer<FollowService>(
                             builder: (context, _provider, _) {
-                          var _providerList = _provider.followers.list ?? [];
-                          List<String?> _filteredList;
-                          if (_searchedText.isNotEmpty) {
-                            _filteredList = _providerList
-                                .where((_atsign) =>
-                                    _atsign?.contains(_searchedText) ?? false)
-                                .toList();
-                          } else {
-                            _filteredList = _providerList;
-                          }
+                          // var _providerList = _provider.followers.list ?? [];
+                          List<String?> _filteredList =
+                              _provider.followers.list ?? [];
+                          // if (_searchedText.isNotEmpty) {
+                          //   _filteredList = _providerList
+                          //       .where((_atsign) =>
+                          //           _atsign?.contains(_searchedText) ?? false)
+                          //       .toList();
+                          // } else {
+                          //   _filteredList = _providerList;
+                          // }
 
                           return Wrap(
                             children:
                                 List.generate(_filteredList.length, (index) {
+                              if (!_filteredList[index]!
+                                  .contains(_searchedText)) {
+                                return SizedBox();
+                              }
                               AtsignDetails? atsignDetail;
                               String? name;
                               Uint8List? image;
-                              var i = FollowService()
+                              var i = Provider.of<FollowService>(context,
+                                      listen: false)
                                   .followers
                                   .atsignListDetails
                                   .indexWhere((element) =>
                                       element.atcontact.atSign ==
                                       _filteredList[index]!);
                               if (i > -1) {
-                                atsignDetail = FollowService()
+                                atsignDetail = Provider.of<FollowService>(
+                                        context,
+                                        listen: false)
                                     .followers
                                     .atsignListDetails[i];
                                 if (atsignDetail.atcontact.tags != null &&
@@ -230,8 +249,10 @@ class _FollowingState extends State<Following>
                                     subTitle: _filteredList[index],
                                     trailingWidget: InkWell(
                                       onTap: () async {
-                                        FollowService().removeFollower(
-                                            _filteredList[index]!, index);
+                                        Provider.of<FollowService>(context,
+                                                listen: false)
+                                            .removeFollower(
+                                                _filteredList[index]!);
                                       },
                                       child: _provider
                                               .followers

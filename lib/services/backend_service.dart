@@ -7,8 +7,9 @@ import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
-import 'package:at_wavi_app/services/follow_service.dart';
+// import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -52,9 +53,12 @@ class BackendService {
         currentAtSign = atSign;
         atClientServiceMap[atSign]!.makeAtSignPrimary(atSign!);
         startMonitor(atsign: atsign, value: value);
-        await FollowService().init();
+
         initializeContactsService(
             atClientInstance, atClientInstance.currentAtSign!);
+        await Provider.of<FollowService>(NavService.navKey.currentContext!,
+                listen: false)
+            .init();
         Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
                 listen: false)
             .resetThemeData();
