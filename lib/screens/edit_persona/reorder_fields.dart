@@ -147,6 +147,7 @@ class _ReorderFieldsState extends State<ReorderFields> {
     Widget card = SizedBox();
 
     card = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: Column(

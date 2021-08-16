@@ -125,6 +125,11 @@ class CommonFunctions {
     ];
 
     for (int i = 0; i < fields.length; i++) {
+      // not displaying name in home tab fields
+      if (fields[i] == FieldsEnum.FIRSTNAME.name ||
+          fields[i] == FieldsEnum.LASTNAME.name) {
+        continue;
+      }
       bool isCustomField = false;
       BasicData basicData = BasicData();
 

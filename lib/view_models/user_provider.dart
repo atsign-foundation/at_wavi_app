@@ -2,7 +2,6 @@ import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
-import 'package:at_wavi_app/view_models/user_preview.dart';
 
 class UserProvider extends BaseModel {
   UserProvider._();
@@ -19,7 +18,6 @@ class UserProvider extends BaseModel {
       setStatus(FETCH_USER, Status.Error);
       return;
     }
-    UserPreview().setUser = user;
     await TwitetrService().getTweets();
     setStatus(FETCH_USER, Status.Done);
   }

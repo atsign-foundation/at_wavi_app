@@ -41,8 +41,9 @@ class FieldOrderService {
     if (atValue.value != null && atValue.value != '') {
       Map<String, dynamic> fielsOrder = jsonDecode(atValue.value);
       for (var field in fielsOrder.entries) {
-        _fieldOrders[field.key] =
-            jsonDecode(fielsOrder[field.key]).cast<String>();
+        _fieldOrders[field.key] = [
+          ...jsonDecode(fielsOrder[field.key]).cast<String>()
+        ];
       }
     }
   }
@@ -79,7 +80,13 @@ class FieldOrderService {
     if (!_previewFieldOrders.containsKey(category.name)) {
       return false;
     }
-    _previewFieldOrders[category.name]!.removeWhere((el) => el == field);
+    var allFields = <String>[];
+    if (_previewFieldOrders[category.name] != null) {
+      allFields = [..._previewFieldOrders[category.name]!];
+    }
+
+    allFields.removeWhere((el) => el == field);
+    _previewFieldOrders[category.name] = [...allFields];
   }
 
   addNewField(AtCategory category, String field) {
@@ -99,16 +106,24 @@ class FieldOrderService {
       var index = _previewFieldOrders[category.name]!
           .indexWhere((el) => el == oldField);
 
-      _previewFieldOrders[category.name]![index] = newField;
+      var allFields = <String>[];
+      if (_previewFieldOrders[category.name] != null) {
+        allFields = [..._previewFieldOrders[category.name]!];
+      }
+
+      if (index != -1) {
+        allFields[index] = newField;
+        _previewFieldOrders[category.name] = [...allFields];
+      }
     }
   }
 
   List<String> getFieldList(AtCategory category, {bool isPreview = false}) {
     var fieldOrder = <String>[];
     if (isPreview && _previewFieldOrders.containsKey(category.name)) {
-      fieldOrder = _previewFieldOrders[category.name]!;
+      fieldOrder = [..._previewFieldOrders[category.name]!];
     } else if (_fieldOrders.containsKey(category.name)) {
-      fieldOrder = _fieldOrders[category.name]!;
+      fieldOrder = [..._fieldOrders[category.name]!];
     }
     return fieldOrder;
   }

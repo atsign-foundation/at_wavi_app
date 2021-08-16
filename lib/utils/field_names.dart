@@ -3,6 +3,7 @@ import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class FieldNames {
@@ -10,7 +11,7 @@ class FieldNames {
   static FieldNames _instance = FieldNames._();
   factory FieldNames() => _instance;
 
-  static const _basicDetails = ['phone', 'email'];
+  static const _basicDetails = ['firstname', 'lastname', 'phone', 'email'];
   static const _additionalDetails = ['pronoun', 'about'];
   static const _socialAccounts = [
     'twitter',
@@ -88,11 +89,28 @@ class FieldNames {
 
     var sortedFields = [...fields];
 
-    List<BasicData>? customFields = Provider.of<UserPreview>(
-            NavService.navKey.currentContext!,
-            listen: false)
-        .user()!
-        .customFields[category.name];
+    List<BasicData>? customFields;
+    if (isPreview) {
+      customFields = [
+        ...Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                listen: false)
+            .user()!
+            .customFields[category.name]!
+      ];
+    } else {
+      if (Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                  listen: false)
+              .user!
+              .customFields[category.name] !=
+          null) {
+        customFields = [
+          ...Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                  listen: false)
+              .user!
+              .customFields[category.name]!
+        ];
+      }
+    }
 
     if (customFields != null) {
       for (var field in customFields) {
