@@ -7,10 +7,7 @@ import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 
 class FollowService extends BaseModel {
-  // FollowService._();
-  // static final FollowService _instance = FollowService._();
-  // factory FollowService() => _instance;
-
+  FollowService();
   AtFollowsData followers = AtFollowsData();
   AtFollowsData following = AtFollowsData();
   final String FETCH_FOLLOWERS = 'fetch_followers';
@@ -70,17 +67,20 @@ class FollowService extends BaseModel {
     setUnfollowingLoading(index, true);
     notifyListeners();
     try {
+      // await Future.delayed(Duration(seconds: 2));
+      // print('now unfollowing');
       var result = await AtFollowServices().unfollow(atsign);
+      setUnfollowingLoading(index, false);
+      notifyListeners();
 
       if (result) {
+        // following.atsignListDetails[index].isUnfollowing = false;
         following.list!.remove(atsign);
         following.atsignListDetails
             .removeWhere((element) => element.atcontact.atSign == atsign);
-        // following.atsignListDetails[index].isUnfollowing = false;
-        setUnfollowingLoading(index, false);
       } else {
         // following.atsignListDetails[index].isUnfollowing = false;
-        setUnfollowingLoading(index, false);
+        // setUnfollowingLoading(index, false);
       }
     } on Error catch (err) {
       print('error in unfollow: $err');
@@ -142,20 +142,15 @@ class FollowService extends BaseModel {
       } else {
         await AtFollowServices().follow(atsign);
       }
-      await getFollowers();
+      await getFollowing();
     } catch (e) {
       print('Error in performFollowUnfollow $e');
     }
   }
 
   int getIndexOfAtsign(String _atsign, {bool forFollowersList = false}) {
-    print('_atsign $_atsign');
     List _list = forFollowersList ? followers.list! : following.list!;
-    print('followers.list ${followers.list!.length}');
-    print('following.list! ${following.list!.length}');
     for (int i = 0; i < _list.length; i++) {
-      print('_list[i] ${_list[i]}');
-
       if (_list[i] == _atsign) {
         return i;
       }
@@ -165,10 +160,7 @@ class FollowService extends BaseModel {
   }
 
   setUnfollowingLoading(int index, bool loadingState) {
-    print('index $index');
-
     if (index > -1) {
-      print('index > -1');
       following.atsignListDetails[index].isUnfollowing = loadingState;
     }
   }

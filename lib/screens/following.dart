@@ -5,7 +5,7 @@ import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
-import 'package:at_wavi_app/services/follow_service.dart';
+import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
@@ -130,14 +130,17 @@ class _FollowingState extends State<Following>
                               AtsignDetails? atsignDetail;
                               String? name;
                               Uint8List? image;
-                              var i = FollowService()
+                              var i = Provider.of<FollowService>(context,
+                                      listen: false)
                                   .following
                                   .atsignListDetails
                                   .indexWhere((element) =>
                                       element.atcontact.atSign ==
                                       _filteredList[index]!);
                               if (i > -1) {
-                                atsignDetail = FollowService()
+                                atsignDetail = Provider.of<FollowService>(
+                                        context,
+                                        listen: false)
                                     .following
                                     .atsignListDetails[i];
                                 if (atsignDetail.atcontact.tags != null &&
@@ -162,7 +165,8 @@ class _FollowingState extends State<Following>
                                   subTitle: _filteredList[index],
                                   trailingWidget: InkWell(
                                     onTap: () async {
-                                      await FollowService()
+                                      await Provider.of<FollowService>(context,
+                                              listen: false)
                                           .unfollow(_filteredList[index]!);
                                     },
                                     child: _provider
@@ -209,14 +213,17 @@ class _FollowingState extends State<Following>
                               AtsignDetails? atsignDetail;
                               String? name;
                               Uint8List? image;
-                              var i = FollowService()
+                              var i = Provider.of<FollowService>(context,
+                                      listen: false)
                                   .followers
                                   .atsignListDetails
                                   .indexWhere((element) =>
                                       element.atcontact.atSign ==
                                       _filteredList[index]!);
                               if (i > -1) {
-                                atsignDetail = FollowService()
+                                atsignDetail = Provider.of<FollowService>(
+                                        context,
+                                        listen: false)
                                     .followers
                                     .atsignListDetails[i];
                                 if (atsignDetail.atcontact.tags != null &&
@@ -242,8 +249,10 @@ class _FollowingState extends State<Following>
                                     subTitle: _filteredList[index],
                                     trailingWidget: InkWell(
                                       onTap: () async {
-                                        FollowService().removeFollower(
-                                            _filteredList[index]!);
+                                        Provider.of<FollowService>(context,
+                                                listen: false)
+                                            .removeFollower(
+                                                _filteredList[index]!);
                                       },
                                       child: _provider
                                               .followers
