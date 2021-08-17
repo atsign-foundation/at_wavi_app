@@ -111,7 +111,9 @@ class BackendService {
     return true;
   }
 
-  _notificationCallBack() {}
+  _notificationCallBack(var response) {
+    print('response:$response');
+  }
 
   ///Fetches privatekey for [atsign] from device keychain.
   Future<String?> getPrivateKey(String atsign) async {

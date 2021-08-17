@@ -2,6 +2,7 @@ import 'package:at_common_flutter/widgets/custom_button.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
@@ -137,7 +138,9 @@ class _ReorderFieldsState extends State<ReorderFields> {
       basicData.value = '';
     }
 
-    if (basicData.accountName != null && basicData.value != null) {
+    if (basicData.accountName != null &&
+        basicData.value != null &&
+        !basicData.accountName!.contains(AtText.IS_DELETED)) {
       return fieldCard(basicData);
     }
     return tile;

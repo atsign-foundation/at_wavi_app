@@ -29,6 +29,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
 
   @override
   void initState() {
+    if (FieldOrderService().previewOrders[widget.category.name] == null) {
+      FieldOrderService().initCategoryFields(widget.category);
+    }
     checkForMissingReorderFields();
     super.initState();
   }
@@ -44,7 +47,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
 
     var remainingFields = <String>[];
 
-    if ((customFields != null) && (reorderFilelds != null)) {
+    if (customFields != null && reorderFilelds != null) {
       for (int i = 0; i < customFields.length; i++) {
         int index = reorderFilelds
             .indexWhere((element) => element == customFields[i].accountName);

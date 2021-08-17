@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 import 'at_key_get_service.dart';
 import 'nav_service.dart';
 
-class AtKeySetService extends BaseModel {
+class AtKeySetService {
   AtKeySetService._();
   static AtKeySetService _instance = AtKeySetService._();
   factory AtKeySetService() => _instance;
@@ -299,7 +299,7 @@ class AtKeySetService extends BaseModel {
     return data.trim().toLowerCase().replaceAll(RegExp(r'(:|@|;|\?|!|,)'), '_');
   }
 
-  Future<bool> _updateDefinedFields(
+  Future<bool> updateDefinedFields(
     User userData,
     bool isCheck,
     List<AtKey> scanKeys,
@@ -326,7 +326,7 @@ class AtKeySetService extends BaseModel {
     return isUpdated;
   }
 
-  Future<bool> _updateCustomData(
+  Future<bool> updateCustomData(
     User _user,
     bool isCheck,
     List<AtKey> scanKeys,
@@ -346,7 +346,7 @@ class AtKeySetService extends BaseModel {
     return isUpdated;
   }
 
-  _getAtkeys() async {
+  getAtkeys() async {
     var keys = await BackendService()
         .atClientInstance
         .getAtKeys(regex: MixedConstants.syncRegex);
@@ -356,19 +356,5 @@ class AtKeySetService extends BaseModel {
         '@' + (scanKey.sharedBy ?? '') == BackendService().currentAtSign);
 
     return keys;
-  }
-
-  saveUserData(User user) async {
-    setStatus(UPDATE_USER, Status.Loading);
-    try {
-      var atKeys = await _getAtkeys();
-      await FieldOrderService().updateFieldsOrder();
-      await _updateDefinedFields(user, true, atKeys);
-      await _updateCustomData(user, true, atKeys);
-      setStatus(UPDATE_USER, Status.Done);
-    } catch (e) {
-      print('error in saveUserData : $e');
-      setStatus(UPDATE_USER, Status.Error);
-    }
   }
 }

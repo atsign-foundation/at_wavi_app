@@ -145,10 +145,16 @@ class _AddCustomFieldState extends State<AddCustomField> {
                           ),
                         ),
                         TextFormField(
-                          autovalidateMode: basicData.valueDescription != ''
-                              ? AutovalidateMode.disabled
-                              : AutovalidateMode.onUserInteraction,
+                          autovalidateMode:
+                              _fieldType == CustomContentType.Image
+                                  ? null
+                                  : basicData.valueDescription != ''
+                                      ? AutovalidateMode.disabled
+                                      : AutovalidateMode.onUserInteraction,
                           validator: (value) {
+                            if (_fieldType == CustomContentType.Image) {
+                              return null;
+                            }
                             if (value == null || value == '') {
                               return 'Please provide value';
                             }

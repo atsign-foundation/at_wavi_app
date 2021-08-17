@@ -1,10 +1,8 @@
 import 'package:at_wavi_app/model/user.dart';
-import 'package:at_wavi_app/services/at_key_get_service.dart';
-import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
-import 'package:provider/provider.dart';
+import 'package:validators/validators.dart';
 
 class UserPreview extends BaseModel {
   UserPreview._();
@@ -49,7 +47,7 @@ class UserPreview extends BaseModel {
   bool isFormDataValid(value, CustomContentType type) {
     switch (type) {
       case CustomContentType.Link:
-        return RegExp(AtText.URL_PATTERN).hasMatch(value);
+        return isURL(value);
 
       case CustomContentType.Youtube:
         return RegExp(AtText.YOUTUBE_PATTERN).hasMatch(value);
