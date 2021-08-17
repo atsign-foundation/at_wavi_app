@@ -49,6 +49,10 @@ class FieldOrderService {
   }
 
   updateFieldsOrder() async {
+    if (FieldOrderService().previewOrders.toString() ==
+        FieldOrderService().fieldOrders.toString()) {
+      return;
+    }
     AtKey atKey = AtKey()
       ..key = MixedConstants.fieldOrderKey
       ..metadata = Metadata()

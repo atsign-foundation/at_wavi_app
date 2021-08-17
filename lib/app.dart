@@ -29,8 +29,6 @@ class _MyAppState extends State<MyApp> {
       ChangeNotifierProvider<UserPreview>(create: (context) => UserPreview()),
       ChangeNotifierProvider<SetPrivateState>(
           create: (context) => SetPrivateState()),
-      ChangeNotifierProvider<AtKeySetService>(
-          create: (context) => AtKeySetService()),
     ], child: MaterialAppClass());
   }
 }

@@ -1,10 +1,12 @@
 import 'package:at_contact/at_contact.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
+import 'package:at_follows_flutter/domain/at_follows_list.dart';
 import 'package:at_follows_flutter/utils/at_follow_services.dart';
 import 'package:at_wavi_app/common_components/confirmation_dialog.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 
 class FollowService extends BaseModel {
   FollowService();
@@ -18,14 +20,32 @@ class FollowService extends BaseModel {
         .initializeFollowService(BackendService().atClientServiceInstance);
     await getFollowers();
     await getFollowing();
+    connectionProviderListener();
   }
 
-  getFollowers() async {
+// listening for updates from at_follows_flutter package.
+  connectionProviderListener() async {
+    AtFollowServices().connectionProvider.addListener(() async {
+      EasyDebounce.debounce('update_follows_data', Duration(milliseconds: 500),
+          () async {
+        await getFollowers(
+            atFollowers: AtFollowServices().connectionService.followers);
+        await getFollowing(
+            atFollowing: AtFollowServices().connectionService.following);
+      });
+    });
+  }
+
+  getFollowers({AtFollowsList? atFollowers}) async {
     setStatus(FETCH_FOLLOWERS, Status.Loading);
-    var followersList = AtFollowServices().getFollowersList();
+    var followersList = atFollowers == null
+        ? AtFollowServices().getFollowersList()
+        : atFollowers;
+
     if (followersList != null) {
       followers.list = followersList.list;
       followers.isPrivate = followersList.isPrivate;
+      followers.atsignListDetails = <AtsignDetails>[];
 
       followers.list!.forEach((element) {
         followers.atsignListDetails
@@ -38,12 +58,16 @@ class FollowService extends BaseModel {
     setStatus(FETCH_FOLLOWERS, Status.Done);
   }
 
-  getFollowing() async {
+  getFollowing({AtFollowsList? atFollowing}) async {
     setStatus(FETCH_FOLLOWING, Status.Loading);
-    var followingList = AtFollowServices().getFollowingList();
+    var followingList = atFollowing == null
+        ? AtFollowServices().getFollowingList()
+        : atFollowing;
+
     if (followingList != null) {
       following.list = followingList.list;
       following.isPrivate = followingList.isPrivate;
+      following.atsignListDetails = [];
 
       following.list!.forEach((element) {
         following.atsignListDetails
@@ -115,11 +139,10 @@ class FollowService extends BaseModel {
     });
 
     if (isFollowing) {
-      this.following.atsignListDetails = atsignDetails;
+      this.following.atsignListDetails = [...atsignDetails];
     } else {
-      this.followers.atsignListDetails = atsignDetails;
+      this.followers.atsignListDetails = [...atsignDetails];
     }
-    notifyListeners();
     return atsignDetails;
   }
 

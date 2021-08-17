@@ -1,12 +1,10 @@
 import 'dart:convert';
 
-import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/common_components/provider_callback.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/edit_persona/content_edit.dart';
-import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -398,7 +396,7 @@ class _EditPersonaState extends State<EditPersona>
   }
 
   _saveButtonCall() async {
-    await providerCallback<AtKeySetService>(
+    await providerCallback<UserProvider>(
       context,
       task: (provider) async {
         await provider.saveUserData(

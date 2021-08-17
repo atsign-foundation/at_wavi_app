@@ -79,15 +79,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       _isSearchScreen = true;
     }
 
-    _name = _currentUser.firstname.value ?? '';
-    if (_currentUser.lastname.value != null) {
-      _name = '$_name ${_currentUser.lastname.value}';
-    }
-
-    if (_name.isEmpty) {
-      _name = _currentUser.atsign.replaceFirst('@', '');
-    }
-
     initPackages();
 
     _getThemeData();
@@ -98,6 +89,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     // listen: false)().getFollowing();
     // });
     super.initState();
+  }
+
+  getCurrentUserName() {
+    if (widget.isPreview) {
+      _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
+    } else {
+      _currentUser = Provider.of<UserProvider>(context, listen: false).user!;
+    }
+
+    _name = _currentUser.firstname.value ?? '';
+    if (_currentUser.lastname.value != null) {
+      _name = '$_name ${_currentUser.lastname.value}';
+    }
+
+    if (_name.isEmpty) {
+      _name = _currentUser.atsign.replaceFirst('@', '');
+    }
   }
 
   initPackages() async {
@@ -147,6 +155,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    getCurrentUserName();
+
     SizeConfig().init(context);
     if (_themeData == null) {
       return CircularProgressIndicator();
@@ -609,7 +619,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Text(
                   _isSearchScreen
                       ? (SearchService().followers_count ?? '-').toString()
-                      : '${_provider.followers.list!.length}',
+                      : '${followsCount(_provider.followers.list!.length)}',
                   style: TextStyle(
                       fontSize: 18.toFont,
                       color: _isDark
@@ -641,7 +651,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Text(
                   _isSearchScreen
                       ? (SearchService().following_count ?? '-').toString()
-                      : '${_provider.following.list!.length}',
+                      : '${followsCount(_provider.following.list!.length)}',
                   style: TextStyle(
                       fontSize: 18.toFont,
                       color: _isDark
@@ -740,5 +750,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
       ),
     );
+  }
+
+  String followsCount(num) {
+    if (num > 999 && num < 99999) {
+      return "${(num / 1000).toStringAsFixed(1)} K";
+    } else if (num > 99999 && num < 999999) {
+      return "${(num / 1000).toStringAsFixed(0)} K";
+    } else if (num > 999999 && num < 999999999) {
+      return "${(num / 1000000).toStringAsFixed(1)} M";
+    } else if (num > 999999999) {
+      return "${(num / 1000000000).toStringAsFixed(1)} B";
+    } else {
+      return num.toString();
+    }
   }
 }
