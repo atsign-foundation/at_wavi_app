@@ -15,7 +15,7 @@ class LoadingDialog {
   bool _showing = false;
 
   // ignore: always_declare_return_types
-  show({String? text}) {
+  show({String? text, String? heading}) {
     if (!_showing) {
       _showing = true;
       NavService.navKey.currentState!
@@ -24,25 +24,41 @@ class LoadingDialog {
                 print('building loader');
                 return Center(
                   child: (text != null)
-                      ? Row(
+                      ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Flexible(
-                              child: Text(
-                                text,
-                                textScaleFactor: 1,
-                                style: TextStyle(
-                                    color: ColorConstants.MILD_GREY,
-                                    fontSize: 20.toFont,
-                                    fontWeight: FontWeight.w400,
-                                    decoration: TextDecoration.none),
-                              ),
-                            ),
-                            TypingIndicator(
-                              showIndicator: true,
-                              flashingCircleBrightColor:
-                                  ColorConstants.LIGHT_GREY,
-                              flashingCircleDarkColor: ColorConstants.DARK_GREY,
+                            heading != null
+                                ? Center(
+                                    child: Text(heading,
+                                        style: TextStyle(
+                                            color: ColorConstants.MILD_GREY,
+                                            fontSize: 20.toFont,
+                                            fontWeight: FontWeight.w400,
+                                            decoration: TextDecoration.none)),
+                                  )
+                                : SizedBox(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    text,
+                                    textScaleFactor: 1,
+                                    style: TextStyle(
+                                        color: ColorConstants.MILD_GREY,
+                                        fontSize: 20.toFont,
+                                        fontWeight: FontWeight.w400,
+                                        decoration: TextDecoration.none),
+                                  ),
+                                ),
+                                TypingIndicator(
+                                  showIndicator: true,
+                                  flashingCircleBrightColor:
+                                      ColorConstants.LIGHT_GREY,
+                                  flashingCircleDarkColor:
+                                      ColorConstants.DARK_GREY,
+                                ),
+                              ],
                             ),
                           ],
                         )

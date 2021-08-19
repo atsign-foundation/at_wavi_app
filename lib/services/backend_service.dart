@@ -4,6 +4,7 @@ import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_commons/at_commons.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
+import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
@@ -47,6 +48,7 @@ class BackendService {
       appAPIKey: MixedConstants.devAPIKey,
       appColor: ColorConstants.peach,
       onboard: (value, atsign) async {
+        LoadingDialog().show(text: '$atsign', heading: 'Loading');
         String? atSign = value[atsign]!.atClient!.currentAtSign;
         atClientInstance = value[atsign]!.atClient!;
         atClientServiceMap = value;
@@ -67,6 +69,7 @@ class BackendService {
                 listen: false)
             .fetchUserData(BackendService().currentAtSign!);
         await FieldOrderService().getFieldOrder();
+        LoadingDialog().hide();
         SetupRoutes.pushAndRemoveAll(
             NavService.navKey.currentContext!, Routes.HOME);
       },
