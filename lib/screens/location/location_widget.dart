@@ -87,6 +87,7 @@ class _LocationWidgetState extends State<LocationWidget> {
             value:
                 _osmLocationModel != null ? _osmLocationModel.toJson() : null,
             accountName: FieldsEnum.LOCATION.name,
+            isPrivate: _isPrivate,
           );
 
           return Scaffold(
@@ -187,6 +188,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                               .locationNickName = BasicData(
                             value: _locationNickname,
                             accountName: FieldsEnum.LOCATIONNICKNAME.name,
+                            isPrivate: _isPrivate,
                           );
                         }),
                       ),
