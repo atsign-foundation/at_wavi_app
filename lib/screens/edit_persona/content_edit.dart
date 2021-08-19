@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CotentEdit extends StatefulWidget {
+  const CotentEdit({Key? key}) : super(key: key);
   @override
   _CotentEditState createState() => _CotentEditState();
 }
@@ -59,9 +60,10 @@ class _CotentEditState extends State<CotentEdit> {
 
   @override
   initState() {
-    var userJson = User.toJson(UserProvider().user!);
+    var userJson =
+        User.toJson(Provider.of<UserProvider>(context, listen: false).user!);
     User previewUser = User.fromJson(json.decode(json.encode(userJson)));
-    UserPreview().setUser = previewUser;
+    Provider.of<UserPreview>(context, listen: false).setUser = previewUser;
     super.initState();
   }
 

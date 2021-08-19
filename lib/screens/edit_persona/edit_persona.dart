@@ -391,6 +391,7 @@ class _EditPersonaState extends State<EditPersona>
   }
 
   _saveButtonCall() async {
+    /// Changes theme
     await _publishButtonCall();
     await providerCallback<UserProvider>(
       context,
@@ -403,9 +404,9 @@ class _EditPersonaState extends State<EditPersona>
       text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,
       onSuccess: (provider) async {
-        var userJson = User.toJson(UserPreview().user()!);
-        User previewUser = User.fromJson(json.decode(json.encode(userJson)));
-        UserProvider().user = previewUser;
+        // var userJson = User.toJson(UserPreview().user()!);
+        // User previewUser = User.fromJson(json.decode(json.encode(userJson)));
+        // UserProvider().user = previewUser;
 
         await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
       },

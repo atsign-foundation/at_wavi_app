@@ -18,6 +18,7 @@ import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -39,20 +40,20 @@ class _LocationWidgetState extends State<LocationWidget> {
   @override
   initState() {
     _isPrivate = false;
-    _data = Provider.of<UserProvider>(context, listen: false).user!.location;
-    _locationNickname = Provider.of<UserProvider>(context, listen: false)
-            .user!
+    _data = Provider.of<UserPreview>(context, listen: false).user()!.location;
+    _locationNickname = Provider.of<UserPreview>(context, listen: false)
+            .user()!
             .locationNickName
             .value ??
         '';
-    _isPrivate = Provider.of<UserProvider>(context, listen: false)
-        .user!
+    _isPrivate = Provider.of<UserPreview>(context, listen: false)
+        .user()!
         .location
         .isPrivate;
 
     LocationWidgetData().init(
-        jsonData: Provider.of<UserProvider>(context, listen: false)
-            .user!
+        jsonData: Provider.of<UserPreview>(context, listen: false)
+            .user()!
             .location
             .value);
     super.initState();
@@ -80,33 +81,41 @@ class _LocationWidgetState extends State<LocationWidget> {
         valueListenable: LocationWidgetData().osmLocationModelNotifier!,
         builder: (BuildContext context, OsmLocationModel? _osmLocationModel,
             Widget? child) {
+          // store location
+          Provider.of<UserPreview>(context, listen: false).user()!.location =
+              BasicData(
+            value:
+                _osmLocationModel != null ? _osmLocationModel.toJson() : null,
+            accountName: FieldsEnum.LOCATION.name,
+          );
+
           return Scaffold(
-            bottomSheet: InkWell(
-              onTap: () {
-                if (_osmLocationModel != null) {
-                  _updateLocation(_osmLocationModel);
-                } else {
-                  if (_locationNickname.isEmpty) {
-                    return _showToast('Enter Location tag', isError: true);
-                  }
-                  _showToast('Enter Location', isError: true);
-                }
-              },
-              child: Container(
-                  alignment: Alignment.center,
-                  height: 70.toHeight,
-                  width: SizeConfig().screenWidth,
-                  color: (_osmLocationModel != null)
-                      ? ColorConstants.black
-                      : ColorConstants.dullColor(
-                          color: ColorConstants.black, opacity: 0.5),
-                  child: Text(
-                    'Done',
-                    style: CustomTextStyles.customTextStyle(
-                        ColorConstants.white,
-                        size: 18),
-                  )),
-            ),
+            // bottomSheet: InkWell(
+            //   onTap: () {
+            //     if (_osmLocationModel != null) {
+            //       _updateLocation(_osmLocationModel);
+            //     } else {
+            //       if (_locationNickname.isEmpty) {
+            //         return _showToast('Enter Location tag', isError: true);
+            //       }
+            //       _showToast('Enter Location', isError: true);
+            //     }
+            //   },
+            //   child: Container(
+            //       alignment: Alignment.center,
+            //       height: 70.toHeight,
+            //       width: SizeConfig().screenWidth,
+            //       color: (_osmLocationModel != null)
+            //           ? ColorConstants.black
+            //           : ColorConstants.dullColor(
+            //               color: ColorConstants.black, opacity: 0.5),
+            //       child: Text(
+            //         'Done',
+            //         style: CustomTextStyles.customTextStyle(
+            //             ColorConstants.white,
+            //             size: 18),
+            //       )),
+            // ),
             appBar: AppBar(
                 toolbarHeight: 40,
                 title: Text(
@@ -172,6 +181,13 @@ class _LocationWidgetState extends State<LocationWidget> {
                         maxLines: 1,
                         value: (str) => setState(() {
                           _locationNickname = str;
+                          // store location nickname
+                          Provider.of<UserPreview>(context, listen: false)
+                              .user()!
+                              .locationNickName = BasicData(
+                            value: _locationNickname,
+                            accountName: FieldsEnum.LOCATIONNICKNAME.name,
+                          );
                         }),
                       ),
                     ),
@@ -472,7 +488,7 @@ class LocationWidgetData {
 
   ValueNotifier<OsmLocationModel?>? osmLocationModelNotifier;
 
-  init({OsmLocationModel? initialData, dynamic jsonData}) async {
+  init({OsmLocationModel? initialData, dynamic jsonData}) {
     osmLocationModelNotifier = ValueNotifier(initialData);
     if (jsonData != null) {
       var _decodedData = jsonDecode(jsonData);

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
@@ -38,6 +40,7 @@ class UserProvider extends BaseModel {
       await AtKeySetService().updateDefinedFields(user, true, atKeys);
       await AtKeySetService().updateCustomData(user, true, atKeys);
       await BackendService().sync();
+      this.user = User.fromJson(json.decode(json.encode(User.toJson(user))));
       setStatus(UPDATE_USER, Status.Done);
     } catch (e) {
       print('error in saveUserData : $e');
