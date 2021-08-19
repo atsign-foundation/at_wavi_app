@@ -89,7 +89,7 @@ class BackendService {
       ..commitLogPath = downloadDirectory!.path
       ..downloadPath = downloadDirectory!.path
       ..namespace = MixedConstants.appNamespace
-      ..syncStrategy = SyncStrategy.IMMEDIATE
+      ..syncStrategy = SyncStrategy.ONDEMAND
       ..rootDomain = MixedConstants.ROOT_DOMAIN
       ..syncRegex = MixedConstants.regex
       ..outboundConnectionTimeout = MixedConstants.TIME_OUT
@@ -113,6 +113,13 @@ class BackendService {
 
   _notificationCallBack(var response) {
     print('response:$response');
+  }
+
+  sync() async {
+    var syncManager = atClientInstance.getSyncManager();
+    if (syncManager != null) {
+      await atClientInstance.getSyncManager()!.sync();
+    }
   }
 
   ///Fetches privatekey for [atsign] from device keychain.

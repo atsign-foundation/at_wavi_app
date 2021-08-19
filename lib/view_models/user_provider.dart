@@ -1,6 +1,7 @@
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
+import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
@@ -36,7 +37,7 @@ class UserProvider extends BaseModel {
       await FieldOrderService().updateFieldsOrder();
       await AtKeySetService().updateDefinedFields(user, true, atKeys);
       await AtKeySetService().updateCustomData(user, true, atKeys);
-
+      await BackendService().sync();
       setStatus(UPDATE_USER, Status.Done);
     } catch (e) {
       print('error in saveUserData : $e');
