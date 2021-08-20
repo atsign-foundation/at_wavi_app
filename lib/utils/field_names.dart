@@ -93,9 +93,10 @@ class FieldNames {
     if (isPreview) {
       customFields = [
         ...Provider.of<UserPreview>(NavService.navKey.currentContext!,
-                listen: false)
-            .user()!
-            .customFields[category.name]!
+                    listen: false)
+                .user()!
+                .customFields[category.name] ??
+            []
       ];
     } else {
       if (Provider.of<UserProvider>(NavService.navKey.currentContext!,
@@ -105,9 +106,10 @@ class FieldNames {
           null) {
         customFields = [
           ...Provider.of<UserProvider>(NavService.navKey.currentContext!,
-                  listen: false)
-              .user!
-              .customFields[category.name]!
+                      listen: false)
+                  .user!
+                  .customFields[category.name] ??
+              []
         ];
       }
     }

@@ -50,6 +50,10 @@ class _EditPersonaState extends State<EditPersona>
     _controller =
         TabController(length: 2, vsync: this, initialIndex: _tabIndex);
     FieldOrderService().setPreviewOrder = {...FieldOrderService().fieldOrders};
+    var userJson =
+        User.toJson(Provider.of<UserProvider>(context, listen: false).user!);
+    User previewUser = User.fromJson(json.decode(json.encode(userJson)));
+    Provider.of<UserPreview>(context, listen: false).setUser = previewUser;
     super.initState();
   }
 

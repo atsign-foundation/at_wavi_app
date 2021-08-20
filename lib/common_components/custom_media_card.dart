@@ -73,7 +73,8 @@ class _CustomMediaCardState extends State<CustomMediaCard> {
                   size: 16),
             ),
             SizedBox(height: 6),
-            widget.basicData.valueDescription != null
+            ((widget.basicData.valueDescription != null) &&
+                    (widget.basicData.valueDescription != 'null'))
                 ? Text(
                     widget.basicData.valueDescription!,
                     style: _isDark

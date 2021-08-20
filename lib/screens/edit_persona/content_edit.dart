@@ -59,15 +59,6 @@ class _CotentEditState extends State<CotentEdit> {
   AtCategory? selectedcategory;
 
   @override
-  initState() {
-    var userJson =
-        User.toJson(Provider.of<UserProvider>(context, listen: false).user!);
-    User previewUser = User.fromJson(json.decode(json.encode(userJson)));
-    Provider.of<UserPreview>(context, listen: false).setUser = previewUser;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       padding:
