@@ -133,8 +133,16 @@ class _CotentEditState extends State<CotentEdit> {
                                     await ImagePicker().pickImage();
                                 if (pickedImage != null) {
                                   setState(() {
-                                    UserPreview().user()!.image.value =
-                                        pickedImage;
+                                    Provider.of<UserPreview>(context,
+                                            listen: false)
+                                        .user()!
+                                        .image
+                                        .value = pickedImage;
+                                    Provider.of<UserPreview>(context,
+                                            listen: false)
+                                        .user()!
+                                        .image
+                                        .accountName = FieldsEnum.IMAGE.name;
                                   });
                                 }
                               },
