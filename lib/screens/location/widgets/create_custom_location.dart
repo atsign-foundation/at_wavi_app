@@ -12,12 +12,15 @@ import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/location/widgets/select_location.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/compare_basicdata.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'package:provider/provider.dart';
 
 class CreateCustomLocation extends StatefulWidget {
   final BasicData? basicData;
@@ -305,21 +308,60 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
   }
 
   _updateLocation(OsmLocationModel _osmData) async {
-    LoadingDialog().show(text: 'Adding custom location');
+    // LoadingDialog().show(text: 'Adding custom location');
 
     _data.type = CustomContentType.Text.name;
     if (!areBasicDataEqual(_data, widget.basicData ?? BasicData())) {
-      bool _previousKey = false;
+      // bool _previousKey = false;
+      // if (widget.basicData != null) {
+      //   _previousKey = widget.basicData!.accountName != _data.accountName;
+      // }
+      // var _res = await AtKeySetService().updateCustomFields(
+      //     AtCategory.LOCATION.name, [_data],
+      //     previousKey: _previousKey ? widget.basicData!.accountName : null);
+
+      addCustomContent();
+
       if (widget.basicData != null) {
-        _previousKey = widget.basicData!.accountName != _data.accountName;
+        if (widget.basicData!.accountName != _data.accountName) {
+          Provider.of<UserPreview>(context, listen: false)
+              .deletCustomField(AtCategory.LOCATION, widget.basicData!);
+          // Provider.of<UserPreview>(context, listen: false)
+          //     .sortCustomLocationFields();
+        }
       }
-      var _res = await AtKeySetService().updateCustomFields(
-          AtCategory.LOCATION.name, [_data],
-          previousKey: _previousKey ? widget.basicData!.accountName : null);
     }
 
-    LoadingDialog().hide();
+    // LoadingDialog().hide();
     Navigator.of(context).pop();
+  }
+
+  addCustomContent() {
+    int? _index;
+    List<BasicData>? customFields =
+        Provider.of<UserPreview>(context, listen: false)
+            .user()!
+            .customFields['LOCATION'];
+
+    if (customFields == null) {
+      customFields = [];
+    } else if (widget.basicData != null) {
+      _index = customFields.indexWhere(
+          (element) => element.accountName == widget.basicData!.accountName);
+    }
+
+    // setState(() {
+    if (_index != null) {
+      customFields.insert(_index, _data);
+    } else {
+      customFields.add(_data);
+    }
+    Provider.of<UserPreview>(context, listen: false)
+        .user()!
+        .customFields['LOCATION'] = customFields;
+    // });
+
+    FieldOrderService().addNewField(AtCategory.LOCATION, _data.accountName!);
   }
 
   _showToast(String _text, {bool isError = false, Color? bgColor}) {

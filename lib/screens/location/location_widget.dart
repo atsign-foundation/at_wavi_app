@@ -337,23 +337,33 @@ class _LocationWidgetState extends State<LocationWidget> {
                       child: ListView.separated(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: Provider.of<UserProvider>(context)
-                                .user!
-                                .customFields['LOCATION']
-                                ?.length ??
-                            0,
+                        itemCount:
+                            Provider.of<UserPreview>(context, listen: false)
+                                    .user()!
+                                    .customFields['LOCATION']
+                                    ?.length ??
+                                0,
                         itemBuilder: (_context, _int) {
+                          if ((Provider.of<UserPreview>(context, listen: false)
+                                      .user()!
+                                      .customFields['LOCATION']?[_int]
+                                      .accountName ??
+                                  '')
+                              .contains('_deleted')) {
+                            return SizedBox();
+                          }
                           return InkWell(
-                            onTap: () {
-                              SetupRoutes.push(
+                            onTap: () async {
+                              await SetupRoutes.push(
                                   context, Routes.CREATE_CUSTOM_LOCATION,
                                   arguments: {
-                                    'basicData': Provider.of<UserProvider>(
+                                    'basicData': Provider.of<UserPreview>(
                                             context,
                                             listen: false)
-                                        .user!
+                                        .user()!
                                         .customFields['LOCATION']?[_int]
                                   });
+                              setState(() {});
                             },
                             child: Slidable(
                               actionPane: SlidableDrawerActionPane(),
@@ -380,10 +390,10 @@ class _LocationWidgetState extends State<LocationWidget> {
                                 children: [
                                   Flexible(
                                     child: Text(
-                                        '${(_int + 1).toString()}. ' +
-                                            (Provider.of<UserProvider>(context,
-                                                        listen: false)
-                                                    .user!
+                                        // '${(_int + 1).toString()}. ' +
+                                        '-  ' +
+                                            (Provider.of<UserPreview>(context)
+                                                    .user()!
                                                     .customFields['LOCATION']
                                                         ?[_int]
                                                     .accountName ??
@@ -392,9 +402,8 @@ class _LocationWidgetState extends State<LocationWidget> {
                                             ColorConstants.black,
                                             size: 16)),
                                   ),
-                                  Provider.of<UserProvider>(context,
-                                                  listen: false)
-                                              .user!
+                                  Provider.of<UserPreview>(context)
+                                              .user()!
                                               .customFields['LOCATION']?[_int]
                                               .isPrivate ??
                                           false
@@ -406,6 +415,14 @@ class _LocationWidgetState extends State<LocationWidget> {
                           );
                         },
                         separatorBuilder: (_context, _int) {
+                          if ((Provider.of<UserPreview>(context, listen: false)
+                                      .user()!
+                                      .customFields['LOCATION']?[_int]
+                                      .accountName ??
+                                  '')
+                              .contains('_deleted')) {
+                            return SizedBox();
+                          }
                           return Divider();
                         },
                       ),
@@ -431,6 +448,7 @@ class _LocationWidgetState extends State<LocationWidget> {
         });
   }
 
+  /// not used currently
   _updateLocation(OsmLocationModel _data) async {
     LoadingDialog().show(text: 'Adding custom content');
 
