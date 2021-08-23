@@ -256,7 +256,8 @@ class _CotentEditState extends State<CotentEdit> {
             children: [
               SizedBox(
                   width: double.infinity,
-                  child: checkForCustomContentType(basicData)),
+                  child: checkForCustomContentType(
+                      basicData, (selectedcategory! == AtCategory.LOCATION))),
               SizedBox(height: 25)
             ],
           );
@@ -268,7 +269,7 @@ class _CotentEditState extends State<CotentEdit> {
     return customFieldsWidgets;
   }
 
-  Widget checkForCustomContentType(BasicData basicData) {
+  Widget checkForCustomContentType(BasicData basicData, bool _isLocation) {
     Widget fieldCard = SizedBox();
     if (basicData.type == CustomContentType.Text.name ||
         basicData.type == CustomContentType.Number.name ||
@@ -277,8 +278,8 @@ class _CotentEditState extends State<CotentEdit> {
       fieldCard = SizedBox(
         width: double.infinity,
         child: ContentEditFieldCard(
-          title: basicData.accountName!,
-          subtitle: basicData.value,
+          title: _isLocation ? '' : basicData.accountName!,
+          subtitle: _isLocation ? basicData.accountName! : basicData.value,
         ),
       );
     } else if (basicData.type == CustomContentType.Image.name) {
