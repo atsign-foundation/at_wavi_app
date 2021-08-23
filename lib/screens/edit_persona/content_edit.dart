@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CotentEdit extends StatefulWidget {
+  const CotentEdit({Key? key}) : super(key: key);
   @override
   _CotentEditState createState() => _CotentEditState();
 }
@@ -56,14 +57,6 @@ class _CotentEditState extends State<CotentEdit> {
     },
   ];
   AtCategory? selectedcategory;
-
-  @override
-  initState() {
-    var userJson = User.toJson(UserProvider().user!);
-    User previewUser = User.fromJson(json.decode(json.encode(userJson)));
-    UserPreview().setUser = previewUser;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,8 +133,16 @@ class _CotentEditState extends State<CotentEdit> {
                                     await ImagePicker().pickImage();
                                 if (pickedImage != null) {
                                   setState(() {
-                                    UserPreview().user()!.image.value =
-                                        pickedImage;
+                                    Provider.of<UserPreview>(context,
+                                            listen: false)
+                                        .user()!
+                                        .image
+                                        .value = pickedImage;
+                                    Provider.of<UserPreview>(context,
+                                            listen: false)
+                                        .user()!
+                                        .image
+                                        .accountName = FieldsEnum.IMAGE.name;
                                   });
                                 }
                               },

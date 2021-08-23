@@ -35,6 +35,8 @@ class SearchService {
   String themeColorKey = 'theme_color.wavi';
   String followers_key = 'at_followers_of_self.wavi';
   String following_key = 'at_following_by_self.wavi';
+  String new_followers_key = 'followers_of_self.at_follows.wavi';
+  String new_following_key = 'following_by_self.at_follows.wavi';
 
   updateThemeData(_data) {
     if ((_data ?? '').toLowerCase() == 'dark') {
@@ -79,12 +81,14 @@ class SearchService {
             continue;
           }
 
-          if (field.key.contains(followers_key)) {
+          if ((field.key.contains(followers_key)) ||
+              (field.key.contains(new_followers_key))) {
             followers_count = _keyValuePair[field.key].split(',').length;
             continue;
           }
 
-          if (field.key.contains(following_key)) {
+          if ((field.key.contains(following_key)) ||
+              (field.key.contains(new_following_key))) {
             following_count = _keyValuePair[field.key].split(',').length;
             continue;
           }

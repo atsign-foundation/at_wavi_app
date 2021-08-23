@@ -181,11 +181,11 @@ class AtKeyGetService {
 
   dynamic set(property, value, {isPrivate, valueDescription}) {
     if (user == null) user = User();
-    isPrivate = user.allPrivate == true ? true : isPrivate;
+
     FieldsEnum field = valueOf(property);
 
     var data = formData(property, value,
-        private: isPrivate, valueDescription: valueDescription);
+        private: isPrivate ?? false, valueDescription: valueDescription);
     switch (field) {
       case FieldsEnum.ATSIGN:
         user.atsign = value;
