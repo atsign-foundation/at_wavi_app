@@ -118,6 +118,8 @@ class FieldOrderService {
       if (index != -1) {
         allFields[index] = newField;
         _previewFieldOrders[category.name] = [...allFields];
+      } else {
+        addNewField(category, newField);
       }
     }
   }

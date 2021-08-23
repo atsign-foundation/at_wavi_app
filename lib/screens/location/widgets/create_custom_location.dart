@@ -361,7 +361,8 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
         .customFields['LOCATION'] = customFields;
     // });
 
-    FieldOrderService().addNewField(AtCategory.LOCATION, _data.accountName!);
+    FieldOrderService().updateSingleField(AtCategory.LOCATION,
+        (widget.basicData?.accountName ?? ''), _data.accountName!);
   }
 
   _showToast(String _text, {bool isError = false, Color? bgColor}) {

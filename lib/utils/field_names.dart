@@ -169,19 +169,6 @@ class FieldNames {
       ...FieldOrderService().getFieldList(category, isPreview: isPreview)
     ];
 
-    if (fieldOrder.isEmpty) {
-      return fieldList;
-    }
-
-    for (int i = 0; i < fieldOrder.length; i++) {
-      var index = fieldList.indexWhere((el) => el == fieldOrder[i]);
-      if (index != -1) {
-        // swapping fieldsin new position
-        var indexElement = fieldList[index];
-        fieldList[index] = fieldList[i];
-        fieldList[i] = indexElement;
-      }
-    }
-    return fieldList;
+    return fieldOrder;
   }
 }
