@@ -168,9 +168,14 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                             List<BasicData>? customFields = UserPreview()
                                 .user()!
                                 .customFields[widget.category.name];
+
+                            if (customFields == null) {
+                              customFields = [];
+                            }
+
                             if (customFields != null) {
                               setState(() {
-                                customFields.add(data);
+                                customFields!.add(data);
                                 UserPreview()
                                         .user()!
                                         .customFields[widget.category.name] =
@@ -268,6 +273,10 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
           basicData = customFields[index];
           isCustomField = true;
         }
+      }
+
+      if (basicData.accountName == null) {
+        continue;
       }
 
       Widget widget;

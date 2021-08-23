@@ -50,6 +50,10 @@ class _EditPersonaState extends State<EditPersona>
     _controller =
         TabController(length: 2, vsync: this, initialIndex: _tabIndex);
     FieldOrderService().setPreviewOrder = {...FieldOrderService().fieldOrders};
+    var userJson =
+        User.toJson(Provider.of<UserProvider>(context, listen: false).user!);
+    User previewUser = User.fromJson(json.decode(json.encode(userJson)));
+    Provider.of<UserPreview>(context, listen: false).setUser = previewUser;
     super.initState();
   }
 
@@ -206,8 +210,7 @@ class _EditPersonaState extends State<EditPersona>
     return Row(
       children: [
         _bottomSheetButton('Preview'),
-        _bottomSheetButton('Save'),
-        _bottomSheetButton('Publish', isDark: true),
+        _bottomSheetButton('Save & Publish', isDark: true),
       ],
     );
   }
@@ -220,12 +223,8 @@ class _EditPersonaState extends State<EditPersona>
             await _previewButtonCall();
           }
 
-          if (_text == 'Save') {
+          if (_text == 'Save & Publish') {
             await _saveButtonCall();
-          }
-
-          if (_text == 'Publish') {
-            await _publishButtonCall();
           }
         },
         child: Container(
@@ -396,6 +395,8 @@ class _EditPersonaState extends State<EditPersona>
   }
 
   _saveButtonCall() async {
+    /// Changes theme
+    await _publishButtonCall();
     await providerCallback<UserProvider>(
       context,
       task: (provider) async {
@@ -404,13 +405,10 @@ class _EditPersonaState extends State<EditPersona>
       },
       onError: (provider) {},
       showDialog: false,
-      text: 'Saving',
+      text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,
       onSuccess: (provider) async {
-        var userJson = User.toJson(UserPreview().user()!);
-        User previewUser = User.fromJson(json.decode(json.encode(userJson)));
-        UserProvider().user = previewUser;
-        Navigator.of(context).pop();
+        await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
       },
     );
   }
@@ -427,7 +425,7 @@ class _EditPersonaState extends State<EditPersona>
               .showSnackBar(SnackBar(
             backgroundColor: ColorConstants.RED,
             content: Text(
-              'Publishing failed. Try again!',
+              'Publishing theme color failed. Try again!',
               style: CustomTextStyles.customTextStyle(
                 ColorConstants.white,
               ),
@@ -435,13 +433,9 @@ class _EditPersonaState extends State<EditPersona>
           ));
         },
         showDialog: false,
-        text: 'Publishing',
+        text: 'Publishing color',
         taskName: (provider) => provider.SET_THEME,
-        onSuccess: (provider) async {
-          if (!_updateTheme) {
-            await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
-          }
-        },
+        onSuccess: (provider) async {},
       );
     }
 
@@ -456,7 +450,7 @@ class _EditPersonaState extends State<EditPersona>
               .showSnackBar(SnackBar(
             backgroundColor: ColorConstants.RED,
             content: Text(
-              'Publishing failed. Try again!',
+              'Publishing theme failed. Try again!',
               style: CustomTextStyles.customTextStyle(
                 ColorConstants.white,
               ),
@@ -464,11 +458,9 @@ class _EditPersonaState extends State<EditPersona>
           ));
         },
         showDialog: false,
-        text: 'Publishing',
+        text: 'Publishing theme',
         taskName: (provider) => provider.SET_THEME,
-        onSuccess: (provider) async {
-          await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
-        },
+        onSuccess: (provider) async {},
       );
     }
   }
