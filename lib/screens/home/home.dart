@@ -719,6 +719,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   isPreview: widget.isPreview) ||
               CommonFunctions().isFieldsPresentForCategory(
                   AtCategory.ADDITIONAL_DETAILS,
+                  isPreview: widget.isPreview) ||
+              CommonFunctions().isFieldsPresentForCategory(AtCategory.LOCATION,
                   isPreview: widget.isPreview)
           ? HomeDetails(themeData: _themeData, isPreview: widget.isPreview)
           : getEmptyWidget(_themeData!);
