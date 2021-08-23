@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class SearchService {
   int? followers_count;
   int? following_count;
   late bool isPrivateAccount;
+  Map<String, List<String>> fieldOrders = {};
 
   List<String> keysToIgnore = [
     // '',
@@ -37,6 +39,7 @@ class SearchService {
   String following_key = 'at_following_by_self.wavi';
   String new_followers_key = 'followers_of_self.at_follows.wavi';
   String new_following_key = 'following_by_self.at_follows.wavi';
+  String field_order_key = MixedConstants.fieldOrderKey;
 
   updateThemeData(_data) {
     if ((_data ?? '').toLowerCase() == 'dark') {
@@ -64,6 +67,7 @@ class SearchService {
   /// TODO: throws an error for image, serach 'colin/kevin'
   Future<User?> getAtsignDetails(String atsign) async {
     try {
+      fieldOrders = {};
       currentAtsignThemeData =
           Themes.lightTheme(highlightColor ?? ColorConstants.purple);
 
@@ -76,6 +80,17 @@ class SearchService {
       _jsonData.forEach((_data) {
         var _keyValuePair = _data;
         for (var field in _keyValuePair.entries) {
+          if (field.key.contains(field_order_key)) {
+            Map<String, dynamic> fielsOrder =
+                jsonDecode(_keyValuePair[field.key]);
+            for (var field in fielsOrder.entries) {
+              fieldOrders[field.key] = [
+                ...jsonDecode(fielsOrder[field.key]).cast<String>()
+              ];
+            }
+            continue;
+          }
+
           if (field.key.contains(privateAccountKey)) {
             isPrivateAccount = _keyValuePair[field.key] == 'true';
             continue;

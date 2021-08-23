@@ -30,8 +30,8 @@ class MixedConstants {
 
   static const String syncRegex = '.(wavi|persona)@';
 
-  static const String MAP_KEY = 'B3Wus46C2WZFhwZKQkEx';
-  static const String API_KEY = 'yRCeKfJDPQDTp11YI1db67J_fww80QP6R3Llckg-REw';
+  static const String MAP_KEY = '';
+  static const String API_KEY = '';
   static final String twitterBearerToken = '';
   static const int responseTimeLimit = 30;
   static const String fieldOrderKey = 'field_order_of_self';

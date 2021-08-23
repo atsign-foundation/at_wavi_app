@@ -18,6 +18,7 @@ import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/search_service.dart';
@@ -576,7 +577,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         // Provider.of<UserPreview>(context,
                         //         listen: false)
                         //     .setSearchedUser(_res);
-                        UserPreview().setUser = _res;
+                        Provider.of<UserPreview>(context, listen: false)
+                            .setUser = _res;
+                        FieldOrderService().setPreviewOrder =
+                            SearchService().fieldOrders;
+
                         await SetupRoutes.push(context, Routes.HOME,
                             arguments: {
                               'themeData':
