@@ -17,6 +17,7 @@ import 'package:at_wavi_app/services/compare_basicdata.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
@@ -60,6 +61,40 @@ class _LocationWidgetState extends State<LocationWidget> {
   }
 
   updateIsPrivate(bool _mode) {
+    List<BasicData>? customFields =
+        Provider.of<UserPreview>(context, listen: false)
+            .user()!
+            .customFields[AtCategory.LOCATION.name];
+
+    if (customFields != null) {
+      for (var basicData in customFields) {
+        basicData.isPrivate = _mode;
+      }
+    }
+
+    //// for predefined fields
+    if (Provider.of<UserPreview>(context, listen: false)
+            .user()!
+            .location
+            .value !=
+        null) {
+      Provider.of<UserPreview>(context, listen: false)
+          .user()!
+          .location
+          .isPrivate = _mode;
+    }
+
+    if (Provider.of<UserPreview>(context, listen: false)
+            .user()!
+            .location
+            .value !=
+        null) {
+      Provider.of<UserPreview>(context, listen: false)
+          .user()!
+          .locationNickName
+          .isPrivate = _mode;
+    }
+
     setState(() {
       _isPrivate = _mode;
     });
@@ -375,12 +410,10 @@ class _LocationWidgetState extends State<LocationWidget> {
                                   icon: Icons.delete,
                                   onTap: () {
                                     _deleteKey(Provider.of<UserProvider>(
-                                                context,
-                                                listen: false)
-                                            .user!
-                                            .customFields['LOCATION']?[_int]
-                                            .accountName ??
-                                        '');
+                                            context,
+                                            listen: false)
+                                        .user!
+                                        .customFields['LOCATION']![_int]);
                                   },
                                 ),
                               ],
@@ -482,11 +515,15 @@ class _LocationWidgetState extends State<LocationWidget> {
     LoadingDialog().hide();
   }
 
-  _deleteKey(String key) async {
-    LoadingDialog().show(text: 'Deleting $key');
-    await AtKeySetService()
-        .deleteKey(key, AtCategory.LOCATION.name, isCustomKey: true);
-    LoadingDialog().hide();
+  _deleteKey(BasicData _basicData) async {
+    Provider.of<UserPreview>(context, listen: false)
+        .deletCustomField(AtCategory.LOCATION, _basicData);
+    setState(() {});
+
+    // LoadingDialog().show(text: 'Deleting $key');
+    // await AtKeySetService()
+    //     .deleteKey(key, AtCategory.LOCATION.name, isCustomKey: true);
+    // LoadingDialog().hide();
   }
 
   _showToast(String _text, {bool isError = false, Color? bgColor}) {

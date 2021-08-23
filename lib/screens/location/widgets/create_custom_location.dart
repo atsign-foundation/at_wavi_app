@@ -361,8 +361,19 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
         .customFields['LOCATION'] = customFields;
     // });
 
-    FieldOrderService().updateSingleField(AtCategory.LOCATION,
-        (widget.basicData?.accountName ?? ''), _data.accountName!);
+    /////////////////////
+    // FieldOrderService().updateSingleField(AtCategory.LOCATION,
+    //     (widget.basicData?.accountName ?? ''), _data.accountName!);
+
+    if (widget.basicData != null) {
+      FieldOrderService().updateSingleField(AtCategory.LOCATION,
+          (widget.basicData?.accountName ?? ''), _data.accountName!);
+    } else {
+      FieldOrderService().addNewField(
+        AtCategory.LOCATION,
+        _data.accountName!,
+      );
+    }
   }
 
   _showToast(String _text, {bool isError = false, Color? bgColor}) {

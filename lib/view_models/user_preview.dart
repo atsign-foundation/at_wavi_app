@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
@@ -47,6 +48,8 @@ class UserPreview extends BaseModel {
     customFields[index] = BasicData(
         accountName: customFields[index].accountName! + AtText.IS_DELETED,
         isPrivate: customFields[index].isPrivate);
+
+    FieldOrderService().deleteField(category, basicData.accountName!);
   }
 
   sortCustomLocationFields() {

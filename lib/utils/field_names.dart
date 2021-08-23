@@ -23,6 +23,10 @@ class FieldNames {
     'medium'
   ];
   static const _gameFields = ['ps4', 'xbox', 'steam', 'discord'];
+  static const _locationFields = [
+    'locationnickname',
+    'location',
+  ];
 
   static const _basicDetailsEnum = [FieldsEnum.PHONE, FieldsEnum.EMAIL];
   static const _additionalDetailsEnum = [FieldsEnum.PRONOUN, FieldsEnum.ABOUT];
@@ -58,6 +62,10 @@ class FieldNames {
     return _gameFields;
   }
 
+  List<String> get locationFields {
+    return _locationFields;
+  }
+
   List<FieldsEnum> get basicDetailsFieldsEnum {
     return _basicDetailsEnum;
   }
@@ -85,6 +93,8 @@ class FieldNames {
       fields = [..._socialAccounts];
     } else if (category == AtCategory.GAMER) {
       fields = [..._gameFields];
+    } else if (category == AtCategory.LOCATION) {
+      fields = [..._locationFields];
     }
 
     var sortedFields = [...fields];
