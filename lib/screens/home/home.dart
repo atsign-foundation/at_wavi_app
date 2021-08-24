@@ -754,6 +754,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         builder: (context) => WebsiteScreen(
           title: 'Wavi.ng',
           url: 'https://wavi.ng/${_currentUser.atsign}',
+          isShareProfileScreen: true,
         ),
       ),
     );

@@ -8,8 +8,13 @@ import 'package:at_common_flutter/services/size_config.dart';
 class WebsiteScreen extends StatefulWidget {
   final String title;
   final String url;
+  final bool isShareProfileScreen;
 
-  const WebsiteScreen({Key? key, required this.title, required this.url})
+  const WebsiteScreen(
+      {Key? key,
+      required this.title,
+      required this.url,
+      this.isShareProfileScreen = false})
       : super(key: key);
   @override
   _WebsiteScreenState createState() => _WebsiteScreenState();
@@ -61,11 +66,13 @@ class _WebsiteScreenState extends State<WebsiteScreen> {
             setState(() {
               loading = false;
             });
-            await Future.delayed(
-                Duration(milliseconds: 500)); // To let complete page load
-            if (controller != null) {
-              controller!.evaluateJavascript(
-                  "(document.getElementsByClassName('share-btn')[3]).click()");
+            if (widget.isShareProfileScreen) {
+              await Future.delayed(
+                  Duration(milliseconds: 1000)); // To let complete page load
+              if (controller != null) {
+                controller!.evaluateJavascript(
+                    "(document.getElementsByClassName('share-btn')[3]).click()");
+              }
             }
           },
         ),
