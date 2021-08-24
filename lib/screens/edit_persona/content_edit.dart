@@ -201,7 +201,70 @@ class _CotentEditState extends State<CotentEdit> {
   }
 
   List<Widget> contentFields() {
-    return [...getDefinedFieldsCard(), ...getCustomFieldsCard()];
+    return [
+      ...getAllFieldsCard(),
+    ];
+  }
+
+  List<Widget> getAllFieldsCard() {
+    var definedFieldsWidgets = <Widget>[];
+    var userMap =
+        User.toJson(Provider.of<UserPreview>(context, listen: false).user());
+    List<BasicData>? customFields =
+        Provider.of<UserPreview>(context, listen: false)
+            .user()!
+            .customFields[selectedcategory!.name];
+
+    var fields = <String>[];
+    fields = [...FieldNames().getFieldList(selectedcategory!, isPreview: true)];
+
+    for (int i = 0; i < fields.length; i++) {
+      bool isCustomField = false;
+      BasicData basicData = BasicData();
+
+      if (userMap.containsKey(fields[i])) {
+        basicData = userMap[fields[i]];
+        if (basicData.accountName == null) basicData.accountName = fields[i];
+        if (basicData.value == null) basicData.value = '';
+      } else {
+        var index =
+            customFields!.indexWhere((el) => el.accountName == fields[i]);
+        if (index != -1) {
+          basicData = customFields[index];
+          isCustomField = true;
+        }
+      }
+
+      Widget widget = SizedBox();
+      if (basicData.accountName == null) {
+        continue;
+      }
+
+      if (!isCustomField) {
+        widget = Column(
+          children: [
+            ContentEditFieldCard(
+              title: basicData.accountName!,
+              subtitle: basicData.value,
+            ),
+            SizedBox(height: 25)
+          ],
+        );
+      } else {
+        widget = Column(
+          children: [
+            SizedBox(
+                width: double.infinity,
+                child: checkForCustomContentType(basicData)),
+            SizedBox(height: 25)
+          ],
+        );
+      }
+
+      definedFieldsWidgets.add(widget);
+    }
+
+    return definedFieldsWidgets;
   }
 
   List<Widget> getDefinedFieldsCard() {

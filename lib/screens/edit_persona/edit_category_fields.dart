@@ -275,6 +275,10 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
         }
       }
 
+      if (basicData.accountName == null) {
+        continue;
+      }
+
       Widget widget;
       if (!isCustomField) {
         widget = Column(
