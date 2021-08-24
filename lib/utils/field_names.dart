@@ -23,6 +23,10 @@ class FieldNames {
     'medium'
   ];
   static const _gameFields = ['ps4', 'xbox', 'steam', 'discord'];
+  static const _locationFields = [
+    'locationnickname',
+    'location',
+  ];
 
   static const _basicDetailsEnum = [FieldsEnum.PHONE, FieldsEnum.EMAIL];
   static const _additionalDetailsEnum = [FieldsEnum.PRONOUN, FieldsEnum.ABOUT];
@@ -58,6 +62,10 @@ class FieldNames {
     return _gameFields;
   }
 
+  List<String> get locationFields {
+    return _locationFields;
+  }
+
   List<FieldsEnum> get basicDetailsFieldsEnum {
     return _basicDetailsEnum;
   }
@@ -85,6 +93,8 @@ class FieldNames {
       fields = [..._socialAccounts];
     } else if (category == AtCategory.GAMER) {
       fields = [..._gameFields];
+    } else if (category == AtCategory.LOCATION) {
+      fields = [..._locationFields];
     }
 
     var sortedFields = [...fields];
@@ -163,6 +173,7 @@ class FieldNames {
     return fieldList;
   }
 
+  /// TODO: Check for newly added fields from at_settings
   List<String> sortFieldList(List<String> fieldList, AtCategory category,
       {bool isPreview = false}) {
     var fieldOrder = [
@@ -173,15 +184,6 @@ class FieldNames {
       return fieldList;
     }
 
-    for (int i = 0; i < fieldOrder.length; i++) {
-      var index = fieldList.indexWhere((el) => el == fieldOrder[i]);
-      if (index != -1) {
-        // swapping fieldsin new position
-        var indexElement = fieldList[index];
-        fieldList[index] = fieldList[i];
-        fieldList[i] = indexElement;
-      }
-    }
-    return fieldList;
+    return fieldOrder;
   }
 }

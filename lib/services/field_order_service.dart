@@ -115,17 +115,21 @@ class FieldOrderService {
         allFields = [..._previewFieldOrders[category.name]!];
       }
 
-      if (index != -1) {
+      if ((index != -1) || oldField == '') {
         allFields[index] = newField;
         _previewFieldOrders[category.name] = [...allFields];
+      } else {
+        addNewField(category, newField);
       }
     }
   }
 
   List<String> getFieldList(AtCategory category, {bool isPreview = false}) {
     var fieldOrder = <String>[];
-    if (isPreview && _previewFieldOrders.containsKey(category.name)) {
-      fieldOrder = [..._previewFieldOrders[category.name]!];
+    if (isPreview) {
+      if (_previewFieldOrders.containsKey(category.name)) {
+        fieldOrder = [..._previewFieldOrders[category.name]!];
+      }
     } else if (_fieldOrders.containsKey(category.name)) {
       fieldOrder = [..._fieldOrders[category.name]!];
     }

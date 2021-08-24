@@ -664,8 +664,8 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
             onEditToolTip(basicData);
           } else {
             UserPreview().deletCustomField(widget.category, basicData);
-            FieldOrderService()
-                .deleteField(widget.category, basicData.accountName!);
+            // FieldOrderService()
+            //     .deleteField(widget.category, basicData.accountName!);
           }
           setState(() {});
         },

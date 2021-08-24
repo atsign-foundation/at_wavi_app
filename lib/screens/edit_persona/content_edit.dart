@@ -255,7 +255,8 @@ class _CotentEditState extends State<CotentEdit> {
           children: [
             SizedBox(
                 width: double.infinity,
-                child: checkForCustomContentType(basicData)),
+                child: checkForCustomContentType(basicData,
+                    isLocation: ((selectedcategory!) == AtCategory.LOCATION))),
             SizedBox(height: 25)
           ],
         );
@@ -318,8 +319,12 @@ class _CotentEditState extends State<CotentEdit> {
           var widget = Column(
             children: [
               SizedBox(
-                  width: double.infinity,
-                  child: checkForCustomContentType(basicData)),
+                width: double.infinity,
+                child: checkForCustomContentType(
+                  basicData,
+                  isLocation: ((selectedcategory!) == AtCategory.LOCATION),
+                ),
+              ),
               SizedBox(height: 25)
             ],
           );
@@ -331,7 +336,8 @@ class _CotentEditState extends State<CotentEdit> {
     return customFieldsWidgets;
   }
 
-  Widget checkForCustomContentType(BasicData basicData) {
+  Widget checkForCustomContentType(BasicData basicData,
+      {bool isLocation = false}) {
     Widget fieldCard = SizedBox();
     if (basicData.type == CustomContentType.Text.name ||
         basicData.type == CustomContentType.Number.name ||
@@ -340,8 +346,8 @@ class _CotentEditState extends State<CotentEdit> {
       fieldCard = SizedBox(
         width: double.infinity,
         child: ContentEditFieldCard(
-          title: basicData.accountName!,
-          subtitle: basicData.value,
+          title: isLocation ? '' : basicData.accountName!,
+          subtitle: isLocation ? basicData.accountName! : basicData.value,
         ),
       );
     } else if (basicData.type == CustomContentType.Image.name) {

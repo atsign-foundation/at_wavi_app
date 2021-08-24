@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
@@ -38,10 +41,42 @@ class UserPreview extends BaseModel {
 
   deletCustomField(AtCategory category, BasicData basicData) {
     List<BasicData>? customFields = _user!.customFields[category.name];
-    var index = customFields!.indexOf(basicData);
+    var newIndex = customFields!
+        .indexWhere((element) => element.accountName == basicData.accountName);
+    // var index = customFields!.indexOf(basicData);
+    var index = newIndex;
     customFields[index] = BasicData(
         accountName: customFields[index].accountName! + AtText.IS_DELETED,
         isPrivate: customFields[index].isPrivate);
+
+    FieldOrderService().deleteField(category, basicData.accountName!);
+  }
+
+  sortCustomLocationFields() {
+    // List<BasicData>? customFields =
+    //     _user!.customFields[AtCategory.LOCATION.name];
+    // print('before element');
+    // customFields!.forEach((element) {
+    //   print('element $element');
+    // });
+    // for (int i = 0; i < (customFields ?? []).length; i++) {
+    //   if (customFields![i].toString().contains('_deleted')) {
+    //     for (int j = (i + 1); j < (customFields).length; j++) {
+    //       if (!customFields[j].toString().contains('_deleted')) {
+    //         var _newField =
+    //             BasicData.fromJson(jsonDecode(customFields[i].toJson()));
+    //         customFields[i] =
+    //             BasicData.fromJson(jsonDecode(customFields[j].toJson()));
+    //         customFields[j] =
+    //             BasicData.fromJson(jsonDecode(_newField.toJson()));
+    //       }
+    //     }
+    //   }
+    // }
+    // print('after element');
+    // customFields.forEach((element) {
+    //   print('element $element');
+    // });
   }
 
   bool isFormDataValid(value, CustomContentType type) {

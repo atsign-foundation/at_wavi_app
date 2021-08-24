@@ -1,12 +1,18 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:at_contact/at_contact.dart';
 import 'package:at_contacts_flutter/at_contacts_flutter.dart';
+import 'package:at_location_flutter/at_location_flutter.dart';
 import 'package:at_lookup/at_lookup.dart';
+import 'package:at_wavi_app/common_components/create_marker.dart';
 import 'package:at_wavi_app/common_components/custom_card.dart';
 import 'package:at_wavi_app/common_components/custom_media_card.dart';
 import 'package:at_wavi_app/common_components/empty_widget.dart';
+import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/routes/route_names.dart';
+import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -27,6 +33,78 @@ class CommonFunctions {
   List<Widget> getCustomCardForFields(ThemeData _themeData, AtCategory category,
       {bool isPreview = false}) {
     return [...getAllfieldsCard(_themeData, category, isPreview: isPreview)];
+  }
+
+  bool isOsmDataPresent(Map _locationData) {
+    if ((_locationData['diameter'] != null) &&
+        (_locationData['zoom'] != null) &&
+        (_locationData['latitude'] != null) &&
+        (_locationData['longitude'] != null)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  List<Widget> getCustomLocationCards(ThemeData _themeData,
+      {bool isPreview = false}) {
+    var customLocationWidgets = <Widget>[];
+
+    User _currentUser = User.fromJson(json.decode(json.encode(User.toJson(
+        isPreview
+            ? Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                    listen: false)
+                .user()
+            : UserProvider().user!))));
+
+    List.generate(_currentUser.customFields['LOCATION']?.length ?? 0, (_int) {
+      if ((_currentUser.customFields['LOCATION']?[_int].accountName ?? '')
+          .contains('_deleted')) {
+      } else {
+        customLocationWidgets.add(
+          Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: buildMap(
+              OsmLocationModel.fromJson(json
+                  .decode(_currentUser.customFields['LOCATION']?[_int].value)),
+              _currentUser.customFields['LOCATION']?[_int].accountName ?? '',
+              _themeData,
+            ),
+          ),
+        );
+      }
+    });
+
+    return customLocationWidgets;
+  }
+
+  List<Widget> getAllLocationCards(ThemeData _themeData,
+      {bool isPreview = false}) {
+    var locationWidgets = <Widget>[];
+
+    User _currentUser = User.fromJson(json.decode(json.encode(User.toJson(
+        isPreview
+            ? Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                    listen: false)
+                .user()
+            : UserProvider().user!))));
+
+    if ((_currentUser.locationNickName.value != null) &&
+        (_currentUser.location.value != null) &&
+        (isOsmDataPresent(json.decode(_currentUser.location.value)))) {
+      locationWidgets.add(
+        buildMap(
+          OsmLocationModel.fromJson(json.decode(_currentUser.location.value)),
+          _currentUser.locationNickName.value,
+          _themeData,
+        ),
+      );
+    }
+
+    locationWidgets
+        .addAll(getCustomLocationCards(_themeData, isPreview: isPreview));
+
+    return locationWidgets;
   }
 
   List<Widget> getDefinedFieldsCard(ThemeData _themeData, AtCategory category,
@@ -121,6 +199,10 @@ class CommonFunctions {
       customFields = UserProvider().user!.customFields[category.name];
     }
 
+    if (customFields == null) {
+      customFields = [];
+    }
+
     List<String> fields = [
       ...FieldNames().getFieldList(category, isPreview: isPreview)
     ];
@@ -139,7 +221,7 @@ class CommonFunctions {
         if (basicData.accountName == null) basicData.accountName = fields[i];
       } else {
         var index =
-            customFields!.indexWhere((el) => el.accountName == fields[i]);
+            customFields.indexWhere((el) => el.accountName == fields[i]);
         if (index != -1) {
           basicData = customFields[index];
           isCustomField = true;
@@ -388,5 +470,90 @@ class CommonFunctions {
         ),
       ),
     ));
+  }
+
+  buildMap(OsmLocationModel _osmLocationModel, String _locationNickname,
+      ThemeData themeData) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          _locationNickname,
+          style: TextStyles.lightText(themeData.primaryColor.withOpacity(0.5),
+              size: 16),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Container(
+          // padding: EdgeInsets.symmetric(horizontal: 20),
+          height: 300,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Stack(
+            children: [
+              AbsorbPointer(
+                absorbing: true,
+                child: FlutterMap(
+                  // key: UniqueKey(),
+                  options: MapOptions(
+                    boundsOptions: FitBoundsOptions(padding: EdgeInsets.all(0)),
+                    center: _osmLocationModel.latLng!,
+                    zoom: _osmLocationModel.zoom!,
+                  ),
+                  layers: [
+                    TileLayerOptions(
+                      urlTemplate:
+                          'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=${MixedConstants.MAP_KEY}',
+                      subdomains: ['a', 'b', 'c'],
+                      minNativeZoom: 2,
+                      maxNativeZoom: 18,
+                      minZoom: 1,
+                      tileProvider: NonCachingNetworkTileProvider(),
+                    ),
+                    MarkerLayerOptions(markers: [
+                      Marker(
+                        width: 40,
+                        height: 50,
+                        point: _osmLocationModel.latLng!,
+                        builder: (ctx) => Container(
+                            child: createMarker(
+                                diameterOfCircle: _osmLocationModel.diameter!)),
+                      )
+                    ])
+                  ],
+                ),
+              ),
+              Positioned(
+                right: 10,
+                top: 10,
+                child: Container(
+                  height: 40,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    color: ColorConstants.LIGHT_GREY,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: IconButton(
+                      onPressed: () {
+                        SetupRoutes.push(NavService.navKey.currentContext!,
+                            Routes.PREVIEW_LOCATION,
+                            arguments: {
+                              'title': _locationNickname,
+                              'latLng': _osmLocationModel.latLng!,
+                              'zoom': _osmLocationModel.zoom!,
+                              'diameterOfCircle': _osmLocationModel.diameter!,
+                            });
+                      },
+                      icon: Icon(Icons.fullscreen)),
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

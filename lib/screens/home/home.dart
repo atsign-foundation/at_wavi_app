@@ -18,6 +18,7 @@ import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/search_service.dart';
@@ -534,69 +535,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         searchedAtsign = s;
                       });
                     },
-                    onIconTap: () async {
-                      if (loadingSearchedAtsign) {
-                        return;
-                      }
-
-                      setState(() {
-                        loadingSearchedAtsign = true;
-                      });
-                      var _isPresent =
-                          await CommonFunctions().checkAtsign(searchedAtsign);
-
-                      if (_isPresent) {
-                        var _res = await SearchService()
-                            .getAtsignDetails(searchedAtsign);
-
-                        if (_res == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            backgroundColor: ColorConstants.RED,
-                            content: Text(
-                              'Something went wrong',
-                              style: CustomTextStyles.customTextStyle(
-                                ColorConstants.white,
-                              ),
-                            ),
-                          ));
-                          setState(() {
-                            loadingSearchedAtsign = false;
-                          });
-                          return;
-                        }
-
-                        if (_res.twitter.value != null) {
-                          await TwitetrService()
-                              .getTweets(searchedUsername: _res.twitter.value);
-                        }
-
-                        setState(() {
-                          loadingSearchedAtsign = false;
-                        });
-                        // Provider.of<UserPreview>(context,
-                        //         listen: false)
-                        //     .setSearchedUser(_res);
-                        UserPreview().setUser = _res;
-                        await SetupRoutes.push(context, Routes.HOME,
-                            arguments: {
-                              'themeData':
-                                  SearchService().currentAtsignThemeData,
-                              'isPreview': true,
-                            });
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          backgroundColor: ColorConstants.RED,
-                          content: Text(
-                            '$searchedAtsign not found',
-                            style: CustomTextStyles.customTextStyle(
-                              ColorConstants.white,
-                            ),
-                          ),
-                        ));
-                        setState(() {
-                          loadingSearchedAtsign = false;
-                        });
-                      }
+                    onSubmitted: (_str) {
+                      _searchProfile();
+                    },
+                    onIconTap: () {
+                      _searchProfile();
                     },
                     onSecondIconTap: _animate,
                   ),
@@ -714,6 +657,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   isPreview: widget.isPreview) ||
               CommonFunctions().isFieldsPresentForCategory(
                   AtCategory.ADDITIONAL_DETAILS,
+                  isPreview: widget.isPreview) ||
+              CommonFunctions().isFieldsPresentForCategory(AtCategory.LOCATION,
                   isPreview: widget.isPreview)
           ? HomeDetails(themeData: _themeData, isPreview: widget.isPreview)
           : getEmptyWidget(_themeData!);
@@ -736,6 +681,68 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       return SizedBox();
   }
 
+  _searchProfile() async {
+    if (loadingSearchedAtsign) {
+      return;
+    }
+
+    setState(() {
+      loadingSearchedAtsign = true;
+    });
+    var _isPresent = await CommonFunctions().checkAtsign(searchedAtsign);
+
+    if (_isPresent) {
+      var _res = await SearchService().getAtsignDetails(searchedAtsign);
+
+      if (_res == null) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: ColorConstants.RED,
+          content: Text(
+            'Something went wrong',
+            style: CustomTextStyles.customTextStyle(
+              ColorConstants.white,
+            ),
+          ),
+        ));
+        setState(() {
+          loadingSearchedAtsign = false;
+        });
+        return;
+      }
+
+      if (_res.twitter.value != null) {
+        await TwitetrService().getTweets(searchedUsername: _res.twitter.value);
+      }
+
+      setState(() {
+        loadingSearchedAtsign = false;
+      });
+      // Provider.of<UserPreview>(context,
+      //         listen: false)
+      //     .setSearchedUser(_res);
+      Provider.of<UserPreview>(context, listen: false).setUser = _res;
+      FieldOrderService().setPreviewOrder = SearchService().fieldOrders;
+
+      await SetupRoutes.push(context, Routes.HOME, arguments: {
+        'themeData': SearchService().currentAtsignThemeData,
+        'isPreview': true,
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: ColorConstants.RED,
+        content: Text(
+          '$searchedAtsign not found',
+          style: CustomTextStyles.customTextStyle(
+            ColorConstants.white,
+          ),
+        ),
+      ));
+      setState(() {
+        loadingSearchedAtsign = false;
+      });
+    }
+  }
+
   Widget getEmptyWidget(ThemeData themeData) {
     return _isSearchScreen ? EmptyWidget(themeData) : HomeEmptyDetails();
   }
@@ -747,6 +754,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         builder: (context) => WebsiteScreen(
           title: 'Wavi.ng',
           url: 'https://wavi.ng/${_currentUser.atsign}',
+          isShareProfileScreen: true,
         ),
       ),
     );

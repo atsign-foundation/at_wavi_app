@@ -88,6 +88,24 @@ class _HomeDetailsState extends State<HomeDetails> {
                   _themeData!, AtCategory.ADDITIONAL_DETAILS,
                   isPreview: widget.isPreview),
             ),
+            ///////////
+            SizedBox(
+                height: CommonFunctions().isFieldsPresentForCategory(
+                        AtCategory.ADDITIONAL_DETAILS,
+                        isPreview: widget.isPreview)
+                    ? 40.toHeight
+                    : 0),
+            CommonFunctions().isFieldsPresentForCategory(AtCategory.LOCATION,
+                    isPreview: widget.isPreview)
+                ? Text('Location',
+                    style:
+                        TextStyles.boldText(_themeData!.primaryColor, size: 18))
+                : SizedBox(),
+            SizedBox(height: 15.toHeight),
+            Column(
+              children: CommonFunctions().getAllLocationCards(_themeData!,
+                  isPreview: widget.isPreview),
+            ),
           ],
         ),
       );
