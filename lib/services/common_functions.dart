@@ -35,6 +35,17 @@ class CommonFunctions {
     return [...getAllfieldsCard(_themeData, category, isPreview: isPreview)];
   }
 
+  bool isOsmDataPresent(Map _locationData) {
+    if ((_locationData['diameter'] != null) &&
+        (_locationData['zoom'] != null) &&
+        (_locationData['latitude'] != null) &&
+        (_locationData['longitude'] != null)) {
+      return true;
+    }
+
+    return false;
+  }
+
   List<Widget> getCustomLocationCards(ThemeData _themeData,
       {bool isPreview = false}) {
     var customLocationWidgets = <Widget>[];
@@ -51,59 +62,26 @@ class CommonFunctions {
           .contains('_deleted')) {
         return SizedBox();
       }
-      customLocationWidgets.add(Flexible(
-        child: Text(
-            // '${(_int + 1).toString()}. ' +
-            '-  ' +
-                (_currentUser.customFields['LOCATION']?[_int].accountName ??
-                    ''),
-            style: TextStyles.lightText(ColorConstants.black, size: 16)),
-      ));
+      customLocationWidgets.add(
+        Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: buildMap(
+            OsmLocationModel.fromJson(json
+                .decode(_currentUser.customFields['LOCATION']?[_int].value)),
+            _currentUser.customFields['LOCATION']?[_int].accountName ?? '',
+            _themeData,
+          ),
+        ),
+      );
     });
-
-    // ListView.separated(
-    //   shrinkWrap: true,
-    //   physics: NeverScrollableScrollPhysics(),
-    //   itemCount: _currentUser.customFields['LOCATION']?.length ?? 0,
-    //   itemBuilder: (_context, _int) {
-    //     if ((_currentUser.customFields['LOCATION']?[_int].accountName ?? '')
-    //         .contains('_deleted')) {
-    //       return SizedBox();
-    //     }
-    //     return Flexible(
-    //       child: Text(
-    //           // '${(_int + 1).toString()}. ' +
-    //           '-  ' +
-    //               (_currentUser.customFields['LOCATION']?[_int].accountName ??
-    //                   ''),
-    //           style: TextStyles.lightText(ColorConstants.black, size: 16)),
-    //     );
-    //   },
-    //   separatorBuilder: (_context, _int) {
-    //     if ((_currentUser.customFields['LOCATION']?[_int].accountName ?? '')
-    //         .contains('_deleted')) {
-    //       return SizedBox();
-    //     }
-    //     return Divider();
-    //   },
-    // );
 
     return customLocationWidgets;
   }
 
-  bool isOsmDataPresent(Map _locationData) {
-    if ((_locationData['diameter'] != null) &&
-        (_locationData['zoom'] != null) &&
-        (_locationData['latitude'] != null) &&
-        (_locationData['longitude'] != null)) {
-      return true;
-    }
-
-    return false;
-  }
-
-  List<Widget> getAllLocationCardsNew(ThemeData _themeData,
+  List<Widget> getAllLocationCards(ThemeData _themeData,
       {bool isPreview = false}) {
+    var locationWidgets = <Widget>[];
+
     User _currentUser = User.fromJson(json.decode(json.encode(User.toJson(
         isPreview
             ? Provider.of<UserPreview>(NavService.navKey.currentContext!,
@@ -114,15 +92,19 @@ class CommonFunctions {
     if ((_currentUser.locationNickName.value != null) &&
         (_currentUser.location.value != null) &&
         (isOsmDataPresent(json.decode(_currentUser.location.value)))) {
-      return [
+      locationWidgets.add(
         buildMap(
-            OsmLocationModel.fromJson(json.decode(_currentUser.location.value)),
-            _currentUser.locationNickName.value,
-            _themeData),
-      ];
+          OsmLocationModel.fromJson(json.decode(_currentUser.location.value)),
+          _currentUser.locationNickName.value,
+          _themeData,
+        ),
+      );
     }
 
-    return [];
+    locationWidgets
+        .addAll(getCustomLocationCards(_themeData, isPreview: isPreview));
+
+    return locationWidgets;
   }
 
   List<Widget> getDefinedFieldsCard(ThemeData _themeData, AtCategory category,

@@ -103,7 +103,7 @@ class _HomeDetailsState extends State<HomeDetails> {
                 : SizedBox(),
             SizedBox(height: 15.toHeight),
             Column(
-              children: CommonFunctions().getAllLocationCardsNew(_themeData!,
+              children: CommonFunctions().getAllLocationCards(_themeData!,
                   isPreview: widget.isPreview),
             ),
           ],
