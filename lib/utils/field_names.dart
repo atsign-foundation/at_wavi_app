@@ -173,11 +173,16 @@ class FieldNames {
     return fieldList;
   }
 
+  /// TODO: Check for newly added fields from at_settings
   List<String> sortFieldList(List<String> fieldList, AtCategory category,
       {bool isPreview = false}) {
     var fieldOrder = [
       ...FieldOrderService().getFieldList(category, isPreview: isPreview)
     ];
+
+    if (fieldOrder.isEmpty) {
+      return fieldList;
+    }
 
     return fieldOrder;
   }

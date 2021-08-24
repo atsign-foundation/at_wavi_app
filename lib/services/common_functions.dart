@@ -199,6 +199,10 @@ class CommonFunctions {
       customFields = UserProvider().user!.customFields[category.name];
     }
 
+    if (customFields == null) {
+      customFields = [];
+    }
+
     List<String> fields = [
       ...FieldNames().getFieldList(category, isPreview: isPreview)
     ];
@@ -217,7 +221,7 @@ class CommonFunctions {
         if (basicData.accountName == null) basicData.accountName = fields[i];
       } else {
         var index =
-            customFields!.indexWhere((el) => el.accountName == fields[i]);
+            customFields.indexWhere((el) => el.accountName == fields[i]);
         if (index != -1) {
           basicData = customFields[index];
           isCustomField = true;
