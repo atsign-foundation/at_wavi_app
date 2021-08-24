@@ -60,19 +60,19 @@ class CommonFunctions {
     List.generate(_currentUser.customFields['LOCATION']?.length ?? 0, (_int) {
       if ((_currentUser.customFields['LOCATION']?[_int].accountName ?? '')
           .contains('_deleted')) {
-        return SizedBox();
-      }
-      customLocationWidgets.add(
-        Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: buildMap(
-            OsmLocationModel.fromJson(json
-                .decode(_currentUser.customFields['LOCATION']?[_int].value)),
-            _currentUser.customFields['LOCATION']?[_int].accountName ?? '',
-            _themeData,
+      } else {
+        customLocationWidgets.add(
+          Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: buildMap(
+              OsmLocationModel.fromJson(json
+                  .decode(_currentUser.customFields['LOCATION']?[_int].value)),
+              _currentUser.customFields['LOCATION']?[_int].accountName ?? '',
+              _themeData,
+            ),
           ),
-        ),
-      );
+        );
+      }
     });
 
     return customLocationWidgets;

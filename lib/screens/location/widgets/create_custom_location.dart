@@ -352,7 +352,13 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
 
     // setState(() {
     if (_index != null) {
-      customFields.insert(_index, _data);
+      // updates already existing key's value
+      if ((widget.basicData != null) &&
+          (widget.basicData!.accountName == _data.accountName)) {
+        customFields[_index] = _data;
+      } else {
+        customFields.insert(_index, _data);
+      }
     } else {
       customFields.add(_data);
     }
