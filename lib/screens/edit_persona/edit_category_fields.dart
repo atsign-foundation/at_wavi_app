@@ -32,37 +32,8 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
     if (FieldOrderService().previewOrders[widget.category.name] == null) {
       FieldOrderService().initCategoryFields(widget.category);
     }
-    checkForMissingReorderFields();
+
     super.initState();
-  }
-
-// if any field is added by at_settings app and that field in missing in reorder list
-// those fields will be added in last of reorder list
-  checkForMissingReorderFields() {
-    var customFields = Provider.of<UserPreview>(context, listen: false)
-        .user()!
-        .customFields[widget.category.name];
-    var reorderFilelds =
-        FieldOrderService().previewOrders[widget.category.name];
-
-    var remainingFields = <String>[];
-
-    if (customFields != null && reorderFilelds != null) {
-      for (int i = 0; i < customFields.length; i++) {
-        int index = reorderFilelds
-            .indexWhere((element) => element == customFields[i].accountName);
-        if (index == -1 && customFields[i].accountName != null) {
-          remainingFields.add(customFields[i].accountName!);
-        }
-      }
-    }
-
-    if (remainingFields.isNotEmpty) {
-      FieldOrderService().updateField(widget.category, [
-        ...FieldOrderService().previewOrders[widget.category.name]!,
-        ...remainingFields
-      ]);
-    }
   }
 
   @override

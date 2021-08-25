@@ -2,6 +2,7 @@ import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -173,7 +174,6 @@ class FieldNames {
     return fieldList;
   }
 
-  /// TODO: Check for newly added fields from at_settings
   List<String> sortFieldList(List<String> fieldList, AtCategory category,
       {bool isPreview = false}) {
     var fieldOrder = [
@@ -184,6 +184,22 @@ class FieldNames {
       return fieldList;
     }
 
+    // if new fields are added from older version of app and these are not present in field order
+    // we will append these fields at the end of reorder list.
+    for (int i = 0; i < fieldList.length; i++) {
+      if (fieldList[i].contains(AtText.IS_DELETED)) {
+        continue;
+      }
+      int index = fieldOrder.indexWhere((element) => element == fieldList[i]);
+      if (index == -1) {
+        fieldOrder.add(fieldList[i]);
+      }
+    }
+
+    // saving the new reorder list.
+    if (isPreview) {
+      FieldOrderService().updateField(category, fieldOrder);
+    }
     return fieldOrder;
   }
 }
