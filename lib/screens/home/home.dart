@@ -572,9 +572,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (!_isSearchScreen) {
-                      SetupRoutes.push(context, Routes.FOLLOWING_SCREEN);
-                    }
+                    SetupRoutes.push(
+                      context,
+                      Routes.FOLLOWING_SCREEN,
+                      arguments: {
+                        'forSearchedAtsign': _isSearchScreen,
+                      },
+                    );
                   },
                   child: Text(
                     'Followers',
@@ -604,9 +608,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (!_isSearchScreen) {
-                      SetupRoutes.push(context, Routes.FOLLOWING_SCREEN);
-                    }
+                    SetupRoutes.push(
+                      context,
+                      Routes.FOLLOWING_SCREEN,
+                      arguments: {
+                        'forSearchedAtsign': _isSearchScreen,
+                      },
+                    );
                   },
                   child: Text(
                     'Following',

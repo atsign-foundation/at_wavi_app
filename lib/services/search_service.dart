@@ -23,6 +23,8 @@ class SearchService {
 
   int? followers_count;
   int? following_count;
+  List<String>? followers;
+  List<String>? following;
   late bool isPrivateAccount;
   Map<String, List<String>> fieldOrders = {};
 
@@ -67,6 +69,8 @@ class SearchService {
   /// TODO: throws an error for image, serach 'colin/kevin'
   Future<User?> getAtsignDetails(String atsign) async {
     try {
+      followers = [];
+      following = [];
       fieldOrders = {};
       currentAtsignThemeData =
           Themes.lightTheme(highlightColor ?? ColorConstants.purple);
@@ -98,13 +102,15 @@ class SearchService {
 
           if ((field.key.contains(followers_key)) ||
               (field.key.contains(new_followers_key))) {
-            followers_count = _keyValuePair[field.key].split(',').length;
+            followers = _keyValuePair[field.key].split(',');
+            followers_count = followers?.length ?? 0;
             continue;
           }
 
           if ((field.key.contains(following_key)) ||
               (field.key.contains(new_following_key))) {
-            following_count = _keyValuePair[field.key].split(',').length;
+            following = _keyValuePair[field.key].split(',');
+            following_count = following?.length ?? 0;
             continue;
           }
 
