@@ -35,9 +35,11 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
   // late bool _isPrivate;
   // String _locationString = '', _accountName = '';
   OsmLocationModel? _osmLocationModel;
+  late Key _mapKey; // in order to update map when needed
 
   @override
   initState() {
+    _mapKey = UniqueKey();
     // _isPrivate = false;
     if (widget.basicData != null) {
       _data = BasicData.fromJson(jsonDecode(widget.basicData!.toJson()));
@@ -220,7 +222,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                               },
                             ),
                           );
-                        });
+                        }).then((value) => _mapKey = UniqueKey());
                   },
                   value: (str) => setState(() {}),
                 ),
@@ -239,7 +241,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                           AbsorbPointer(
                             absorbing: true,
                             child: FlutterMap(
-                              key: UniqueKey(),
+                              key: _mapKey,
                               options: MapOptions(
                                 boundsOptions: FitBoundsOptions(
                                     padding: EdgeInsets.all(0)),
