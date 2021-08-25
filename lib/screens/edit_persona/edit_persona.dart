@@ -28,8 +28,8 @@ class _EditPersonaState extends State<EditPersona>
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   late ThemeColor _themeColor;
   List<Color> _colors = [
-    ColorConstants.purple,
     ColorConstants.peach,
+    ColorConstants.purple,
     ColorConstants.blue,
     ColorConstants.solidPink,
     ColorConstants.fadedBrown,
@@ -92,7 +92,7 @@ class _EditPersonaState extends State<EditPersona>
                     onTap: (index) async {},
                     labelColor: ColorConstants.black,
                     indicatorWeight: 5.toHeight,
-                    indicatorColor: ColorConstants.orange,
+                    indicatorColor: ColorConstants.peach,
                     indicatorSize: TabBarIndicatorSize.label,
                     unselectedLabelColor: ColorConstants.black.withOpacity(0.5),
                     controller: _controller,
@@ -102,7 +102,7 @@ class _EditPersonaState extends State<EditPersona>
                         style: TextStyle(letterSpacing: 0.1, fontSize: 18),
                       ),
                       Text(
-                        'Design',
+                        'Appearance',
                         style: TextStyle(letterSpacing: 0.1, fontSize: 18),
                       )
                     ],
@@ -115,7 +115,9 @@ class _EditPersonaState extends State<EditPersona>
                       CotentEdit(),
                       SingleChildScrollView(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            SizedBox(height: 10),
                             Text(
                               'Theme',
                               style: CustomTextStyles.customBoldTextStyle(
@@ -288,8 +290,8 @@ class _EditPersonaState extends State<EditPersona>
               children: [
                 _rectangle(
                   color: isDark
-                      ? ColorConstants.purpleShade2
-                      : ColorConstants.purpleShade1,
+                      ? ColorConstants.peachShade2
+                      : ColorConstants.peachShade1,
                   opacity: isDark ? 0.3 : 1,
                 ),
                 SizedBox(
@@ -297,8 +299,8 @@ class _EditPersonaState extends State<EditPersona>
                 ),
                 _rectangle(
                   color: isDark
-                      ? ColorConstants.purpleShade2
-                      : ColorConstants.purpleShade1,
+                      ? ColorConstants.peachShade2
+                      : ColorConstants.peachShade1,
                   opacity: isDark ? 0.3 : 1,
                 ),
                 SizedBox(
@@ -331,7 +333,7 @@ class _EditPersonaState extends State<EditPersona>
         width: width ?? 150.toWidth,
         height: height ?? 50.toHeight,
         decoration: BoxDecoration(
-          color: color ?? ColorConstants.purpleShade1,
+          color: color ?? ColorConstants.peachShade1,
           borderRadius: BorderRadius.circular(roundedCorner ?? 5),
         ),
       ),
@@ -343,7 +345,7 @@ class _EditPersonaState extends State<EditPersona>
       width: 112.toWidth,
       height: 45.toHeight,
       decoration: BoxDecoration(
-        color: ColorConstants.purpleShade2,
+        color: ColorConstants.peach,
         borderRadius: BorderRadius.circular(20),
       ),
     );
