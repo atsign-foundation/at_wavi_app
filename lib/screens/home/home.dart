@@ -573,42 +573,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _isSearchScreen
-                      ? (SearchService().followers_count ?? '-').toString()
-                      : '${followsCount(_provider.followers.list!.length)}',
-                  style: TextStyle(
-                      fontSize: 18.toFont,
-                      color: _isDark
-                          ? _themeData!.primaryColor
-                          : _themeData!.highlightColor,
-                      fontWeight: FontWeight.w800),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    SetupRoutes.push(
-                      context,
-                      Routes.FOLLOWING_SCREEN,
-                      arguments: {
-                        'forSearchedAtsign': _isSearchScreen,
-                      },
-                    );
-                  },
-                  child: Text(
-                    'Followers',
-                    style: TextStyle(
-                        fontSize: 14.toFont,
-                        color: _themeData!.primaryColor.withOpacity(0.5)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -643,7 +607,44 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
               ],
             ),
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _isSearchScreen
+                      ? (SearchService().followers_count ?? '-').toString()
+                      : '${followsCount(_provider.followers.list!.length)}',
+                  style: TextStyle(
+                      fontSize: 18.toFont,
+                      color: _isDark
+                          ? _themeData!.primaryColor
+                          : _themeData!.highlightColor,
+                      fontWeight: FontWeight.w800),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    SetupRoutes.push(
+                      context,
+                      Routes.FOLLOWING_SCREEN,
+                      arguments: {
+                        'forSearchedAtsign': _isSearchScreen,
+                        'tabIndex': 1,
+                      },
+                    );
+                  },
+                  child: Text(
+                    'Followers',
+                    style: TextStyle(
+                        fontSize: 14.toFont,
+                        color: _themeData!.primaryColor.withOpacity(0.5)),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       );
     });

@@ -15,7 +15,8 @@ import 'package:provider/provider.dart';
 
 class Following extends StatefulWidget {
   final bool forSearchedAtsign;
-  Following({this.forSearchedAtsign = false});
+  final int tabIndex;
+  Following({this.forSearchedAtsign = false, this.tabIndex = 0});
 
   @override
   _FollowingState createState() => _FollowingState();
@@ -30,7 +31,7 @@ class _FollowingState extends State<Following>
   @override
   void initState() {
     _controller =
-        TabController(length: 2, vsync: this, initialIndex: _tabIndex);
+        TabController(length: 2, vsync: this, initialIndex: widget.tabIndex);
     super.initState();
   }
 
