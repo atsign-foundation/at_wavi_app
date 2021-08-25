@@ -308,6 +308,21 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
   }
 
   _updateLocation(OsmLocationModel _osmData) async {
+    // when field is being added, checking if title name is already taken or not
+    if (widget.basicData == null) {
+      if (Provider.of<UserPreview>(context, listen: false)
+          .iskeyNameTaken(_data)) {
+        _showToast('This title is already taken', isError: true);
+        return;
+      }
+    } else if (widget.basicData!.accountName != _data.accountName) {
+      if (Provider.of<UserPreview>(context, listen: false)
+          .iskeyNameTaken(_data)) {
+        _showToast('This title is already taken', isError: true);
+        return;
+      }
+    }
+
     // LoadingDialog().show(text: 'Adding custom location');
 
     _data.type = CustomContentType.Text.name;
