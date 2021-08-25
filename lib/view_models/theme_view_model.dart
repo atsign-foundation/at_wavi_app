@@ -10,8 +10,8 @@ class ThemeProvider extends BaseModel {
   String SET_THEME = 'set_theme';
 
   ThemeColor themeColor = ThemeColor.Light;
-  ThemeData darktheme = Themes.darkTheme(ColorConstants.purple);
-  ThemeData lighttheme = Themes.lightTheme(ColorConstants.purple);
+  ThemeData darktheme = Themes.darkTheme();
+  ThemeData lighttheme = Themes.lightTheme();
   ThemeData? currentAtsignThemeData;
   Color? highlightColor;
 
@@ -24,8 +24,8 @@ class ThemeProvider extends BaseModel {
   }
 
   setHighlightColor(Color _color) {
-    darktheme = Themes.darkTheme(_color);
-    lighttheme = Themes.lightTheme(_color);
+    darktheme = Themes.darkTheme(highlightColor: _color);
+    lighttheme = Themes.lightTheme(highlightColor: _color);
     highlightColor = _color;
     currentAtsignThemeData =
         (themeColor == ThemeColor.Light) ? lighttheme : darktheme;
@@ -58,7 +58,7 @@ class ThemeProvider extends BaseModel {
 
       highlightColor = (_highlightColorPreference != null)
           ? convertToHighlightColor(_highlightColorPreference)
-          : ColorConstants.purple;
+          : ColorConstants.peach;
 
       // theme.highlightColor = highlightColor!;
       setHighlightColor(highlightColor!);
@@ -121,7 +121,7 @@ class ThemeProvider extends BaseModel {
       case 'yellow':
         return ColorConstants.solidYellow;
       default:
-        return ColorConstants.purple;
+        return ColorConstants.peach;
     }
   }
 }

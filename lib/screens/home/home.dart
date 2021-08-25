@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
 
     if (_themeData!.scaffoldBackgroundColor ==
-        Themes.darkTheme(ColorConstants.purple).scaffoldBackgroundColor) {
+        Themes.darkTheme().scaffoldBackgroundColor) {
       _isDark = true;
     }
 

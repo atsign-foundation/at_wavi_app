@@ -39,7 +39,7 @@ class _HomeChannelsState extends State<HomeChannels> {
     }
 
     if (_themeData!.scaffoldBackgroundColor ==
-        Themes.darkTheme(ColorConstants.purple).scaffoldBackgroundColor) {
+        Themes.darkTheme().scaffoldBackgroundColor) {
       _isDark = true;
     }
 

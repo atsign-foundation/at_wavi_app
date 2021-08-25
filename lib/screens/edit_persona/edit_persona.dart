@@ -378,14 +378,14 @@ class _EditPersonaState extends State<EditPersona>
 
     if (_updateTheme) {
       _modifiedTheme = _theme == ThemeColor.Dark
-          ? Themes.darkTheme(_modifiedHighlightColor!)
-          : Themes.lightTheme(_modifiedHighlightColor!);
+          ? Themes.darkTheme(highlightColor: _modifiedHighlightColor!)
+          : Themes.lightTheme(highlightColor: _modifiedHighlightColor!);
     } else {
       _modifiedTheme =
           Provider.of<ThemeProvider>(context, listen: false).themeColor ==
                   ThemeColor.Dark
-              ? Themes.darkTheme(_modifiedHighlightColor!)
-              : Themes.lightTheme(_modifiedHighlightColor!);
+              ? Themes.darkTheme(highlightColor: _modifiedHighlightColor!)
+              : Themes.lightTheme(highlightColor: _modifiedHighlightColor!);
     }
 
     await SetupRoutes.push(context, Routes.HOME, arguments: {

@@ -48,7 +48,7 @@ class MaterialAppClass extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: SetupRoutes.initialRoute,
       navigatorKey: NavService.navKey,
-      theme: Themes.lightTheme(Colors.transparent),
+      theme: Themes.lightTheme(highlightColor: Colors.transparent),
       routes: SetupRoutes.routes,
     );
   }

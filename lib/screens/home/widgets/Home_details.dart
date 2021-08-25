@@ -38,7 +38,7 @@ class _HomeDetailsState extends State<HomeDetails> {
     }
 
     if (_themeData!.scaffoldBackgroundColor ==
-        Themes.darkTheme(ColorConstants.purple).scaffoldBackgroundColor) {
+        Themes.darkTheme().scaffoldBackgroundColor) {
       _isDark = true;
     }
 
