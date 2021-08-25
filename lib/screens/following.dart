@@ -241,6 +241,11 @@ class _FollowingState extends State<Following>
                                 }
                               }
 
+                              bool _isFollowingThisAtsign =
+                                  Provider.of<FollowService>(context,
+                                          listen: false)
+                                      .isFollowing(_filteredList[index]!);
+
                               return Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 8.0),
@@ -249,9 +254,10 @@ class _FollowingState extends State<Following>
                                     subTitle: _filteredList[index],
                                     trailingWidget: InkWell(
                                       onTap: () async {
-                                        Provider.of<FollowService>(context,
+                                        await Provider.of<FollowService>(
+                                                context,
                                                 listen: false)
-                                            .removeFollower(
+                                            .performFollowUnfollow(
                                                 _filteredList[index]!);
                                       },
                                       child: _provider
@@ -260,9 +266,13 @@ class _FollowingState extends State<Following>
                                               .isRmovingFromFollowers
                                           ? CircularProgressIndicator()
                                           : Text(
-                                              'Remove',
+                                              (_isFollowingThisAtsign
+                                                  ? 'Following'
+                                                  : 'Follow'),
                                               style: TextStyles.lightText(
-                                                  ColorConstants.orange,
+                                                  (_isFollowingThisAtsign
+                                                      ? ColorConstants.greyText
+                                                      : ColorConstants.orange),
                                                   size: 16),
                                             ),
                                     ),
