@@ -90,10 +90,10 @@ class ThemeProvider extends BaseModel {
       if (_res) {
         if (themeColor == ThemeColor.Dark) {
           currentAtsignThemeData = darktheme;
-          themeColor = ThemeColor.Dark;
+          this.themeColor = ThemeColor.Dark;
         } else {
           currentAtsignThemeData = lighttheme;
-          themeColor = ThemeColor.Light;
+          this.themeColor = ThemeColor.Light;
         }
         setStatus(SET_THEME, Status.Done);
       } else {

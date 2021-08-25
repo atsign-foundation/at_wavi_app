@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
@@ -16,13 +17,15 @@ class SearchService {
   factory SearchService() => _instance;
   final String url = 'https://wavi.ng/api/?atp=';
 
-  late User user;
+  User user = User(allPrivate: false, atsign: '');
   ThemeColor? themeColor;
   ThemeData? currentAtsignThemeData;
   Color? highlightColor;
 
   int? followers_count;
   int? following_count;
+  List<String>? followers;
+  List<String>? following;
   late bool isPrivateAccount;
   Map<String, List<String>> fieldOrders = {};
 
@@ -67,6 +70,8 @@ class SearchService {
   /// TODO: throws an error for image, serach 'colin/kevin'
   Future<User?> getAtsignDetails(String atsign) async {
     try {
+      followers = [];
+      following = [];
       fieldOrders = {};
       currentAtsignThemeData =
           Themes.lightTheme(highlightColor ?? ColorConstants.purple);
@@ -98,13 +103,15 @@ class SearchService {
 
           if ((field.key.contains(followers_key)) ||
               (field.key.contains(new_followers_key))) {
-            followers_count = _keyValuePair[field.key].split(',').length;
+            followers = _keyValuePair[field.key].split(',');
+            followers_count = followers?.length ?? 0;
             continue;
           }
 
           if ((field.key.contains(following_key)) ||
               (field.key.contains(new_following_key))) {
-            following_count = _keyValuePair[field.key].split(',').length;
+            following = _keyValuePair[field.key].split(',');
+            following_count = following?.length ?? 0;
             continue;
           }
 
@@ -127,6 +134,10 @@ class SearchService {
           }
         }
       });
+
+      if (user.twitter.value != null) {
+        await TwitetrService().getTweets(searchedUsername: user.twitter.value);
+      }
 
       return user;
     } catch (e) {

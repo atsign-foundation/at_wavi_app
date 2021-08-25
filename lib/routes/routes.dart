@@ -48,7 +48,17 @@ class SetupRoutes {
         }
         return AddLink('');
       },
-      Routes.FOLLOWING_SCREEN: (context) => Following(),
+      Routes.FOLLOWING_SCREEN: (context) {
+        if ((ModalRoute.of(context) != null) &&
+            (ModalRoute.of(context)!.settings.arguments != null)) {
+          Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return Following(
+            forSearchedAtsign: args['forSearchedAtsign'] ?? false,
+          );
+        }
+        return Following();
+      },
       Routes.SEARCH_SCREEN: (context) => Search(),
       Routes.LOCATION_WIDGET: (context) => LocationWidget(),
       Routes.SELECTED_LOCATION: (context) {

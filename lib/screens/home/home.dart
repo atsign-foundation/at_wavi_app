@@ -572,9 +572,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (!_isSearchScreen) {
-                      SetupRoutes.push(context, Routes.FOLLOWING_SCREEN);
-                    }
+                    SetupRoutes.push(
+                      context,
+                      Routes.FOLLOWING_SCREEN,
+                      arguments: {
+                        'forSearchedAtsign': _isSearchScreen,
+                      },
+                    );
                   },
                   child: Text(
                     'Followers',
@@ -604,9 +608,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (!_isSearchScreen) {
-                      SetupRoutes.push(context, Routes.FOLLOWING_SCREEN);
-                    }
+                    SetupRoutes.push(
+                      context,
+                      Routes.FOLLOWING_SCREEN,
+                      arguments: {
+                        'forSearchedAtsign': _isSearchScreen,
+                      },
+                    );
                   },
                   child: Text(
                     'Following',
@@ -682,17 +690,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   _searchProfile() async {
+    bool _isSearchingSameAtsign = SearchService().user.atsign == searchedAtsign;
+
     if (loadingSearchedAtsign) {
       return;
     }
-
     setState(() {
       loadingSearchedAtsign = true;
     });
-    var _isPresent = await CommonFunctions().checkAtsign(searchedAtsign);
+
+    bool _isPresent = _isSearchingSameAtsign;
+    if (!_isSearchingSameAtsign) {
+      _isPresent = await CommonFunctions().checkAtsign(searchedAtsign);
+    }
 
     if (_isPresent) {
-      var _res = await SearchService().getAtsignDetails(searchedAtsign);
+      User? _res = SearchService().user;
+
+      if (!_isSearchingSameAtsign) {
+        _res = await SearchService().getAtsignDetails(searchedAtsign);
+      }
 
       if (_res == null) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -708,10 +725,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           loadingSearchedAtsign = false;
         });
         return;
-      }
-
-      if (_res.twitter.value != null) {
-        await TwitetrService().getTweets(searchedUsername: _res.twitter.value);
       }
 
       setState(() {
