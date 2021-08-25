@@ -149,7 +149,8 @@ class AtKeySetService {
           scanKeys = await BackendService().atClientInstance.getAtKeys();
         }
         var isDeleted = await _deleteChangedKeys(atKey, scanKeys);
-        if (data.value == null) {
+
+        if (data.value == null || data.value == '') {
           atKey.key = atKey.key!.replaceAll(' ', '');
           AtKeyGetService().objectReference().remove(key.split('.')[0]);
           result = await BackendService().atClientInstance.delete(atKey);
