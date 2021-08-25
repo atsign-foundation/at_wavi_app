@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/common_components/text_tile.dart';
@@ -5,11 +7,15 @@ import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CreateCustomAddLink extends StatefulWidget {
   final AtCategory category;
@@ -187,6 +193,17 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
 
     print('_customData $_customData');
 
+    Provider.of<UserPreview>(context, listen: false).setUser = User.fromJson(
+        json.decode(json.encode(User.toJson(
+            Provider.of<UserProvider>(context, listen: false).user))));
+
+    // when new field is being added, checking if title name is already taken or not
+    if (Provider.of<UserPreview>(context, listen: false)
+        .iskeyNameTaken(_customData)) {
+      _showToast('This title is already taken', isError: true);
+      return;
+    }
+
     LoadingDialog().show(text: 'Adding custom content');
 
     var _res = await AtKeySetService()
@@ -195,11 +212,31 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
     LoadingDialog().hide();
 
     if (_res) {
+      _updateProvider(_customData);
       _showToast('$_accountName added', bgColor: ColorConstants.DARK_GREY);
       SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
     } else {
       _showToast('$_accountName addition failed', isError: true);
     }
+  }
+
+  /// Add directly to UserProvider
+  _updateProvider(BasicData data) {
+    List<BasicData>? customFields =
+        Provider.of<UserProvider>(context, listen: false)
+            .user!
+            .customFields[widget.category.name];
+
+    if (customFields == null) {
+      customFields = [];
+    }
+
+    customFields.add(data);
+    Provider.of<UserProvider>(context, listen: false)
+        .user!
+        .customFields[widget.category.name] = customFields;
+
+    FieldOrderService().addNewField(widget.category, data.accountName!);
   }
 
   _showBottomSheet(
