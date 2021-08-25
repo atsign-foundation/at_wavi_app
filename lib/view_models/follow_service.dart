@@ -165,6 +165,7 @@ class FollowService extends BaseModel {
       } else {
         await AtFollowServices().follow(atsign);
       }
+      await BackendService().sync();
       await getFollowing();
     } catch (e) {
       print('Error in performFollowUnfollow $e');

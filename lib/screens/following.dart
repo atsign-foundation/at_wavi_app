@@ -174,7 +174,8 @@ class _FollowingState extends State<Following>
                                     onTap: () async {
                                       await Provider.of<FollowService>(context,
                                               listen: false)
-                                          .unfollow(_filteredList[index]!);
+                                          .performFollowUnfollow(
+                                              _filteredList[index]!);
                                     },
                                     child: (!widget.forSearchedAtsign &&
                                             _provider
