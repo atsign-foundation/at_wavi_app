@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
+import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,8 @@ class _WelcomeState extends State<Welcome> {
         ReceiveSharingIntent.getTextStream().listen((String value) {
       print('Incoming text Value in home  is $value');
       if (value != null) {
-        SetupRoutes.push(context, Routes.ADD_LINK, arguments: {'url': value});
+        SetupRoutes.push(NavService.navKey.currentContext!, Routes.ADD_LINK,
+            arguments: {'url': value});
       }
     }, onError: (err) {
       print("getLinkStream error: $err");
@@ -70,7 +72,8 @@ class _WelcomeState extends State<Welcome> {
     // For sharing or opening urls/text coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialText().then((String? value) {
       if (value != null) {
-        SetupRoutes.push(context, Routes.ADD_LINK, arguments: {'url': value});
+        SetupRoutes.push(NavService.navKey.currentContext!, Routes.ADD_LINK,
+            arguments: {'url': value});
       }
       print('Incoming text in home  when app is closed $value');
     });

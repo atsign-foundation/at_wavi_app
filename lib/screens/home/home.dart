@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
 
     if (_themeData!.scaffoldBackgroundColor ==
-        Themes.darkTheme(ColorConstants.purple).scaffoldBackgroundColor) {
+        Themes.darkTheme().scaffoldBackgroundColor) {
       _isDark = true;
     }
 
@@ -186,229 +186,247 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  header(),
-                  hideHeader && loadingSearchedAtsign
-                      ? LinearProgressIndicator()
-                      : SizedBox(),
-                  SizedBox(height: 30.toHeight),
-                  // content
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        width: 116.toWidth,
-                        height: 116.toWidth,
-                        decoration: BoxDecoration(
-                          color: ColorConstants.white.withOpacity(0.8),
-                          borderRadius: BorderRadius.circular(60),
-                        ),
-                        child: (_currentUser.image.value != null)
-                            ? CircleAvatar(
-                                radius: 50.toFont,
-                                backgroundColor: Colors.transparent,
-                                backgroundImage:
-                                    Image.memory(_currentUser.image.value)
-                                        .image,
-                              )
-                            : Icon(
-                                Icons.person,
-                                size: 50,
-                              ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(_name,
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: _themeData!.primaryColor,
-                                    fontWeight: FontWeight.w600)),
-                            SizedBox(height: 8.toHeight),
-                            Text(
-                              _currentUser.atsign,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: ColorConstants.orange,
-                                fontSize: 18.toFont,
-                              ),
-                            ),
-                            SizedBox(height: 18.5.toHeight),
-                            Divider(
-                              color: _themeData!.highlightColor,
-                            ),
-                            SizedBox(height: 18.5.toHeight),
-                            followersFollowingRow(),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 20.toHeight),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          height: 55.toHeight,
-                          child: TextButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  _themeData!.highlightColor.withOpacity(0.1)),
-                            ),
-                            onPressed: widget.isPreview
-                                ? () async {
-                                    if (_isSearchScreen) {
-                                      LoadingDialog().show(text: 'Updating');
-                                      await Provider.of<FollowService>(
-                                              NavService.navKey.currentContext!,
-                                              listen: false)
-                                          .performFollowUnfollow(
-                                              _currentUser.atsign);
-                                      LoadingDialog().hide();
-                                      setState(() {});
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        backgroundColor: ColorConstants.RED,
-                                        content: Text(
-                                          'This is a Preview',
-                                          style:
-                                              CustomTextStyles.customTextStyle(
-                                            ColorConstants.white,
-                                          ),
-                                        ),
-                                      ));
-                                    }
-                                  }
-                                : () async {
-                                    SetupRoutes.push(
-                                        NavService.navKey.currentContext!,
-                                        Routes.EDIT_PERSONA);
-                                  },
-                            child: Text(
-                              _isSearchScreen
-                                  ? (Provider.of<FollowService>(
-                                              NavService.navKey.currentContext!,
-                                              listen: false)
-                                          .isFollowing(_currentUser.atsign)
-                                      ? 'Following'
-                                      : 'Follow')
-                                  : 'Edit Profile',
-                              style: TextStyle(
-                                  fontSize: 16.toFont,
-                                  color: _themeData!.primaryColor
-                                      .withOpacity(0.5)),
-                            ),
+            child: RefreshIndicator(
+              onRefresh: () async {
+                if (_isSearchScreen) {
+                  await SearchService().getAtsignDetails(_currentUser.atsign);
+                } else {
+                  await BackendService().sync();
+                }
+                setState(() {});
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    header(),
+                    hideHeader && loadingSearchedAtsign
+                        ? LinearProgressIndicator()
+                        : SizedBox(),
+                    SizedBox(height: 30.toHeight),
+                    // content
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: 116.toWidth,
+                          height: 116.toWidth,
+                          decoration: BoxDecoration(
+                            color: ColorConstants.white.withOpacity(0.8),
+                            borderRadius: BorderRadius.circular(60),
                           ),
+                          child: (_currentUser.image.value != null)
+                              ? CircleAvatar(
+                                  radius: 50.toFont,
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage:
+                                      Image.memory(_currentUser.image.value)
+                                          .image,
+                                )
+                              : Icon(
+                                  Icons.person,
+                                  size: 50,
+                                ),
                         ),
-                      ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        child: SizedBox(
-                          height: 55.toHeight,
-                          child: TextButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  _themeData!.highlightColor.withOpacity(0.1)),
-                            ),
-                            onPressed: widget.isPreview
-                                ? () {
-                                    if (_isSearchScreen) {
-                                      shareProfile();
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        backgroundColor: ColorConstants.RED,
-                                        content: Text(
-                                          'This is a Preview',
-                                          style:
-                                              CustomTextStyles.customTextStyle(
-                                            ColorConstants.white,
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(_name,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: _themeData!.primaryColor,
+                                      fontWeight: FontWeight.w600)),
+                              SizedBox(height: 8.toHeight),
+                              Text(
+                                _currentUser.atsign,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: ColorConstants.orange,
+                                  fontSize: 18.toFont,
+                                ),
+                              ),
+                              SizedBox(height: 18.5.toHeight),
+                              Divider(
+                                color: _themeData!.highlightColor,
+                              ),
+                              SizedBox(height: 18.5.toHeight),
+                              followersFollowingRow(),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 20.toHeight),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: SizedBox(
+                            height: 55.toHeight,
+                            child: TextButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(_themeData!
+                                        .highlightColor
+                                        .withOpacity(0.1)),
+                              ),
+                              onPressed: widget.isPreview
+                                  ? () async {
+                                      if (_isSearchScreen) {
+                                        LoadingDialog().show(text: 'Updating');
+                                        await Provider.of<FollowService>(
+                                                NavService
+                                                    .navKey.currentContext!,
+                                                listen: false)
+                                            .performFollowUnfollow(
+                                                _currentUser.atsign);
+                                        LoadingDialog().hide();
+                                        setState(() {});
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          backgroundColor: ColorConstants.RED,
+                                          content: Text(
+                                            'This is a Preview',
+                                            style: CustomTextStyles
+                                                .customTextStyle(
+                                              ColorConstants.white,
+                                            ),
                                           ),
-                                        ),
-                                      ));
+                                        ));
+                                      }
                                     }
-                                  }
-                                : () {
-                                    shareProfile();
-                                  },
-                            child: Text('Share Profile',
+                                  : () async {
+                                      SetupRoutes.push(
+                                          NavService.navKey.currentContext!,
+                                          Routes.EDIT_PERSONA);
+                                    },
+                              child: Text(
+                                _isSearchScreen
+                                    ? (Provider.of<FollowService>(
+                                                NavService
+                                                    .navKey.currentContext!,
+                                                listen: false)
+                                            .isFollowing(_currentUser.atsign)
+                                        ? 'Following'
+                                        : 'Follow')
+                                    : 'Edit Profile',
                                 style: TextStyle(
                                     fontSize: 16.toFont,
                                     color: _themeData!.primaryColor
-                                        .withOpacity(0.5))),
+                                        .withOpacity(0.5)),
+                              ),
+                            ),
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 25.toHeight),
-
-                  _isSearchScreen && SearchService().isPrivateAccount
-                      ? HomePrivateAccount(_themeData!)
-                      : SizedBox(),
-
-                  _isSearchScreen && SearchService().isPrivateAccount
-                      ? SizedBox()
-                      : Container(
-                          height: 70.toHeight,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color:
-                                    _themeData!.primaryColor.withOpacity(0.1)),
-                            borderRadius: BorderRadius.circular(60),
-                          ),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _currentTab = HOME_TABS.DETAILS;
-                                    });
-                                  },
-                                  child: tab('Details', HOME_TABS.DETAILS),
-                                ),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: SizedBox(
+                            height: 55.toHeight,
+                            child: TextButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(_themeData!
+                                        .highlightColor
+                                        .withOpacity(0.1)),
                               ),
-                              Expanded(
-                                child: InkWell(
+                              onPressed: widget.isPreview
+                                  ? () {
+                                      if (_isSearchScreen) {
+                                        shareProfile();
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          backgroundColor: ColorConstants.RED,
+                                          content: Text(
+                                            'This is a Preview',
+                                            style: CustomTextStyles
+                                                .customTextStyle(
+                                              ColorConstants.white,
+                                            ),
+                                          ),
+                                        ));
+                                      }
+                                    }
+                                  : () {
+                                      shareProfile();
+                                    },
+                              child: Text('Share Profile',
+                                  style: TextStyle(
+                                      fontSize: 16.toFont,
+                                      color: _themeData!.primaryColor
+                                          .withOpacity(0.5))),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 25.toHeight),
+
+                    _isSearchScreen && SearchService().isPrivateAccount
+                        ? HomePrivateAccount(_themeData!)
+                        : SizedBox(),
+
+                    _isSearchScreen && SearchService().isPrivateAccount
+                        ? SizedBox()
+                        : Container(
+                            height: 70.toHeight,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: _themeData!.primaryColor
+                                      .withOpacity(0.1)),
+                              borderRadius: BorderRadius.circular(60),
+                            ),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: InkWell(
                                     onTap: () {
                                       setState(() {
-                                        _currentTab = HOME_TABS.CHANNELS;
+                                        _currentTab = HOME_TABS.DETAILS;
                                       });
                                     },
-                                    child: tab('Channels', HOME_TABS.CHANNELS)),
-                              ),
-                              Expanded(
-                                child: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _currentTab = HOME_TABS.FEATURED;
-                                    });
-                                  },
-                                  child: tab('Featured', HOME_TABS.FEATURED),
+                                    child: tab('Details', HOME_TABS.DETAILS),
+                                  ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  child: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          _currentTab = HOME_TABS.CHANNELS;
+                                        });
+                                      },
+                                      child:
+                                          tab('Channels', HOME_TABS.CHANNELS)),
+                                ),
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _currentTab = HOME_TABS.FEATURED;
+                                      });
+                                    },
+                                    child: tab('Featured', HOME_TABS.FEATURED),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                  SizedBox(
-                    height: _isSearchScreen && SearchService().isPrivateAccount
-                        ? 0
-                        : 20.toHeight,
-                  ),
-                  _isSearchScreen && SearchService().isPrivateAccount
-                      ? SizedBox()
-                      : homeContent()
-                ],
+                    SizedBox(
+                      height:
+                          _isSearchScreen && SearchService().isPrivateAccount
+                              ? 0
+                              : 20.toHeight,
+                    ),
+                    _isSearchScreen && SearchService().isPrivateAccount
+                        ? SizedBox()
+                        : homeContent()
+                  ],
+                ),
               ),
             ),
           ),
@@ -555,42 +573,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _isSearchScreen
-                      ? (SearchService().followers_count ?? '-').toString()
-                      : '${followsCount(_provider.followers.list!.length)}',
-                  style: TextStyle(
-                      fontSize: 18.toFont,
-                      color: _isDark
-                          ? _themeData!.primaryColor
-                          : _themeData!.highlightColor,
-                      fontWeight: FontWeight.w800),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    SetupRoutes.push(
-                      context,
-                      Routes.FOLLOWING_SCREEN,
-                      arguments: {
-                        'forSearchedAtsign': _isSearchScreen,
-                      },
-                    );
-                  },
-                  child: Text(
-                    'Followers',
-                    style: TextStyle(
-                        fontSize: 14.toFont,
-                        color: _themeData!.primaryColor.withOpacity(0.5)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -625,7 +607,44 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
               ],
             ),
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _isSearchScreen
+                      ? (SearchService().followers_count ?? '-').toString()
+                      : '${followsCount(_provider.followers.list!.length)}',
+                  style: TextStyle(
+                      fontSize: 18.toFont,
+                      color: _isDark
+                          ? _themeData!.primaryColor
+                          : _themeData!.highlightColor,
+                      fontWeight: FontWeight.w800),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    SetupRoutes.push(
+                      context,
+                      Routes.FOLLOWING_SCREEN,
+                      arguments: {
+                        'forSearchedAtsign': _isSearchScreen,
+                        'tabIndex': 1,
+                      },
+                    );
+                  },
+                  child: Text(
+                    'Followers',
+                    style: TextStyle(
+                        fontSize: 14.toFont,
+                        color: _themeData!.primaryColor.withOpacity(0.5)),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       );
     });

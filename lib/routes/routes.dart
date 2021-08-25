@@ -55,6 +55,7 @@ class SetupRoutes {
               as Map<String, dynamic>;
           return Following(
             forSearchedAtsign: args['forSearchedAtsign'] ?? false,
+            tabIndex: args['tabIndex'] ?? 0,
           );
         }
         return Following();

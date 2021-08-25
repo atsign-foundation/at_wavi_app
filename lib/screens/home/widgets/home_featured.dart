@@ -37,7 +37,7 @@ class _HomeFeaturedState extends State<HomeFeatured> {
     }
 
     if (_themeData!.scaffoldBackgroundColor ==
-        Themes.darkTheme(ColorConstants.purple).scaffoldBackgroundColor) {
+        Themes.darkTheme().scaffoldBackgroundColor) {
       _isDark = true;
     }
 

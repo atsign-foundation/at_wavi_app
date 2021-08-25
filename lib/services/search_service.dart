@@ -46,12 +46,12 @@ class SearchService {
 
   updateThemeData(_data) {
     if ((_data ?? '').toLowerCase() == 'dark') {
-      currentAtsignThemeData =
-          Themes.darkTheme(highlightColor ?? ColorConstants.purple);
+      currentAtsignThemeData = Themes.darkTheme(
+          highlightColor: highlightColor ?? ColorConstants.peach);
       themeColor = ThemeColor.Dark;
     } else {
-      currentAtsignThemeData =
-          Themes.lightTheme(highlightColor ?? ColorConstants.purple);
+      currentAtsignThemeData = Themes.lightTheme(
+          highlightColor: highlightColor ?? ColorConstants.peach);
       themeColor = ThemeColor.Light;
     }
   }
@@ -59,11 +59,11 @@ class SearchService {
   updateHighlightColor(String _color) {
     highlightColor = (_color != null)
         ? ThemeProvider().convertToHighlightColor(_color)
-        : ColorConstants.purple;
+        : ColorConstants.peach;
     if (themeColor != null) {
       currentAtsignThemeData = themeColor == ThemeColor.Dark
-          ? Themes.darkTheme(highlightColor!)
-          : Themes.lightTheme(highlightColor!);
+          ? Themes.darkTheme(highlightColor: highlightColor!)
+          : Themes.lightTheme(highlightColor: highlightColor!);
     }
   }
 
@@ -73,14 +73,14 @@ class SearchService {
       followers = [];
       following = [];
       fieldOrders = {};
-      currentAtsignThemeData =
-          Themes.lightTheme(highlightColor ?? ColorConstants.purple);
+      currentAtsignThemeData = Themes.lightTheme(
+          highlightColor: highlightColor ?? ColorConstants.peach);
 
       isPrivateAccount = false;
       user = User(allPrivate: false, atsign: atsign);
       var _response = await http.get(Uri.parse('$url$atsign'));
+      print('_jsonData ${_response.body}');
       var _jsonData = jsonDecode(_response.body);
-      print('_jsonData ${_jsonData}');
 
       _jsonData.forEach((_data) {
         var _keyValuePair = _data;
