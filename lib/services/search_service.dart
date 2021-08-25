@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
@@ -16,7 +17,7 @@ class SearchService {
   factory SearchService() => _instance;
   final String url = 'https://wavi.ng/api/?atp=';
 
-  late User user;
+  User user = User(allPrivate: false, atsign: '');
   ThemeColor? themeColor;
   ThemeData? currentAtsignThemeData;
   Color? highlightColor;
@@ -133,6 +134,10 @@ class SearchService {
           }
         }
       });
+
+      if (user.twitter.value != null) {
+        await TwitetrService().getTweets(searchedUsername: user.twitter.value);
+      }
 
       return user;
     } catch (e) {
