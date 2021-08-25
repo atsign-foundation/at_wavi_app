@@ -79,8 +79,8 @@ class SearchService {
       isPrivateAccount = false;
       user = User(allPrivate: false, atsign: atsign);
       var _response = await http.get(Uri.parse('$url$atsign'));
+      print('_jsonData ${_response.body}');
       var _jsonData = jsonDecode(_response.body);
-      print('_jsonData ${_jsonData}');
 
       _jsonData.forEach((_data) {
         var _keyValuePair = _data;
