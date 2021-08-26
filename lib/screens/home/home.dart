@@ -596,6 +596,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       Routes.FOLLOWING_SCREEN,
                       arguments: {
                         'forSearchedAtsign': _isSearchScreen,
+                        'themeData': _themeData,
                       },
                     );
                   },
@@ -633,6 +634,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       arguments: {
                         'forSearchedAtsign': _isSearchScreen,
                         'tabIndex': 1,
+                        'themeData': _themeData,
                       },
                     );
                   },
