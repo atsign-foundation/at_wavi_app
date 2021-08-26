@@ -1,13 +1,12 @@
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:at_wavi_app/services/size_config.dart';
 
 class ContentEditFieldCard extends StatefulWidget {
   final String title, subtitle;
-  final bool isPublic;
+  final bool isPrivate;
   ContentEditFieldCard(
-      {required this.title, required this.subtitle, this.isPublic = true});
+      {required this.title, required this.subtitle, this.isPrivate = true});
   @override
   _ContentEditFieldCardState createState() => _ContentEditFieldCardState();
 }
@@ -42,7 +41,7 @@ class _ContentEditFieldCardState extends State<ContentEditFieldCard> {
             ),
           ),
         ),
-        widget.isPublic ? Icon(Icons.public) : Icon(Icons.lock)
+        widget.isPrivate ? Icon(Icons.lock) : Icon(Icons.public)
       ],
     );
   }

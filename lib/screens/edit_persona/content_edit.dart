@@ -246,6 +246,7 @@ class _CotentEditState extends State<CotentEdit> {
             ContentEditFieldCard(
               title: basicData.accountName!,
               subtitle: basicData.value,
+              isPrivate: basicData.isPrivate,
             ),
             SizedBox(height: 25)
           ],
@@ -348,6 +349,7 @@ class _CotentEditState extends State<CotentEdit> {
         child: ContentEditFieldCard(
           title: isLocation ? '' : basicData.accountName!,
           subtitle: isLocation ? basicData.accountName! : basicData.value,
+          isPrivate: basicData.isPrivate,
         ),
       );
     } else if (basicData.type == CustomContentType.Image.name) {

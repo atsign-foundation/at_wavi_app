@@ -29,7 +29,12 @@ class FieldNames {
     'location',
   ];
 
-  static const _basicDetailsEnum = [FieldsEnum.PHONE, FieldsEnum.EMAIL];
+  static const _basicDetailsEnum = [
+    FieldsEnum.PHONE,
+    FieldsEnum.EMAIL,
+    FieldsEnum.FIRSTNAME,
+    FieldsEnum.LASTNAME
+  ];
   static const _additionalDetailsEnum = [FieldsEnum.PRONOUN, FieldsEnum.ABOUT];
   static const _socialAccountsEnum = [
     FieldsEnum.TWITTER,

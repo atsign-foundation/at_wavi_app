@@ -1,6 +1,5 @@
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
-import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
@@ -56,7 +55,8 @@ class _HomeDetailsState extends State<HomeDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            CommonFunctions().isFieldsPresentForCategory(AtCategory.DETAILS)
+            CommonFunctions().isFieldsPresentForCategory(AtCategory.DETAILS,
+                    isPreview: widget.isPreview)
                 ? Text(
                     'Basic Details',
                     style:
@@ -88,7 +88,6 @@ class _HomeDetailsState extends State<HomeDetails> {
                   _themeData!, AtCategory.ADDITIONAL_DETAILS,
                   isPreview: widget.isPreview),
             ),
-            ///////////
             SizedBox(
                 height: CommonFunctions().isFieldsPresentForCategory(
                         AtCategory.ADDITIONAL_DETAILS,
