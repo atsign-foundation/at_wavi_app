@@ -193,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 } else {
                   await BackendService().sync();
                 }
-                setState(() {});
+                if (mounted) setState(() {});
               },
               child: SingleChildScrollView(
                 child: Column(
