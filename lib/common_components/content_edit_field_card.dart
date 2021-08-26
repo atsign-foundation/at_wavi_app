@@ -6,8 +6,12 @@ import 'package:at_wavi_app/services/size_config.dart';
 class ContentEditFieldCard extends StatefulWidget {
   final String title, subtitle;
   final bool isPublic;
+  final ThemeData theme;
   ContentEditFieldCard(
-      {required this.title, required this.subtitle, this.isPublic = true});
+      {required this.theme,
+      required this.title,
+      required this.subtitle,
+      this.isPublic = true});
   @override
   _ContentEditFieldCardState createState() => _ContentEditFieldCardState();
 }
@@ -34,7 +38,8 @@ class _ContentEditFieldCardState extends State<ContentEditFieldCard> {
                 ),
                 Text(
                   widget.subtitle,
-                  style: TextStyles.lightText(ColorConstants.black, size: 18),
+                  style:
+                      TextStyles.lightText(widget.theme.primaryColor, size: 18),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -42,7 +47,12 @@ class _ContentEditFieldCardState extends State<ContentEditFieldCard> {
             ),
           ),
         ),
-        widget.isPublic ? Icon(Icons.public) : Icon(Icons.lock)
+        widget.isPublic
+            ? Icon(
+                Icons.public,
+                color: widget.theme.primaryColor,
+              )
+            : Icon(Icons.lock, color: widget.theme.primaryColor)
       ],
     );
   }

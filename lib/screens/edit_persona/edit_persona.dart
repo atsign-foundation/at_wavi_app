@@ -38,6 +38,8 @@ class _EditPersonaState extends State<EditPersona>
     ColorConstants.solidYellow,
   ];
 
+  ThemeData? _themeData;
+
   late ThemeColor _theme;
   late Color _highlightColor;
   bool _updateTheme = false,
@@ -47,6 +49,8 @@ class _EditPersonaState extends State<EditPersona>
 
   @override
   void initState() {
+    _getThemeData();
+
     _controller =
         TabController(length: 2, vsync: this, initialIndex: _tabIndex);
     FieldOrderService().setPreviewOrder = {...FieldOrderService().fieldOrders};
@@ -57,9 +61,21 @@ class _EditPersonaState extends State<EditPersona>
     super.initState();
   }
 
+  _getThemeData() async {
+    _themeData =
+        await Provider.of<ThemeProvider>(context, listen: false).getTheme();
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
+    if (_themeData == null) {
+      return CircularProgressIndicator();
+    }
+
     _themeColor = Provider.of<ThemeProvider>(context, listen: false).themeColor;
 
     return Container(
@@ -68,18 +84,18 @@ class _EditPersonaState extends State<EditPersona>
         child: Scaffold(
             key: scaffoldKey,
             bottomSheet: _bottomSheet(),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            backgroundColor: _themeData!.scaffoldBackgroundColor,
             appBar: AppBar(
-              iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+              iconTheme: IconThemeData(color: _themeData!.primaryColor),
               toolbarHeight: 40,
               title: Text(
                 'Edit Persona',
                 style: CustomTextStyles.customBoldTextStyle(
-                    Theme.of(context).primaryColor,
+                    _themeData!.primaryColor,
                     size: 16),
               ),
               centerTitle: false,
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              backgroundColor: _themeData!.scaffoldBackgroundColor,
               elevation: 0,
             ),
             body: Padding(
@@ -90,11 +106,12 @@ class _EditPersonaState extends State<EditPersona>
                   SizedBox(height: 20.toHeight),
                   TabBar(
                     onTap: (index) async {},
-                    labelColor: ColorConstants.black,
+                    labelColor: _themeData!.primaryColor,
                     indicatorWeight: 5.toHeight,
                     indicatorColor: ColorConstants.peach,
                     indicatorSize: TabBarIndicatorSize.label,
-                    unselectedLabelColor: ColorConstants.black.withOpacity(0.5),
+                    unselectedLabelColor:
+                        _themeData!.primaryColor.withOpacity(0.5),
                     controller: _controller,
                     tabs: [
                       Text(
@@ -112,7 +129,9 @@ class _EditPersonaState extends State<EditPersona>
                       child: TabBarView(
                     controller: _controller,
                     children: [
-                      CotentEdit(),
+                      CotentEdit(
+                        themeData: _themeData!,
+                      ),
                       SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +140,7 @@ class _EditPersonaState extends State<EditPersona>
                             Text(
                               'Theme',
                               style: CustomTextStyles.customBoldTextStyle(
-                                  Theme.of(context).primaryColor,
+                                  _themeData!.primaryColor,
                                   size: 18),
                             ),
                             SizedBox(height: 15.toHeight),
@@ -154,7 +173,7 @@ class _EditPersonaState extends State<EditPersona>
                             Text(
                               'Colour',
                               style: CustomTextStyles.customBoldTextStyle(
-                                  Theme.of(context).primaryColor,
+                                  _themeData!.primaryColor,
                                   size: 18),
                             ),
                             SizedBox(height: 15.toHeight),
@@ -234,8 +253,8 @@ class _EditPersonaState extends State<EditPersona>
           alignment: Alignment.center,
           decoration: BoxDecoration(
               color: isDark
-                  ? Theme.of(context).primaryColor
-                  : Theme.of(context).scaffoldBackgroundColor,
+                  ? _themeData!.primaryColor
+                  : _themeData!.scaffoldBackgroundColor,
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey,
@@ -247,10 +266,9 @@ class _EditPersonaState extends State<EditPersona>
             _text,
             style: isDark
                 ? CustomTextStyles.customTextStyle(
-                    Theme.of(context).scaffoldBackgroundColor,
+                    _themeData!.scaffoldBackgroundColor,
                     size: 18)
-                : CustomTextStyles.customTextStyle(
-                    Theme.of(context).primaryColor,
+                : CustomTextStyles.customTextStyle(_themeData!.primaryColor,
                     size: 18),
           ),
         ),

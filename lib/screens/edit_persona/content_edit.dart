@@ -18,7 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CotentEdit extends StatefulWidget {
-  const CotentEdit({Key? key}) : super(key: key);
+  final ThemeData themeData;
+  CotentEdit({required this.themeData, Key? key}) : super(key: key);
   @override
   _CotentEditState createState() => _CotentEditState();
 }
@@ -97,7 +98,9 @@ class _CotentEditState extends State<CotentEdit> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(title, style: TextStyles.black18bold),
+                Text(title,
+                    style: TextStyles.boldText(widget.themeData.primaryColor,
+                        size: 18)),
                 InkWell(
                   onTap: () {
                     if (route != '') {
@@ -123,7 +126,8 @@ class _CotentEditState extends State<CotentEdit> {
                                     .isFieldsPresentForCategory(category)
                                 ? 'Edit'
                                 : 'Add',
-                        style: TextStyles.lightText(ColorConstants.black),
+                        style:
+                            TextStyles.lightText(widget.themeData.primaryColor),
                       ),
                       SizedBox(width: 7),
                       category == AtCategory.IMAGE
@@ -149,6 +153,7 @@ class _CotentEditState extends State<CotentEdit> {
                               child: Icon(
                                 (Icons.edit),
                                 size: 20,
+                                color: widget.themeData.primaryColor,
                               ),
                             )
                           : CommonFunctions()
@@ -156,9 +161,11 @@ class _CotentEditState extends State<CotentEdit> {
                               ? Icon(
                                   (Icons.edit),
                                   size: 20,
+                                  color: widget.themeData.primaryColor,
                                 )
                               : Icon(
                                   Icons.add,
+                                  color: widget.themeData.primaryColor,
                                 )
                     ],
                   ),
@@ -246,6 +253,7 @@ class _CotentEditState extends State<CotentEdit> {
             ContentEditFieldCard(
               title: basicData.accountName!,
               subtitle: basicData.value,
+              theme: this.widget.themeData,
             ),
             SizedBox(height: 25)
           ],
@@ -289,6 +297,7 @@ class _CotentEditState extends State<CotentEdit> {
             ContentEditFieldCard(
               title: field.key,
               subtitle: field.value.value,
+              theme: this.widget.themeData,
             ),
             SizedBox(height: 25)
           ],
@@ -348,6 +357,7 @@ class _CotentEditState extends State<CotentEdit> {
         child: ContentEditFieldCard(
           title: isLocation ? '' : basicData.accountName!,
           subtitle: isLocation ? basicData.accountName! : basicData.value,
+          theme: widget.themeData,
         ),
       );
     } else if (basicData.type == CustomContentType.Image.name) {
