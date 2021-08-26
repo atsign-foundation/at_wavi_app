@@ -353,7 +353,8 @@ class CommonFunctions {
       if (field.key != null &&
           fields.contains(field.key) &&
           field.value != null &&
-          field.value.value != null) {
+          field.value.value != null &&
+          field.value.value != '') {
         return true;
       }
     }
@@ -373,7 +374,9 @@ class CommonFunctions {
 
       if (customFields != null) {
         for (var basicData in customFields) {
-          if (basicData.accountName != null && basicData.value != null) {
+          if (basicData.accountName != null &&
+              basicData.value != null &&
+              basicData.value != '') {
             return true;
           }
         }

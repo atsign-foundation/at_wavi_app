@@ -81,6 +81,10 @@ class _CustomMediaCardState extends State<CustomMediaCard> {
                             size: 18),
                   )
                 : SizedBox(),
+            (widget.basicData.valueDescription != null) &&
+                    (widget.basicData.valueDescription != 'null')
+                ? SizedBox(height: 6)
+                : SizedBox(),
             _isImage && customImage != null
                 ? Image.memory(
                     customImage as Uint8List,
