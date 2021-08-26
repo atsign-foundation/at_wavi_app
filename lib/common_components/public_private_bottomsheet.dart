@@ -10,14 +10,14 @@ showPublicPrivateBottomSheet(
     double height = 200}) {
   return showModalBottomSheet(
       context: NavService.navKey.currentContext!,
+      backgroundColor:
+          Theme.of(NavService.navKey.currentContext!).scaffoldBackgroundColor,
       builder: (context) {
         return Container(
           padding: EdgeInsets.all(10),
           height: height,
           decoration: BoxDecoration(
-            color: Theme.of(context).brightness == Brightness.light
-                ? ColorConstants.white
-                : ColorConstants.black,
+            color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: BorderRadius.only(
               topLeft: const Radius.circular(12.0),
               topRight: const Radius.circular(12.0),
@@ -56,11 +56,16 @@ showPublicPrivateBottomSheet(
 Widget privateRow() {
   return Row(
     children: [
-      Icon(Icons.lock),
+      Icon(
+        Icons.lock,
+        color: Theme.of(NavService.navKey.currentContext!).primaryColor,
+      ),
       SizedBox(width: 5.toWidth),
       Text(
         'Private',
-        style: TextStyles.lightText(ColorConstants.black, size: 16),
+        style: TextStyles.lightText(
+            Theme.of(NavService.navKey.currentContext!).primaryColor,
+            size: 16),
       )
     ],
   );
@@ -69,11 +74,16 @@ Widget privateRow() {
 Widget publicRow() {
   return Row(
     children: [
-      Icon(Icons.public),
+      Icon(
+        Icons.public,
+        color: Theme.of(NavService.navKey.currentContext!).primaryColor,
+      ),
       SizedBox(width: 5.toWidth),
       Text(
         'Public',
-        style: TextStyles.lightText(ColorConstants.black, size: 16),
+        style: TextStyles.lightText(
+            Theme.of(NavService.navKey.currentContext!).primaryColor,
+            size: 16),
       )
     ],
   );

@@ -64,6 +64,10 @@ class BackendService {
         Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
                 listen: false)
             .resetThemeData();
+        await Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
+                listen: false)
+            .checkThemeFromSecondary();
+
         AtKeyGetService().init();
         await Provider.of<UserProvider>(NavService.navKey.currentContext!,
                 listen: false)
