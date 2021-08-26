@@ -37,9 +37,11 @@ class _LocationWidgetState extends State<LocationWidget> {
   BasicData? _data;
   late bool _isPrivate;
   String _locationString = '', _locationNickname = '';
+  late Key _mapKey; // in order to update map when needed
 
   @override
   initState() {
+    _mapKey = UniqueKey();
     _isPrivate = false;
     _data = Provider.of<UserPreview>(context, listen: false).user()!.location;
     _locationNickname = Provider.of<UserPreview>(context, listen: false)
@@ -274,7 +276,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                                   ),
                                   child: SelectLocation(),
                                 );
-                              });
+                              }).then((value) => _mapKey = UniqueKey());
                         },
                         value: (str) => setState(() {
                           _data!.value = str;
@@ -295,7 +297,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                                 AbsorbPointer(
                                   absorbing: true,
                                   child: FlutterMap(
-                                    key: UniqueKey(),
+                                    key: _mapKey,
                                     options: MapOptions(
                                       boundsOptions: FitBoundsOptions(
                                           padding: EdgeInsets.all(0)),

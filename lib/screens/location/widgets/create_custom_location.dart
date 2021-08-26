@@ -35,9 +35,11 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
   // late bool _isPrivate;
   // String _locationString = '', _accountName = '';
   OsmLocationModel? _osmLocationModel;
+  late Key _mapKey; // in order to update map when needed
 
   @override
   initState() {
+    _mapKey = UniqueKey();
     // _isPrivate = false;
     if (widget.basicData != null) {
       _data = BasicData.fromJson(jsonDecode(widget.basicData!.toJson()));
@@ -220,7 +222,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                               },
                             ),
                           );
-                        });
+                        }).then((value) => _mapKey = UniqueKey());
                   },
                   value: (str) => setState(() {}),
                 ),
@@ -239,7 +241,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                           AbsorbPointer(
                             absorbing: true,
                             child: FlutterMap(
-                              key: UniqueKey(),
+                              key: _mapKey,
                               options: MapOptions(
                                 boundsOptions: FitBoundsOptions(
                                     padding: EdgeInsets.all(0)),
@@ -308,6 +310,21 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
   }
 
   _updateLocation(OsmLocationModel _osmData) async {
+    // when field is being added, checking if title name is already taken or not
+    if (widget.basicData == null) {
+      if (Provider.of<UserPreview>(context, listen: false)
+          .iskeyNameTaken(_data)) {
+        _showToast('This title is already taken', isError: true);
+        return;
+      }
+    } else if (widget.basicData!.accountName != _data.accountName) {
+      if (Provider.of<UserPreview>(context, listen: false)
+          .iskeyNameTaken(_data)) {
+        _showToast('This title is already taken', isError: true);
+        return;
+      }
+    }
+
     // LoadingDialog().show(text: 'Adding custom location');
 
     _data.type = CustomContentType.Text.name;
