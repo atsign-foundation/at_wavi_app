@@ -60,6 +60,7 @@ class _SelectLocationState extends State<SelectLocation> {
             children: <Widget>[
               Expanded(
                 child: CustomInputField(
+                  inputFieldColor: ColorConstants.MILD_GREY,
                   hintText: 'Search an area, street name…',
                   height: 50.toHeight,
                   initialValue: inputText,
@@ -120,6 +121,10 @@ class _SelectLocationState extends State<SelectLocation> {
               Checkbox(
                 value: nearMe,
                 tristate: true,
+                // checkColor: Theme.of(context).primaryColor,
+                fillColor: MaterialStateProperty.all<Color>(
+                    Theme.of(context).primaryColor),
+                checkColor: Theme.of(context).scaffoldBackgroundColor,
                 onChanged: (value) async {
                   if (nearMe == null) return;
 
@@ -147,7 +152,7 @@ class _SelectLocationState extends State<SelectLocation> {
                   children: [
                     Text('Near me',
                         style: CustomTextStyles.customTextStyle(
-                            ColorConstants.DARK_GREY)),
+                            Theme.of(context).primaryColor.withOpacity(0.5))),
                     ((nearMe == null) ||
                             ((nearMe == false) && (currentLocation == null)))
                         ? Flexible(
@@ -180,12 +185,12 @@ class _SelectLocationState extends State<SelectLocation> {
               children: [
                 Text('Current Location',
                     style: CustomTextStyles.customTextStyle(
-                        ColorConstants.DARK_GREY,
+                        Theme.of(context).primaryColor.withOpacity(0.5),
                         size: 14)),
                 SizedBox(height: 5.toHeight),
                 Text('Using GPS',
                     style: CustomTextStyles.customTextStyle(
-                        ColorConstants.DARK_GREY,
+                        Theme.of(context).primaryColor.withOpacity(0.5),
                         size: 12)),
               ],
             ),
@@ -244,16 +249,17 @@ class _SelectLocationState extends State<SelectLocation> {
                                               Text(snapshot.data![index].city!,
                                                   style: CustomTextStyles
                                                       .customTextStyle(
-                                                          ColorConstants
-                                                              .DARK_GREY,
+                                                          Theme.of(context)
+                                                              .primaryColor,
                                                           size: 14)),
                                               Text(
                                                   snapshot.data![index]
                                                       .displayName!,
                                                   style: CustomTextStyles
                                                       .customTextStyle(
-                                                          ColorConstants
-                                                              .DARK_GREY,
+                                                          Theme.of(context)
+                                                              .primaryColor
+                                                              .withOpacity(0.5),
                                                           size: 12)),
                                             ],
                                           ),
