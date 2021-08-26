@@ -80,12 +80,18 @@ class _AddLinkState extends State<AddLink> {
             width: SizeConfig().screenWidth,
             color: _selectedValue == ''
                 ? ColorConstants.dullColor(
-                    color: Theme.of(context).primaryColor, opacity: 0.5)
-                : Theme.of(context).primaryColor,
+                    color: (Theme.of(context).scaffoldBackgroundColor ==
+                            ColorConstants.black
+                        ? ColorConstants.DARK_GREY
+                        : ColorConstants.black),
+                    opacity: 0.5)
+                : (Theme.of(context).scaffoldBackgroundColor ==
+                        ColorConstants.black
+                    ? ColorConstants.DARK_GREY
+                    : ColorConstants.black),
             child: Text(
               'Next',
-              style: CustomTextStyles.customTextStyle(
-                  Theme.of(context).scaffoldBackgroundColor,
+              style: CustomTextStyles.customTextStyle(ColorConstants.white,
                   size: 18),
             )),
       ),
