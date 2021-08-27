@@ -254,6 +254,7 @@ class _CotentEditState extends State<CotentEdit> {
               title: basicData.accountName!,
               subtitle: basicData.value,
               theme: this.widget.themeData,
+              isPrivate: basicData.isPrivate,
             ),
             SizedBox(height: 25)
           ],
@@ -358,6 +359,7 @@ class _CotentEditState extends State<CotentEdit> {
           title: isLocation ? '' : basicData.accountName!,
           subtitle: isLocation ? basicData.accountName! : basicData.value,
           theme: widget.themeData,
+          isPrivate: basicData.isPrivate,
         ),
       );
     } else if (basicData.type == CustomContentType.Image.name) {

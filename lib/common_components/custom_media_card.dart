@@ -37,16 +37,13 @@ class _CustomMediaCardState extends State<CustomMediaCard> {
       customImage = Uint8List.fromList(intList);
     } else if (widget.basicData.type == CustomContentType.Youtube.name) {
       // getting youtube video ID
-      String videoId = widget.basicData.value.split('/').last;
-      if (videoId.contains('watch?v=')) {
-        videoId = videoId.replaceAll('watch?v=', '');
-      }
-
+      String? videoId;
+      videoId = YoutubePlayer.convertUrlToId(widget.basicData.value);
       _isVideo = true;
 
       /// initializing [_controller]
       _controller = YoutubePlayerController(
-        initialVideoId: videoId,
+        initialVideoId: videoId ?? '',
         flags: YoutubePlayerFlags(
           autoPlay: false,
           mute: false,
@@ -83,6 +80,10 @@ class _CustomMediaCardState extends State<CustomMediaCard> {
                         : TextStyles.lightText(widget.themeData.highlightColor,
                             size: 18),
                   )
+                : SizedBox(),
+            (widget.basicData.valueDescription != null) &&
+                    (widget.basicData.valueDescription != 'null')
+                ? SizedBox(height: 6)
                 : SizedBox(),
             _isImage && customImage != null
                 ? Image.memory(
