@@ -56,9 +56,10 @@ class SetupRoutes {
           return Following(
             forSearchedAtsign: args['forSearchedAtsign'] ?? false,
             tabIndex: args['tabIndex'] ?? 0,
+            themeData: args['themeData'],
           );
         }
-        return Following();
+        return SizedBox();
       },
       Routes.SEARCH_SCREEN: (context) => Search(),
       Routes.LOCATION_WIDGET: (context) => LocationWidget(),

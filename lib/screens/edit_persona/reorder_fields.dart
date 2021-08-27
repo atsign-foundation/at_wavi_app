@@ -5,6 +5,7 @@ import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
+import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,13 +22,24 @@ class ReorderFields extends StatefulWidget {
 
 class _ReorderFieldsState extends State<ReorderFields> {
   var fields = <String>[];
+  ThemeData? _themeData;
 
   @override
   void initState() {
+    _getThemeData();
     if (FieldOrderService().previewOrders[widget.category.name] != null) {
       fields = [...FieldOrderService().previewOrders[widget.category.name]!];
     }
     super.initState();
+  }
+
+  _getThemeData() async {
+    _themeData =
+        await Provider.of<ThemeProvider>(context, listen: false).getTheme();
+
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -37,6 +49,10 @@ class _ReorderFieldsState extends State<ReorderFields> {
 
   @override
   Widget build(BuildContext context) {
+    if (_themeData == null) {
+      return CircularProgressIndicator();
+    }
+
     return Container(
       color: ColorConstants.white,
       child: SafeArea(
@@ -64,7 +80,8 @@ class _ReorderFieldsState extends State<ReorderFields> {
                           SizedBox(width: 5),
                           Text(
                             'Reorder',
-                            style: TextStyles.boldText(Colors.black, size: 16),
+                            style: TextStyles.boldText(_themeData!.primaryColor,
+                                size: 16),
                           ),
                         ],
                       ),
@@ -161,7 +178,7 @@ class _ReorderFieldsState extends State<ReorderFields> {
                 child: Text(
                   basicData.accountName!,
                   style: TextStyles.lightText(
-                      ColorConstants.black.withOpacity(0.5),
+                      _themeData!.primaryColor.withOpacity(0.5),
                       size: 16),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -174,7 +191,7 @@ class _ReorderFieldsState extends State<ReorderFields> {
                     ? Image.memory(basicData.value)
                     : Text(
                         basicData.value!,
-                        style: TextStyles.lightText(ColorConstants.black,
+                        style: TextStyles.lightText(_themeData!.primaryColor,
                             size: 18),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -186,7 +203,10 @@ class _ReorderFieldsState extends State<ReorderFields> {
         ),
         Padding(
           padding: const EdgeInsets.only(right: 10.0),
-          child: Icon(Icons.reorder),
+          child: Icon(
+            Icons.reorder,
+            color: _themeData!.primaryColor,
+          ),
         )
       ],
     );

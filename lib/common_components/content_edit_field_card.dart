@@ -5,8 +5,16 @@ import 'package:flutter/material.dart';
 class ContentEditFieldCard extends StatefulWidget {
   final String title, subtitle;
   final bool isPrivate;
+  final ThemeData theme;
   ContentEditFieldCard(
-      {required this.title, required this.subtitle, this.isPrivate = true});
+      {required this.theme,
+      required this.title,
+      required this.subtitle,
+      this.isPrivate = true});
+  // ContentEditFieldCard({
+  //   required this.title,
+  //   required this.subtitle,
+  // });
   @override
   _ContentEditFieldCardState createState() => _ContentEditFieldCardState();
 }
@@ -33,7 +41,8 @@ class _ContentEditFieldCardState extends State<ContentEditFieldCard> {
                 ),
                 Text(
                   widget.subtitle,
-                  style: TextStyles.lightText(ColorConstants.black, size: 18),
+                  style:
+                      TextStyles.lightText(widget.theme.primaryColor, size: 18),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -41,7 +50,21 @@ class _ContentEditFieldCardState extends State<ContentEditFieldCard> {
             ),
           ),
         ),
-        widget.isPrivate ? Icon(Icons.lock) : Icon(Icons.public)
+        // widget.isPublic
+        //     ? Icon(
+        //         Icons.public,
+        //         color: widget.theme.primaryColor,
+        //       )
+        //     : Icon(Icons.lock, color: widget.theme.primaryColor)
+        widget.isPrivate
+            ? Icon(
+                Icons.lock,
+                color: widget.theme.primaryColor,
+              )
+            : Icon(
+                Icons.public,
+                color: widget.theme.primaryColor,
+              )
       ],
     );
   }

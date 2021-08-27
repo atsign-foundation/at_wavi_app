@@ -53,12 +53,18 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
             width: SizeConfig().screenWidth,
             color: _accountName == ''
                 ? ColorConstants.dullColor(
-                    color: Theme.of(context).primaryColor, opacity: 0.5)
-                : Theme.of(context).primaryColor,
+                    color: (Theme.of(context).scaffoldBackgroundColor ==
+                            ColorConstants.black
+                        ? ColorConstants.DARK_GREY
+                        : ColorConstants.black),
+                    opacity: 0.5)
+                : (Theme.of(context).scaffoldBackgroundColor ==
+                        ColorConstants.black
+                    ? ColorConstants.DARK_GREY
+                    : ColorConstants.black),
             child: Text(
               'Add',
-              style: CustomTextStyles.customTextStyle(
-                  Theme.of(context).scaffoldBackgroundColor,
+              style: CustomTextStyles.customTextStyle(ColorConstants.white,
                   size: 18),
             )),
       ),
@@ -85,7 +91,7 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
             padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
             child: Text('Title',
                 style: TextStyles.lightText(
-                    ColorConstants.black.withOpacity(0.5),
+                    Theme.of(context).primaryColor.withOpacity(0.5),
                     size: 16)),
           ),
           Padding(
@@ -94,9 +100,9 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
             child: CustomInputField(
               width: double.infinity,
               hintText: 'Enter the title',
-              hintTextColor: ColorConstants.black.withOpacity(0.5),
+              hintTextColor: Theme.of(context).primaryColor.withOpacity(0.5),
               bgColor: Colors.transparent,
-              textColor: ColorConstants.black,
+              textColor: Theme.of(context).primaryColor,
               initialValue: _accountName,
               baseOffset: _accountName.length,
               height: 70,
@@ -114,7 +120,7 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
             padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
             child: Text('Body',
                 style: TextStyles.lightText(
-                    ColorConstants.black.withOpacity(0.5),
+                    Theme.of(context).primaryColor.withOpacity(0.5),
                     size: 16)),
           ),
           Padding(
@@ -123,9 +129,9 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
             child: CustomInputField(
               width: double.infinity,
               hintText: 'Enter the body',
-              hintTextColor: ColorConstants.black.withOpacity(0.5),
+              hintTextColor: Theme.of(context).primaryColor.withOpacity(0.5),
               bgColor: Colors.transparent,
-              textColor: ColorConstants.black,
+              textColor: Theme.of(context).primaryColor,
               initialValue: _valueDescription,
               baseOffset: _valueDescription.length,
               height: 200,
@@ -140,7 +146,7 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
               text: TextSpan(
                 text: 'Value: ',
                 style: TextStyles.lightText(
-                    ColorConstants.black.withOpacity(0.5),
+                    Theme.of(context).primaryColor.withOpacity(0.5),
                     size: 16),
                 children: [
                   TextSpan(
@@ -158,7 +164,7 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
             padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
             child: Text('View',
                 style: TextStyles.lightText(
-                    ColorConstants.black.withOpacity(0.5),
+                    Theme.of(context).primaryColor.withOpacity(0.5),
                     size: 16)),
           ),
           Padding(
@@ -245,6 +251,7 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
       double height = 200}) {
     return showModalBottomSheet(
         context: context,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         builder: (context) {
           return Container(
             padding: EdgeInsets.all(10),
@@ -263,7 +270,7 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
               children: <Widget>[
                 Text('Select',
                     style: CustomTextStyles.customBoldTextStyle(
-                        ColorConstants.black)),
+                        Theme.of(context).primaryColor)),
                 SizedBox(
                   height: 50,
                   child: InkWell(
@@ -298,7 +305,7 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
         SizedBox(width: 5.toWidth),
         Text(
           'Private',
-          style: TextStyles.lightText(ColorConstants.black, size: 16),
+          style: TextStyles.lightText(Theme.of(context).primaryColor, size: 16),
         )
       ],
     );
@@ -311,7 +318,7 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
         SizedBox(width: 5.toWidth),
         Text(
           'Public',
-          style: TextStyles.lightText(ColorConstants.black, size: 16),
+          style: TextStyles.lightText(Theme.of(context).primaryColor, size: 16),
         )
       ],
     );

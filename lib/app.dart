@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
 // import 'package:at_wavi_app/services/follow_service.dart';
@@ -48,7 +49,14 @@ class MaterialAppClass extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: SetupRoutes.initialRoute,
       navigatorKey: NavService.navKey,
-      theme: Themes.lightTheme(highlightColor: Colors.transparent),
+      theme: ((Provider.of<ThemeProvider>(context)
+                  .currentAtsignThemeData
+                  ?.scaffoldBackgroundColor ==
+              ColorConstants.black)
+          ? Themes.darkTheme(highlightColor: Colors.transparent)
+          : Themes.lightTheme(highlightColor: Colors.transparent)),
+      //  ?? Themes.lightTheme(highlightColor: Colors.transparent),
+      // theme: Themes.lightTheme(highlightColor: Colors.transparent),
       routes: SetupRoutes.routes,
     );
   }

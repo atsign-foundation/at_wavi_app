@@ -502,7 +502,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           padding: EdgeInsets.symmetric(
                                               vertical: 20, horizontal: 20),
                                           decoration: BoxDecoration(
-                                            color: Colors.white,
+                                            color: _themeData!
+                                                .scaffoldBackgroundColor,
                                             borderRadius: BorderRadius.only(
                                               topLeft:
                                                   const Radius.circular(12.0),
@@ -510,7 +511,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                   const Radius.circular(12.0),
                                             ),
                                           ),
-                                          child: Options(),
+                                          child: Options(name: _name),
                                         );
                                       });
                                 },
@@ -595,6 +596,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       Routes.FOLLOWING_SCREEN,
                       arguments: {
                         'forSearchedAtsign': _isSearchScreen,
+                        'themeData': _themeData,
                       },
                     );
                   },
@@ -632,6 +634,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       arguments: {
                         'forSearchedAtsign': _isSearchScreen,
                         'tabIndex': 1,
+                        'themeData': _themeData,
                       },
                     );
                   },

@@ -10,6 +10,7 @@ import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
+import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -26,9 +27,11 @@ class EditCategoryFields extends StatefulWidget {
 
 class _EditCategoryFieldsState extends State<EditCategoryFields> {
   final _formKey = GlobalKey<FormState>();
+  ThemeData? _themeData;
 
   @override
   void initState() {
+    _getThemeData();
     if (FieldOrderService().previewOrders[widget.category.name] == null) {
       FieldOrderService().initCategoryFields(widget.category);
     }
@@ -36,13 +39,27 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
     super.initState();
   }
 
+  _getThemeData() async {
+    _themeData =
+        await Provider.of<ThemeProvider>(context, listen: false).getTheme();
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (_themeData == null) {
+      return CircularProgressIndicator();
+    }
+
     return Container(
-      color: ColorConstants.white,
+      color: _themeData!.scaffoldBackgroundColor,
       padding: EdgeInsets.only(top: 10, bottom: 10),
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: _themeData!.scaffoldBackgroundColor,
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -70,11 +87,15 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                       },
                       child: Row(
                         children: [
-                          Icon(Icons.arrow_back),
+                          Icon(
+                            Icons.arrow_back,
+                            color: _themeData!.primaryColor,
+                          ),
                           SizedBox(width: 5),
                           Text(
                             widget.filedHeading,
-                            style: TextStyles.boldText(Colors.black, size: 16),
+                            style: TextStyles.boldText(_themeData!.primaryColor,
+                                size: 16),
                           ),
                         ],
                       ),
@@ -201,7 +222,8 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               basicData.accountName!,
-              style: TextStyles.lightText(ColorConstants.black.withOpacity(0.5),
+              style: TextStyles.lightText(
+                  _themeData!.primaryColor.withOpacity(0.5),
                   size: 16),
             ),
           ),
@@ -260,7 +282,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
               child: Text(
                 basicData.accountName!,
                 style: TextStyles.lightText(
-                    ColorConstants.black.withOpacity(0.5),
+                    _themeData!.primaryColor.withOpacity(0.5),
                     size: 16),
               ),
             ),
@@ -325,7 +347,8 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               basicData.accountName!,
-              style: TextStyles.lightText(ColorConstants.black.withOpacity(0.5),
+              style: TextStyles.lightText(
+                  _themeData!.primaryColor.withOpacity(0.5),
                   size: 16),
             ),
           ),
@@ -348,7 +371,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                 child: Text(
                   basicData.accountName!,
                   style: TextStyles.lightText(
-                      ColorConstants.black.withOpacity(0.5),
+                      _themeData!.primaryColor.withOpacity(0.5),
                       size: 16),
                 ),
               ),
@@ -454,6 +477,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
           children: [
             Expanded(
               child: TextFormField(
+                style: TextStyles.lightText(_themeData!.primaryColor),
                 key: UniqueKey(),
                 autovalidateMode: isCustomField
                     ? basicData.value != ''
@@ -475,7 +499,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                   _formKey.currentState!.validate();
                 },
                 decoration: InputDecoration(
-                    fillColor: Colors.white,
+                    fillColor: _themeData!.scaffoldBackgroundColor,
                     filled: true,
                     errorStyle: TextStyle(fontSize: 15),
                     border: InputBorder.none,

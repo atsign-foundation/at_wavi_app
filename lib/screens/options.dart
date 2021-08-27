@@ -10,12 +10,16 @@ import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
+import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Options extends StatefulWidget {
+  final String? name;
+
+  Options({this.name});
   @override
   _OptionsState createState() => _OptionsState();
 }
@@ -23,10 +27,22 @@ class Options extends StatefulWidget {
 class _OptionsState extends State<Options> {
   bool _allPrivate = false;
   late User _user;
+  ThemeData? _themeData;
+
   @override
   void initState() {
     getUser();
+    _getThemeData();
     super.initState();
+  }
+
+  _getThemeData() async {
+    _themeData =
+        await Provider.of<ThemeProvider>(context, listen: false).getTheme();
+
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   getUser() async {
@@ -40,12 +56,19 @@ class _OptionsState extends State<Options> {
 
   @override
   Widget build(BuildContext context) {
+    if (_themeData == null) {
+      return CircularProgressIndicator();
+    }
+
     return Container(
+      color: _themeData!.scaffoldBackgroundColor,
       child: Column(
         children: <Widget>[
           CustomPersonHorizontalTile(
-            title: 'Lauren London',
-            subTitle: '@lauren',
+            title:
+                widget.name ?? BackendService().atClientInstance.currentAtSign,
+            subTitle: BackendService().atClientInstance.currentAtSign,
+            textColor: _themeData!.primaryColor,
           ),
           SizedBox(height: 15),
           Divider(height: 1),
@@ -100,49 +123,6 @@ class _OptionsState extends State<Options> {
             ),
           ),
           SizedBox(height: 15),
-          // Divider(height: 1),
-          // Row(
-          //   children: <Widget>[
-          //     Icon(Icons.remove_red_eye_rounded, size: 25),
-          //     Expanded(
-          //       child: Padding(
-          //         padding: const EdgeInsets.only(left: 8.0),
-          //         child: Text('Searchable Account'),
-          //       ),
-          //     ),
-          //     Transform.scale(
-          //       scale: 0.7,
-          //       child: CupertinoSwitch(
-          //         activeColor: ColorConstants.black,
-          //         value: true,
-          //         onChanged: (value) {},
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // SizedBox(height: 15),
-          ////////////////////////
-          // Divider(height: 1),
-          // Row(
-          //   children: <Widget>[
-          //     Icon(Icons.notifications_active, size: 25),
-          //     Expanded(
-          //       child: Padding(
-          //         padding: const EdgeInsets.only(left: 8.0),
-          //         child: Text('Receive other notifications'),
-          //       ),
-          //     ),
-          //     Transform.scale(
-          //       scale: 0.7,
-          //       child: CupertinoSwitch(
-          //         activeColor: ColorConstants.black,
-          //         value: true,
-          //         onChanged: (value) {},
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // SizedBox(height: 15),
           Divider(height: 1),
           InkWell(
             onTap: () {
@@ -153,7 +133,10 @@ class _OptionsState extends State<Options> {
                 SizedBox(
                   width: 25,
                   height: 25,
-                  child: Image.asset(Images.termsAndConditionConditions),
+                  child: Image.asset(
+                    Images.termsAndConditionConditions,
+                    color: _themeData!.primaryColor,
+                  ),
                 ),
                 Expanded(
                   child: Padding(
@@ -176,7 +159,10 @@ class _OptionsState extends State<Options> {
                 SizedBox(
                   width: 25,
                   height: 25,
-                  child: Image.asset(Images.faqs),
+                  child: Image.asset(
+                    Images.faqs,
+                    color: _themeData!.primaryColor,
+                  ),
                 ),
                 Expanded(
                   child: Padding(
@@ -210,7 +196,10 @@ class _OptionsState extends State<Options> {
                 SizedBox(
                   width: 25,
                   height: 25,
-                  child: Image.asset(Images.logout),
+                  child: Image.asset(
+                    Images.logout,
+                    color: _themeData!.primaryColor,
+                  ),
                 ),
                 Expanded(
                   child: Padding(

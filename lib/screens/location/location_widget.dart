@@ -19,6 +19,7 @@ import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
+import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,8 @@ class LocationWidget extends StatefulWidget {
 }
 
 class _LocationWidgetState extends State<LocationWidget> {
+  ThemeData? _themeData;
+
   BasicData? _data;
   late bool _isPrivate;
   String _locationString = '', _locationNickname = '';
@@ -41,8 +44,10 @@ class _LocationWidgetState extends State<LocationWidget> {
 
   @override
   initState() {
+    _getThemeData();
     _mapKey = UniqueKey();
     _isPrivate = false;
+
     _data = Provider.of<UserPreview>(context, listen: false).user()!.location;
     _locationNickname = Provider.of<UserPreview>(context, listen: false)
             .user()!
@@ -60,6 +65,15 @@ class _LocationWidgetState extends State<LocationWidget> {
             .location
             .value);
     super.initState();
+  }
+
+  _getThemeData() async {
+    _themeData =
+        await Provider.of<ThemeProvider>(context, listen: false).getTheme();
+
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   updateIsPrivate(bool _mode) {
@@ -110,6 +124,10 @@ class _LocationWidgetState extends State<LocationWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (_themeData == null) {
+      return CircularProgressIndicator();
+    }
+
     _locationString = (_data != null && (_data!.value != null))
         ? jsonDecode(_data!.value)['location']
         : '';
@@ -198,7 +216,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                       padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
                       child: Text('Tag',
                           style: TextStyles.lightText(
-                              ColorConstants.black.withOpacity(0.5),
+                              _themeData!.primaryColor.withOpacity(0.5),
                               size: 16)),
                     ),
                     Padding(
@@ -209,9 +227,10 @@ class _LocationWidgetState extends State<LocationWidget> {
                         focusedBorderColor: Colors.transparent,
                         width: double.infinity,
                         hintText: 'Enter the tag',
-                        hintTextColor: ColorConstants.black.withOpacity(0.5),
+                        hintTextColor:
+                            _themeData!.primaryColor.withOpacity(0.5),
                         bgColor: Colors.transparent,
-                        textColor: ColorConstants.black,
+                        textColor: _themeData!.primaryColor,
                         initialValue: _locationNickname,
                         baseOffset: _locationNickname.length,
                         height: 70,
@@ -237,7 +256,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                       padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
                       child: Text('Location',
                           style: TextStyles.lightText(
-                              ColorConstants.black.withOpacity(0.5),
+                              _themeData!.primaryColor.withOpacity(0.5),
                               size: 16)),
                     ),
                     Padding(
@@ -249,9 +268,10 @@ class _LocationWidgetState extends State<LocationWidget> {
                         focusedBorderColor: Colors.transparent,
                         width: double.infinity,
                         hintText: 'Search',
-                        hintTextColor: ColorConstants.black.withOpacity(0.5),
+                        hintTextColor:
+                            _themeData!.primaryColor.withOpacity(0.5),
                         bgColor: Colors.transparent,
-                        textColor: ColorConstants.black,
+                        textColor: _themeData!.primaryColor,
                         // initialValue: _locationString,
                         // baseOffset: _locationString.length,
                         height: 70,
@@ -268,7 +288,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                                   padding: EdgeInsets.symmetric(
                                       vertical: 20, horizontal: 0),
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: _themeData!.scaffoldBackgroundColor,
                                     borderRadius: BorderRadius.only(
                                       topLeft: const Radius.circular(12.0),
                                       topRight: const Radius.circular(12.0),
@@ -365,7 +385,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                           horizontal: 16.toWidth, vertical: 12.toHeight),
                       child: Text('More Locations',
                           style: TextStyles.lightText(
-                              ColorConstants.black.withOpacity(0.5),
+                              _themeData!.primaryColor.withOpacity(0.5),
                               size: 16)),
                     ),
                     Padding(
@@ -408,7 +428,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                               secondaryActions: <Widget>[
                                 IconSlideAction(
                                   caption: '',
-                                  color: ColorConstants.white,
+                                  color: _themeData!.scaffoldBackgroundColor,
                                   icon: Icons.delete,
                                   onTap: () {
                                     _deleteKey(Provider.of<UserProvider>(
@@ -434,7 +454,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                                                     .accountName ??
                                                 ''),
                                         style: TextStyles.lightText(
-                                            ColorConstants.black,
+                                            _themeData!.primaryColor,
                                             size: 16)),
                                   ),
                                   Provider.of<UserPreview>(context)

@@ -134,7 +134,7 @@ class _SelectedLocationState extends State<SelectedLocation> {
               bottom: 0,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
@@ -159,7 +159,9 @@ class _SelectedLocationState extends State<SelectedLocation> {
                             children: <Widget>[
                               Checkbox(
                                 fillColor: MaterialStateProperty.all<Color>(
-                                    ColorConstants.black),
+                                    Theme.of(context).primaryColor),
+                                checkColor:
+                                    Theme.of(context).scaffoldBackgroundColor,
                                 value: _absorbDoubleTapPointer,
                                 tristate: false,
                                 onChanged: (value) async {
@@ -175,7 +177,9 @@ class _SelectedLocationState extends State<SelectedLocation> {
                                   children: [
                                     Text('Enable double tap to move pointer',
                                         style: CustomTextStyles.customTextStyle(
-                                            ColorConstants.DARK_GREY)),
+                                            Theme.of(context)
+                                                .primaryColor
+                                                .withOpacity(0.5))),
                                     (_absorbDoubleTapPointer)
                                         ? Flexible(
                                             child: Text(
@@ -195,7 +199,7 @@ class _SelectedLocationState extends State<SelectedLocation> {
                           ),
                           // SizedBox(height: 10.toHeight),
                           Slider(
-                            activeColor: ColorConstants.black,
+                            activeColor: Theme.of(context).primaryColor,
                             inactiveColor: ColorConstants.LIGHT_GREY,
                             value: diameterOfCircle,
                             min: 100,
@@ -215,7 +219,7 @@ class _SelectedLocationState extends State<SelectedLocation> {
                               children: [
                                 Icon(
                                   Icons.location_on,
-                                  color: ColorConstants.black,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 SizedBox(
                                   width: 10,
@@ -223,7 +227,7 @@ class _SelectedLocationState extends State<SelectedLocation> {
                                 Flexible(
                                   child: Text(widget.displayName,
                                       style: CustomTextStyles.customTextStyle(
-                                          ColorConstants.black)),
+                                          Theme.of(context).primaryColor)),
                                 ),
                               ],
                             ),
@@ -234,14 +238,16 @@ class _SelectedLocationState extends State<SelectedLocation> {
                               text: TextSpan(
                                 text: 'NOTE: ',
                                 style: CustomTextStyles.customTextStyle(
-                                    ColorConstants.black,
+                                    Theme.of(context).primaryColor,
                                     size: 12),
                                 children: [
                                   TextSpan(
                                     text:
                                         'The view you select (Position of the marker, zoom level and radius of the circle), will be shown to other users.',
                                     style: CustomTextStyles.customTextStyle(
-                                        ColorConstants.DARK_GREY,
+                                        Theme.of(context)
+                                            .primaryColor
+                                            .withOpacity(0.5),
                                         size: 12),
                                   )
                                 ],
@@ -264,8 +270,12 @@ class _SelectedLocationState extends State<SelectedLocation> {
   Widget _bottomSheet() {
     return Row(
       children: [
-        _bottomSheetButton('Cancel'),
-        _bottomSheetButton('Confirm', isDark: true),
+        _bottomSheetButton('Cancel',
+            isDark: Theme.of(context).scaffoldBackgroundColor ==
+                ColorConstants.black),
+        _bottomSheetButton('Confirm',
+            isDark: Theme.of(context).scaffoldBackgroundColor !=
+                ColorConstants.black),
       ],
     );
   }
@@ -275,11 +285,12 @@ class _SelectedLocationState extends State<SelectedLocation> {
       child: InkWell(
         onTap: () async {
           if (_text == 'Cancel') {
-            if (zoom - 1 != 0) {
-              zoom = zoom - 1;
-            }
+            // if (zoom - 1 != 0) {
+            //   zoom = zoom - 1;
+            // }
 
-            mapController.move(center, zoom);
+            // mapController.move(center, zoom);
+            Navigator.of(context).pop();
           }
 
           if (_text == 'Confirm') {

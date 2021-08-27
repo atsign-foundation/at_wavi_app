@@ -144,7 +144,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                 padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
                 child: Text('Tag',
                     style: TextStyles.lightText(
-                        ColorConstants.black.withOpacity(0.5),
+                        Theme.of(context).primaryColor.withOpacity(0.5),
                         size: 16)),
               ),
               Padding(
@@ -155,9 +155,10 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                   focusedBorderColor: Colors.transparent,
                   width: double.infinity,
                   hintText: 'Enter the tag',
-                  hintTextColor: ColorConstants.black.withOpacity(0.5),
+                  hintTextColor:
+                      Theme.of(context).primaryColor.withOpacity(0.5),
                   bgColor: Colors.transparent,
-                  textColor: ColorConstants.black,
+                  textColor: Theme.of(context).primaryColor,
                   initialValue: _data.accountName ?? '',
                   baseOffset: (_data.accountName ?? '').length,
                   height: 70,
@@ -175,7 +176,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                 padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
                 child: Text('Location',
                     style: TextStyles.lightText(
-                        ColorConstants.black.withOpacity(0.5),
+                        Theme.of(context).primaryColor.withOpacity(0.5),
                         size: 16)),
               ),
               Padding(
@@ -187,9 +188,10 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                   focusedBorderColor: Colors.transparent,
                   width: double.infinity,
                   hintText: 'Search',
-                  hintTextColor: ColorConstants.black.withOpacity(0.5),
+                  hintTextColor:
+                      Theme.of(context).primaryColor.withOpacity(0.5),
                   bgColor: Colors.transparent,
-                  textColor: ColorConstants.black,
+                  textColor: Theme.of(context).primaryColor,
                   // initialValue: _locationString,
                   // baseOffset: _locationString.length,
                   height: 70,
@@ -206,7 +208,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                             padding: EdgeInsets.symmetric(
                                 vertical: 20, horizontal: 0),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Theme.of(context).scaffoldBackgroundColor,
                               borderRadius: BorderRadius.only(
                                 topLeft: const Radius.circular(12.0),
                                 topRight: const Radius.circular(12.0),

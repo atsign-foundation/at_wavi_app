@@ -10,6 +10,7 @@ class CustomPersonHorizontalTile extends StatelessWidget {
   final String? title, subTitle;
   final bool isTopRight;
   final IconData? icon;
+  final Color? textColor;
   List<dynamic>? image;
   final Widget? trailingWidget;
 
@@ -19,6 +20,7 @@ class CustomPersonHorizontalTile extends StatelessWidget {
       this.subTitle,
       this.isTopRight = false,
       this.icon,
+      this.textColor,
       this.trailingWidget}) {
     if (image != null) {
       var intList = image!.cast<int>();
@@ -65,7 +67,8 @@ class CustomPersonHorizontalTile extends StatelessWidget {
                   title != null
                       ? Text(
                           title!,
-                          style: TextStyles.lightText(ColorConstants.black),
+                          style: TextStyles.lightText(
+                              textColor ?? ColorConstants.black),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         )
