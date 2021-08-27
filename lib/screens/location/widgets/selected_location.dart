@@ -285,11 +285,12 @@ class _SelectedLocationState extends State<SelectedLocation> {
       child: InkWell(
         onTap: () async {
           if (_text == 'Cancel') {
-            if (zoom - 1 != 0) {
-              zoom = zoom - 1;
-            }
+            // if (zoom - 1 != 0) {
+            //   zoom = zoom - 1;
+            // }
 
-            mapController.move(center, zoom);
+            // mapController.move(center, zoom);
+            Navigator.of(context).pop();
           }
 
           if (_text == 'Confirm') {

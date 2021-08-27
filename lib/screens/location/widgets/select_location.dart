@@ -1,9 +1,10 @@
 import 'package:at_common_flutter/services/size_config.dart';
-import 'package:at_common_flutter/widgets/custom_input_field.dart';
+// import 'package:at_common_flutter/widgets/custom_input_field.dart';
 import 'package:at_location_flutter/at_location_flutter.dart';
 import 'package:at_location_flutter/common_components/custom_toast.dart';
 import 'package:at_location_flutter/location_modal/location_modal.dart';
 import 'package:at_location_flutter/service/my_location.dart';
+import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
@@ -48,6 +49,22 @@ class _SelectLocationState extends State<SelectLocation> {
     setState(() {});
   }
 
+  _searchLocation() async {
+    setState(() {
+      isLoader = true;
+    });
+    if ((nearMe == null) || (!nearMe!)) {
+      // ignore: await_only_futures
+      SearchLocationService().getAddressLatLng(inputText, null);
+    } else {
+      // ignore: await_only_futures
+      SearchLocationService().getAddressLatLng(inputText, currentLocation!);
+    }
+    setState(() {
+      isLoader = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,48 +77,75 @@ class _SelectLocationState extends State<SelectLocation> {
             children: <Widget>[
               Expanded(
                 child: CustomInputField(
-                  inputFieldColor: ColorConstants.MILD_GREY,
-                  hintText: 'Search an area, street name…',
-                  height: 50.toHeight,
-                  initialValue: inputText,
-                  onSubmitted: (String str) async {
-                    setState(() {
-                      isLoader = true;
-                    });
-                    if ((nearMe == null) || (!nearMe!)) {
-                      // ignore: await_only_futures
-                      SearchLocationService().getAddressLatLng(str, null);
-                    } else {
-                      // ignore: await_only_futures
-                      SearchLocationService()
-                          .getAddressLatLng(str, currentLocation!);
-                    }
-
-                    setState(() {
-                      isLoader = false;
-                    });
-                  },
-                  value: (val) {
-                    inputText = val;
-                  },
+                  padding: EdgeInsets.only(right: 10),
+                  // width: 343.toWidth,
+                  // height: 60.toHeight,
+                  bgColor: ColorConstants.MILD_GREY,
+                  hintText: '',
+                  height: 50,
+                  expands: false,
+                  maxLines: 1,
                   icon: Icons.search,
-                  onIconTap: () async {
-                    setState(() {
-                      isLoader = true;
-                    });
-                    if ((nearMe == null) || (!nearMe!)) {
-                      // ignore: await_only_futures
-                      SearchLocationService().getAddressLatLng(inputText, null);
-                    } else {
-                      // ignore: await_only_futures
-                      SearchLocationService()
-                          .getAddressLatLng(inputText, currentLocation!);
-                    }
-                    setState(() {
-                      isLoader = false;
-                    });
+                  borderColor: Colors.transparent,
+                  focusedBorderColor: Colors.transparent,
+                  textColor: ColorConstants.black,
+                  initialValue: inputText,
+                  baseOffset: inputText.length,
+                  value: (String s) {
+                    inputText = s;
+                  },
+                  onSubmitted: (_str) {
+                    _searchLocation();
+                  },
+                  onIconTap: () {
+                    _searchLocation();
                   },
                 ),
+
+                ///////
+                // CustomInputField(
+                //   inputFieldColor: ColorConstants.MILD_GREY,
+                //   hintText: 'Search an area, street name…',
+                //   height: 50.toHeight,
+                //   initialValue: inputText,
+                //   onSubmitted: (String str) async {
+                //     setState(() {
+                //       isLoader = true;
+                //     });
+                //     if ((nearMe == null) || (!nearMe!)) {
+                //       // ignore: await_only_futures
+                //       SearchLocationService().getAddressLatLng(str, null);
+                //     } else {
+                //       // ignore: await_only_futures
+                //       SearchLocationService()
+                //           .getAddressLatLng(str, currentLocation!);
+                //     }
+
+                //     setState(() {
+                //       isLoader = false;
+                //     });
+                //   },
+                //   value: (val) {
+                //     inputText = val;
+                //   },
+                //   icon: Icons.search,
+                //   onIconTap: () async {
+                //     setState(() {
+                //       isLoader = true;
+                //     });
+                //     if ((nearMe == null) || (!nearMe!)) {
+                //       // ignore: await_only_futures
+                //       SearchLocationService().getAddressLatLng(inputText, null);
+                //     } else {
+                //       // ignore: await_only_futures
+                //       SearchLocationService()
+                //           .getAddressLatLng(inputText, currentLocation!);
+                //     }
+                //     setState(() {
+                //       isLoader = false;
+                //     });
+                //   },
+                // ),
               ),
               SizedBox(width: 10.toWidth),
               Column(
