@@ -4,7 +4,7 @@
    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
    <application
-        android:label="at_wavi_app"
+        android:label="@wavi.ng"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
