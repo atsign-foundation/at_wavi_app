@@ -90,7 +90,11 @@ class _ReorderFieldsState extends State<ReorderFields> {
                       onTap: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text('Cancel'),
+                      child: Text(
+                        'Cancel',
+                        style: TextStyles.lightText(_themeData!.primaryColor,
+                            size: 14),
+                      ),
                     )
                   ],
                 ),
