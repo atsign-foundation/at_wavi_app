@@ -87,7 +87,7 @@ class _EditPersonaState extends State<EditPersona>
             backgroundColor: _themeData!.scaffoldBackgroundColor,
             appBar: AppBar(
               iconTheme: IconThemeData(color: _themeData!.primaryColor),
-              toolbarHeight: 40,
+              toolbarHeight: 55,
               title: Text(
                 'Edit Persona',
                 style: CustomTextStyles.customBoldTextStyle(
@@ -116,11 +116,13 @@ class _EditPersonaState extends State<EditPersona>
                     tabs: [
                       Text(
                         'Content',
-                        style: TextStyle(letterSpacing: 0.1, fontSize: 18),
+                        style:
+                            TextStyle(letterSpacing: 0.1, fontSize: 18.toFont),
                       ),
                       Text(
                         'Appearance',
-                        style: TextStyle(letterSpacing: 0.1, fontSize: 18),
+                        style:
+                            TextStyle(letterSpacing: 0.1, fontSize: 18.toFont),
                       )
                     ],
                   ),
@@ -194,8 +196,8 @@ class _EditPersonaState extends State<EditPersona>
                                     alignment: Alignment.center,
                                     children: [
                                       _rectangle(
-                                          width: 78,
-                                          height: 78,
+                                          width: 78.toWidth,
+                                          height: 78.toWidth,
                                           color: _color,
                                           roundedCorner: 10),
                                       (_updateHighlightColor
@@ -214,7 +216,10 @@ class _EditPersonaState extends State<EditPersona>
                                   ),
                                 );
                               }).toList(),
-                            )
+                            ),
+                            SizedBox(
+                                height: 80.toHeight +
+                                    10.toHeight), // bottomsheet height
                           ],
                         ),
                       )
@@ -305,6 +310,7 @@ class _EditPersonaState extends State<EditPersona>
           alignment: Alignment.center,
           children: [
             Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _rectangle(
                   color: isDark

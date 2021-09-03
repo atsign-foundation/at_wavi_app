@@ -8,6 +8,7 @@ import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
+import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
@@ -129,7 +130,7 @@ class _CotentEditState extends State<CotentEdit> {
                         style:
                             TextStyles.lightText(widget.themeData.primaryColor),
                       ),
-                      SizedBox(width: 7),
+                      SizedBox(width: 7.toWidth),
                       category == AtCategory.IMAGE
                           ? InkWell(
                               onTap: () async {
@@ -152,7 +153,7 @@ class _CotentEditState extends State<CotentEdit> {
                               },
                               child: Icon(
                                 (Icons.edit),
-                                size: 20,
+                                size: 20.toFont,
                                 color: widget.themeData.primaryColor,
                               ),
                             )
@@ -160,11 +161,12 @@ class _CotentEditState extends State<CotentEdit> {
                                   .isFieldsPresentForCategory(category)
                               ? Icon(
                                   (Icons.edit),
-                                  size: 20,
+                                  size: 20.toFont,
                                   color: widget.themeData.primaryColor,
                                 )
                               : Icon(
                                   Icons.add,
+                                  size: 20.toFont,
                                   color: widget.themeData.primaryColor,
                                 )
                     ],
