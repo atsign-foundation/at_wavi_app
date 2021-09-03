@@ -499,7 +499,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       shape: StadiumBorder(),
                                       builder: (BuildContext context) {
                                         return Container(
-                                          height: 350,
+                                          height: 400.toHeight,
                                           padding: EdgeInsets.symmetric(
                                               vertical: 20, horizontal: 20),
                                           decoration: BoxDecoration(

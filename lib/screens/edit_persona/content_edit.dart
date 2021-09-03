@@ -62,18 +62,26 @@ class _CotentEditState extends State<CotentEdit> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> _children = [];
+
+    _children = contentHeadings.map((contentHeading) {
+      return editContentCardHeading(
+        contentHeading['heading'] as String,
+        contentHeading['category'] as AtCategory,
+        contentHeading['route'] as String,
+      );
+    }).toList();
+
+    _children.add(
+      SizedBox(height: 60.toHeight), // to move bottom content up
+    );
+
     return Container(
       padding:
           const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0, bottom: 50),
       child: SingleChildScrollView(
         child: Column(
-          children: contentHeadings.map((contentHeading) {
-            return editContentCardHeading(
-              contentHeading['heading'] as String,
-              contentHeading['category'] as AtCategory,
-              contentHeading['route'] as String,
-            );
-          }).toList(),
+          children: _children,
         ),
       ),
     );
