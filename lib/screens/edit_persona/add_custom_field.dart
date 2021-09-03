@@ -78,9 +78,9 @@ class _AddCustomFieldState extends State<AddCustomField> {
       return CircularProgressIndicator();
     }
 
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(height: 30),
@@ -112,6 +112,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
               child: Form(
                 key: _formKey,
                 child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

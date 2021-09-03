@@ -56,14 +56,13 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
 
     return Container(
       color: _themeData!.scaffoldBackgroundColor,
-      padding: EdgeInsets.only(top: 10, bottom: 10),
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: _themeData!.scaffoldBackgroundColor,
-          body: Column(
+      padding: EdgeInsets.only(top: 20, bottom: 10),
+      child: Scaffold(
+        backgroundColor: _themeData!.scaffoldBackgroundColor,
+        body: SafeArea(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 30),
               Padding(
                 padding: const EdgeInsets.only(right: 8.0, left: 8.0),
                 child: Row(
@@ -142,6 +141,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                 key: _formKey,
                 child: Expanded(
                     child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: getAllInputFields(),

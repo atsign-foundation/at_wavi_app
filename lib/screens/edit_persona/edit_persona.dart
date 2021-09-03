@@ -80,25 +80,25 @@ class _EditPersonaState extends State<EditPersona>
 
     return Container(
       color: ColorConstants.white,
-      child: SafeArea(
-        child: Scaffold(
-            key: scaffoldKey,
-            bottomSheet: _bottomSheet(),
-            backgroundColor: _themeData!.scaffoldBackgroundColor,
-            appBar: AppBar(
-              iconTheme: IconThemeData(color: _themeData!.primaryColor),
-              toolbarHeight: 40,
-              title: Text(
-                'Edit Persona',
-                style: CustomTextStyles.customBoldTextStyle(
-                    _themeData!.primaryColor,
-                    size: 16),
-              ),
-              centerTitle: false,
-              backgroundColor: _themeData!.scaffoldBackgroundColor,
-              elevation: 0,
+      child: Scaffold(
+          key: scaffoldKey,
+          bottomSheet: _bottomSheet(),
+          backgroundColor: _themeData!.scaffoldBackgroundColor,
+          appBar: AppBar(
+            iconTheme: IconThemeData(color: _themeData!.primaryColor),
+            toolbarHeight: 40,
+            title: Text(
+              'Edit Persona',
+              style: CustomTextStyles.customBoldTextStyle(
+                  _themeData!.primaryColor,
+                  size: 16),
             ),
-            body: Padding(
+            centerTitle: false,
+            backgroundColor: _themeData!.scaffoldBackgroundColor,
+            elevation: 0,
+          ),
+          body: SafeArea(
+            child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,12 +127,14 @@ class _EditPersonaState extends State<EditPersona>
                   Divider(height: 1),
                   Expanded(
                       child: TabBarView(
+                    physics: BouncingScrollPhysics(),
                     controller: _controller,
                     children: [
                       CotentEdit(
                         themeData: _themeData!,
                       ),
                       SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -222,8 +224,8 @@ class _EditPersonaState extends State<EditPersona>
                   )),
                 ],
               ),
-            )),
-      ),
+            ),
+          )),
     );
   }
 
@@ -289,7 +291,7 @@ class _EditPersonaState extends State<EditPersona>
       },
       child: Container(
         width: 166.toWidth,
-        height: 166.toWidth,
+        height: 200.toHeight,
         decoration: BoxDecoration(
             color: isDark ? ColorConstants.black : ColorConstants.white,
             borderRadius: BorderRadius.circular(8),
@@ -300,7 +302,8 @@ class _EditPersonaState extends State<EditPersona>
                 blurRadius: 6.0,
               ),
             ]),
-        padding: EdgeInsets.fromLTRB(10, 11, 10, 11),
+        padding: EdgeInsets.fromLTRB(
+            10.toWidth, 11.toHeight, 10.toWidth, 11.toHeight),
         child: Stack(
           alignment: Alignment.center,
           children: [

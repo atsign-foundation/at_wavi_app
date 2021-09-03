@@ -47,32 +47,9 @@ class BackendService {
       domain: MixedConstants.ROOT_DOMAIN,
       appAPIKey: MixedConstants.devAPIKey,
       appColor: ColorConstants.peach,
-      onboard: (value, atsign) async {
-        LoadingDialog().show(text: '$atsign', heading: 'Loading');
-        String? atSign = value[atsign]!.atClient!.currentAtSign;
-        atClientInstance = value[atsign]!.atClient!;
-        atClientServiceMap = value;
-        currentAtSign = atSign;
-        atClientServiceMap[atSign]!.makeAtSignPrimary(atSign!);
-        startMonitor(atsign: atsign, value: value);
-
-        initializeContactsService(
-            atClientInstance, atClientInstance.currentAtSign!);
-        await Provider.of<FollowService>(NavService.navKey.currentContext!,
-                listen: false)
-            .init();
-        Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
-                listen: false)
-            .resetThemeData();
-        await Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
-                listen: false)
-            .checkThemeFromSecondary();
-
-        AtKeyGetService().init();
-        await Provider.of<UserProvider>(NavService.navKey.currentContext!,
-                listen: false)
-            .fetchUserData(BackendService().currentAtSign!);
-        await FieldOrderService().getFieldOrder();
+      onboard: (atClientServiceMap, onboardedAtsign) async {
+        LoadingDialog().show(text: '$onboardedAtsign', heading: 'Loading');
+        await onSuccessOnboard(atClientServiceMap, onboardedAtsign);
         LoadingDialog().hide();
         SetupRoutes.pushAndRemoveAll(
             NavService.navKey.currentContext!, Routes.HOME);
@@ -81,6 +58,33 @@ class BackendService {
         print('Onboarding throws $error error');
       },
     );
+  }
+
+  onSuccessOnboard(Map<String?, AtClientService> atClientServiceMap,
+      String? onboardedAtsign) async {
+    String? atSign =
+        atClientServiceMap[onboardedAtsign]!.atClient!.currentAtSign;
+    atClientInstance = atClientServiceMap[onboardedAtsign]!.atClient!;
+    atClientServiceMap = atClientServiceMap;
+    currentAtSign = atSign;
+    atClientServiceMap[atSign]!.makeAtSignPrimary(atSign!);
+    atClientServiceInstance = atClientServiceMap[onboardedAtsign]!;
+
+    initializeContactsService(
+        atClientInstance, atClientInstance.currentAtSign!);
+    Provider.of<FollowService>(NavService.navKey.currentContext!, listen: false)
+        .init();
+    Provider.of<ThemeProvider>(NavService.navKey.currentContext!, listen: false)
+        .resetThemeData();
+    await Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
+            listen: false)
+        .checkThemeFromSecondary();
+
+    AtKeyGetService().init();
+    await Provider.of<UserProvider>(NavService.navKey.currentContext!,
+            listen: false)
+        .fetchUserData(BackendService().currentAtSign!);
+    await FieldOrderService().getFieldOrder();
   }
 
   Future<AtClientPreference> getAtClientPreference() async {
@@ -102,24 +106,6 @@ class BackendService {
       ..outboundConnectionTimeout = MixedConstants.TIME_OUT
       ..hiveStoragePath = downloadDirectory!.path;
     return _atClientPreference;
-  }
-
-  Future<bool> startMonitor({value, atsign}) async {
-    if (value.containsKey(atsign)) {
-      currentAtSign = atsign;
-      atClientServiceMap = value;
-      atClientInstance = value[atsign].atClient;
-      atClientServiceInstance = value[atsign];
-    }
-
-    String? privateKey = await getPrivateKey(atsign);
-    await atClientInstance.startMonitor(privateKey!, _notificationCallBack);
-    print('monitor started');
-    return true;
-  }
-
-  _notificationCallBack(var response) {
-    print('response:$response');
   }
 
   sync() async {
