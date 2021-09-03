@@ -65,6 +65,7 @@ class _CotentEditState extends State<CotentEdit> {
       padding:
           const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0, bottom: 50),
       child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Column(
           children: contentHeadings.map((contentHeading) {
             return editContentCardHeading(

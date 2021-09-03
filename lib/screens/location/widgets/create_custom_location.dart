@@ -133,7 +133,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
       body: SizedBox(
         height: SizeConfig().screenHeight - 80.toHeight - 55,
         child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

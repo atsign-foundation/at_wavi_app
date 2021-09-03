@@ -43,11 +43,11 @@ class _FollowingState extends State<Following>
   Widget build(BuildContext context) {
     print('forSearchedAtsign ${widget.forSearchedAtsign}');
     // SizeConfig().init(context);
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: widget.themeData.scaffoldBackgroundColor,
-        body: Container(
-          padding: EdgeInsets.only(top: 30, left: 25, right: 25),
+    return Scaffold(
+      backgroundColor: widget.themeData.scaffoldBackgroundColor,
+      body: SafeArea(
+        child: Container(
+          padding: EdgeInsets.only(top: 20, left: 25, right: 25),
           // color: ColorConstants.white,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,9 +124,11 @@ class _FollowingState extends State<Following>
               SizedBox(height: 25.toHeight),
               Expanded(
                 child: TabBarView(
+                  physics: BouncingScrollPhysics(),
                   controller: _controller,
                   children: [
                     SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
                       child: Consumer<FollowService>(
                           builder: (context, _provider, _) {
                         List<String?> _filteredList =
@@ -218,6 +220,7 @@ class _FollowingState extends State<Following>
                       }),
                     ),
                     SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
                       child: Consumer<FollowService>(
                           builder: (context, _provider, _) {
                         List<String?> _filteredList =
