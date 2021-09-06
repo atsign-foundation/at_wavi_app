@@ -53,72 +53,88 @@ class _ReorderFieldsState extends State<ReorderFields> {
       return CircularProgressIndicator();
     }
 
-    return Container(
-      color: ColorConstants.white,
-      child: SafeArea(
-        child: Scaffold(
-          bottomNavigationBar: CustomButton(
-            width: double.infinity,
-            height: 60,
-            buttonText: 'Save',
-            fontColor: ColorConstants.white,
-            borderRadius: 0,
-            onPressed: _saveFieldOrder,
-          ),
-          body: Column(
-            children: [
-              SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {},
-                      child: Row(
-                        children: [
-                          SizedBox(width: 5),
-                          Text(
-                            'Reorder',
-                            style: TextStyles.boldText(_themeData!.primaryColor,
-                                size: 16),
-                          ),
-                        ],
-                      ),
+    return Scaffold(
+      bottomNavigationBar: CustomButton(
+        width: double.infinity,
+        height: 60,
+        buttonText: 'Save',
+        fontColor: ColorConstants.white,
+        borderRadius: 0,
+        onPressed: _saveFieldOrder,
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {},
+                    child: Row(
+                      children: [
+                        SizedBox(width: 5),
+                        Text(
+                          'Reorder',
+                          style: TextStyles.boldText(_themeData!.primaryColor,
+                              size: 16),
+                        ),
+                      ],
                     ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        'Cancel',
-                        style: TextStyles.lightText(_themeData!.primaryColor,
-                            size: 14),
-                      ),
-                    )
-                  ],
-                ),
+                    //     InkWell(
+                    //       onTap: () {
+                    //         Navigator.of(context).pop();
+                    //       },
+                    //       child: Text(
+                    //         'Cancel',
+                    //         style: TextStyles.lightText(_themeData!.primaryColor,
+                    //             size: 14),
+                    //       ),
+                    //     )
+                    //   ],
+                    // ),
+                    //   ),
+                    //   InkWell(
+                    //     onTap: () {
+                    //       Navigator.of(context).pop();
+                    //     },
+                    //     child: Text('Cancel'),
+                    //   )
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      'Cancel',
+                      style: TextStyles.lightText(_themeData!.primaryColor,
+                          size: 14),
+                    ),
+                  )
+                ],
               ),
-              SizedBox(height: 30),
-              Container(
-                height: 500,
-                child: ReorderableListView(
-                  children: [
-                    ...getRowTitle(),
-                  ],
-                  onReorder: (int oldIndex, int newIndex) {
-                    setState(() {
-                      if (oldIndex < newIndex) {
-                        newIndex -= 1;
-                      }
-                      final String item = fields.removeAt(oldIndex);
-                      fields.insert(newIndex, item);
-                    });
-                  },
-                ),
+            ),
+            SizedBox(height: 30),
+            Container(
+              height: 500,
+              child: ReorderableListView(
+                children: [
+                  ...getRowTitle(),
+                ],
+                onReorder: (int oldIndex, int newIndex) {
+                  setState(() {
+                    if (oldIndex < newIndex) {
+                      newIndex -= 1;
+                    }
+                    final String item = fields.removeAt(oldIndex);
+                    fields.insert(newIndex, item);
+                  });
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

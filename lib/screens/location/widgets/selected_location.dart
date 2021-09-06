@@ -96,10 +96,10 @@ class _SelectedLocationState extends State<SelectedLocation> {
         ),
       ),
     );
-    return SafeArea(
-      child: Scaffold(
-        bottomSheet: _bottomSheet(),
-        body: Stack(
+    return Scaffold(
+      bottomSheet: _bottomSheet(),
+      body: SafeArea(
+        child: Stack(
           children: <Widget>[
             FlutterMap(
               mapController: mapController,

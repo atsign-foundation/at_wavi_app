@@ -45,6 +45,7 @@ class FollowService extends BaseModel {
     if (followersList != null) {
       followers.list = followersList.list;
       followers.isPrivate = followersList.isPrivate;
+      followers.setKey = AtFollowServices().getFollowersList()!.getKey!;
       followers.atsignListDetails = <AtsignDetails>[];
 
       followers.list!.forEach((element) {
@@ -67,6 +68,7 @@ class FollowService extends BaseModel {
     if (followingList != null) {
       following.list = followingList.list;
       following.isPrivate = followingList.isPrivate;
+      following.setKey = AtFollowServices().getFollowingList()!.getKey!;
       following.atsignListDetails = [];
 
       following.list!.forEach((element) {

@@ -4,6 +4,7 @@ import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/empty_widget.dart';
 import 'package:at_wavi_app/common_components/header.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
+import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
@@ -196,6 +197,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 if (mounted) setState(() {});
               },
               child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -594,7 +596,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Text(
                     _isSearchScreen
                         ? (SearchService().following_count ?? '-').toString()
-                        : '${followsCount(_provider.following.list!.length)}',
+                        : '${followsCount(_provider.following)}',
                     style: TextStyle(
                         fontSize: 18.toFont,
                         color: _isDark
@@ -632,7 +634,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Text(
                     _isSearchScreen
                         ? (SearchService().followers_count ?? '-').toString()
-                        : '${followsCount(_provider.followers.list!.length)}',
+                        : '${followsCount(_provider.followers)}',
                     style: TextStyle(
                         fontSize: 18.toFont,
                         color: _isDark
@@ -797,7 +799,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  String followsCount(num) {
+  String followsCount(AtFollowsData atFollowsData) {
+    if (atFollowsData.getKey == null) {
+      return '--';
+    }
+
+    int num = atFollowsData.list!.length;
+
     if (num > 999 && num < 99999) {
       return "${(num / 1000).toStringAsFixed(1)} K";
     } else if (num > 99999 && num < 999999) {

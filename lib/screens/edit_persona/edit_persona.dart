@@ -97,135 +97,144 @@ class _EditPersonaState extends State<EditPersona>
               centerTitle: false,
               backgroundColor: _themeData!.scaffoldBackgroundColor,
               elevation: 0,
+              // ),
+              // centerTitle: false,
+              // backgroundColor: _themeData!.scaffoldBackgroundColor,
+              // elevation: 0,
             ),
-            body: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 20.toHeight),
-                  TabBar(
-                    onTap: (index) async {},
-                    labelColor: _themeData!.primaryColor,
-                    indicatorWeight: 5.toHeight,
-                    indicatorColor: ColorConstants.peach,
-                    indicatorSize: TabBarIndicatorSize.label,
-                    unselectedLabelColor:
-                        _themeData!.primaryColor.withOpacity(0.5),
-                    controller: _controller,
-                    tabs: [
-                      Text(
-                        'Content',
-                        style:
-                            TextStyle(letterSpacing: 0.1, fontSize: 18.toFont),
-                      ),
-                      Text(
-                        'Appearance',
-                        style:
-                            TextStyle(letterSpacing: 0.1, fontSize: 18.toFont),
-                      )
-                    ],
-                  ),
-                  Divider(height: 1),
-                  Expanded(
-                      child: TabBarView(
-                    controller: _controller,
-                    children: [
-                      CotentEdit(
-                        themeData: _themeData!,
-                      ),
-                      SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 10),
-                            Text(
-                              'Theme',
-                              style: CustomTextStyles.customBoldTextStyle(
-                                  _themeData!.primaryColor,
-                                  size: 18),
-                            ),
-                            SizedBox(height: 15.toHeight),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
-                                    _themeCard(),
-                                    SizedBox(height: 13.toHeight),
-                                    Text(
-                                      'Light',
-                                      style: CustomTextStyles.black(size: 18),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    _themeCard(isDark: true),
-                                    SizedBox(height: 13.toHeight),
-                                    Text(
-                                      'Dark',
-                                      style: CustomTextStyles.black(size: 18),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 30.toHeight),
-                            Text(
-                              'Colour',
-                              style: CustomTextStyles.customBoldTextStyle(
-                                  _themeData!.primaryColor,
-                                  size: 18),
-                            ),
-                            SizedBox(height: 15.toHeight),
-                            Wrap(
-                              alignment: WrapAlignment.start,
-                              runAlignment: WrapAlignment.start,
-                              runSpacing: 10.0,
-                              spacing: 10.0,
-                              children: _colors.map((_color) {
-                                return InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _highlightColor = _color;
-                                      _updateHighlightColor = true;
-                                    });
-                                  },
-                                  child: Stack(
-                                    alignment: Alignment.center,
+            body: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20.toHeight),
+                    TabBar(
+                      onTap: (index) async {},
+                      labelColor: _themeData!.primaryColor,
+                      indicatorWeight: 5.toHeight,
+                      indicatorColor: ColorConstants.peach,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      unselectedLabelColor:
+                          _themeData!.primaryColor.withOpacity(0.5),
+                      controller: _controller,
+                      tabs: [
+                        Text(
+                          'Content',
+                          style: TextStyle(
+                              letterSpacing: 0.1, fontSize: 18.toFont),
+                        ),
+                        Text(
+                          'Appearance',
+                          style: TextStyle(
+                              letterSpacing: 0.1, fontSize: 18.toFont),
+                        )
+                      ],
+                    ),
+                    Divider(height: 1),
+                    Expanded(
+                        child: TabBarView(
+                      physics: BouncingScrollPhysics(),
+                      controller: _controller,
+                      children: [
+                        CotentEdit(
+                          themeData: _themeData!,
+                        ),
+                        SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 10),
+                              Text(
+                                'Theme',
+                                style: CustomTextStyles.customBoldTextStyle(
+                                    _themeData!.primaryColor,
+                                    size: 18),
+                              ),
+                              SizedBox(height: 15.toHeight),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
                                     children: [
-                                      _rectangle(
-                                          width: 78.toWidth,
-                                          height: 78.toWidth,
-                                          color: _color,
-                                          roundedCorner: 10),
-                                      (_updateHighlightColor
-                                              ? (_color == _highlightColor)
-                                              : (_color ==
-                                                  Provider.of<ThemeProvider>(
-                                                          context,
-                                                          listen: false)
-                                                      .highlightColor))
-                                          ? Positioned(
-                                              child: _circularDoneIcon(
-                                                  isDark: true,
-                                                  size: 35.toWidth))
-                                          : SizedBox()
+                                      _themeCard(),
+                                      SizedBox(height: 13.toHeight),
+                                      Text(
+                                        'Light',
+                                        style: CustomTextStyles.black(size: 18),
+                                      ),
                                     ],
                                   ),
-                                );
-                              }).toList(),
-                            ),
-                            SizedBox(
-                                height: 80.toHeight +
-                                    10.toHeight), // bottomsheet height
-                          ],
-                        ),
-                      )
-                    ],
-                  )),
-                ],
+                                  Column(
+                                    children: [
+                                      _themeCard(isDark: true),
+                                      SizedBox(height: 13.toHeight),
+                                      Text(
+                                        'Dark',
+                                        style: CustomTextStyles.black(size: 18),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 30.toHeight),
+                              Text(
+                                'Colour',
+                                style: CustomTextStyles.customBoldTextStyle(
+                                    _themeData!.primaryColor,
+                                    size: 18),
+                              ),
+                              SizedBox(height: 15.toHeight),
+                              Wrap(
+                                alignment: WrapAlignment.start,
+                                runAlignment: WrapAlignment.start,
+                                runSpacing: 10.0,
+                                spacing: 10.0,
+                                children: _colors.map((_color) {
+                                  return InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _highlightColor = _color;
+                                        _updateHighlightColor = true;
+                                      });
+                                    },
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        _rectangle(
+                                            width: 78.toWidth,
+                                            height: 78.toWidth,
+                                            color: _color,
+                                            roundedCorner: 10),
+                                        (_updateHighlightColor
+                                                ? (_color == _highlightColor)
+                                                : (_color ==
+                                                    Provider.of<ThemeProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .highlightColor))
+                                            ? Positioned(
+                                                child: _circularDoneIcon(
+                                                    isDark: true,
+                                                    size: 35.toWidth))
+                                            : SizedBox()
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                              SizedBox(
+                                  height: 80.toHeight +
+                                      10.toHeight), // bottomsheet height
+                            ],
+                          ),
+                        )
+                      ],
+                    )),
+                  ],
+                ),
               ),
             )),
       ),
@@ -294,7 +303,7 @@ class _EditPersonaState extends State<EditPersona>
       },
       child: Container(
         width: 166.toWidth,
-        height: 166.toWidth,
+        height: 200.toHeight,
         decoration: BoxDecoration(
             color: isDark ? ColorConstants.black : ColorConstants.white,
             borderRadius: BorderRadius.circular(8),
@@ -305,7 +314,8 @@ class _EditPersonaState extends State<EditPersona>
                 blurRadius: 6.0,
               ),
             ]),
-        padding: EdgeInsets.fromLTRB(10, 11, 10, 11),
+        padding: EdgeInsets.fromLTRB(
+            10.toWidth, 11.toHeight, 10.toWidth, 11.toHeight),
         child: Stack(
           alignment: Alignment.center,
           children: [
