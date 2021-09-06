@@ -10,6 +10,7 @@ import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
+import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -70,21 +71,24 @@ class _OptionsState extends State<Options> {
             subTitle: BackendService().atClientInstance.currentAtSign,
             textColor: _themeData!.primaryColor,
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 15.toHeight),
           Divider(height: 1),
-          SizedBox(height: 15),
+          SizedBox(height: 15.toHeight),
           Row(
             children: <Widget>[
               Icon(Icons.qr_code_scanner, size: 25),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0),
-                  child: Text('My QR Code'),
+                  child: Text(
+                    'My QR Code',
+                    style: TextStyles.lightText(_themeData!.primaryColor),
+                  ),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 15.toHeight),
           Divider(height: 1),
           SizedBox(
             height: 40,
@@ -95,7 +99,10 @@ class _OptionsState extends State<Options> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8.0),
-                    child: Text('Private Account'),
+                    child: Text(
+                      'Private Account',
+                      style: TextStyles.lightText(_themeData!.primaryColor),
+                    ),
                   ),
                 ),
                 Provider.of<SetPrivateState>(context).isLoading
@@ -122,7 +129,7 @@ class _OptionsState extends State<Options> {
               ],
             ),
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 15.toHeight),
           Divider(height: 1),
           InkWell(
             onTap: () {
@@ -141,15 +148,18 @@ class _OptionsState extends State<Options> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8.0),
-                    child: Text('Terms and Conditions'),
+                    child: Text(
+                      'Terms and Conditions',
+                      style: TextStyles.lightText(_themeData!.primaryColor),
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 15.toHeight),
           Divider(height: 1),
-          SizedBox(height: 15),
+          SizedBox(height: 15.toHeight),
           InkWell(
             onTap: () {
               SetupRoutes.push(context, Routes.FAQS);
@@ -167,15 +177,18 @@ class _OptionsState extends State<Options> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8.0),
-                    child: Text('FAQs'),
+                    child: Text(
+                      'FAQs',
+                      style: TextStyles.lightText(_themeData!.primaryColor),
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 15.toHeight),
           Divider(height: 1),
-          SizedBox(height: 15),
+          SizedBox(height: 15.toHeight),
           InkWell(
             onTap: () async {
               String? atSign = await BackendService().getAtSign();
@@ -204,7 +217,10 @@ class _OptionsState extends State<Options> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8.0),
-                    child: Text('Switch @sign'),
+                    child: Text(
+                      'Switch @sign',
+                      style: TextStyles.lightText(_themeData!.primaryColor),
+                    ),
                   ),
                 ),
               ],

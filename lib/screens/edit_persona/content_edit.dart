@@ -8,6 +8,7 @@ import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
+import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
@@ -61,19 +62,27 @@ class _CotentEditState extends State<CotentEdit> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> _children = [];
+
+    _children = contentHeadings.map((contentHeading) {
+      return editContentCardHeading(
+        contentHeading['heading'] as String,
+        contentHeading['category'] as AtCategory,
+        contentHeading['route'] as String,
+      );
+    }).toList();
+
+    _children.add(
+      SizedBox(height: 60.toHeight), // to move bottom content up
+    );
+
     return Container(
       padding:
           const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0, bottom: 50),
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
-          children: contentHeadings.map((contentHeading) {
-            return editContentCardHeading(
-              contentHeading['heading'] as String,
-              contentHeading['category'] as AtCategory,
-              contentHeading['route'] as String,
-            );
-          }).toList(),
+          children: _children,
         ),
       ),
     );
@@ -130,7 +139,7 @@ class _CotentEditState extends State<CotentEdit> {
                         style:
                             TextStyles.lightText(widget.themeData.primaryColor),
                       ),
-                      SizedBox(width: 7),
+                      SizedBox(width: 7.toWidth),
                       category == AtCategory.IMAGE
                           ? InkWell(
                               onTap: () async {
@@ -153,7 +162,7 @@ class _CotentEditState extends State<CotentEdit> {
                               },
                               child: Icon(
                                 (Icons.edit),
-                                size: 20,
+                                size: 20.toFont,
                                 color: widget.themeData.primaryColor,
                               ),
                             )
@@ -161,11 +170,12 @@ class _CotentEditState extends State<CotentEdit> {
                                   .isFieldsPresentForCategory(category)
                               ? Icon(
                                   (Icons.edit),
-                                  size: 20,
+                                  size: 20.toFont,
                                   color: widget.themeData.primaryColor,
                                 )
                               : Icon(
                                   Icons.add,
+                                  size: 20.toFont,
                                   color: widget.themeData.primaryColor,
                                 )
                     ],
