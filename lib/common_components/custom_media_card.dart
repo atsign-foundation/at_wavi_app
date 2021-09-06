@@ -64,7 +64,7 @@ class _CustomMediaCardState extends State<CustomMediaCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              widget.basicData.accountName!,
+              '${widget.basicData.accountName![0].toUpperCase()}${widget.basicData.accountName!.substring(1)}',
               style: TextStyles.lightText(
                   widget.themeData.primaryColor.withOpacity(0.5),
                   size: 16),
