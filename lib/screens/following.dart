@@ -90,14 +90,14 @@ class _FollowingState extends State<Following>
                     'Following',
                     style: TextStyle(
                       letterSpacing: 0.1,
-                      fontSize: 18,
+                      fontSize: 18.toFont,
                     ),
                   ),
                   Text(
                     'Followers',
                     style: TextStyle(
                       letterSpacing: 0.1,
-                      fontSize: 18,
+                      fontSize: 18.toFont,
                     ),
                   )
                 ],

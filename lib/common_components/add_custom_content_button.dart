@@ -1,3 +1,4 @@
+import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class AddCustomContentButton extends StatelessWidget {
       },
       child: Container(
         width: double.infinity,
-        height: 50,
+        height: 50.toHeight,
         decoration: BoxDecoration(
           color: ColorConstants.orange.withOpacity(0.1),
           borderRadius: BorderRadius.circular(5),

@@ -186,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: EdgeInsets.all(15.0.toWidth),
             child: RefreshIndicator(
               onRefresh: () async {
                 if (_isSearchScreen) {
@@ -215,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           height: 116.toWidth,
                           decoration: BoxDecoration(
                             color: ColorConstants.white.withOpacity(0.8),
-                            borderRadius: BorderRadius.circular(60),
+                            borderRadius: BorderRadius.circular(60.toWidth),
                           ),
                           child: (_currentUser.image.value != null)
                               ? CircleAvatar(
@@ -227,11 +227,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 )
                               : Icon(
                                   Icons.person,
-                                  size: 50,
+                                  size: 50.toFont,
                                 ),
                         ),
                         SizedBox(
-                          width: 10,
+                          width: 10.toWidth,
                         ),
                         Expanded(
                           child: Column(
@@ -239,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             children: <Widget>[
                               Text(_name,
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 18.toFont,
                                       color: _themeData!.primaryColor,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(height: 8.toHeight),
@@ -484,6 +484,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     //     context, Routes.SEARCH_SCREEN);
                                   },
                                   child: Icon(Icons.search,
+                                      size: 25.toFont,
                                       color: _themeData!.primaryColor),
                                 ),
                               ),
@@ -500,7 +501,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       shape: StadiumBorder(),
                                       builder: (BuildContext context) {
                                         return Container(
-                                          height: 350,
+                                          height: 400.toHeight,
                                           padding: EdgeInsets.symmetric(
                                               vertical: 20, horizontal: 20),
                                           decoration: BoxDecoration(
@@ -518,6 +519,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       });
                                 },
                                 child: Icon(Icons.more_vert,
+                                    size: 25.toFont,
                                     color: _themeData!.primaryColor),
                               )
                             ],

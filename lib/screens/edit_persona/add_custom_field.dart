@@ -83,7 +83,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 30),
+            SizedBox(height: 30.toHeight),
             Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8.0),
               child: Row(
@@ -242,7 +242,12 @@ class _AddCustomFieldState extends State<AddCustomField> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Media'),
+                                  Text(
+                                    'Media',
+                                    style: TextStyles.lightText(
+                                        _themeData!.primaryColor,
+                                        size: 14),
+                                  ),
                                   SizedBox(height: 10),
                                   Stack(
                                     children: [
@@ -289,7 +294,12 @@ class _AddCustomFieldState extends State<AddCustomField> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 10),
-                            Text('View'),
+                            Text(
+                              'View',
+                              style: TextStyles.lightText(
+                                  _themeData!.primaryColor,
+                                  size: 14),
+                            ),
                             SizedBox(height: 5),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -311,13 +321,21 @@ class _AddCustomFieldState extends State<AddCustomField> {
                                   },
                                   child: Row(
                                     children: <Widget>[
-                                      Icon(basicData.isPrivate
-                                          ? Icons.lock
-                                          : Icons.public),
+                                      Icon(
+                                        basicData.isPrivate
+                                            ? Icons.lock
+                                            : Icons.public,
+                                        size: 25.toFont,
+                                      ),
                                       SizedBox(width: 5),
-                                      Text(basicData.isPrivate
-                                          ? 'Private'
-                                          : 'Public'),
+                                      Text(
+                                        basicData.isPrivate
+                                            ? 'Private'
+                                            : 'Public',
+                                        style: TextStyles.lightText(
+                                            _themeData!.primaryColor,
+                                            size: 14),
+                                      ),
                                     ],
                                   ),
                                 ),

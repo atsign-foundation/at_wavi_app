@@ -95,9 +95,13 @@ class _WelcomeState extends State<Welcome> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset(Images.personaIcon),
+                      // Image.asset(Images.personaIcon),
                       SizedBox(width: 5.toWidth),
-                      Text('@persona', style: TextStyle(color: Colors.black))
+                      Text('@wavi.ng',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18.toFont,
+                              fontFamily: 'PlayfairDisplay'))
                     ],
                   ),
                 ),
