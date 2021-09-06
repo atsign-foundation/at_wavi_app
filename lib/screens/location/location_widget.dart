@@ -380,14 +380,24 @@ class _LocationWidgetState extends State<LocationWidget> {
                             ),
                           )
                         : SizedBox(),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.toWidth, vertical: 12.toHeight),
-                      child: Text('More Locations',
-                          style: TextStyles.lightText(
-                              _themeData!.primaryColor.withOpacity(0.5),
-                              size: 16)),
-                    ),
+                    ((Provider.of<UserPreview>(context, listen: false)
+                                    .user()!
+                                    .customFields['LOCATION'] !=
+                                null) &&
+                            (Provider.of<UserPreview>(context, listen: false)
+                                    .user()!
+                                    .customFields['LOCATION']!
+                                    .length !=
+                                0))
+                        ? Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16.toWidth, vertical: 12.toHeight),
+                            child: Text('More Locations',
+                                style: TextStyles.lightText(
+                                    _themeData!.primaryColor.withOpacity(0.5),
+                                    size: 16)),
+                          )
+                        : SizedBox(),
                     Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: 16.toWidth, vertical: 12.toHeight),
