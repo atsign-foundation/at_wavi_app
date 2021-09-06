@@ -514,7 +514,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                   const Radius.circular(12.0),
                                             ),
                                           ),
-                                          child: Options(name: _name),
+                                          child: Options(
+                                            name: _name,
+                                            image: _currentUser.image.value,
+                                          ),
                                         );
                                       });
                                 },
