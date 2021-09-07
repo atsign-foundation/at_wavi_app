@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
 import 'package:at_wavi_app/common_components/switch_at_sign.dart';
@@ -19,8 +21,9 @@ import 'package:provider/provider.dart';
 
 class Options extends StatefulWidget {
   final String? name;
+  final Uint8List? image;
 
-  Options({this.name});
+  Options({this.name, this.image});
   @override
   _OptionsState createState() => _OptionsState();
 }
@@ -70,6 +73,7 @@ class _OptionsState extends State<Options> {
                 widget.name ?? BackendService().atClientInstance.currentAtSign,
             subTitle: BackendService().atClientInstance.currentAtSign,
             textColor: _themeData!.primaryColor,
+            image: widget.image?.toList(),
           ),
           SizedBox(height: 15.toHeight),
           Divider(height: 1),
@@ -194,13 +198,13 @@ class _OptionsState extends State<Options> {
               String? atSign = await BackendService().getAtSign();
 
               var atSignList = await BackendService()
-                  .atClientServiceMap[atSign]!
-                  .getAtsignList();
+                  .atClientServiceMap[atSign]
+                  ?.getAtsignList();
               await showModalBottomSheet(
                 context: NavService.navKey.currentContext!,
                 backgroundColor: Colors.transparent,
                 builder: (context) => AtSignBottomSheet(
-                  atSignList: atSignList!,
+                  atSignList: atSignList ?? [],
                 ),
               );
             },
