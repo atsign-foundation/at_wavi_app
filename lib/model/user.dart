@@ -190,10 +190,15 @@ class BasicData {
         json['value'] != 'null' &&
         json['accountName'] != 'null') {
       if (json['type'] == CustomContentType.Image.name ||
-          json['accountName'] == FieldsEnum.IMAGE.name) {
+          json['accountName'] == FieldsEnum.IMAGE.name &&
+              json['value'] != null &&
+              json['value'] != '') {
         json['value'] = jsonDecode(json['value']);
         json['value'] = json['value']!.cast<int>();
         json['value'] = Uint8List.fromList(json['value']);
+      }
+      if (json['value'] == '') {
+        json['value'] = null;
       }
       return BasicData(
           value: json['value'],
