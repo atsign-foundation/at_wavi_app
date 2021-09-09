@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
+
 // import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
@@ -12,29 +15,62 @@ import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'desktop/routes/desktop_routes.dart';
+
 class MyApp extends StatefulWidget {
   MyApp();
+
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+  late String? initialRoute;
+  late Map<String, WidgetBuilder> routes;
+
+  @override
+  void initState() {
+    super.initState();
+    if (Platform.isAndroid || Platform.isIOS) {
+      initialRoute = SetupRoutes.initialRoute;
+      routes = SetupRoutes.routes;
+    } else if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
+      initialRoute = DesktopSetupRoutes.initialRoute;
+      routes = DesktopSetupRoutes.routes;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: [
-      ChangeNotifierProvider<ThemeProvider>(
-          create: (context) => ThemeProvider()),
-      ChangeNotifierProvider<FollowService>(
-          create: (context) => FollowService()),
-      ChangeNotifierProvider<UserProvider>(create: (context) => UserProvider()),
-      ChangeNotifierProvider<UserPreview>(create: (context) => UserPreview()),
-      ChangeNotifierProvider<SetPrivateState>(
-          create: (context) => SetPrivateState()),
-    ], child: MaterialAppClass());
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeProvider>(
+              create: (context) => ThemeProvider()),
+          ChangeNotifierProvider<FollowService>(
+              create: (context) => FollowService()),
+          ChangeNotifierProvider<UserProvider>(
+              create: (context) => UserProvider()),
+          ChangeNotifierProvider<UserPreview>(
+              create: (context) => UserPreview()),
+          ChangeNotifierProvider<SetPrivateState>(
+              create: (context) => SetPrivateState()),
+        ],
+        child: MaterialAppClass(
+          initialRoute: initialRoute,
+          routes: routes,
+        ));
   }
 }
 
 class MaterialAppClass extends StatelessWidget {
+  final String? initialRoute;
+  final Map<String, WidgetBuilder> routes;
+
+  MaterialAppClass({
+    required this.initialRoute,
+    required this.routes,
+  });
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -47,7 +83,7 @@ class MaterialAppClass extends StatelessWidget {
       },
       title: 'AtSign wavi',
       debugShowCheckedModeBanner: false,
-      initialRoute: SetupRoutes.initialRoute,
+      initialRoute: initialRoute,
       navigatorKey: NavService.navKey,
       theme: ((Provider.of<ThemeProvider>(context)
                   .currentAtsignThemeData
@@ -57,7 +93,7 @@ class MaterialAppClass extends StatelessWidget {
           : Themes.lightTheme(highlightColor: Colors.transparent)),
       //  ?? Themes.lightTheme(highlightColor: Colors.transparent),
       // theme: Themes.lightTheme(highlightColor: Colors.transparent),
-      routes: SetupRoutes.routes,
+      routes: routes,
     );
   }
 }
