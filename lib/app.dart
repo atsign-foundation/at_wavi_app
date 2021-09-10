@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:at_wavi_app/routes/routes.dart';
@@ -16,6 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'desktop/routes/desktop_routes.dart';
+import 'desktop/services/theme/app_theme.dart';
+import 'desktop/services/theme/inherited_app_theme.dart';
 
 class MyApp extends StatefulWidget {
   MyApp();
@@ -62,6 +65,9 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+final StreamController<AppTheme> appThemeController =
+    StreamController<AppTheme>.broadcast();
+
 class MaterialAppClass extends StatelessWidget {
   final String? initialRoute;
   final Map<String, WidgetBuilder> routes;
@@ -73,6 +79,36 @@ class MaterialAppClass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// MaterialApp for desktop
+    if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
+      return StreamBuilder<AppTheme>(
+        stream: appThemeController.stream,
+        initialData: AppTheme.from(),
+        builder: (context, snapshot) {
+          AppTheme appTheme = snapshot.data ?? AppTheme.from();
+          return InheritedAppTheme(
+            theme: appTheme,
+            child: MaterialApp(
+              builder: (BuildContext context, Widget? child) {
+                final data = MediaQuery.of(context);
+                return MediaQuery(
+                  data: data.copyWith(textScaleFactor: 1),
+                  child: child!,
+                );
+              },
+              title: 'AtSign wavi',
+              debugShowCheckedModeBanner: false,
+              initialRoute: initialRoute,
+              navigatorKey: NavService.navKey,
+              theme: appTheme.toThemeData(),
+              routes: routes,
+            ),
+          );
+        },
+      );
+    }
+
+    /// MaterialApp for mobile
     return MaterialApp(
       builder: (BuildContext context, Widget? child) {
         final data = MediaQuery.of(context);
