@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/screens/desktop_home/desktop_home_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile/desktop_profile_page.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'desktop_route_names.dart';
 
 class DesktopSetupRoutes {
-  static String initialRoute = DesktopRoutes.DESKTOP_HOME;
+  static String initialRoute = DesktopRoutes.DESKTOP_PROFILE;
 
   // static String initialRoute = DesktopRoutes.DESKTOP_WELCOME;
   static var _provider = Provider.of<NestedRouteProvider>(
@@ -16,7 +17,10 @@ class DesktopSetupRoutes {
 
   static Map<String, WidgetBuilder> get routes {
     return {
-      DesktopRoutes.DESKTOP_HOME: (context) => DesktopHomePage(),
+      DesktopRoutes.DESKTOP_HOME: (context) =>
+          DesktopHomePage(key: UniqueKey()),
+      DesktopRoutes.DESKTOP_PROFILE: (context) =>
+          DesktopProfilePage(key: UniqueKey()),
     };
   }
 
@@ -24,6 +28,7 @@ class DesktopSetupRoutes {
       BuildContext context, RouteSettings routeSettings) {
     return {
       DesktopRoutes.DESKTOP_HOME: (context) => DesktopHomePage(),
+      DesktopRoutes.DESKTOP_PROFILE: (context) => DesktopProfilePage(),
     };
   }
 }
