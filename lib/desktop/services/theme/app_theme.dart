@@ -10,7 +10,7 @@ class AppTheme {
   final Color primaryColor;
 
   Color get primaryLighterColor => brightness == Brightness.light
-      ? primaryColor.withOpacity(0.1)
+      ? primaryColor.withOpacity(0.05)
       : Color(0xFF171717);
 
   /// An accent color that, when used sparingly, calls attention to parts

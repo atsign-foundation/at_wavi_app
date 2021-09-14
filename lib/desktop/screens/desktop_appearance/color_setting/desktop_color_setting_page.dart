@@ -27,16 +27,13 @@ class _DesktopColorSettingPageState extends State<DesktopColorSettingPage>
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.only(left: 80, top: 60),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Colour",
-            style: TextStyle().copyWith(fontWeight: FontWeight.bold),
-          ),
           Expanded(
             child: Container(
+              width: 98 * 4 + 12 * 3,
               child: GridView.count(
                 crossAxisCount: 4,
                 mainAxisSpacing: 10,
@@ -44,19 +41,21 @@ class _DesktopColorSettingPageState extends State<DesktopColorSettingPage>
                 children: List.generate(
                   primaryColors.length,
                   (index) {
-                    return DesktopColorCard(
-                      color: primaryColors[index],
-                      isSelected:
-                          primaryColors[index] == appTheme.primaryColor,
-                      onPressed: () {
-                        setState(() {
-                          final newTheme = AppTheme.from(
-                            primaryColor: primaryColors[index],
-                            brightness: appTheme.brightness,
-                          );
-                          appThemeController.sink.add(newTheme);
-                        });
-                      },
+                    return Container(
+                      child: DesktopColorCard(
+                        color: primaryColors[index],
+                        isSelected:
+                            primaryColors[index] == appTheme.primaryColor,
+                        onPressed: () {
+                          setState(() {
+                            final newTheme = AppTheme.from(
+                              primaryColor: primaryColors[index],
+                              brightness: appTheme.brightness,
+                            );
+                            appThemeController.sink.add(newTheme);
+                          });
+                        },
+                      ),
                     );
                   },
                 ),
