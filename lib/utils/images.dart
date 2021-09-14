@@ -7,4 +7,7 @@ class Images {
   static const termsAndConditionConditions = 'assets/images/terms.png';
   static const logout = 'assets/images/logout.png';
   static const faqs = 'assets/images/faqs.png';
+
+  ///For desktop icons
+  static const basicDetail = 'assets/images/basic_detail.png';
 }

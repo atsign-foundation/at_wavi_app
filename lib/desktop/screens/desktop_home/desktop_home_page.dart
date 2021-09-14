@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/screens/desktop_appearance/desktop_appearance_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_home/desktop_side_menu.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_home/widgets/desktop_side_menu_widget.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
@@ -113,6 +114,8 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
           switch (e) {
             case DesktopSideMenu.profile:
               return Container(color: Colors.red);
+            case DesktopSideMenu.basicDetails:
+              return DesktopBasicDetailPage();
             case DesktopSideMenu.appearance:
               return DesktopAppearancePage();
             default:
