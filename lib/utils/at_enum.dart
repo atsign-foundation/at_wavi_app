@@ -326,7 +326,7 @@ extension value on RootEnvironment {
 }
 
 enum CustomContentStatus { Exists, Success, Fails }
-enum CustomContentType { Text, Link, Number, Image, Youtube }
+enum CustomContentType { Text, Link, Number, Image, Youtube, Html }
 
 extension values on CustomContentType {
   String get name {
@@ -345,6 +345,9 @@ extension values on CustomContentType {
 
       case CustomContentType.Youtube:
         return 'Youtube';
+
+      case CustomContentType.Html:
+        return 'Html';
 
       default:
         return '';
@@ -392,6 +395,9 @@ CustomContentType customContentNameToType(String name) {
 
     case 'Youtube':
       return CustomContentType.Youtube;
+
+    case 'Html':
+      return CustomContentType.Html;
 
     default:
       return CustomContentType.Text;

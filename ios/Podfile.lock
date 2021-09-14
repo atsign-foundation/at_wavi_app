@@ -11,6 +11,8 @@ PODS:
     - Flutter
   - at_onboarding_flutter (0.0.1):
     - Flutter
+  - audio_session (0.0.1):
+    - Flutter
   - DKImagePickerController/Core (4.3.2):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -58,6 +60,8 @@ PODS:
   - flutter_inappwebview/Core (0.0.1):
     - Flutter
     - OrderedSet (~> 5.0)
+  - flutter_keyboard_visibility (0.0.1):
+    - Flutter
   - flutter_keychain (0.0.1):
     - Flutter
   - flutter_qr_reader (0.0.1):
@@ -71,6 +75,8 @@ PODS:
   - geocoder (0.0.1):
     - Flutter
   - geolocator_apple (1.0.0):
+    - Flutter
+  - just_audio (0.0.1):
     - Flutter
   - libwebp (1.2.0):
     - libwebp/demux (= 1.2.0)
@@ -120,15 +126,18 @@ DEPENDENCIES:
   - at_follows_flutter (from `.symlinks/plugins/at_follows_flutter/ios`)
   - at_location_flutter (from `.symlinks/plugins/at_location_flutter/ios`)
   - at_onboarding_flutter (from `.symlinks/plugins/at_onboarding_flutter/ios`)
+  - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
   - flutter_image_compress (from `.symlinks/plugins/flutter_image_compress/ios`)
   - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
+  - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - flutter_keychain (from `.symlinks/plugins/flutter_keychain/ios`)
   - flutter_qr_reader (from `.symlinks/plugins/flutter_qr_reader/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geocoder (from `.symlinks/plugins/geocoder/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
+  - just_audio (from `.symlinks/plugins/just_audio/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - receive_sharing_intent (from `.symlinks/plugins/receive_sharing_intent/ios`)
@@ -165,6 +174,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/at_location_flutter/ios"
   at_onboarding_flutter:
     :path: ".symlinks/plugins/at_onboarding_flutter/ios"
+  audio_session:
+    :path: ".symlinks/plugins/audio_session/ios"
   file_picker:
     :path: ".symlinks/plugins/file_picker/ios"
   Flutter:
@@ -173,6 +184,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_image_compress/ios"
   flutter_inappwebview:
     :path: ".symlinks/plugins/flutter_inappwebview/ios"
+  flutter_keyboard_visibility:
+    :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
   flutter_keychain:
     :path: ".symlinks/plugins/flutter_keychain/ios"
   flutter_qr_reader:
@@ -183,6 +196,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/geocoder/ios"
   geolocator_apple:
     :path: ".symlinks/plugins/geolocator_apple/ios"
+  just_audio:
+    :path: ".symlinks/plugins/just_audio/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
@@ -209,18 +224,21 @@ SPEC CHECKSUMS:
   at_follows_flutter: cabf679ae84bc050016705c323901934a461c882
   at_location_flutter: 11cdb9f57b41159f51d1ce151f78c31b9b292607
   at_onboarding_flutter: e8219b6d0bfb236d3837ec3528871aebdcc56e8d
+  audio_session: 4f3e461722055d21515cf3261b64c973c062f345
   DKImagePickerController: b5eb7f7a388e4643264105d648d01f727110fc3d
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
-  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_image_compress: fd2b476345226e1a10ea352fa306af95704642c1
   flutter_inappwebview: bfd58618f49dc62f2676de690fc6dcda1d6c3721
+  flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   flutter_keychain: 01aabf894ffe8b01adfda1d9df21c210c1b4b452
   flutter_qr_reader: d930dde3b2cfe2b3d0bb7d66e5ff3e514300a5e5
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geocoder: 3cfab70531a0b367e917bafe82df4c30f6d4c45a
   geolocator_apple: 60a1c3f5930c090d2f5164ba8bf25f4f89121e3c
+  just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
   libwebp: e90b9c01d99205d03b6bb8f2c8c415e5a4ef66f0
   Mantle: 4c0ed6ce47c96eccc4dc3bb071deb3def0e2c3be
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
@@ -238,6 +256,6 @@ SPEC CHECKSUMS:
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   webview_flutter: 3603125dfd3bcbc9d8d418c3f80aeecf331c068b
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: a75497545d4391e2d394c3668e20cfb1c2bbd4aa
 
 COCOAPODS: 1.10.1

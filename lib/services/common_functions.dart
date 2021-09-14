@@ -266,7 +266,8 @@ class CommonFunctions {
   Widget checkForCustomContentType(BasicData basicData, ThemeData _themeData) {
     Widget fieldCard = SizedBox();
     if (basicData.type == CustomContentType.Text.name ||
-        basicData.type == CustomContentType.Number.name) {
+        basicData.type == CustomContentType.Number.name ||
+        basicData.type == CustomContentType.Html.name) {
       fieldCard = CustomCard(
         title: basicData.accountName!,
         subtitle: basicData.value,
