@@ -226,6 +226,9 @@ class _FollowingState extends State<Following>
                         List<String?> _filteredList =
                             _provider.followers.list ?? [];
 
+                        print(
+                            '_filteredList in following : ${_provider.followers.list}');
+
                         if (widget.forSearchedAtsign) {
                           _filteredList = SearchService().followers ?? [];
                         }
@@ -284,7 +287,8 @@ class _FollowingState extends State<Following>
                                       await Provider.of<FollowService>(context,
                                               listen: false)
                                           .performFollowUnfollow(
-                                              _filteredList[index]!);
+                                              _filteredList[index]!,
+                                              forFollowersList: true);
                                     },
                                     child: (!widget.forSearchedAtsign &&
                                             _provider

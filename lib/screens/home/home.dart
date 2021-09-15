@@ -577,6 +577,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Widget followersFollowingRow() {
     return Consumer<FollowService>(builder: (context, _provider, _) {
+      print(
+          'Provider.of<FollowService>(context, listen: false).followers.list : ${Provider.of<FollowService>(context, listen: false).followers.list}');
+      print('_provider followservice in home: ${_provider.following.list}');
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

@@ -74,6 +74,7 @@ class BackendService {
         atClientInstance, atClientInstance.currentAtSign!);
     Provider.of<FollowService>(NavService.navKey.currentContext!, listen: false)
         .init();
+
     Provider.of<ThemeProvider>(NavService.navKey.currentContext!, listen: false)
         .resetThemeData();
     await Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
@@ -84,6 +85,8 @@ class BackendService {
     await Provider.of<UserProvider>(NavService.navKey.currentContext!,
             listen: false)
         .fetchUserData(BackendService().currentAtSign!);
+    await FollowService().getUserFollowsList(onboardedAtsign!);
+    print('getFieldOrder');
     await FieldOrderService().getFieldOrder();
   }
 

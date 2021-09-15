@@ -6,11 +6,11 @@ class MixedConstants {
   // static const String ROOT_DOMAIN = 'vip.ve.atsign.zone';
 
   // for staging server
-  // static const String ROOT_DOMAIN = 'root.atsign.wtf';u]
+  // static const String ROOT_DOMAIN = 'root.atsign.wtf';
   // for production server
   static const String ROOT_DOMAIN = 'root.atsign.org';
 
-  static String devAPIKey = '477b-876u-bcez-c42z-6a3d';
+  static String devAPIKey = '560w-806a-zzev-z02i-6a3p';
 
   static const int ROOT_PORT = 64;
 
@@ -20,6 +20,8 @@ class MixedConstants {
   // static const String PRIVACY_POLICY = 'https://atsign.com/privacy-policy/';
   static const String PRIVACY_POLICY =
       "https://atsign.com/apps/atmosphere/atmosphere-privacy/";
+
+  static const String WAVI_API = 'https://wavi.ng/api/?atp=';
 
   // the time to await for file transfer acknowledgement in milliseconds
   static const int TIME_OUT = 60000;
