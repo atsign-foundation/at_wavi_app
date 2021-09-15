@@ -1,19 +1,24 @@
+import 'package:at_wavi_app/desktop/screens/desktop_additional_detail_popup/desktop_additional_detail_popup.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_basic_detail_item_widget.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_empty_basic_detail_widget.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail_popup/desktop_basic_detail_popup.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_welcome_widget.dart';
 import 'package:flutter/material.dart';
 
-class DesktopBasicDetailPage extends StatefulWidget {
-  const DesktopBasicDetailPage({Key? key}) : super(key: key);
+import 'widgets/desktop_empty_additional_detail_widget.dart';
+
+class DesktopAdditionalDetailPage extends StatefulWidget {
+  const DesktopAdditionalDetailPage({Key? key}) : super(key: key);
 
   @override
-  _DesktopBasicDetailPageState createState() => _DesktopBasicDetailPageState();
+  _DesktopAdditionalDetailPageState createState() => _DesktopAdditionalDetailPageState();
 }
 
-class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
+class _DesktopAdditionalDetailPageState extends State<DesktopAdditionalDetailPage>
     with AutomaticKeepAliveClientMixin {
+
   bool isHaveData = false;
 
   @override
@@ -40,7 +45,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
         Expanded(
           child: Container(
             child: Center(
-              child: DesktopEmptyBasicDetailWidget(
+              child: DesktopEmptyAdditionalDetailWidget(
                 onAddDetailsPressed: _showAddDetailPopup,
               ),
             ),
@@ -59,7 +64,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
         children: [
           Container(
             child: Text(
-              'Basic Details',
+              'Additional Details',
               style: TextStyle(
                 color: appTheme.primaryTextColor,
                 fontSize: 17,
@@ -77,8 +82,8 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
               mainAxisSize: MainAxisSize.min,
               children: [
                 DesktopBasicDetailItemWidget(
-                  title: 'Name',
-                  description: 'Lauren London',
+                  title: 'Preferred Pronoun',
+                  description: 'He/Him',
                 ),
                 Divider(
                   color: appTheme.separatorColor,
@@ -87,8 +92,8 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                   height: 1,
                 ),
                 DesktopBasicDetailItemWidget(
-                  title: 'Phone Number',
-                  description: '+1 408 432 9012',
+                  title: 'About',
+                  description: 'Designer at @ Company',
                 ),
                 Divider(
                   color: appTheme.separatorColor,
@@ -97,12 +102,23 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                   height: 1,
                 ),
                 DesktopBasicDetailItemWidget(
-                  title: 'Email Address',
-                  description: 'lauren@atsign.com',
+                  title: 'Quote',
+                  description: 'Let us make our future now, and let us make our dreams tomorrow’s reality.',
                 ),
               ],
             ),
           ),
+          Spacer(),
+          Container(
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.only(bottom: 64),
+            child: DesktopWhiteButton(
+              title: 'Reorder',
+              onPressed: () {
+                print('Reorder pressed');
+              },
+            ),
+          )
         ],
       ),
     );
@@ -113,7 +129,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
-        child: DesktopBasicDetailPopup(),
+        child: DesktopAdditionalDetailPopup(),
       ),
     );
     setState(() {
