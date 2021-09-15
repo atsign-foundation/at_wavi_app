@@ -30,6 +30,7 @@ class _DesktopPassCodeDialogState extends State<DesktopPassCodeDialog> {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
+      width: 400,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,10 +46,11 @@ class _DesktopPassCodeDialogState extends State<DesktopPassCodeDialog> {
                   top: 10,
                 ),
                 child: Text(
-                  Strings.desktop_passcode_title + widget.atSign!,
+                  '${Strings.desktop_passcode_title} @${widget.atSign}',
                   style: TextStyle(
                     color: appTheme.primaryTextColor,
                     fontSize: 14,
+                    fontFamily: 'Inter',
                   ),
                 ),
               ),
@@ -78,7 +80,7 @@ class _DesktopPassCodeDialogState extends State<DesktopPassCodeDialog> {
             },
           ),
           Text(
-            'Or',
+            Strings.desktop_or,
             style: TextStyle(
               color: appTheme.primaryTextColor,
               fontSize: 14,
@@ -93,6 +95,7 @@ class _DesktopPassCodeDialogState extends State<DesktopPassCodeDialog> {
             style: TextStyle(
               color: appTheme.primaryTextColor,
               fontSize: 14,
+              fontFamily: 'Inter',
             ),
           ),
           SizedBox(

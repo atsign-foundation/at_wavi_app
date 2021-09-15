@@ -19,7 +19,6 @@ Future<dynamic> showPassCodeDialog(
                 //    border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(5),
                 color: Colors.white),
-            width: 480,
             padding: EdgeInsets.all(16.0),
             child: DesktopPassCodeDialog(
               atSign: atSign,

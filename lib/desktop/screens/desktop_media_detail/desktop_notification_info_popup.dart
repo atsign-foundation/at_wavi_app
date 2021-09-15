@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:flutter/material.dart';
 
 class DesktopNotificationInfoPopUp extends StatefulWidget {
@@ -62,7 +63,7 @@ class _DesktopNotificationInfoPopUpState
                             width: 56,
                             height: 56,
                             decoration: BoxDecoration(
-                              color: Colors.grey,
+                              color: appTheme.borderColor,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(90)),
                             ),
@@ -81,6 +82,7 @@ class _DesktopNotificationInfoPopUpState
                                 style: TextStyle(
                                   color: appTheme.primaryTextColor,
                                   fontSize: 10,
+                                  fontFamily: 'Inter',
                                 ),
                               ),
                               SizedBox(
@@ -91,6 +93,7 @@ class _DesktopNotificationInfoPopUpState
                                 style: TextStyle(
                                   color: appTheme.secondaryTextColor,
                                   fontSize: 11,
+                                  fontFamily: 'Inter',
                                 ),
                               )
                             ],
@@ -126,10 +129,11 @@ class _DesktopNotificationInfoPopUpState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'See updates from wave that you have missed',
+                  Strings.desktop_see_update,
                   style: TextStyle(
                     color: appTheme.primaryTextColor,
                     fontSize: 13,
+                    fontFamily: 'Inter',
                   ),
                 ),
                 SizedBox(
@@ -146,10 +150,11 @@ class _DesktopNotificationInfoPopUpState
                         widget.onNext();
                       },
                       child: Text(
-                        'Next',
+                        Strings.desktop_next,
                         style: TextStyle(
                           color: appTheme.primaryColor,
                           fontSize: 12,
+                          fontFamily: 'Inter',
                         ),
                       ),
                     ),

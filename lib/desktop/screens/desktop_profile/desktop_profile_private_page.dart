@@ -1,6 +1,7 @@
 import 'package:at_wavi_app/desktop/screens/desktop_media_detail/desktop_notification_info_popup.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_media_detail/desktop_search_info_popup.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -49,8 +50,8 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                     shapeBorder: CircleBorder(),
                     container: DesktopSearchInfoPopUp(
                       atSign: '',
-                      icon: '',
-                      description: 'Search For the User Profile\nFast & Easy',
+                      icon: 'assets/images/info1.png',
+                      description: Strings.desktop_search_user,
                       onNext: () {
                         ShowCaseWidget.of(context)!.dismiss();
                         ShowCaseWidget.of(context)!
@@ -62,6 +63,7 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                     ),
                     height: 64,
                     width: 64,
+                    overlayPadding: EdgeInsets.all(8),
                     child: Container(
                       height: 36,
                       width: 36,
@@ -72,7 +74,7 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                         child: Icon(
                           Icons.search,
                           size: 20,
-                          color: appTheme.accentColor,
+                          color: appTheme.primaryTextColor,
                         ),
                         onPressed: () {
                           ShowCaseWidget.of(context)!.dismiss();
@@ -100,6 +102,7 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                     ),
                     height: 64,
                     width: 64,
+                    overlayPadding: EdgeInsets.all(8),
                     child: Container(
                       height: 36,
                       width: 36,
@@ -110,7 +113,7 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                         child: Icon(
                           Icons.notifications,
                           size: 20,
-                          color: appTheme.accentColor,
+                          color: appTheme.primaryTextColor,
                         ),
                         onPressed: () {
                           ShowCaseWidget.of(context)!.dismiss();
@@ -128,9 +131,9 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                     shapeBorder: CircleBorder(),
                     container: DesktopSearchInfoPopUp(
                       atSign: '',
-                      icon: '',
+                      icon: 'assets/images/info3.png',
                       description:
-                          'Find more about your account privacy, searchable and others functions.',
+                          Strings.desktop_find_more_privacy,
                       onNext: () {
                         ShowCaseWidget.of(context)!.dismiss();
                         ShowCaseWidget.of(context)!.startShowCase([_editKey]);
@@ -139,6 +142,7 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                         ShowCaseWidget.of(context)!.dismiss();
                       },
                     ),
+                    overlayPadding: EdgeInsets.all(8),
                     height: 64,
                     width: 64,
                     child: Container(
@@ -151,7 +155,7 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                         child: Icon(
                           Icons.more_vert,
                           size: 20,
-                          color: appTheme.accentColor,
+                          color: appTheme.primaryTextColor,
                         ),
                         onPressed: () {
                           ShowCaseWidget.of(context)!.dismiss();
@@ -168,9 +172,8 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                     shapeBorder: CircleBorder(),
                     container: DesktopSearchInfoPopUp(
                       atSign: '',
-                      icon: '',
-                      description:
-                          'Edit features help you to reorder the content, add custom content',
+                      icon: 'assets/images/info4.png',
+                      description: Strings.desktop_edit_feature,
                       onNext: () {
                         ShowCaseWidget.of(context)!.dismiss();
                       },
@@ -178,6 +181,7 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                         ShowCaseWidget.of(context)!.dismiss();
                       },
                     ),
+                    overlayPadding: EdgeInsets.all(8),
                     height: 64,
                     width: 64,
                     child: Container(
@@ -190,7 +194,7 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                         child: Icon(
                           Icons.edit,
                           size: 20,
-                          color: appTheme.accentColor,
+                          color: appTheme.primaryTextColor,
                         ),
                         onPressed: () {
                           ShowCaseWidget.of(context)!.dismiss();
@@ -204,18 +208,19 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
               SizedBox(
                 height: 100,
               ),
-              Icon(
-                Icons.computer,
-                size: 100,
+              Image.asset(
+                'assets/images/private_profile.png',
+                fit: BoxFit.fitWidth,
+                width: 120,
               ),
               SizedBox(
-                height: 8,
+                height: 16,
               ),
               Text(
-                'Private Profile',
+                Strings.desktop_private_profile,
                 style: TextStyle(
                   fontSize: 18,
-                  color: ColorConstants.black,
+                  color: appTheme.primaryTextColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -223,10 +228,10 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                 height: 8,
               ),
               Text(
-                'Follow the user to know their details',
+                Strings.desktop_follow_user,
                 style: TextStyle(
                   fontSize: 14,
-                  color: ColorConstants.greyText,
+                  color: appTheme.secondaryTextColor,
                   fontWeight: FontWeight.normal,
                 ),
               ),

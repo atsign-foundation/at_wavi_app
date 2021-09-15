@@ -1,4 +1,5 @@
-import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
+import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,9 @@ class DesktopProfileInfoPage extends StatefulWidget {
 class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   @override
   Widget build(BuildContext context) {
+    final appTheme = AppTheme.of(context);
     return Container(
-      color: ColorConstants.desktopBackgroundLightGreen,
+      color: appTheme.primaryLighterColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -24,11 +26,12 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
             child: Container(
               padding: EdgeInsets.all(24),
               child: Text(
-                'Back',
+                Strings.desktop_back,
                 style: TextStyle(
                   fontSize: 14,
-                  color: ColorConstants.desktopGreen,
+                  color: appTheme.primaryColor,
                   fontWeight: FontWeight.normal,
+                  fontFamily: 'Inter',
                 ),
               ),
             ),
@@ -70,8 +73,9 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                   'Lauren London',
                   style: TextStyle(
                     fontSize: 20,
-                    color: ColorConstants.black,
+                    color: appTheme.primaryTextColor,
                     fontWeight: FontWeight.normal,
+                    fontFamily: 'Inter',
                   ),
                 ),
                 SizedBox(
@@ -81,22 +85,25 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                   '@laurenlondon',
                   style: TextStyle(
                     fontSize: 15,
-                    color: ColorConstants.desktopGreen,
+                    color: appTheme.primaryColor,
                     fontWeight: FontWeight.normal,
+                    fontFamily: 'Inter',
                   ),
                 ),
                 SizedBox(
                   height: 24,
                 ),
-                _buildInteractiveItem('Followers', '120'),
+                _buildInteractiveItem(
+                    Strings.desktop_followers, '120', appTheme),
                 SizedBox(
                   height: 16,
                 ),
-                _buildInteractiveItem('Following', '121'),
+                _buildInteractiveItem(
+                    Strings.desktop_following, '121', appTheme),
                 SizedBox(
                   height: 32,
                 ),
-                _buildFollowWidget(),
+                _buildFollowWidget(appTheme),
                 SizedBox(
                   height: 24,
                 ),
@@ -111,7 +118,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
     );
   }
 
-  _buildInteractiveItem(String title, String subTitle) {
+  _buildInteractiveItem(String title, String subTitle, AppTheme appTheme) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -119,8 +126,9 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
           title,
           style: TextStyle(
             fontSize: 12,
-            color: ColorConstants.greyText,
+            color: appTheme.secondaryTextColor,
             fontWeight: FontWeight.normal,
+            fontFamily: 'Inter',
           ),
         ),
         SizedBox(
@@ -130,29 +138,37 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
           subTitle,
           style: TextStyle(
             fontSize: 14,
-            color: ColorConstants.black,
+            color: appTheme.primaryTextColor,
             fontWeight: FontWeight.normal,
+            fontFamily: 'Inter',
           ),
         ),
       ],
     );
   }
 
-  _buildFollowWidget() {
+  _buildFollowWidget(AppTheme appTheme) {
     return Container(
       width: 270,
       child: ElevatedButton(
         onPressed: () async {
-          await showPassCodeDialog(context, atSign: '@filmibiological');
         },
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(vertical: 16, horizontal: 48),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
           ),
-          primary: ColorConstants.desktopGreen,
+          primary: appTheme.primaryColor,
         ),
-        child: Text('Follow'),
+        child: Text(
+          Strings.desktop_follow,
+          style: TextStyle(
+            fontSize: 14,
+            color: ColorConstants.white,
+            fontWeight: FontWeight.normal,
+            fontFamily: 'Inter',
+          ),
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:flutter/material.dart';
 
 class DesktopSearchInfoPopUp extends StatefulWidget {
@@ -31,7 +32,7 @@ class _DesktopSearchInfoPopUpState extends State<DesktopSearchInfoPopUp> {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      width: 240,
+      width: 270,
       color: appTheme.backgroundColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -39,21 +40,21 @@ class _DesktopSearchInfoPopUpState extends State<DesktopSearchInfoPopUp> {
         children: [
           Container(
             color: appTheme.primaryLighterColor,
-            padding: EdgeInsets.only(bottom: 8),
+            padding: EdgeInsets.only(bottom: 12),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 32,
+                  width: 36,
                 ),
                 Container(
-                  margin: EdgeInsets.only(
-                    top: 10,
+                  margin: EdgeInsets.only(top: 16),
+                  child: Image.asset(
+                    widget.icon,
+                    fit: BoxFit.fitHeight,
+                    height: 72,
                   ),
-                  color: appTheme.accentColor,
-                  width: 80,
-                  height: 80,
                 ),
                 IconButton(
                   onPressed: () {
@@ -78,6 +79,7 @@ class _DesktopSearchInfoPopUpState extends State<DesktopSearchInfoPopUp> {
                   style: TextStyle(
                     color: appTheme.primaryTextColor,
                     fontSize: 13,
+                    fontFamily: 'Inter',
                   ),
                 ),
                 SizedBox(
@@ -94,10 +96,11 @@ class _DesktopSearchInfoPopUpState extends State<DesktopSearchInfoPopUp> {
                         widget.onNext();
                       },
                       child: Text(
-                        'Next',
+                        Strings.desktop_next,
                         style: TextStyle(
                           color: appTheme.primaryColor,
                           fontSize: 12,
+                          fontFamily: 'Inter',
                         ),
                       ),
                     ),
