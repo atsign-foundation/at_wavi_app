@@ -31,7 +31,7 @@ class CustomCard extends StatelessWidget {
           children: <Widget>[
             title != null
                 ? Text(
-                    title!,
+                    '${title![0].toUpperCase()}${title!.substring(1)}',
                     style: TextStyles.lightText(
                         themeData.primaryColor.withOpacity(0.5),
                         size: 16),

@@ -142,7 +142,7 @@ class _FollowingState extends State<Following>
                           children:
                               List.generate(_filteredList.length, (index) {
                             if (!_filteredList[index]!
-                                .contains(_searchedText)) {
+                                .contains(_searchedText.trim().toLowerCase())) {
                               return SizedBox();
                             }
 
@@ -234,7 +234,7 @@ class _FollowingState extends State<Following>
                           children:
                               List.generate(_filteredList.length, (index) {
                             if (!_filteredList[index]!
-                                .contains(_searchedText)) {
+                                .contains(_searchedText.trim().toLowerCase())) {
                               return SizedBox();
                             }
                             AtsignDetails? atsignDetail;

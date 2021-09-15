@@ -235,39 +235,41 @@ class _AddCustomFieldState extends State<AddCustomField> {
                       Divider(thickness: 1, height: 1),
                       _fieldType == CustomContentType.Html
                           ? SizedBox()
-                          : Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Add Media',
-                                    style: TextStyles.lightText(
-                                        _themeData!.primaryColor,
-                                        size: 14),
-                                  ),
-                                  GestureDetector(
-                                    onTap: _selectImage,
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          'Add',
-                                          style: TextStyles.lightText(
-                                              _themeData!.primaryColor),
+                          : (!isImageSelected
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Add Media',
+                                        style: TextStyles.lightText(
+                                            _themeData!.primaryColor,
+                                            size: 14),
+                                      ),
+                                      GestureDetector(
+                                        onTap: _selectImage,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              'Add',
+                                              style: TextStyles.lightText(
+                                                  _themeData!.primaryColor),
+                                            ),
+                                            SizedBox(width: 7),
+                                            Icon(
+                                              Icons.add,
+                                              // size: 20,
+                                            )
+                                          ],
                                         ),
-                                        SizedBox(width: 7),
-                                        Icon(
-                                          Icons.add,
-                                          // size: 20,
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              : SizedBox()),
                       Divider(thickness: 1, height: 1),
                       SizedBox(height: 10),
                       isImageSelected
@@ -466,6 +468,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
       // when image is selected , we are converting custom content's type image.
       // and the text entered will go to value description
       basicData.type = CustomContentType.Image.name;
+      _fieldType = CustomContentType.Image;
       setState(() {});
     }
   }

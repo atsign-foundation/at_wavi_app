@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:at_wavi_app/common_components/content_edit_field_card.dart';
 import 'package:at_wavi_app/common_components/media_content_edit_card.dart';
+import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
@@ -10,11 +9,9 @@ import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
-import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
-import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -141,30 +138,24 @@ class _CotentEditState extends State<CotentEdit> {
                       ),
                       SizedBox(width: 7.toWidth),
                       category == AtCategory.IMAGE
-                          ? InkWell(
-                              onTap: () async {
-                                var pickedImage =
-                                    await ImagePicker().pickImage();
-                                if (pickedImage != null) {
-                                  setState(() {
-                                    Provider.of<UserPreview>(context,
-                                            listen: false)
-                                        .user()!
-                                        .image
-                                        .value = pickedImage;
-                                    Provider.of<UserPreview>(context,
-                                            listen: false)
-                                        .user()!
-                                        .image
-                                        .accountName = FieldsEnum.IMAGE.name;
-                                  });
-                                }
-                              },
-                              child: Icon(
-                                (Icons.edit),
-                                size: 20.toFont,
-                                color: widget.themeData.primaryColor,
-                              ),
+                          ? Row(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    changeVisibility(
+                                        UserPreview().user()!.image);
+                                  },
+                                  child: Icon(
+                                    UserPreview().user()!.image.isPrivate
+                                        ? Icons.lock
+                                        : Icons.public,
+                                    color: widget.themeData.primaryColor,
+                                    size: 20.toFont,
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                toolTipMenu(UserPreview().user()!.image)
+                              ],
                             )
                           : CommonFunctions()
                                   .isFieldsPresentForCategory(category)
@@ -186,7 +177,8 @@ class _CotentEditState extends State<CotentEdit> {
           ),
           category == AtCategory.IMAGE ? SizedBox(height: 25) : SizedBox(),
           category == AtCategory.IMAGE
-              ? UserPreview().user()!.image.value != null
+              ? UserPreview().user()!.image.value != null &&
+                      UserPreview().user()!.image.value != ''
                   ? Container(
                       child: Align(
                         alignment: Alignment.center,
@@ -216,6 +208,66 @@ class _CotentEditState extends State<CotentEdit> {
         ],
       ),
     );
+  }
+
+  changeVisibility(BasicData basicData) {
+    showPublicPrivateBottomSheet(
+        onPublicClicked: () {
+          setState(() {
+            basicData.isPrivate = false;
+          });
+        },
+        onPrivateClicked: () {
+          setState(() {
+            basicData.isPrivate = true;
+          });
+        },
+        height: 160);
+  }
+
+  onImageSelect() async {
+    var pickedImage = await ImagePicker().pickImage();
+    if (pickedImage != null) {
+      setState(() {
+        Provider.of<UserPreview>(context, listen: false).user()!.image.value =
+            pickedImage;
+        Provider.of<UserPreview>(context, listen: false)
+            .user()!
+            .image
+            .accountName = FieldsEnum.IMAGE.name;
+      });
+    }
+  }
+
+  Widget toolTipMenu(BasicData basicData) {
+    return PopupMenuButton(
+        padding: EdgeInsets.zero,
+        child: Padding(
+          padding: const EdgeInsets.only(right: 5.0),
+          child: Icon(Icons.edit),
+        ),
+        onSelected: (value) {
+          if (value == 'Edit') {
+            onImageSelect();
+          } else {
+            Provider.of<UserPreview>(context, listen: false)
+                .user()!
+                .image
+                .value = '';
+          }
+          setState(() {});
+        },
+        itemBuilder: (BuildContext context) {
+          return tooltipOperations.map((String choice) {
+            return PopupMenuItem(
+                value: choice,
+                child: Text(
+                  choice,
+                  style: TextStyles.lightText(widget.themeData.primaryColor,
+                      size: 14),
+                ));
+          }).toList();
+        });
   }
 
   List<Widget> contentFields() {
