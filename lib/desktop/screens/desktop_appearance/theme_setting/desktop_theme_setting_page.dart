@@ -24,19 +24,15 @@ class _DesktopThemeSettingPageState extends State<DesktopThemeSettingPage>
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.only(left: 80, top: 60),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Theme",
-            style: TextStyle().copyWith(fontWeight: FontWeight.bold),
-          ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Expanded(
-                flex: 1,
+              Container(
+                width: 166,
                 child: DesktopThemeCard(
                   primaryColor: appTheme.primaryColor,
                   brightness: Brightness.light,
@@ -53,8 +49,8 @@ class _DesktopThemeSettingPageState extends State<DesktopThemeSettingPage>
                 ),
               ),
               SizedBox(width: 10),
-              Expanded(
-                flex: 1,
+              Container(
+                width: 166,
                 child: DesktopThemeCard(
                   primaryColor: appTheme.primaryColor,
                   brightness: Brightness.dark,
