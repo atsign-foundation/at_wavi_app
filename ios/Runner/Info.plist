@@ -36,6 +36,8 @@
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>io.flutter.embedded_views_preview</key>
+    <true/>
 	<key>NSCameraUsageDescription</key>
 	<string>The camera is used to scan QR code to pair your device with your @sign</string>
 	<key>NSMicrophoneUsageDescription</key>

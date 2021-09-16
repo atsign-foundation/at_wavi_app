@@ -200,7 +200,7 @@ class _OptionsState extends State<Options> {
               var atSignList = await BackendService()
                   .atClientServiceInstance
                   .getAtsignList();
-              print('atSignList : ${atSignList}');
+            
               await showModalBottomSheet(
                 context: NavService.navKey.currentContext!,
                 backgroundColor: Colors.transparent,

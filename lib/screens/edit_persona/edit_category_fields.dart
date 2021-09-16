@@ -340,7 +340,8 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
     if (basicData.type == CustomContentType.Text.name ||
         basicData.type == CustomContentType.Number.name ||
         basicData.type == CustomContentType.Link.name ||
-        basicData.type == CustomContentType.Youtube.name) {
+        basicData.type == CustomContentType.Youtube.name ||
+        basicData.type == CustomContentType.Html.name) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
