@@ -61,6 +61,47 @@ dependencies:
 dependency_overrides:
   flutter_colorpicker: ^0.6.0 #because html_editor_enhanced uses 0.4.0, which gives flutter event errors
   file_picker: ^4.0.2
+  at_utils: ^3.0.0
+  at_contacts_flutter:
+    git:
+      url: https://github.com/atsign-foundation/at_widgets.git
+      path: at_contacts_flutter
+      ref: feat/rsdk
+  at_client_mobile:
+    git:
+      url: https://github.com/atsign-foundation/at_client_sdk.git
+      path: at_client_mobile
+      ref: trunk
+  at_client:
+    git:
+      url: https://github.com/atsign-foundation/at_client_sdk.git
+      path: at_client
+      ref: trunk
+  at_onboarding_flutter:
+    git:
+      url: https://github.com/atsign-foundation/at_widgets.git
+      path: at_onboarding_flutter
+      ref: trunk
+  at_follows_flutter:
+    git:
+      url: https://github.com/atsign-foundation/at_widgets.git
+      path: at_follows_flutter
+      ref: trunk
+  at_backupkey_flutter:
+    git:
+      url: https://github.com/atsign-foundation/at_widgets.git
+      path: at_backupkey_flutter
+      ref: trunk
+  at_commons:
+    git:
+      url: https://github.com/atsign-foundation/at_tools.git
+      path: at_commons
+      ref: trunk
+  at_lookup:
+    git:
+      url: https://github.com/atsign-foundation/at_libraries.git
+      path: at_lookup
+      ref: trunk
 dev_dependencies:
   flutter_test:
     sdk: flutter

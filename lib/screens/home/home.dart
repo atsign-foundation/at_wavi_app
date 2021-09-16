@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     if ((widget.isPreview) &&
         (_currentUser.atsign !=
-            BackendService().atClientInstance.currentAtSign)) {
+            BackendService().atClientInstance.getCurrentAtSign)) {
       _isSearchScreen = true;
     }
 

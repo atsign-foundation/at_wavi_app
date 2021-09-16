@@ -18,7 +18,7 @@ class AtKeyGetService {
   init() {
     user = User(allPrivate: false, atsign: '');
     user.allPrivate = false;
-    user.atsign = BackendService().atClientInstance.currentAtSign!;
+    user.atsign = BackendService().atClientInstance.getCurrentAtSign()!;
   }
 
 // TODO: for testing only
@@ -34,7 +34,7 @@ class AtKeyGetService {
     bool _containsPrivateAccountKey = false;
     try {
       // _setUser(atsign: atsign);
-      atsign = atsign ?? BackendService().atClientInstance.currentAtSign;
+      atsign = atsign ?? BackendService().atClientInstance.getCurrentAtSign();
       var scanKeys = await BackendService().getAtKeys();
       user.allPrivate = true;
       for (var key in scanKeys) {
@@ -63,7 +63,7 @@ class AtKeyGetService {
   createPrivateAccountKey(
       String atsign, bool _containsPrivateAccountKey) async {
     try {
-      if (atsign == BackendService().atClientInstance.currentAtSign) {
+      if (atsign == BackendService().atClientInstance.getCurrentAtSign()) {
         if (!_containsPrivateAccountKey) {
           await AtKeySetService().update(
               BasicData(value: user.allPrivate.toString()),

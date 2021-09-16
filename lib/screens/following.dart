@@ -67,7 +67,7 @@ class _FollowingState extends State<Following>
                 centerWidget: Text(
                   widget.forSearchedAtsign
                       ? SearchService().user.atsign
-                      : BackendService().atClientInstance.currentAtSign!,
+                      : BackendService().atClientInstance.getCurrentAtSign()!,
                   style: TextStyles.boldText(widget.themeData.primaryColor,
                       size: 18),
                   softWrap: true,
