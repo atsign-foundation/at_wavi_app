@@ -1,3 +1,5 @@
+import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
+import 'package:at_wavi_app/desktop/routes/desktop_routes.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/passcode_widget.dart';
@@ -74,9 +76,15 @@ class _DesktopPassCodeDialogState extends State<DesktopPassCodeDialog> {
             maxLength: 6,
             isSecured: false,
             textWarning: Strings.desktop_wrong_passcode,
-            onDone: (text) {
-              /// ToDo
-
+            onDone: (text) async {
+              await Future.delayed(const Duration(milliseconds: 500));
+              DesktopSetupRoutes.push(
+                context,
+                DesktopRoutes.DESKTOP_PROFILE,
+                arguments: {
+                  'index': 1,
+                },
+              );
             },
           ),
           Text(

@@ -7,6 +7,7 @@ class DesktopButton extends StatelessWidget {
   final Color? backgroundColor;
   final double width;
   final double height;
+  final double textSize;
   final VoidCallback? onPressed;
 
   const DesktopButton({
@@ -14,6 +15,7 @@ class DesktopButton extends StatelessWidget {
     required this.title,
     this.titleColor,
     this.backgroundColor,
+    this.textSize = 16,
     this.width = 184,
     this.height = 56,
     this.onPressed,
@@ -30,7 +32,7 @@ class DesktopButton extends StatelessWidget {
         child: Text(
           title,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: textSize,
             color: titleColor ?? Colors.white,
             fontWeight: FontWeight.normal,
           ),
@@ -57,6 +59,7 @@ class DesktopWhiteButton extends StatelessWidget {
   final Color? borderColor;
   final double width;
   final double height;
+  final double textSize;
   final VoidCallback? onPressed;
 
   const DesktopWhiteButton({
@@ -65,6 +68,7 @@ class DesktopWhiteButton extends StatelessWidget {
     this.titleColor,
     this.backgroundColor,
     this.borderColor,
+    this.textSize = 16,
     this.width = 184,
     this.height = 56,
     this.onPressed,
@@ -81,7 +85,7 @@ class DesktopWhiteButton extends StatelessWidget {
         child: Text(
           title,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: textSize,
             color: titleColor ?? appTheme.primaryTextColor,
             fontWeight: FontWeight.normal,
           ),
@@ -92,12 +96,12 @@ class DesktopWhiteButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(4.0),
               side: BorderSide(
                 color: borderColor ?? appTheme.accentColor,
-                width: 1,
+                width: 0.5,
               ),
             ),
           ),
           elevation: MaterialStateProperty.all(0),
-          backgroundColor: MaterialStateProperty.all(Colors.white),
+          backgroundColor: MaterialStateProperty.all(backgroundColor),
         ),
       ),
     );

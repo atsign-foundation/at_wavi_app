@@ -1,6 +1,7 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,15 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                 SizedBox(
                   height: 16,
                 ),
-                _buildSendWidget(appTheme),
+                DesktopButton(
+                  width: 540,
+                  backgroundColor: appTheme.primaryColor,
+                  title: Strings.desktop_send,
+                  onPressed: () async {
+                    await showPassCodeDialog(context,
+                        atSign: atSignTextEditingController.text);
+                  },
+                ),
                 SizedBox(
                   height: 16,
                 ),
@@ -153,34 +162,6 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
         filled: true,
         fillColor: appTheme.borderColor,
         hintText: Strings.desktop_enter_sign,
-      ),
-    );
-  }
-
-  _buildSendWidget(AppTheme appTheme) {
-    return Container(
-      width: 540,
-      height: 52,
-      child: ElevatedButton(
-        onPressed: () async {
-          await showPassCodeDialog(context,
-              atSign: atSignTextEditingController.text);
-        },
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 48),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          primary: appTheme.primaryColor,
-        ),
-        child: Text(
-          Strings.desktop_send,
-          style: TextStyle(
-            fontSize: 16,
-            color: ColorConstants.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
       ),
     );
   }

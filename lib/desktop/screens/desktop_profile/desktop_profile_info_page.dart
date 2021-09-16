@@ -1,5 +1,6 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -103,7 +104,15 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                 SizedBox(
                   height: 32,
                 ),
-                _buildFollowWidget(appTheme),
+                DesktopButton(
+                  width: 280,
+                  height: 40,
+                  backgroundColor: appTheme.primaryColor,
+                  title: Strings.desktop_follow,
+                  onPressed: () async {
+
+                  },
+                ),
                 SizedBox(
                   height: 24,
                 ),
@@ -144,32 +153,6 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
           ),
         ),
       ],
-    );
-  }
-
-  _buildFollowWidget(AppTheme appTheme) {
-    return Container(
-      width: 270,
-      child: ElevatedButton(
-        onPressed: () async {
-        },
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 48),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-          ),
-          primary: appTheme.primaryColor,
-        ),
-        child: Text(
-          Strings.desktop_follow,
-          style: TextStyle(
-            fontSize: 14,
-            color: ColorConstants.white,
-            fontWeight: FontWeight.normal,
-            fontFamily: 'Inter',
-          ),
-        ),
-      ),
     );
   }
 }

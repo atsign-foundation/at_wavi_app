@@ -26,7 +26,11 @@ class Strings {
   static const String desktop_sign = '@sign';
   static const String desktop_enter_sign = 'Enter @Sign';
 
+  static const String desktop_notifications = 'Notifications';
+  static const String desktop_new_request = 'New Request';
   static const String desktop_send = 'SEND';
+  static const String desktop_delete = 'Delete';
+  static const String desktop_confirm = 'Confirm';
   static const String desktop_wavi = '@Wavi';
   static const String desktop_company_copyrights = 'The @Company Copyrights';
 

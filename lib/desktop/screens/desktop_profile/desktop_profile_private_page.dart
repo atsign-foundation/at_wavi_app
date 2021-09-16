@@ -1,6 +1,8 @@
 import 'package:at_wavi_app/desktop/screens/desktop_media_detail/desktop_notification_info_popup.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_media_detail/desktop_search_info_popup.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_notification/desktop_notification_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +42,7 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
           color: ColorConstants.white,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -48,6 +50,7 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                   Showcase.withWidget(
                     key: _searchKey,
                     shapeBorder: CircleBorder(),
+                    disableAnimation: true,
                     container: DesktopSearchInfoPopUp(
                       atSign: '',
                       icon: 'assets/images/info1.png',
@@ -90,19 +93,25 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                   Showcase.withWidget(
                     key: _notificationKey,
                     shapeBorder: CircleBorder(),
-                    container: DesktopNotificationInfoPopUp(
+                    disableAnimation: true,
+                    container: DesktopNotificationPage(
                       atSign: '',
-                      onNext: () {
-                        ShowCaseWidget.of(context)!.dismiss();
-                        ShowCaseWidget.of(context)!.startShowCase([_menuKey]);
-                      },
-                      onCancel: () {
-                        ShowCaseWidget.of(context)!.dismiss();
-                      },
                     ),
+                    // DesktopNotificationInfoPopUp(
+                    //   atSign: '',
+                    //   onNext: () {
+                    //     ShowCaseWidget.of(context)!.dismiss();
+                    //     ShowCaseWidget.of(context)!.startShowCase([_menuKey]);
+                    //   },
+                    //   onCancel: () {
+                    //     ShowCaseWidget.of(context)!.dismiss();
+                    //   },
+                    // ),
                     height: 64,
                     width: 64,
                     overlayPadding: EdgeInsets.all(8),
+                    overlayColor: Colors.transparent,
+                    overlayOpacity: 0.0,
                     child: Container(
                       height: 36,
                       width: 36,
@@ -115,7 +124,11 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                           size: 20,
                           color: appTheme.primaryTextColor,
                         ),
-                        onPressed: () {
+                        onPressed: () async {
+                          // await showNotificationsDialog(
+                          //   context,
+                          //   atSign: '',
+                          // );
                           ShowCaseWidget.of(context)!.dismiss();
                           ShowCaseWidget.of(context)!
                               .startShowCase([_notificationKey]);
@@ -129,11 +142,11 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                   Showcase.withWidget(
                     key: _menuKey,
                     shapeBorder: CircleBorder(),
+                    disableAnimation: true,
                     container: DesktopSearchInfoPopUp(
                       atSign: '',
                       icon: 'assets/images/info3.png',
-                      description:
-                          Strings.desktop_find_more_privacy,
+                      description: Strings.desktop_find_more_privacy,
                       onNext: () {
                         ShowCaseWidget.of(context)!.dismiss();
                         ShowCaseWidget.of(context)!.startShowCase([_editKey]);
@@ -170,6 +183,7 @@ class _DesktopProfilePrivatePageState extends State<DesktopProfilePrivatePage> {
                   Showcase.withWidget(
                     key: _editKey,
                     shapeBorder: CircleBorder(),
+                    disableAnimation: true,
                     container: DesktopSearchInfoPopUp(
                       atSign: '',
                       icon: 'assets/images/info4.png',
