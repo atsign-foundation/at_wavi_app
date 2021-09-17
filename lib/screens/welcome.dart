@@ -91,7 +91,8 @@ class _WelcomeState extends State<Welcome> {
             child: Column(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.all(50),
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(top: 30),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -105,9 +106,23 @@ class _WelcomeState extends State<Welcome> {
                     ],
                   ),
                 ),
-                SizedBox(height: 35.toHeight),
-                Image.asset(Images.welcomeScreenBanner),
-                SizedBox(height: 35),
+                SizedBox(height: 10.toHeight),
+                // Image.asset(Images.welcomeScreenBanner),
+                Row(
+                  children: [
+                    Image.asset(
+                      Images.splash_1,
+                      width: 180.toWidth,
+                      height: 300.toHeight,
+                    ),
+                    Image.asset(
+                      Images.splash_2,
+                      width: 180.toWidth,
+                      height: 300.toHeight,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 60),
                 Text('All links in one!',
                     style: TextStyle(
                         color: Colors.black,
@@ -122,7 +137,7 @@ and share it with others.''',
                       color: ColorConstants.greyText, fontSize: 15.toFont),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 60),
+                SizedBox(height: 30),
                 CustomButton(
                   onPressed: () {
                     setState(() {});
