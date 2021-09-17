@@ -47,6 +47,7 @@ class DesktopShowHideRadioButton extends StatelessWidget {
                       onChanged?.call(value);
                     }
                   },
+                  activeColor: appTheme.secondaryColor,
                 ),
                 Text(
                   'Show',
@@ -66,6 +67,7 @@ class DesktopShowHideRadioButton extends StatelessWidget {
                       onChanged?.call(value);
                     }
                   },
+                  activeColor: appTheme.secondaryColor,
                 ),
                 Text(
                   'Hide',

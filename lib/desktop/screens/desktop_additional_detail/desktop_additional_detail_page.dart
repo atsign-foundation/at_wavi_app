@@ -1,7 +1,5 @@
 import 'package:at_wavi_app/desktop/screens/desktop_additional_detail_popup/desktop_additional_detail_popup.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_basic_detail_item_widget.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_empty_basic_detail_widget.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_basic_detail_popup/desktop_basic_detail_popup.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_welcome_widget.dart';

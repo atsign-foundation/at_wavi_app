@@ -7,12 +7,14 @@ class DesktopTextField extends StatelessWidget {
   final String title;
   final String hint;
   final TextInputType? keyboardType;
+  final ValueChanged<String>? onChanged;
 
   DesktopTextField({
     required this.controller,
     this.title = '',
     this.hint = '',
     this.keyboardType,
+    this.onChanged,
   });
 
   @override
@@ -38,6 +40,15 @@ class DesktopTextField extends StatelessWidget {
             fontSize: 16,
             fontWeight: FontWeight.normal,
             color: appTheme.primaryTextColor,
+          ),
+          onChanged: onChanged,
+          decoration: InputDecoration(
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: appTheme.separatorColor),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: appTheme.primaryColor),
+            ),
           ),
         ),
       ],

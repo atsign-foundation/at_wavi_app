@@ -1,9 +1,20 @@
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_basic_detail_item_widget.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_empty_basic_detail_widget.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_basic_detail_popup/desktop_basic_detail_popup.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_edit_basic_detail/desktop_edit_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
+import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
+import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_welcome_widget.dart';
+import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'desktop_add_basic_detail/desktop_add_basic_detail_page.dart';
+import 'desktop_basic_detail_model.dart';
+import 'desktop_reorder_basic_detail/desktop_reorder_basic_detail_page.dart';
 
 class DesktopBasicDetailPage extends StatefulWidget {
   const DesktopBasicDetailPage({Key? key}) : super(key: key);
@@ -14,21 +25,40 @@ class DesktopBasicDetailPage extends StatefulWidget {
 
 class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
     with AutomaticKeepAliveClientMixin {
-  bool isHaveData = false;
+
+  late DesktopBasicDetailModel _model;
 
   @override
   bool get wantKeepAlive => true;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: isHaveData ? _buildContentWidget() : _buildEmptyWidget(),
-          ),
-        ],
+    return ChangeNotifierProvider(
+      create: (BuildContext c) {
+        final userPreview = Provider.of<UserPreview>(context);
+        _model = DesktopBasicDetailModel(userPreview: userPreview);
+        return _model;
+      },
+      child: Scaffold(
+        body: _buildBodyWidget(),
       ),
+    );
+  }
+
+  Widget _buildBodyWidget() {
+    return Consumer<DesktopBasicDetailModel>(
+      builder: (_, model, child) {
+        if (model.basicData.isEmpty) {
+          return _buildEmptyWidget();
+        } else {
+          return _buildContentWidget(model.basicData);
+        }
+      },
     );
   }
 
@@ -41,7 +71,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
           child: Container(
             child: Center(
               child: DesktopEmptyBasicDetailWidget(
-                onAddDetailsPressed: _showAddDetailPopup,
+                onAddDetailsPressed: _showEditDetailPopup,
               ),
             ),
           ),
@@ -50,55 +80,93 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
     );
   }
 
-  Widget _buildContentWidget() {
+  Widget _buildContentWidget(List<BasicData> data) {
+    print('$data');
     final appTheme = AppTheme.of(context);
     return Container(
-      margin: EdgeInsets.only(top: 80, left: 80, right: 80),
+      margin: EdgeInsets.only(top: 70, left: 80, right: 80),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            child: Text(
-              'Basic Details',
-              style: TextStyle(
-                color: appTheme.primaryTextColor,
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
-              ),
+            child: Row(
+              children: [
+                Text(
+                  'Basic Details',
+                  style: TextStyle(
+                    color: appTheme.primaryTextColor,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Spacer(),
+                DesktopIconLabelButton(
+                  iconData: Icons.add_circle_outline_sharp,
+                  label: 'Custom Content',
+                  onPressed: _showAddCustomContent,
+                ),
+                DesktopPreviewButton(
+                  onPressed: _showEditDetailPopup,
+                ),
+              ],
             ),
           ),
           SizedBox(height: 60),
-          Container(
-            decoration: BoxDecoration(
-              color: Color(0xF5f5f5).withOpacity(0.5),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+          Expanded(
+            child: ListView.separated(
+              itemBuilder: (context, index) {
+                final item = data[index];
+                BorderRadius? borderRadius;
+                if (data.length == 1) {
+                  borderRadius = BorderRadius.all(Radius.circular(10));
+                } else {
+                  if (index == 0) {
+                    borderRadius = BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    );
+                  } else if (index == data.length) {
+                    borderRadius = BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    );
+                  }
+                }
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xF5f5f5).withOpacity(0.5),
+                    borderRadius: borderRadius,
+                  ),
+                  child: DesktopBasicDetailItemWidget(
+                    title: item.accountName ?? '',
+                    description: item.value ?? '',
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Divider(
+                  color: appTheme.separatorColor,
+                  indent: 27,
+                  endIndent: 27,
+                  height: 1,
+                );
+              },
+              itemCount: data.length,
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: 64),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                DesktopBasicDetailItemWidget(
-                  title: 'Name',
-                  description: 'Lauren London',
+                DesktopWhiteButton(
+                  title: 'Reorder',
+                  onPressed: _showReorderDetailPopup,
                 ),
-                Divider(
-                  color: appTheme.separatorColor,
-                  indent: 27,
-                  endIndent: 27,
-                  height: 1,
-                ),
-                DesktopBasicDetailItemWidget(
-                  title: 'Phone Number',
-                  description: '+1 408 432 9012',
-                ),
-                Divider(
-                  color: appTheme.separatorColor,
-                  indent: 27,
-                  endIndent: 27,
-                  height: 1,
-                ),
-                DesktopBasicDetailItemWidget(
-                  title: 'Email Address',
-                  description: 'lauren@atsign.com',
+                SizedBox(width: 12),
+                DesktopButton(
+                  title: 'Save & Next',
+                  onPressed: () {},
                 ),
               ],
             ),
@@ -108,16 +176,36 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
     );
   }
 
-  void _showAddDetailPopup() async {
-    await showDialog<String>(
+  void _showEditDetailPopup() async {
+    final result = await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
-        child: DesktopBasicDetailPopup(),
+        child: DesktopEditBasicDetailPage(),
       ),
     );
-    setState(() {
-      isHaveData = !isHaveData;
-    });
+  }
+
+  void _showAddCustomContent() async {
+    final result = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: DesktopAddBasicDetailPage(),
+      ),
+    );
+  }
+
+  void _showReorderDetailPopup() async {
+    final result = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: DesktopReorderBasicDetailPage(),
+      ),
+    );
+    if (result == 'saved') {
+      _model.fetchBasicData();
+    }
   }
 }
