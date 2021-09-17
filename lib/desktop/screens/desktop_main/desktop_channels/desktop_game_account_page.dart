@@ -3,17 +3,15 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
-class DesktopAdditionalDetailPage extends StatefulWidget {
-  const DesktopAdditionalDetailPage({Key? key}) : super(key: key);
+class DesktopGameAccountPage extends StatefulWidget {
+  const DesktopGameAccountPage({Key? key}) : super(key: key);
 
   @override
-  _DesktopAdditionalDetailPageState createState() =>
-      _DesktopAdditionalDetailPageState();
+  _DesktopGameAccountPageState createState() => _DesktopGameAccountPageState();
 }
 
-class _DesktopAdditionalDetailPageState
-    extends State<DesktopAdditionalDetailPage>
-    with AutomaticKeepAliveClientMixin<DesktopAdditionalDetailPage> {
+class _DesktopGameAccountPageState extends State<DesktopGameAccountPage>
+    with AutomaticKeepAliveClientMixin<DesktopGameAccountPage> {
   @override
   bool get wantKeepAlive => true;
 
@@ -40,7 +38,7 @@ class _DesktopAdditionalDetailPageState
                     Container(
                       width: 100,
                       child: Text(
-                        Strings.desktop_preferred_pronoun,
+                        Strings.desktop_ps4,
                         style: TextStyle(
                             fontSize: 12,
                             color: appTheme.secondaryTextColor,
@@ -52,7 +50,7 @@ class _DesktopAdditionalDetailPageState
                     ),
                     Expanded(
                       child: Text(
-                        'He/Him',
+                        'ducpham',
                         style: TextStyle(
                             fontSize: 14,
                             color: appTheme.primaryTextColor,
@@ -74,7 +72,7 @@ class _DesktopAdditionalDetailPageState
                     Container(
                       width: 100,
                       child: Text(
-                        Strings.desktop_about,
+                        Strings.desktop_xbox,
                         style: TextStyle(
                             fontSize: 12,
                             color: appTheme.secondaryTextColor,
@@ -86,7 +84,7 @@ class _DesktopAdditionalDetailPageState
                     ),
                     Expanded(
                       child: Text(
-                        'Design at @Company',
+                        'ducpham',
                         style: TextStyle(
                             fontSize: 14,
                             color: appTheme.primaryTextColor,
@@ -108,7 +106,7 @@ class _DesktopAdditionalDetailPageState
                     Container(
                       width: 100,
                       child: Text(
-                        Strings.desktop_quote,
+                        Strings.desktop_twitch,
                         style: TextStyle(
                             fontSize: 12,
                             color: appTheme.secondaryTextColor,
@@ -120,41 +118,7 @@ class _DesktopAdditionalDetailPageState
                     ),
                     Expanded(
                       child: Text(
-                        'Let us make our futute now.',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: appTheme.primaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                height: 1,
-                margin: EdgeInsets.symmetric(horizontal: 16),
-                color: appTheme.borderColor,
-              ),
-              Container(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 100,
-                      child: Text(
-                        Strings.desktop_video,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: appTheme.secondaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                      child: Text(
-                        '',
+                        'twitch.tv/ducpham',
                         style: TextStyle(
                             fontSize: 14,
                             color: appTheme.primaryTextColor,

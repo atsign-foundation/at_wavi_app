@@ -36,6 +36,10 @@ class Strings {
   static const String desktop_quote = 'Quote';
   static const String desktop_video = 'Video';
   static const String desktop_home = 'Home';
+  static const String desktop_ps4 = 'PS4';
+  static const String desktop_xbox = 'Xbox';
+  static const String desktop_twitch = 'Twitch';
+  static const String desktop_facebook = 'Facebook';
 
   static const String desktop_private_profile= 'Private Profile';
   static const String desktop_follow_user = 'Follow the user to know their details';

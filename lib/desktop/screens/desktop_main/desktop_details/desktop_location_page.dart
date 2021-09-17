@@ -32,8 +32,8 @@ class _DesktopLocationPageState extends State<DesktopLocationPage>
             padding: EdgeInsets.all(16),
             child: Row(
               children: [
-                Expanded(
-                  flex: 1,
+                Container(
+                  width: 100,
                   child: Text(
                     Strings.desktop_home,
                     style: TextStyle(
@@ -46,7 +46,6 @@ class _DesktopLocationPageState extends State<DesktopLocationPage>
                   width: 16,
                 ),
                 Expanded(
-                  flex: 3,
                   child: Text(
                     '',
                     style: TextStyle(

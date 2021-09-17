@@ -35,8 +35,8 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                 padding: EdgeInsets.all(16),
                 child: Row(
                   children: [
-                    Expanded(
-                      flex: 1,
+                    Container(
+                      width: 100,
                       child: Text(
                         Strings.desktop_phone_number,
                         style: TextStyle(
@@ -49,7 +49,6 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                       width: 16,
                     ),
                     Expanded(
-                      flex: 3,
                       child: Text(
                         '+84 3354335562',
                         style: TextStyle(
@@ -70,8 +69,8 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                 padding: EdgeInsets.all(16),
                 child: Row(
                   children: [
-                    Expanded(
-                      flex: 1,
+                    Container(
+                      width: 100,
                       child: Text(
                         Strings.desktop_email_address,
                         style: TextStyle(
@@ -84,7 +83,6 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                       width: 16,
                     ),
                     Expanded(
-                      flex: 3,
                       child: Text(
                         'duc1@gmail.com',
                         style: TextStyle(

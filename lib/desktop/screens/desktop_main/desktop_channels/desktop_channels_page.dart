@@ -1,3 +1,5 @@
+import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_channels/desktop_game_account_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_channels/desktop_social_account_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -75,12 +77,8 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
             child: TabBarView(
               controller: _tabController,
               children: [
-                Container(
-                  color: Colors.blueAccent,
-                ),
-                Container(
-                  color: Colors.yellowAccent,
-                ),
+                DesktopSocialAccountPage(),
+                DesktopGameAccountPage(),
               ],
             ),
           ),

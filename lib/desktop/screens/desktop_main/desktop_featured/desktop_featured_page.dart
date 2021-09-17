@@ -1,3 +1,5 @@
+import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_featured/desktop_instagram_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_featured/desktop_twitter_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -76,12 +78,8 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
             child: TabBarView(
               controller: _tabController,
               children: [
-                Container(
-                  color: Colors.redAccent,
-                ),
-                Container(
-                  color: Colors.greenAccent,
-                ),
+                DesktopInstagramPage(),
+                DesktopTwitterPage(),
               ],
             ),
           ),
