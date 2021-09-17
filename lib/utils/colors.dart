@@ -39,7 +39,7 @@ class ColorConstants {
       color.withOpacity(opacity);
 
   /// grey shades
-  static const Color LIGHT_GREY = Color(0xFFBEC0C8);
+  static const Color LIGHT_GREY = Color(0xFFF5F5F5);
   static const Color DARK_GREY = Color(0xFF6D6D79);
   static const Color MILD_GREY = Color(0xFFE4E4E4);
 

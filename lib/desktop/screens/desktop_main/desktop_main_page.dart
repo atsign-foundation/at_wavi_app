@@ -1,18 +1,18 @@
+import 'package:at_wavi_app/desktop/screens/desktop_profile/desktop_profile_info_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
-import 'desktop_profile_info_page.dart';
-import 'desktop_profile_private_page.dart';
+import 'desktop_main_detail_page.dart';
 
-class DesktopProfilePage extends StatefulWidget {
-  const DesktopProfilePage({Key? key}) : super(key: key);
+class DesktopMainPage extends StatefulWidget {
+  const DesktopMainPage({Key? key}) : super(key: key);
 
   @override
-  _DesktopProfilePageState createState() => _DesktopProfilePageState();
+  _DesktopMainPageState createState() => _DesktopMainPageState();
 }
 
-class _DesktopProfilePageState extends State<DesktopProfilePage> {
+class _DesktopMainPageState extends State<DesktopMainPage> {
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
@@ -24,7 +24,7 @@ class _DesktopProfilePageState extends State<DesktopProfilePage> {
             Container(
               width: 360,
               child: DesktopProfileInfoPage(
-                isMyProfile: false,
+                isMyProfile: true,
               ),
             ),
             Container(
@@ -32,7 +32,7 @@ class _DesktopProfilePageState extends State<DesktopProfilePage> {
               color: ColorConstants.lightGrey,
             ),
             Expanded(
-              child: DesktopProfilePrivatePage(),
+              child: DesktopMainDetailPage(),
             ),
           ],
         ),

@@ -5,7 +5,12 @@ import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class DesktopProfileInfoPage extends StatefulWidget {
-  const DesktopProfileInfoPage({Key? key}) : super(key: key);
+  late bool isMyProfile;
+
+  DesktopProfileInfoPage({
+    Key? key,
+    this.isMyProfile = false,
+  }) : super(key: key);
 
   @override
   _DesktopProfileInfoPageState createState() => _DesktopProfileInfoPageState();
@@ -20,23 +25,33 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Container(
-              padding: EdgeInsets.all(24),
-              child: Text(
-                Strings.desktop_back,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: appTheme.primaryColor,
-                  fontWeight: FontWeight.normal,
-                  fontFamily: 'Inter',
+          widget.isMyProfile
+              ? Container(
+                  margin: EdgeInsets.only(top: 32),
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    'assets/images/logo_dark.png',
+                    fit: BoxFit.fitHeight,
+                    height: 32,
+                  ),
+                )
+              : GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(24),
+                    child: Text(
+                      Strings.desktop_back,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: appTheme.primaryColor,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'Inter',
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
           Expanded(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -104,15 +119,37 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                 SizedBox(
                   height: 32,
                 ),
-                DesktopButton(
-                  width: 280,
-                  height: 40,
-                  backgroundColor: appTheme.primaryColor,
-                  title: Strings.desktop_follow,
-                  onPressed: () async {
-
-                  },
-                ),
+                widget.isMyProfile
+                    ? Column(
+                        children: [
+                          DesktopButton(
+                            width: 280,
+                            height: 40,
+                            backgroundColor: ColorConstants.white,
+                            titleColor: appTheme.primaryColor,
+                            borderColor: appTheme.primaryColor,
+                            title: Strings.desktop_edit_profile,
+                            onPressed: () async {},
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          DesktopButton(
+                            width: 280,
+                            height: 40,
+                            title: Strings.desktop_share_profile,
+                            backgroundColor: appTheme.primaryColor,
+                            onPressed: () async {},
+                          ),
+                        ],
+                      )
+                    : DesktopButton(
+                        width: 280,
+                        height: 40,
+                        backgroundColor: appTheme.primaryColor,
+                        title: Strings.desktop_follow,
+                        onPressed: () async {},
+                      ),
                 SizedBox(
                   height: 24,
                 ),

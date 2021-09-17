@@ -1,5 +1,6 @@
 import 'package:at_wavi_app/desktop/screens/desktop_home/desktop_home_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_login/desktop_login_landing_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_main_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile/desktop_profile_page.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
@@ -24,6 +25,8 @@ class DesktopSetupRoutes {
           DesktopProfilePage(key: UniqueKey()),
       DesktopRoutes.DESKTOP_LOGIN: (context) =>
           DesktopLoginLandingPage(key: UniqueKey()),
+      DesktopRoutes.DESKTOP_MAIN: (context) =>
+          DesktopMainPage(key: UniqueKey()),
     };
   }
 
@@ -33,6 +36,7 @@ class DesktopSetupRoutes {
       DesktopRoutes.DESKTOP_HOME: (context) => DesktopHomePage(),
       DesktopRoutes.DESKTOP_PROFILE: (context) => DesktopProfilePage(),
       DesktopRoutes.DESKTOP_LOGIN: (context) => DesktopLoginLandingPage(),
+      DesktopRoutes.DESKTOP_MAIN: (context) => DesktopMainPage(),
     };
   }
 

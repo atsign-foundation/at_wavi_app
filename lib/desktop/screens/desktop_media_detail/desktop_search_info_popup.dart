@@ -32,7 +32,7 @@ class _DesktopSearchInfoPopUpState extends State<DesktopSearchInfoPopUp> {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      width: 270,
+      width: 220,
       color: appTheme.backgroundColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,

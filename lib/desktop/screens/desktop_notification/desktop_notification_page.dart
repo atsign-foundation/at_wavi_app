@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 
 class DesktopNotificationPage extends StatefulWidget {
   String atSign;
+  BuildContext mainContext;
 
   DesktopNotificationPage({
     Key? key,
     required this.atSign,
+    required this.mainContext,
   }) : super(key: key);
 
   @override
@@ -33,11 +35,12 @@ class _DesktopNotificationPageState extends State<DesktopNotificationPage>
     return Card(
       elevation: 3,
       child: Container(
-        width: 350,
+        width: 320,
         height: 270,
         padding: EdgeInsets.all(4),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TabBar(
               indicatorColor: appTheme.primaryColor,
@@ -47,10 +50,12 @@ class _DesktopNotificationPageState extends State<DesktopNotificationPage>
               unselectedLabelStyle: TextStyle(
                 fontSize: 13,
                 color: appTheme.borderColor,
+                fontFamily: 'Inter',
               ),
               labelStyle: TextStyle(
                 fontSize: 13,
                 color: appTheme.primaryTextColor,
+                fontFamily: 'Inter',
               ),
               controller: _tabController,
               tabs: [
@@ -70,7 +75,9 @@ class _DesktopNotificationPageState extends State<DesktopNotificationPage>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  DesktopNotificationListPage(),
+                  DesktopNotificationListPage(
+                    mainContext: widget.mainContext,
+                  ),
                   DesktopNewRequestPage(),
                 ],
               ),

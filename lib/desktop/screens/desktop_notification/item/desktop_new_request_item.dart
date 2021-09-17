@@ -66,7 +66,7 @@ class DesktopNewRequestItem extends StatelessWidget {
           SizedBox(
             width: 8,
           ),
-          DesktopWhiteButton(
+          DesktopButton(
             width: 64,
             height: 32,
             textSize: 12,

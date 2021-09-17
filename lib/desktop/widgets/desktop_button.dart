@@ -1,10 +1,12 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class DesktopButton extends StatelessWidget {
   final String title;
   final Color? titleColor;
   final Color? backgroundColor;
+  final Color? borderColor;
   final double width;
   final double height;
   final double textSize;
@@ -15,6 +17,7 @@ class DesktopButton extends StatelessWidget {
     required this.title,
     this.titleColor,
     this.backgroundColor,
+    this.borderColor,
     this.textSize = 16,
     this.width = 184,
     this.height = 56,
@@ -41,6 +44,10 @@ class DesktopButton extends StatelessWidget {
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4.0),
+              side: BorderSide(
+                color: borderColor ?? Colors.transparent,
+                width: 0.5,
+              ),
             ),
           ),
           elevation: MaterialStateProperty.all(0),
@@ -55,7 +62,6 @@ class DesktopButton extends StatelessWidget {
 class DesktopWhiteButton extends StatelessWidget {
   final String title;
   final Color? titleColor;
-  final Color? backgroundColor;
   final Color? borderColor;
   final double width;
   final double height;
@@ -66,7 +72,6 @@ class DesktopWhiteButton extends StatelessWidget {
     Key? key,
     required this.title,
     this.titleColor,
-    this.backgroundColor,
     this.borderColor,
     this.textSize = 16,
     this.width = 184,
@@ -101,7 +106,7 @@ class DesktopWhiteButton extends StatelessWidget {
             ),
           ),
           elevation: MaterialStateProperty.all(0),
-          backgroundColor: MaterialStateProperty.all(backgroundColor),
+          backgroundColor: MaterialStateProperty.all(ColorConstants.white),
         ),
       ),
     );

@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 import 'item/desktop_notification_item.dart';
 
 class DesktopNotificationListPage extends StatefulWidget {
-  const DesktopNotificationListPage({Key? key}) : super(key: key);
+  BuildContext mainContext;
+
+  DesktopNotificationListPage({
+    Key? key,
+    required this.mainContext,
+  }) : super(key: key);
 
   @override
   _DesktopNotificationListPageState createState() =>
@@ -29,6 +34,7 @@ class _DesktopNotificationListPageState
       },
       itemBuilder: (context, i) {
         return DesktopNotificationItem(
+          mainContext: widget.mainContext,
           backgroundColor: ColorConstants.white,
           type: i % 2 == 0
               ? NotificationItemType.Normal

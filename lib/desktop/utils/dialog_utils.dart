@@ -1,6 +1,5 @@
 import 'package:at_wavi_app/desktop/screens/desktop_login/desktop_passcode_dialog.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_notification/desktop_notification_page.dart';
-import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 Future<dynamic> showPassCodeDialog(
@@ -53,6 +52,7 @@ Future<dynamic> showNotificationsDialog(
                 color: Colors.white),
             padding: EdgeInsets.all(4.0),
             child: DesktopNotificationPage(
+              mainContext: context,
               atSign: atSign,
             ),
           ),

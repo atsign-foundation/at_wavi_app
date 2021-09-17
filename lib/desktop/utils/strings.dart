@@ -13,6 +13,29 @@ class Strings {
   static const String desktop_followers = 'Followers';
   static const String desktop_following = 'Following';
   static const String desktop_follow = 'Follow';
+  static const String desktop_edit_profile = 'Edit Profile';
+  static const String desktop_share_profile = 'Share Profile';
+  static const String desktop_details = 'Details';
+  static const String desktop_channels = 'Channels';
+  static const String desktop_featured = 'Featured';
+
+  static const String desktop_media = 'Media';
+  static const String desktop_basic_details = 'Basic Details';
+  static const String desktop_additional_details = 'Additional Details';
+  static const String desktop_location = 'Location';
+
+  static const String desktop_social_accounts = 'Social Accounts';
+  static const String desktop_game_accounts = 'Game Accounts';
+  static const String desktop_instagram = 'Instagram';
+  static const String desktop_twitter = 'Twitter';
+
+  static const String desktop_phone_number = 'Phone Number';
+  static const String desktop_email_address = 'Email Address';
+  static const String desktop_preferred_pronoun = 'Preferred Pronoun';
+  static const String desktop_about = 'About';
+  static const String desktop_quote = 'Quote';
+  static const String desktop_video = 'Video';
+  static const String desktop_home = 'Home';
 
   static const String desktop_private_profile= 'Private Profile';
   static const String desktop_follow_user = 'Follow the user to know their details';
