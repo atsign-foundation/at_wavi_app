@@ -40,7 +40,7 @@ class _AtSignBottomSheetState extends State<AtSignBottomSheet> {
               child: Container(
                 height: 120.toHeight,
                 width: SizeConfig().screenWidth,
-                color: Colors.white,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 child: Row(
                   children: [
                     Expanded(
@@ -82,7 +82,9 @@ class _AtSignBottomSheetState extends State<AtSignBottomSheet> {
                                   ),
                                 ),
                                 Text(widget.atSignList[index],
-                                    style: TextStyle(fontSize: 15.toFont))
+                                    style: TextStyle(
+                                        fontSize: 15.toFont,
+                                        color: Theme.of(context).primaryColor))
                               ],
                             ),
                           ),

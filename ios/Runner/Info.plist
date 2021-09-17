@@ -44,6 +44,8 @@
 	<string>We need access to your bluetooth connection to message when wi-fi is not available</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>We need access to your bluetooth connection to message when wi-fi is not available</string>
+	<key>io.flutter.embedded_views_preview</key>
+    <true/>
 	<key>NSCameraUsageDescription</key>
 	<string>The camera is used to scan QR code to pair your device with your @sign</string>
 	<key>NSPhotoLibraryUsageDescription</key>

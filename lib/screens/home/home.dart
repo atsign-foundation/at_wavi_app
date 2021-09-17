@@ -725,6 +725,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   _searchProfile() async {
+    if (searchedAtsign.isEmpty) {
+      return;
+    }
+
     bool _isSearchingSameAtsign = SearchService().user.atsign == searchedAtsign;
 
     if (loadingSearchedAtsign) {
