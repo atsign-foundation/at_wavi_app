@@ -6,7 +6,7 @@ class MixedConstants {
   // static const String ROOT_DOMAIN = 'vip.ve.atsign.zone';
 
   // for staging server
-  // static const String ROOT_DOMAIN = 'root.atsign.wtf';u]
+  // static const String ROOT_DOMAIN = 'root.atsign.wtf';
   // for production server
   static const String ROOT_DOMAIN = 'root.atsign.org';
 
@@ -21,6 +21,8 @@ class MixedConstants {
   static const String PRIVACY_POLICY =
       "https://atsign.com/apps/atmosphere/atmosphere-privacy/";
 
+  static const String WAVI_API = 'https://wavi.ng/api/?atp=';
+
   // the time to await for file transfer acknowledgement in milliseconds
   static const int TIME_OUT = 60000;
 
@@ -30,7 +32,10 @@ class MixedConstants {
 
   static const String syncRegex = '.(wavi|persona)@';
 
-  static const String MAP_KEY = '';
+  static const String FOLLOWING_KEY = 'following_by_self';
+  static const String FOLLOWERS_KEY = 'followers_of_self';
+
+  static const String MAP_KEY = 'B3Wus46C2WZFhwZKQkEx';
   static const String API_KEY = '';
   static final String twitterBearerToken = '';
   static const int responseTimeLimit = 30;

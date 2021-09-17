@@ -72,8 +72,6 @@ class BackendService {
 
     initializeContactsService(
         atClientInstance, atClientInstance.currentAtSign!);
-    Provider.of<FollowService>(NavService.navKey.currentContext!, listen: false)
-        .init();
     Provider.of<ThemeProvider>(NavService.navKey.currentContext!, listen: false)
         .resetThemeData();
     await Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
