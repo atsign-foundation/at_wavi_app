@@ -43,6 +43,7 @@ class DesktopTextField extends StatelessWidget {
           ),
           onChanged: onChanged,
           decoration: InputDecoration(
+            hintText: hint,
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: appTheme.separatorColor),
             ),

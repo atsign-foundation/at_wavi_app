@@ -74,7 +74,7 @@ class DesktopEditBasicDetailModel extends ChangeNotifier {
       newBasicData.value = element.controller.text.trim();
       updateDefinedFields(context, newBasicData);
     });
-    Navigator.of(context).pop();
+    Navigator.of(context).pop('saved');
   }
 
   /// [updateDefinedFields]can be used to either update or delete value

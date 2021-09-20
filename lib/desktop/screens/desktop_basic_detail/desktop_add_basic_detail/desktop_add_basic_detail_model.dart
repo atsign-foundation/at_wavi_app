@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
@@ -9,33 +12,32 @@ import 'package:provider/provider.dart';
 class DesktopAddBasicDetailModel extends ChangeNotifier {
   final UserPreview userPreview;
 
-  List<String> _fields = [];
+  CustomContentType _fieldType = CustomContentType.Text;
 
-  List<String> get fields => _fields;
+  CustomContentType get fieldType => _fieldType;
 
-  DesktopAddBasicDetailModel({required this.userPreview}) {
-    FieldOrderService().initCategoryFields(AtCategory.DETAILS);
-    fetchFields();
-  }
+  Uint8List? _selectedImage;
 
-  void fetchFields() {
-    _fields = [
-      ...FieldNames().getFieldList(AtCategory.DETAILS, isPreview: true)
-    ];
+  Uint8List? get selectedImage => _selectedImage;
+
+  DesktopAddBasicDetailModel({required this.userPreview});
+
+  void changeField(CustomContentType fieldType) {
+    _fieldType = fieldType;
     notifyListeners();
   }
 
-  void reorder(int oldIndex, int newIndex) {
-    if (oldIndex < newIndex) {
-      newIndex -= 1;
-    }
-    final String item = _fields.removeAt(oldIndex);
-    _fields.insert(newIndex, item);
+  void didSelectImage(Uint8List selectedImage) {
+    _selectedImage = selectedImage;
     notifyListeners();
   }
 
   void saveData(BuildContext context) {
-    FieldOrderService().updateField(AtCategory.DETAILS, fields);
+    if (_fieldType == CustomContentType.Image && _selectedImage == null) {
+      CommonFunctions().showSnackBar('Please add image');
+      return;
+    }
+    //Todo
     Navigator.of(context).pop('saved');
   }
 }

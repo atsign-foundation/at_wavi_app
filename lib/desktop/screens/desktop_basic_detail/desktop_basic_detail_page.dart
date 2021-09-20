@@ -1,8 +1,6 @@
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_basic_detail_item_widget.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_empty_basic_detail_widget.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_edit_basic_detail/desktop_edit_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
-import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
@@ -14,6 +12,7 @@ import 'package:provider/provider.dart';
 
 import 'desktop_add_basic_detail/desktop_add_basic_detail_page.dart';
 import 'desktop_basic_detail_model.dart';
+import 'desktop_edit_basic_detail/desktop_edit_basic_detail_page.dart';
 import 'desktop_reorder_basic_detail/desktop_reorder_basic_detail_page.dart';
 
 class DesktopBasicDetailPage extends StatefulWidget {
@@ -184,6 +183,9 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
         child: DesktopEditBasicDetailPage(),
       ),
     );
+    if (result == 'saved') {
+      _model.fetchBasicData();
+    }
   }
 
   void _showAddCustomContent() async {
@@ -194,6 +196,9 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
         child: DesktopAddBasicDetailPage(),
       ),
     );
+    if (result == 'saved') {
+      _model.fetchBasicData();
+    }
   }
 
   void _showReorderDetailPopup() async {
