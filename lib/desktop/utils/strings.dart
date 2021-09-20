@@ -52,6 +52,11 @@ class Strings {
   static const String desktop_get_sign = 'Don\'t have an sign? Get now.';
   static const String desktop_sign = '@sign';
   static const String desktop_enter_sign = 'Enter @Sign';
+  static const String desktop_search_sign = 'Search sign';
+  static const String desktop_recent_search = 'Recent Search';
+  static const String desktop_prefix_sign = '@sign';
+  static const String desktop_search_follower = 'Search Follower';
+  static const String desktop_search_following = 'Search Following';
 
   static const String desktop_notifications = 'Notifications';
   static const String desktop_new_request = 'New Request';

@@ -13,7 +13,12 @@ import 'package:showcaseview/showcaseview.dart';
 import 'desktop_featured/desktop_featured_page.dart';
 
 class DesktopMainDetailPage extends StatefulWidget {
-  const DesktopMainDetailPage({Key? key}) : super(key: key);
+  Function onClickSearch;
+
+  DesktopMainDetailPage({
+    Key? key,
+    required this.onClickSearch,
+  }) : super(key: key);
 
   @override
   _DesktopMainDetailPageState createState() => _DesktopMainDetailPageState();
@@ -72,23 +77,40 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      DesktopShowCaseWidget(
-                        globalKey: _searchKey,
-                        container: DesktopSearchInfoPopUp(
-                          atSign: '',
-                          icon: 'assets/images/info1.png',
-                          description: Strings.desktop_search_user,
-                          onNext: () {
-                            ShowCaseWidget.of(context)!.dismiss();
-                            ShowCaseWidget.of(context)!
-                                .startShowCase([_notificationKey]);
-                          },
-                          onCancel: () {
-                            ShowCaseWidget.of(context)!.dismiss();
+                      Container(
+                        height: 32,
+                        width: 32,
+                        child: RawMaterialButton(
+                          shape: new CircleBorder(),
+                          elevation: 0.0,
+                          fillColor: appTheme.borderColor,
+                          child: Icon(
+                            Icons.search,
+                            size: 16,
+                            color: appTheme.primaryTextColor,
+                          ),
+                          onPressed: () {
+                            widget.onClickSearch();
                           },
                         ),
-                        iconData: Icons.search,
                       ),
+                      // DesktopShowCaseWidget(
+                      //   globalKey: _searchKey,
+                      //   container: DesktopSearchInfoPopUp(
+                      //     atSign: '',
+                      //     icon: 'assets/images/info1.png',
+                      //     description: Strings.desktop_search_user,
+                      //     onNext: () {
+                      //       ShowCaseWidget.of(context)!.dismiss();
+                      //       ShowCaseWidget.of(context)!
+                      //           .startShowCase([_notificationKey]);
+                      //     },
+                      //     onCancel: () {
+                      //       ShowCaseWidget.of(context)!.dismiss();
+                      //     },
+                      //   ),
+                      //   iconData: Icons.search,
+                      // ),
                       SizedBox(
                         width: 24,
                       ),
@@ -131,7 +153,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
                 child: Stack(
                   children: [
                     PageView(
-                    physics: NeverScrollableScrollPhysics(),
+                      physics: NeverScrollableScrollPhysics(),
                       onPageChanged: (int page) {},
                       controller: _pageController,
                       children: [

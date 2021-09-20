@@ -25,6 +25,7 @@ class _DesktopProfilePageState extends State<DesktopProfilePage> {
               width: 360,
               child: DesktopProfileInfoPage(
                 isMyProfile: false,
+                onClickFollow: (type) {},
               ),
             ),
             Container(

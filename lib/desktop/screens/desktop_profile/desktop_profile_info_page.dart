@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 
 class DesktopProfileInfoPage extends StatefulWidget {
   late bool isMyProfile;
+  Function(String) onClickFollow;
 
   DesktopProfileInfoPage({
     Key? key,
     this.isMyProfile = false,
+    required this.onClickFollow,
   }) : super(key: key);
 
   @override
@@ -165,31 +167,36 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   }
 
   _buildInteractiveItem(String title, String subTitle, AppTheme appTheme) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 12,
-            color: appTheme.secondaryTextColor,
-            fontWeight: FontWeight.normal,
-            fontFamily: 'Inter',
+    return GestureDetector(
+      onTap: () {
+        widget.onClickFollow(title);
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 12,
+              color: appTheme.secondaryTextColor,
+              fontWeight: FontWeight.normal,
+              fontFamily: 'Inter',
+            ),
           ),
-        ),
-        SizedBox(
-          width: 32,
-        ),
-        Text(
-          subTitle,
-          style: TextStyle(
-            fontSize: 14,
-            color: appTheme.primaryTextColor,
-            fontWeight: FontWeight.normal,
-            fontFamily: 'Inter',
+          SizedBox(
+            width: 32,
           ),
-        ),
-      ],
+          Text(
+            subTitle,
+            style: TextStyle(
+              fontSize: 14,
+              color: appTheme.primaryTextColor,
+              fontWeight: FontWeight.normal,
+              fontFamily: 'Inter',
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
