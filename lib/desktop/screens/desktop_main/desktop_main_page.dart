@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 
 import 'desktop_drawer/desktop_drawer_page.dart';
 import 'desktop_main_detail_page.dart';
-import 'desktop_search/desktop_search_page.dart';
 
 class DesktopMainPage extends StatefulWidget {
   DesktopMainPage({

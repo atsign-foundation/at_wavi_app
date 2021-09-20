@@ -1,17 +1,15 @@
 import 'package:at_wavi_app/model/user.dart';
-import 'package:at_wavi_app/services/field_order_service.dart';
-import 'package:at_wavi_app/utils/at_enum.dart';
-import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
 class DesktopFollowerModel extends ChangeNotifier {
   final UserPreview userPreview;
 
   List<User> _users = [];
+  List<User> _searchUsers = [];
 
   List<User> get users => _users;
+  List<User> get searchUsers => _searchUsers;
 
   late TextEditingController followerTextEditingController;
 
@@ -20,13 +18,18 @@ class DesktopFollowerModel extends ChangeNotifier {
     followerTextEditingController = TextEditingController(
       text: '',
     );
+    for (int i = 0; i < 6; i++) {
+      _users.add(User(atsign: 'duc$i'));
+    }
     searchUser('');
   }
 
   void searchUser(String text) {
-    _users.clear();
-    for(int i = 0; i < text.length; i++){
-      _users.add(User());
+    _searchUsers.clear();
+    for (int i = 0; i < _users.length; i++) {
+      if (_users[i].atsign.toLowerCase().contains(text)) {
+        _searchUsers.add(_users[i]);
+      }
     }
     notifyListeners();
   }
