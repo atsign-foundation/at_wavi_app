@@ -51,7 +51,8 @@ dependencies:
   at_follows_flutter: ^2.0.4
   latlong2: ^0.8.0
   at_location_flutter: ^2.0.4
-
+  showcaseview: ^1.1.1
+  video_thumbnail: ^0.4.3
   flutter_widget_from_html: ^0.6.2
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
