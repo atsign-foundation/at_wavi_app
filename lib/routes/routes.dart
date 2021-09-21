@@ -115,6 +115,19 @@ class SetupRoutes {
             title: 'Terms and Conditions',
             url: '${MixedConstants.WEBSITE_URL}/terms-conditions',
           ),
+      Routes.WEB_VIEW: (context) {
+        if ((ModalRoute.of(context) != null) &&
+            (ModalRoute.of(context)!.settings.arguments != null)) {
+          Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+
+          return WebsiteScreen(
+            title: args['title'],
+            url: args['url'],
+          );
+        } else
+          return SizedBox();
+      },
       Routes.EDIT_CATEGORY_FIELDS: (context) {
         if ((ModalRoute.of(context) != null) &&
             (ModalRoute.of(context)!.settings.arguments != null)) {
