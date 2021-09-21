@@ -84,12 +84,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     initPackages();
 
     _getThemeData();
-    // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
-    //   await Provider.of<FollowService>(NavService.navKey.currentContext!,
-    // listen: false)().getFollowers();
-    //   await Provider.of<FollowService>(NavService.navKey.currentContext!,
-    // listen: false)().getFollowing();
-    // });
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+      var followsProvider = Provider.of<FollowService>(
+          NavService.navKey.currentContext!,
+          listen: false);
+      await followsProvider.fetchAtsignDetails(followsProvider.followers.list!);
+      await followsProvider.fetchAtsignDetails(followsProvider.following.list!,
+          isFollowing: true);
+      // TODO: commenting for testing only
+      // Provider.of<FollowService>(NavService.navKey.currentContext!,
+      //         listen: false)
+      //     .init();
+    });
     super.initState();
   }
 
@@ -602,7 +608,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Text(
                     _isSearchScreen
                         ? (SearchService().following_count ?? '-').toString()
-                        : '${followsCount(_provider.following)}',
+                        : '${followsCount()}',
                     style: TextStyle(
                         fontSize: 18.toFont,
                         color: _isDark
@@ -640,7 +646,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Text(
                     _isSearchScreen
                         ? (SearchService().followers_count ?? '-').toString()
-                        : '${followsCount(_provider.followers)}',
+                        : '${followsCount(isFollowers: true)}',
                     style: TextStyle(
                         fontSize: 18.toFont,
                         color: _isDark
@@ -809,9 +815,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  String followsCount(AtFollowsData atFollowsData) {
-    if (atFollowsData.getKey == null) {
+  String followsCount({bool isFollowers: false}) {
+    AtFollowsData atFollowsData;
+    var followsProvider = Provider.of<FollowService>(
+        NavService.navKey.currentContext!,
+        listen: false);
+    if (!followsProvider.isFollowsFetched) {
       return '--';
+    }
+
+    if (isFollowers) {
+      atFollowsData = followsProvider.followers;
+    } else {
+      atFollowsData = followsProvider.following;
     }
 
     int num = atFollowsData.list!.length;

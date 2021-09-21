@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:at_commons/at_commons.dart';
 import 'package:at_contact/at_contact.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_follows_flutter/domain/at_follows_list.dart';
@@ -13,6 +14,7 @@ import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:http/http.dart' as http;
+import 'package:at_commons/at_commons.dart';
 
 class FollowService extends BaseModel {
   FollowService();
@@ -21,11 +23,11 @@ class FollowService extends BaseModel {
   final String FETCH_FOLLOWERS = 'fetch_followers';
   final String FETCH_FOLLOWING = 'fetch_followings';
 
+  bool isFollowsFetched = false;
+
   init() async {
     await AtFollowServices()
         .initializeFollowService(BackendService().atClientServiceInstance);
-    await getFollowers();
-    await getFollowing();
     connectionProviderListener();
   }
 
@@ -104,7 +106,6 @@ class FollowService extends BaseModel {
     setUnfollowingLoading(index, true);
     notifyListeners();
     try {
-      // await Future.delayed(Duration(seconds: 2));
       // print('now unfollowing');
       var result = await AtFollowServices().unfollow(atsign);
       setUnfollowingLoading(index, false);
@@ -146,16 +147,12 @@ class FollowService extends BaseModel {
       {bool isFollowing = false}) async {
     var atsignDetails = <AtsignDetails>[];
 
-    await Future.forEach(atsignList, (String? atsign) async {
-      var atcontact = await getAtSignDetails(atsign!);
-      atsignDetails.add(AtsignDetails(atcontact: atcontact));
-    });
-
-    if (isFollowing) {
-      this.following.atsignListDetails = [...atsignDetails];
-    } else {
-      this.followers.atsignListDetails = [...atsignDetails];
+    for (int i = 0; i < atsignList.length; i++) {
+      var atcontact = await getAtSignDetails(atsignList[i]!);
+      this.following.atsignListDetails[i] = AtsignDetails(atcontact: atcontact);
+      notifyListeners();
     }
+
     return atsignDetails;
   }
 
@@ -280,5 +277,25 @@ class FollowService extends BaseModel {
     } catch (e) {
       print('Error in $e');
     }
+  }
+
+  addFollowersData(AtValue atValue) async {
+    List<String> followersList = atValue.value.split(',');
+    this.followers.list = followersList;
+    isFollowsFetched = true;
+    this.followers.list!.forEach((element) {
+      followers.atsignListDetails
+          .add(AtsignDetails(atcontact: AtContact(atSign: element)));
+    });
+  }
+
+  addFollowingData(AtValue atValue) async {
+    List<String> followingList = atValue.value.split(',');
+    this.following.list = followingList;
+    isFollowsFetched = true;
+    this.following.list!.forEach((element) {
+      following.atsignListDetails
+          .add(AtsignDetails(atcontact: AtContact(atSign: element)));
+    });
   }
 }

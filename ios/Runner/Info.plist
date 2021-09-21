@@ -36,18 +36,30 @@
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>To upload music file, please allow permission to access your files.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>We need access to your bluetooth connection to message when wi-fi is not available</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>We need access to your bluetooth connection to message when wi-fi is not available</string>
 	<key>io.flutter.embedded_views_preview</key>
     <true/>
 	<key>NSCameraUsageDescription</key>
 	<string>The camera is used to scan QR code to pair your device with your @sign</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Enable @wavi.ng to access your photos to upload the ones you choose in file transfer.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Microphone is used for speech to text feature</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Enable @mosphere-pro to access your photos to upload the ones you choose in file transfer.</string>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

@@ -5,8 +5,12 @@ import 'package:at_commons/at_commons.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
+import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
+import 'package:at_wavi_app/utils/constants.dart';
+import 'package:at_wavi_app/view_models/follow_service.dart';
+import 'package:provider/provider.dart';
 
 class AtKeyGetService {
   AtKeyGetService._();
@@ -89,6 +93,19 @@ class AtKeyGetService {
     }
 
     var successValue = await BackendService().atClientInstance.get(atKey);
+
+    if (atKey.key!.contains(MixedConstants.FOLLOWERS_KEY)) {
+      Provider.of<FollowService>(NavService.navKey.currentContext!,
+              listen: false)
+          .addFollowersData(successValue);
+    }
+
+    if (atKey.key!.contains(MixedConstants.FOLLOWING_KEY)) {
+      Provider.of<FollowService>(NavService.navKey.currentContext!,
+              listen: false)
+          .addFollowingData(successValue);
+    }
+
     if (successValue.value != null) {
       print('fetched value ${successValue.value} for key ${atKey.key}');
       isSetUserField = _setUserField(atKey.key, successValue.value, isCustom,
