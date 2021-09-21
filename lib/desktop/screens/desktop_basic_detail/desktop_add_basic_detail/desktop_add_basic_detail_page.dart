@@ -1,8 +1,11 @@
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_reorder_basic_detail/widgets/desktop_reorderable_item_widget.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_show_hide_radio_button.dart';
 import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
+import 'package:at_wavi_app/services/image_picker.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +24,13 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
   late DesktopAddBasicDetailModel _model;
   final _showHideController = ShowHideController(isShow: true);
   final _titleTextController = TextEditingController();
+  final _textContentTextController = TextEditingController();
+  final _linkContentTextController = TextEditingController();
+  final _numberContentTextController = TextEditingController();
+  final _imageContentTextController = TextEditingController();
+  final _youtubeContentTextController = TextEditingController();
+
+  var contentDropDown = CustomContentType.values;
 
   @override
   Widget build(BuildContext context) {
@@ -55,32 +65,8 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
               title: 'Title',
               controller: _titleTextController,
             ),
-            // DropdownButton(
-            //   items: ['Text', 'Url'].map((e) {
-            //     return DropdownMenuItem(
-            //       child: Text(e),
-            //     );
-            //   }).toList(),
-            //   value: 'Text',
-            // ),
-            Container(
-              height: 52,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Select a type',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: appTheme.primaryTextColor,
-                    ),
-                  ),
-                  Spacer(),
-                  Icon(Icons.keyboard_arrow_down),
-                ],
-              ),
-            ),
+            _buildTypeSelectionWidget(),
+            _buildFieldInputWidget(),
             Container(height: 1, color: appTheme.separatorColor),
             SizedBox(height: 16),
             DesktopShowHideRadioButton(
@@ -98,39 +84,107 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
     );
   }
 
-  Widget _buildContentWidget() {
+  Widget _buildTypeSelectionWidget() {
+    final appTheme = AppTheme.of(context);
+    return Consumer<DesktopAddBasicDetailModel>(builder: (_, model, child) {
+      return DropdownButtonFormField<CustomContentType>(
+        dropdownColor: appTheme.backgroundColor,
+        autovalidateMode: AutovalidateMode.disabled,
+        hint: Text('Select a type'),
+        decoration: InputDecoration(
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: appTheme.separatorColor),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: appTheme.primaryColor),
+          ),
+        ),
+        value: model.fieldType,
+        icon: Icon(Icons.keyboard_arrow_down),
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: appTheme.primaryTextColor,
+        ),
+        validator: (value) {
+          if (value == null) {
+            return 'Please select content type';
+          }
+          return null;
+        },
+        onChanged: (newValue) {
+          if (newValue != null) {
+            _model.changeField(newValue);
+          }
+        },
+        items: contentDropDown.map<DropdownMenuItem<CustomContentType>>(
+            (CustomContentType value) {
+          return DropdownMenuItem<CustomContentType>(
+            value: value,
+            child: Text(value.label),
+          );
+        }).toList(),
+      );
+    });
+  }
+
+  Widget _buildFieldInputWidget() {
+    final appTheme = AppTheme.of(context);
     return Consumer<DesktopAddBasicDetailModel>(
       builder: (_, model, child) {
-        return ConstrainedBox(
-          constraints: new BoxConstraints(
-            maxHeight: 360.0,
-          ),
-          child: ReorderableListView(
-            onReorder: _model.reorder,
-            children: model.fields.map((e) {
-              return DesktopReorderableItemWidget(
-                key: Key(e),
-                title: e,
-                margin: EdgeInsets.symmetric(vertical: 2),
-              );
-            }).toList(),
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-          ),
-          // shrinkWrap: true,
-          // physics: ClampingScrollPhysics(),
-          // itemBuilder: (c, index) {
-          //   final data = model.basicData[index];
-          //   return DesktopReorderableItemWidget(
-          //       title: data.accountName ?? '');
-          // },
-          // separatorBuilder: (context, index) {
-          //   return SizedBox(height: 4);
-          // },
-          // itemCount: model.basicData.length,
-        );
+        if (_model.fieldType == CustomContentType.Text) {
+          return DesktopTextField(
+            controller: _textContentTextController,
+            hint: '',
+          );
+        } else if (_model.fieldType == CustomContentType.Link) {
+          return DesktopTextField(
+            controller: _linkContentTextController,
+            hint: 'https:www//example.com',
+          );
+        } else if (_model.fieldType == CustomContentType.Number) {
+          return DesktopTextField(
+            controller: _numberContentTextController,
+            hint: '',
+          );
+        } else if (_model.fieldType == CustomContentType.Image) {
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DesktopIconLabelButton(
+                  iconData: Icons.add,
+                  label: 'Add Image',
+                  onPressed: _onSelectImage,
+                ),
+                if (model.selectedImage != null)
+                  Container(
+                    height: 200,
+                    child: Image.memory(model.selectedImage!),
+                  ),
+              ],
+            ),
+          );
+        } else if (_model.fieldType == CustomContentType.Youtube) {
+          return DesktopTextField(
+            controller: _youtubeContentTextController,
+            hint: 'https://www.youtube.com',
+          );
+        } else {
+          return Container();
+        }
       },
     );
+  }
+
+  void _onSelectImage() async {
+    final image = await ImagePicker().pickImage();
+    if (image != null) {
+      _model.didSelectImage(image);
+    } else {
+      print('Pick null image');
+    }
   }
 
   void _onSaveData() {

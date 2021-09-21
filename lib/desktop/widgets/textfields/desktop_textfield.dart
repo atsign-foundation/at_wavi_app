@@ -51,7 +51,7 @@ class DesktopTextField extends StatelessWidget {
           controller: controller,
           keyboardType: keyboardType,
           style: TextStyle(
-            fontSize: textSize,
+            fontSize: 16,
             fontWeight: FontWeight.normal,
             color: appTheme.primaryTextColor,
           ),

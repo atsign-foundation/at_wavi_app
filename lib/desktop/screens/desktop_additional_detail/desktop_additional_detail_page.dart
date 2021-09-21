@@ -1,9 +1,17 @@
-import 'package:at_wavi_app/desktop/screens/desktop_additional_detail_popup/desktop_additional_detail_popup.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_additional_detail/desktop_additional_detail_model.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_additional_detail/desktop_edit_additional_detail/desktop_edit_basic_detail_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_add_basic_detail/desktop_add_basic_detail_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_reorder_basic_detail/desktop_reorder_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_basic_detail_item_widget.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
+import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_welcome_widget.dart';
+import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'widgets/desktop_empty_additional_detail_widget.dart';
 
@@ -17,21 +25,39 @@ class DesktopAdditionalDetailPage extends StatefulWidget {
 class _DesktopAdditionalDetailPageState extends State<DesktopAdditionalDetailPage>
     with AutomaticKeepAliveClientMixin {
 
-  bool isHaveData = false;
+  late DesktopAdditionalDetailModel _model;
 
   @override
   bool get wantKeepAlive => true;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: isHaveData ? _buildContentWidget() : _buildEmptyWidget(),
-          ),
-        ],
+    return ChangeNotifierProvider(
+      create: (BuildContext c) {
+        final userPreview = Provider.of<UserPreview>(context);
+        _model = DesktopAdditionalDetailModel(userPreview: userPreview);
+        return _model;
+      },
+      child: Scaffold(
+        body: _buildBodyWidget(),
       ),
+    );
+  }
+
+  Widget _buildBodyWidget() {
+    return Consumer<DesktopAdditionalDetailModel>(
+      builder: (_, model, child) {
+        if (model.basicData.isEmpty) {
+          return _buildEmptyWidget();
+        } else {
+          return _buildContentWidget(model.basicData);
+        }
+      },
     );
   }
 
@@ -44,7 +70,7 @@ class _DesktopAdditionalDetailPageState extends State<DesktopAdditionalDetailPag
           child: Container(
             child: Center(
               child: DesktopEmptyAdditionalDetailWidget(
-                onAddDetailsPressed: _showAddDetailPopup,
+                onAddDetailsPressed: _showEditDetailPopup,
               ),
             ),
           ),
@@ -53,85 +79,138 @@ class _DesktopAdditionalDetailPageState extends State<DesktopAdditionalDetailPag
     );
   }
 
-  Widget _buildContentWidget() {
+  Widget _buildContentWidget(List<BasicData> data) {
+    print('$data');
     final appTheme = AppTheme.of(context);
     return Container(
-      margin: EdgeInsets.only(top: 80, left: 80, right: 80),
+      margin: EdgeInsets.only(top: 70, left: 80, right: 80),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            child: Text(
-              'Additional Details',
-              style: TextStyle(
-                color: appTheme.primaryTextColor,
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          SizedBox(height: 60),
-          Container(
-            decoration: BoxDecoration(
-              color: Color(0xF5f5f5).withOpacity(0.5),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            child: Row(
               children: [
-                DesktopBasicDetailItemWidget(
-                  title: 'Preferred Pronoun',
-                  description: 'He/Him',
+                Text(
+                  'Additional Details',
+                  style: TextStyle(
+                    color: appTheme.primaryTextColor,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-                Divider(
-                  color: appTheme.separatorColor,
-                  indent: 27,
-                  endIndent: 27,
-                  height: 1,
+                Spacer(),
+                DesktopIconLabelButton(
+                  iconData: Icons.add_circle_outline_sharp,
+                  label: 'Custom Content',
+                  onPressed: _showAddCustomContent,
                 ),
-                DesktopBasicDetailItemWidget(
-                  title: 'About',
-                  description: 'Designer at @ Company',
-                ),
-                Divider(
-                  color: appTheme.separatorColor,
-                  indent: 27,
-                  endIndent: 27,
-                  height: 1,
-                ),
-                DesktopBasicDetailItemWidget(
-                  title: 'Quote',
-                  description: 'Let us make our future now, and let us make our dreams tomorrow’s reality.',
+                DesktopPreviewButton(
+                  onPressed: _showEditDetailPopup,
                 ),
               ],
             ),
           ),
-          Spacer(),
-          Container(
-            alignment: Alignment.centerRight,
-            padding: EdgeInsets.only(bottom: 64),
-            child: DesktopWhiteButton(
-              title: 'Reorder',
-              onPressed: () {
-                print('Reorder pressed');
+          SizedBox(height: 60),
+          Expanded(
+            child: ListView.separated(
+              itemBuilder: (context, index) {
+                final item = data[index];
+                BorderRadius? borderRadius;
+                if (data.length == 1) {
+                  borderRadius = BorderRadius.all(Radius.circular(10));
+                } else {
+                  if (index == 0) {
+                    borderRadius = BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    );
+                  } else if (index == data.length) {
+                    borderRadius = BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    );
+                  }
+                }
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xF5f5f5).withOpacity(0.5),
+                    borderRadius: borderRadius,
+                  ),
+                  child: DesktopBasicDetailItemWidget(
+                    title: item.accountName ?? '',
+                    description: item.value ?? '',
+                  ),
+                );
               },
+              separatorBuilder: (context, index) {
+                return Divider(
+                  color: appTheme.separatorColor,
+                  indent: 27,
+                  endIndent: 27,
+                  height: 1,
+                );
+              },
+              itemCount: data.length,
             ),
-          )
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: 64),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                DesktopWhiteButton(
+                  title: 'Reorder',
+                  onPressed: _showReorderDetailPopup,
+                ),
+                SizedBox(width: 12),
+                DesktopButton(
+                  title: 'Save & Next',
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  void _showAddDetailPopup() async {
-    await showDialog<String>(
+  void _showEditDetailPopup() async {
+    final result = await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
-        child: DesktopAdditionalDetailPopup(),
+        child: DesktopEditAdditionalDetailPage(),
       ),
     );
-    setState(() {
-      isHaveData = !isHaveData;
-    });
+    if (result == 'saved') {
+      _model.fetchAdditionalData();
+    }
+  }
+
+  void _showAddCustomContent() async {
+    final result = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: DesktopAddBasicDetailPage(),
+      ),
+    );
+    if (result == 'saved') {
+      _model.fetchAdditionalData();
+    }
+  }
+
+  void _showReorderDetailPopup() async {
+    final result = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: DesktopReorderBasicDetailPage(),
+      ),
+    );
+    if (result == 'saved') {
+      _model.fetchAdditionalData();
+    }
   }
 }
