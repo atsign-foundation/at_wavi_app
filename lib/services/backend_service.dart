@@ -47,6 +47,7 @@ class BackendService {
       domain: MixedConstants.ROOT_DOMAIN,
       appAPIKey: MixedConstants.devAPIKey,
       appColor: ColorConstants.peach,
+      rootEnvironment: RootEnvironment.Production,
       onboard: (atClientServiceMap, onboardedAtsign) async {
         LoadingDialog().show(text: '$onboardedAtsign', heading: 'Loading');
         await onSuccessOnboard(atClientServiceMap, onboardedAtsign);
@@ -71,8 +72,7 @@ class BackendService {
     atClientServiceInstance = atClientServiceMap[onboardedAtsign]!;
     atClientServiceInstance = atClientServiceMap[onboardedAtsign]!;
 
-    initializeContactsService(atClientServiceInstance.atClientManager,
-        atClientInstance.getCurrentAtSign()!);
+    initializeContactsService(rootDomain: MixedConstants.ROOT_DOMAIN);
     Provider.of<FollowService>(NavService.navKey.currentContext!, listen: false)
         .init();
 
