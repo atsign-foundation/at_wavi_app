@@ -91,7 +91,7 @@ class _DesktopSearchPageState extends State<DesktopSearchPage> {
                   if (model.searchUsers.isEmpty) {
                     return Center(
                       child: DesktopEmptyWidget(
-                        title: 'Empty',
+                        title: Strings.desktop_empty,
                         buttonTitle: '',
                         onButtonPressed: () {},
                         description: '',

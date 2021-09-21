@@ -3,6 +3,8 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
+import '../desktop_basic_item.dart';
+
 class DesktopAdditionalDetailPage extends StatefulWidget {
   const DesktopAdditionalDetailPage({Key? key}) : super(key: key);
 
@@ -33,136 +35,36 @@ class _DesktopAdditionalDetailPageState
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 100,
-                      child: Text(
-                        Strings.desktop_preferred_pronoun,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: appTheme.secondaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                      child: Text(
-                        'He/Him',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: appTheme.primaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                  ],
-                ),
+              DesktopBasicItem(
+                title: Strings.desktop_preferred_pronoun,
+                value: 'He/Him',
               ),
               Container(
                 height: 1,
                 margin: EdgeInsets.symmetric(horizontal: 16),
                 color: appTheme.borderColor,
               ),
-              Container(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 100,
-                      child: Text(
-                        Strings.desktop_about,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: appTheme.secondaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                      child: Text(
-                        'Design at @Company',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: appTheme.primaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                  ],
-                ),
+              DesktopBasicItem(
+                title: Strings.desktop_about,
+                value: 'Design at @Company',
               ),
               Container(
                 height: 1,
                 margin: EdgeInsets.symmetric(horizontal: 16),
                 color: appTheme.borderColor,
               ),
-              Container(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 100,
-                      child: Text(
-                        Strings.desktop_quote,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: appTheme.secondaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                      child: Text(
-                        'Let us make our futute now.',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: appTheme.primaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                  ],
-                ),
+              DesktopBasicItem(
+                title: Strings.desktop_quote,
+                value: 'Let us make our future now.',
               ),
               Container(
                 height: 1,
                 margin: EdgeInsets.symmetric(horizontal: 16),
                 color: appTheme.borderColor,
               ),
-              Container(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 100,
-                      child: Text(
-                        Strings.desktop_video,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: appTheme.secondaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                      child: Text(
-                        '',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: appTheme.primaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                  ],
-                ),
+              DesktopBasicItem(
+                title: Strings.desktop_video,
+                value: '',
               ),
             ],
           ),

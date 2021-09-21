@@ -3,6 +3,8 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
+import '../desktop_basic_item.dart';
+
 class DesktopSocialAccountPage extends StatefulWidget {
   const DesktopSocialAccountPage({Key? key}) : super(key: key);
 
@@ -180,31 +182,9 @@ class _DesktopSocialAccountPageState extends State<DesktopSocialAccountPage>
                 margin: EdgeInsets.symmetric(horizontal: 16),
                 color: appTheme.borderColor,
               ),
-              Container(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 100,
-                      child: Text(
-                        Strings.desktop_twitter,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: appTheme.secondaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        'www.twitter.com/lauren',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: appTheme.primaryColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                  ],
-                ),
+              DesktopBasicItem(
+                title: Strings.desktop_twitter,
+                value: 'www.twitter.com/lauren',
               ),
             ],
           ),

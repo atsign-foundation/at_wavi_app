@@ -3,6 +3,8 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
+import '../desktop_basic_item.dart';
+
 class DesktopGameAccountPage extends StatefulWidget {
   const DesktopGameAccountPage({Key? key}) : super(key: key);
 
@@ -31,102 +33,27 @@ class _DesktopGameAccountPageState extends State<DesktopGameAccountPage>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 100,
-                      child: Text(
-                        Strings.desktop_ps4,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: appTheme.secondaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                      child: Text(
-                        'ducpham',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: appTheme.primaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                  ],
-                ),
+              DesktopBasicItem(
+                title: Strings.desktop_ps4,
+                value: 'ducpham',
               ),
               Container(
                 height: 1,
                 margin: EdgeInsets.symmetric(horizontal: 16),
                 color: appTheme.borderColor,
               ),
-              Container(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 100,
-                      child: Text(
-                        Strings.desktop_xbox,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: appTheme.secondaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                      child: Text(
-                        'ducpham',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: appTheme.primaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                  ],
-                ),
+              DesktopBasicItem(
+                title: Strings.desktop_xbox,
+                value: 'ducpham',
               ),
               Container(
                 height: 1,
                 margin: EdgeInsets.symmetric(horizontal: 16),
                 color: appTheme.borderColor,
               ),
-              Container(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 100,
-                      child: Text(
-                        Strings.desktop_twitch,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: appTheme.secondaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                      child: Text(
-                        'twitch.tv/ducpham',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: appTheme.primaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                  ],
-                ),
+              DesktopBasicItem(
+                title: Strings.desktop_twitch,
+                value: 'twitch.tv/ducpham',
               ),
             ],
           ),

@@ -6,6 +6,7 @@ class Strings {
   static const String desktop_passcode_description =
       '@wavi sent a notification to your phone,\ntap \'YES\' to proceed';
   static const String desktop_or = 'Or';
+  static const String desktop_empty = 'Empty';
   static const String desktop_next = 'Next';
   static const String desktop_back = 'Back';
   static const String desktop_see_update = 'See updates from wave that you have missed';

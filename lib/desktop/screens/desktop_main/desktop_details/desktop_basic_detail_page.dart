@@ -3,6 +3,8 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
+import '../desktop_basic_item.dart';
+
 class DesktopBasicDetailPage extends StatefulWidget {
   const DesktopBasicDetailPage({Key? key}) : super(key: key);
 
@@ -31,68 +33,18 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 100,
-                      child: Text(
-                        Strings.desktop_phone_number,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: appTheme.secondaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                      child: Text(
-                        '+84 3354335562',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: appTheme.primaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                  ],
-                ),
+              DesktopBasicItem(
+                title: Strings.desktop_phone_number,
+                value: '+84 3354335562',
               ),
               Container(
                 height: 1,
                 margin: EdgeInsets.symmetric(horizontal: 16),
                 color: appTheme.borderColor,
               ),
-              Container(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 100,
-                      child: Text(
-                        Strings.desktop_email_address,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: appTheme.secondaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                      child: Text(
-                        'duc1@gmail.com',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: appTheme.primaryTextColor,
-                            fontFamily: 'Inter'),
-                      ),
-                    ),
-                  ],
-                ),
+              DesktopBasicItem(
+                title: Strings.desktop_email_address,
+                value: 'duc1@gmail.com',
               ),
             ],
           ),

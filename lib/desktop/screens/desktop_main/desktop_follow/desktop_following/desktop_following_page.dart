@@ -79,7 +79,7 @@ class _DesktopFollowingPageState extends State<DesktopFollowingPage>
                   if (model.searchUsers.isEmpty) {
                     return Center(
                       child: DesktopEmptyWidget(
-                        title: 'Empty',
+                        title: Strings.desktop_empty,
                         buttonTitle: '',
                         onButtonPressed: () {},
                         description: '',

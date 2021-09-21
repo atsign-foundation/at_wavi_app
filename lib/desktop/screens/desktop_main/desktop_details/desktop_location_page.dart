@@ -3,6 +3,8 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
+import '../desktop_basic_item.dart';
+
 class DesktopLocationPage extends StatefulWidget {
   const DesktopLocationPage({Key? key}) : super(key: key);
 
@@ -28,34 +30,9 @@ class _DesktopLocationPageState extends State<DesktopLocationPage>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              children: [
-                Container(
-                  width: 100,
-                  child: Text(
-                    Strings.desktop_home,
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: appTheme.secondaryTextColor,
-                        fontFamily: 'Inter'),
-                  ),
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                Expanded(
-                  child: Text(
-                    '',
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: appTheme.primaryTextColor,
-                        fontFamily: 'Inter'),
-                  ),
-                ),
-              ],
-            ),
+          DesktopBasicItem(
+            title: Strings.desktop_home,
+            value: '',
           ),
         ],
       ),
