@@ -20,6 +20,8 @@ import 'desktop/routes/desktop_routes.dart';
 import 'desktop/services/theme/app_theme.dart';
 import 'desktop/services/theme/inherited_app_theme.dart';
 
+var currentScreen = '';
+
 class MyApp extends StatefulWidget {
   MyApp();
 

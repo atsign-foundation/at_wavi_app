@@ -160,7 +160,8 @@ enum AtCategory {
 
   /// Added for new wavi app
   ADDITIONAL_DETAILS,
-  FEATURED
+  FEATURED,
+  OTHERS
 }
 
 extension AtCategoryValues on AtCategory {

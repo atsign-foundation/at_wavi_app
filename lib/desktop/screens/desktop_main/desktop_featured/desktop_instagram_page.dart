@@ -59,7 +59,7 @@ class _DesktopInstagramPageState extends State<DesktopInstagramPage>
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
         ),
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.symmetric(vertical: 8),
         itemBuilder: (context, index) {
           return AspectRatio(
             aspectRatio: 1.0,

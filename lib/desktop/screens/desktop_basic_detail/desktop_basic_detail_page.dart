@@ -6,6 +6,7 @@ import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart'
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_welcome_widget.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,6 @@ class DesktopBasicDetailPage extends StatefulWidget {
 
 class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
     with AutomaticKeepAliveClientMixin {
-
   late DesktopBasicDetailModel _model;
 
   @override
@@ -202,14 +202,16 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
   }
 
   void _showReorderDetailPopup() async {
-    final result = await showDialog<String>(
+    final result = await showDialog<List<String>>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
-        child: DesktopReorderBasicDetailPage(),
+        child: DesktopReorderBasicDetailPage(
+          atCategory: AtCategory.DETAILS,
+        ),
       ),
     );
-    if (result == 'saved') {
+    if (result != null) {
       _model.fetchBasicData();
     }
   }

@@ -1,6 +1,10 @@
+import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_reorder_basic_detail/desktop_reorder_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_login/desktop_passcode_dialog.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_notification/desktop_notification_page.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:flutter/material.dart';
+
+import '../../app.dart';
 
 Future<dynamic> showPassCodeDialog(
   BuildContext context, {
@@ -60,4 +64,29 @@ Future<dynamic> showNotificationsDialog(
       );
     },
   );
+}
+
+Future showReOderPopUp(
+    BuildContext context, Function(List<String>) updateFields) async {
+  AtCategory atCategory;
+  atCategory = AtCategory.values.firstWhere(
+    (element) => element.name == currentScreen,
+    orElse: () => AtCategory.OTHERS,
+  );
+
+  final results = await showDialog<List<String>>(
+    context: context,
+    builder: (BuildContext context) => Dialog(
+      backgroundColor: Colors.transparent,
+      child: DesktopReorderBasicDetailPage(
+        atCategory: atCategory,
+      ),
+    ),
+  );
+  if (results != null) {
+    if (results is List<String>) {
+      List<String> fields = results;
+      updateFields(fields);
+    }
+  }
 }

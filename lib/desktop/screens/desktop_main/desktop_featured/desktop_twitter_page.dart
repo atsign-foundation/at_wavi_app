@@ -37,7 +37,7 @@ class _DesktopTwitterPageState extends State<DesktopTwitterPage>
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          margin: EdgeInsets.all(8),
+          margin: EdgeInsets.symmetric(vertical: 8),
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: ColorConstants.LIGHT_GREY,

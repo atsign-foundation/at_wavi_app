@@ -3,20 +3,30 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
-import '../desktop_basic_item.dart';
+import '../../desktop_basic_item.dart';
 
 class DesktopSocialAccountPage extends StatefulWidget {
-  const DesktopSocialAccountPage({Key? key}) : super(key: key);
+  DesktopSocialAccountPage({Key? key}) : super(key: key);
+
+  _DesktopSocialAccountPageState _desktopSocialAccountPageState = _DesktopSocialAccountPageState();
 
   @override
   _DesktopSocialAccountPageState createState() =>
-      _DesktopSocialAccountPageState();
+      _desktopSocialAccountPageState;
+
+  Future updateFields() async {
+    await _desktopSocialAccountPageState.updateFields();
+  }
 }
 
 class _DesktopSocialAccountPageState extends State<DesktopSocialAccountPage>
     with AutomaticKeepAliveClientMixin<DesktopSocialAccountPage> {
   @override
   bool get wantKeepAlive => true;
+
+  Future updateFields() async{
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +35,7 @@ class _DesktopSocialAccountPageState extends State<DesktopSocialAccountPage>
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          margin: EdgeInsets.all(8),
+          margin: EdgeInsets.symmetric(vertical: 8),
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: ColorConstants.LIGHT_GREY,
