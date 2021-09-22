@@ -1,5 +1,5 @@
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_basic_detail_item_widget.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_empty_basic_detail_widget.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_empty_category_widget.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart';
@@ -17,7 +17,12 @@ import 'desktop_edit_basic_detail/desktop_edit_basic_detail_page.dart';
 import 'desktop_reorder_basic_detail/desktop_reorder_basic_detail_page.dart';
 
 class DesktopBasicDetailPage extends StatefulWidget {
-  const DesktopBasicDetailPage({Key? key}) : super(key: key);
+  final AtCategory atCategory;
+
+  const DesktopBasicDetailPage({
+    Key? key,
+    required this.atCategory,
+  }) : super(key: key);
 
   @override
   _DesktopBasicDetailPageState createState() => _DesktopBasicDetailPageState();
@@ -25,6 +30,7 @@ class DesktopBasicDetailPage extends StatefulWidget {
 
 class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
     with AutomaticKeepAliveClientMixin {
+
   late DesktopBasicDetailModel _model;
 
   @override
@@ -40,7 +46,10 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
     return ChangeNotifierProvider(
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
-        _model = DesktopBasicDetailModel(userPreview: userPreview);
+        _model = DesktopBasicDetailModel(
+          userPreview: userPreview,
+          atCategory: widget.atCategory,
+        );
         return _model;
       },
       child: Scaffold(
@@ -69,7 +78,8 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
         Expanded(
           child: Container(
             child: Center(
-              child: DesktopEmptyBasicDetailWidget(
+              child: DesktopEmptyCategoryWidget(
+                atCategory: widget.atCategory,
                 onAddDetailsPressed: _showEditDetailPopup,
               ),
             ),
@@ -91,7 +101,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
             child: Row(
               children: [
                 Text(
-                  'Basic Details',
+                  widget.atCategory.label,
                   style: TextStyle(
                     color: appTheme.primaryTextColor,
                     fontSize: 17,
@@ -180,7 +190,9 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
-        child: DesktopEditBasicDetailPage(),
+        child: DesktopEditBasicDetailPage(
+          atCategory: widget.atCategory,
+        ),
       ),
     );
     if (result == 'saved') {
@@ -202,16 +214,16 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
   }
 
   void _showReorderDetailPopup() async {
-    final result = await showDialog<List<String>>(
+    final result = await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
         child: DesktopReorderBasicDetailPage(
-          atCategory: AtCategory.DETAILS,
+          atCategory: widget.atCategory,
         ),
       ),
     );
-    if (result != null) {
+    if (result == 'saved') {
       _model.fetchBasicData();
     }
   }

@@ -9,5 +9,10 @@ class Images {
   static const faqs = 'assets/images/faqs.png';
 
   ///For desktop icons
-  static const basicDetail = 'assets/images/basic_detail.png';
+  static const introBasicDetail = 'assets/images/intro_basic_detail.png';
+  static const introAdditionalDetail =
+      'assets/images/intro_additional_detail.png';
+  static const introLocation = 'assets/images/intro_location.png';
+  static const introSocialChannel = 'assets/images/intro_social_channel.png';
+  static const introGameChannel = 'assets/images/intro_game_channel.png';
 }

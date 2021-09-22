@@ -9,9 +9,9 @@ import 'package:provider/provider.dart';
 import 'desktop_reorder_basic_detail_model.dart';
 
 class DesktopReorderBasicDetailPage extends StatefulWidget {
-  AtCategory atCategory;
+  final AtCategory atCategory;
 
-  DesktopReorderBasicDetailPage({
+  const DesktopReorderBasicDetailPage({
     Key? key,
     required this.atCategory,
   }) : super(key: key);
@@ -65,7 +65,6 @@ class _DesktopReorderBasicDetailPageState
                   child: DesktopButton(
                     title: 'Save New Order',
                     width: double.infinity,
-                    backgroundColor: appTheme.primaryColor,
                     onPressed: _onSaveData,
                   ),
                 ),
@@ -98,7 +97,7 @@ class _DesktopReorderBasicDetailPageState
               return DesktopReorderableItemWidget(
                 key: Key(e),
                 title: e,
-                margin: EdgeInsets.symmetric(vertical: 6),
+                margin: EdgeInsets.symmetric(vertical: 2),
               );
             }).toList(),
             shrinkWrap: true,

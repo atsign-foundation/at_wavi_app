@@ -3,6 +3,7 @@ import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_show_hide_radio_button.dart';
 import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,12 @@ import 'package:provider/provider.dart';
 import 'desktop_edit_basic_detail_model.dart';
 
 class DesktopEditBasicDetailPage extends StatefulWidget {
-  const DesktopEditBasicDetailPage({Key? key}) : super(key: key);
+  final AtCategory atCategory;
+
+  const DesktopEditBasicDetailPage({
+    Key? key,
+    required this.atCategory,
+  }) : super(key: key);
 
   @override
   _DesktopEditBasicDetailState createState() => _DesktopEditBasicDetailState();
@@ -26,7 +32,10 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
     return ChangeNotifierProvider(
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
-        _model = DesktopEditBasicDetailModel(userPreview: userPreview);
+        _model = DesktopEditBasicDetailModel(
+          userPreview: userPreview,
+          atCategory: widget.atCategory,
+        );
         return _model;
       },
       child: Container(
@@ -41,7 +50,7 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Basic Details',
+              widget.atCategory.label,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -73,20 +82,22 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
           constraints: new BoxConstraints(
             maxHeight: 360.0,
           ),
-          child: ListView.separated(
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-            itemBuilder: (c, index) {
-              final data = model.basicData[index];
-              return DesktopTextField(
-                controller: data.controller,
-                title: data.data.accountName ?? '',
-              );
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(height: 16);
-            },
-            itemCount: model.basicData.length,
+          child: Scrollbar(
+            child: ListView.separated(
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              itemBuilder: (c, index) {
+                final data = model.basicData[index];
+                return DesktopTextField(
+                  controller: data.controller,
+                  title: data.data.accountName ?? '',
+                );
+              },
+              separatorBuilder: (context, index) {
+                return SizedBox(height: 16);
+              },
+              itemCount: model.basicData.length,
+            ),
           ),
         );
       },

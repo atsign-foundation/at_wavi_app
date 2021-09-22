@@ -1,9 +1,9 @@
-import 'package:at_wavi_app/desktop/screens/desktop_additional_detail/desktop_additional_detail_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_appearance/desktop_appearance_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_home/desktop_side_menu.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_home/widgets/desktop_side_menu_widget.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -116,9 +116,16 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
             case DesktopSideMenu.profile:
               return Container(color: Colors.red);
             case DesktopSideMenu.basicDetails:
-              return DesktopBasicDetailPage();
+              return DesktopBasicDetailPage(atCategory: AtCategory.DETAILS);
             case DesktopSideMenu.additionalDetails:
-              return DesktopAdditionalDetailPage();
+              return DesktopBasicDetailPage(
+                  atCategory: AtCategory.ADDITIONAL_DETAILS);
+            case DesktopSideMenu.location:
+              return DesktopBasicDetailPage(atCategory: AtCategory.LOCATION);
+            case DesktopSideMenu.socialChannel:
+              return DesktopBasicDetailPage(atCategory: AtCategory.SOCIAL);
+            case DesktopSideMenu.gameChannel:
+              return DesktopBasicDetailPage(atCategory: AtCategory.GAMER);
             case DesktopSideMenu.appearance:
               return DesktopAppearancePage();
             default:
