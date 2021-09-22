@@ -1,6 +1,7 @@
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_reorder_basic_detail/widgets/desktop_reorderable_item_widget.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +9,12 @@ import 'package:provider/provider.dart';
 import 'desktop_reorder_basic_detail_model.dart';
 
 class DesktopReorderBasicDetailPage extends StatefulWidget {
-  const DesktopReorderBasicDetailPage({Key? key}) : super(key: key);
+  final AtCategory atCategory;
+
+  const DesktopReorderBasicDetailPage({
+    Key? key,
+    required this.atCategory,
+  }) : super(key: key);
 
   @override
   _DesktopReorderBasicDetailPageState createState() =>
@@ -25,7 +31,10 @@ class _DesktopReorderBasicDetailPageState
     return ChangeNotifierProvider(
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
-        _model = DesktopReorderBasicDetailModel(userPreview: userPreview);
+        _model = DesktopReorderBasicDetailModel(
+          userPreview: userPreview,
+          atCategory: widget.atCategory,
+        );
         return _model;
       },
       child: Container(

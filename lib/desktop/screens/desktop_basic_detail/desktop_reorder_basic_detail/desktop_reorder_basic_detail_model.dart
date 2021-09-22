@@ -8,19 +8,23 @@ import 'package:provider/provider.dart';
 
 class DesktopReorderBasicDetailModel extends ChangeNotifier {
   final UserPreview userPreview;
+  final AtCategory atCategory;
 
   List<String> _fields = [];
 
   List<String> get fields => _fields;
 
-  DesktopReorderBasicDetailModel({required this.userPreview}) {
-    FieldOrderService().initCategoryFields(AtCategory.DETAILS);
+  DesktopReorderBasicDetailModel({
+    required this.userPreview,
+    required this.atCategory,
+  }) {
+    FieldOrderService().initCategoryFields(atCategory);
     fetchFields();
   }
 
   void fetchFields() {
     _fields = [
-      ...FieldNames().getFieldList(AtCategory.DETAILS, isPreview: true)
+      ...FieldNames().getFieldList(atCategory, isPreview: true)
     ];
     notifyListeners();
   }
@@ -35,7 +39,7 @@ class DesktopReorderBasicDetailModel extends ChangeNotifier {
   }
 
   void saveData(BuildContext context) {
-    FieldOrderService().updateField(AtCategory.DETAILS, fields);
+    FieldOrderService().updateField(atCategory, fields);
     Navigator.of(context).pop('saved');
   }
 }

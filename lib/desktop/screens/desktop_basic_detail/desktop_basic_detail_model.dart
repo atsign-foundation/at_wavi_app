@@ -8,25 +8,33 @@ import 'package:provider/provider.dart';
 
 class DesktopBasicDetailModel extends ChangeNotifier {
   final UserPreview userPreview;
+  final AtCategory atCategory;
 
   List<BasicData> _basicData = [];
 
   List<BasicData> get basicData => _basicData;
 
-  DesktopBasicDetailModel({required this.userPreview}) {
-    FieldOrderService().initCategoryFields(AtCategory.DETAILS);
-    fetchBasicData();
+  DesktopBasicDetailModel({
+    required this.userPreview,
+    required this.atCategory,
+  }) {
+    try {
+      FieldOrderService().initCategoryFields(atCategory);
+      fetchBasicData();
+    } catch (e) {
+
+    }
   }
 
   void fetchBasicData() {
     _basicData.clear();
     var userMap = User.toJson(userPreview.user());
     List<BasicData>? customFields =
-        userPreview.user()?.customFields[AtCategory.DETAILS.name] ?? [];
+        userPreview.user()?.customFields[atCategory] ?? [];
 
     var fields = <String>[];
     fields = [
-      ...FieldNames().getFieldList(AtCategory.DETAILS, isPreview: true)
+      ...FieldNames().getFieldList(atCategory, isPreview: true)
     ];
 
     for (int i = 0; i < fields.length; i++) {
