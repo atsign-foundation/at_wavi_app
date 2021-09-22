@@ -15,7 +15,7 @@ class DesktopReorderableItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      height: 72,
+      height: 56,
       margin: margin,
       child: Row(
         children: [

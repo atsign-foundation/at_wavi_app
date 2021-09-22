@@ -1,6 +1,11 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
+import 'package:at_wavi_app/desktop/utils/strings.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class DesktopInstagramPage extends StatefulWidget {
   const DesktopInstagramPage({Key? key}) : super(key: key);
@@ -52,40 +57,43 @@ class _DesktopInstagramPageState extends State<DesktopInstagramPage>
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
-    return Container(
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
+    return DesktopVisibilityDetectorWidget(
+      keyScreen: AtCategory.INSTAGRAM.name,
+      child: Container(
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+          ),
+          padding: EdgeInsets.symmetric(vertical: 8),
+          itemBuilder: (context, index) {
+            return AspectRatio(
+              aspectRatio: 1.0,
+              child: index % 5 != 0
+                  ? Image.network(
+                      mediaList[index],
+                      fit: BoxFit.fitWidth,
+                    )
+                  : Stack(
+                      children: [
+                        Image.network(
+                          mediaList[index],
+                          fit: BoxFit.fitWidth,
+                        ),
+                        Center(
+                          child: Icon(
+                            Icons.play_circle_fill,
+                            size: 56,
+                            color: ColorConstants.white,
+                          ),
+                        ),
+                      ],
+                    ),
+            );
+          },
+          itemCount: mediaList.length,
         ),
-        padding: EdgeInsets.symmetric(vertical: 8),
-        itemBuilder: (context, index) {
-          return AspectRatio(
-            aspectRatio: 1.0,
-            child: index % 5 != 0
-                ? Image.network(
-              mediaList[index],
-              fit: BoxFit.fitWidth,
-            )
-                : Stack(
-              children: [
-                Image.network(
-                  mediaList[index],
-                  fit: BoxFit.fitWidth,
-                ),
-                Center(
-                  child: Icon(
-                    Icons.play_circle_fill,
-                    size: 56,
-                    color: ColorConstants.white,
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-        itemCount: mediaList.length,
       ),
     );
   }

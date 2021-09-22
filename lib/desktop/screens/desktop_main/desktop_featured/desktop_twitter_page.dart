@@ -1,4 +1,6 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -33,58 +35,61 @@ class _DesktopTwitterPageState extends State<DesktopTwitterPage>
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 8),
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          decoration: BoxDecoration(
-            color: ColorConstants.LIGHT_GREY,
-            borderRadius: BorderRadius.circular(5.0),
+    return DesktopVisibilityDetectorWidget(
+      keyScreen: AtCategory.TWITTER.name,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 8),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: ColorConstants.LIGHT_GREY,
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            child: ListView.separated(
+              shrinkWrap: true,
+              itemCount: twitterPosts.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        twitterPosts[index],
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: appTheme.primaryTextColor,
+                            fontFamily: 'Inter'),
+                      ),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Text(
+                        '15 mins ago',
+                        style: TextStyle(
+                            fontSize: 10,
+                            color: appTheme.secondaryTextColor,
+                            fontFamily: 'Inter'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return Divider(
+                  height: 1,
+                  color: appTheme.borderColor,
+                );
+              },
+            ),
           ),
-          child: ListView.separated(
-            shrinkWrap: true,
-            itemCount: twitterPosts.length,
-            itemBuilder: (context, index) {
-              return Container(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      twitterPosts[index],
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: appTheme.primaryTextColor,
-                          fontFamily: 'Inter'),
-                    ),
-                    SizedBox(
-                      height: 6,
-                    ),
-                    Text(
-                      '15 mins ago',
-                      style: TextStyle(
-                          fontSize: 10,
-                          color: appTheme.secondaryTextColor,
-                          fontFamily: 'Inter'),
-                    ),
-                  ],
-                ),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return Divider(
-                height: 1,
-                color: appTheme.borderColor,
-              );
-            },
+          Expanded(
+            child: Container(),
           ),
-        ),
-        Expanded(
-          child: Container(),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

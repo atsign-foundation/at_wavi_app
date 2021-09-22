@@ -1,5 +1,6 @@
 /// Strings used in the widgets.
 class Strings {
+  static const String desktop_current_screen = 'currentScreen';
   static const String cancelButtonTitle = 'Cancel';
   static const String desktop_passcode_title = 'Enter a passcode sent to ';
   static const String desktop_wrong_passcode = 'Passcode is wrong.';

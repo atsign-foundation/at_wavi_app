@@ -2,15 +2,13 @@ import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_channels/deskto
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_channels/desktop_social/desktop_social_account_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
-import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../app.dart';
 
 class DesktopChannelsPage extends StatefulWidget {
   DesktopChannelsPage({Key? key}) : super(key: key);
 
-  _DesktopChannelsPageState _desktopChannelsPageState = _DesktopChannelsPageState();
+  _DesktopChannelsPageState _desktopChannelsPageState =
+      _DesktopChannelsPageState();
 
   @override
   _DesktopChannelsPageState createState() => _desktopChannelsPageState;
@@ -19,7 +17,7 @@ class DesktopChannelsPage extends StatefulWidget {
     await _desktopChannelsPageState.updateSocialFields();
   }
 
-  Future updateGameFields() async{
+  Future updateGameFields() async {
     await _desktopChannelsPageState.updateGameFields();
   }
 }
@@ -30,13 +28,13 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
         AutomaticKeepAliveClientMixin<DesktopChannelsPage> {
   late TabController _tabController;
 
-  DesktopSocialAccountPage desktopSocialAccountPage = DesktopSocialAccountPage();
+  DesktopSocialAccountPage desktopSocialAccountPage =
+      DesktopSocialAccountPage();
   DesktopGameAccountPage desktopGameAccountPage = DesktopGameAccountPage();
 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-    _tabController.addListener(_handleTabSelection);
     super.initState();
   }
 
@@ -47,7 +45,7 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
     await desktopSocialAccountPage.updateFields();
   }
 
-  Future updateGameFields() async{
+  Future updateGameFields() async {
     await desktopGameAccountPage.updateFields();
   }
 
@@ -109,18 +107,5 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
         ],
       ),
     );
-  }
-
-  void _handleTabSelection() {
-    if (_tabController.indexIsChanging) {
-      switch (_tabController.index) {
-        case 0:
-          currentScreen = AtCategory.SOCIAL.name;
-          break;
-        case 1:
-          currentScreen = AtCategory.GAMER.name;
-          break;
-      }
-    }
   }
 }

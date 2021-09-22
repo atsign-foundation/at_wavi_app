@@ -4,10 +4,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_media/desktop_media_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
-import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../app.dart';
 
 class DesktopDetailsPage extends StatefulWidget {
   DesktopDetailsPage({Key? key}) : super(key: key);
@@ -42,7 +39,6 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
   @override
   void initState() {
     _tabController = TabController(length: 4, vsync: this);
-    _tabController.addListener(_handleTabSelection);
     super.initState();
   }
 
@@ -128,25 +124,6 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
         ],
       ),
     );
-  }
-
-  void _handleTabSelection() {
-    if (_tabController.indexIsChanging) {
-      switch (_tabController.index) {
-        case 0:
-          currentScreen = '';
-          break;
-        case 1:
-          currentScreen = AtCategory.DETAILS.name;
-          break;
-        case 2:
-          currentScreen = AtCategory.ADDITIONAL_DETAILS.name;
-          break;
-        case 3:
-          currentScreen = '';
-          break;
-      }
-    }
   }
 
   @override

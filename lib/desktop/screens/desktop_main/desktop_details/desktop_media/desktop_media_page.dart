@@ -1,4 +1,6 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -52,40 +54,43 @@ class _DesktopMediaPageState extends State<DesktopMediaPage>
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
-    return Container(
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-        ),
-        padding: EdgeInsets.all(8),
-        itemBuilder: (context, index) {
-          return AspectRatio(
-            aspectRatio: 1.0,
-            child: index % 5 != 0
-                ? Image.network(
-                    mediaList[index],
-                    fit: BoxFit.fitWidth,
-                  )
-                : Stack(
-                    children: [
-                      Image.network(
-                        mediaList[index],
-                        fit: BoxFit.fitWidth,
-                      ),
-                      Center(
-                        child: Icon(
-                          Icons.play_circle_fill,
-                          size: 56,
-                          color: ColorConstants.white,
+    return DesktopVisibilityDetectorWidget(
+      keyScreen: AtCategory.IMAGE.name,
+      child: Container(
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+          ),
+          padding: EdgeInsets.all(8),
+          itemBuilder: (context, index) {
+            return AspectRatio(
+              aspectRatio: 1.0,
+              child: index % 5 != 0
+                  ? Image.network(
+                      mediaList[index],
+                      fit: BoxFit.fitWidth,
+                    )
+                  : Stack(
+                      children: [
+                        Image.network(
+                          mediaList[index],
+                          fit: BoxFit.fitWidth,
                         ),
-                      ),
-                    ],
-                  ),
-          );
-        },
-        itemCount: mediaList.length,
+                        Center(
+                          child: Icon(
+                            Icons.play_circle_fill,
+                            size: 56,
+                            color: ColorConstants.white,
+                          ),
+                        ),
+                      ],
+                    ),
+            );
+          },
+          itemCount: mediaList.length,
+        ),
       ),
     );
   }

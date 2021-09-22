@@ -1,6 +1,8 @@
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_reorder_basic_detail/desktop_reorder_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_login/desktop_passcode_dialog.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_notification/desktop_notification_page.dart';
+import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
+import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:flutter/material.dart';
 
@@ -68,6 +70,8 @@ Future<dynamic> showNotificationsDialog(
 
 Future showReOderPopUp(
     BuildContext context, Function(List<String>) updateFields) async {
+  var currentScreen =
+      await getStringFromSharedPreferences(key: Strings.desktop_current_screen);
   AtCategory atCategory;
   atCategory = AtCategory.values.firstWhere(
     (element) => element.name == currentScreen,

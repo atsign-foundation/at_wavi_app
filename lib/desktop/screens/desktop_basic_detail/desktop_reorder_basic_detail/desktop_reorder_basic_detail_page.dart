@@ -98,7 +98,7 @@ class _DesktopReorderBasicDetailPageState
               return DesktopReorderableItemWidget(
                 key: Key(e),
                 title: e,
-                margin: EdgeInsets.symmetric(vertical: 2),
+                margin: EdgeInsets.symmetric(vertical: 6),
               );
             }).toList(),
             shrinkWrap: true,

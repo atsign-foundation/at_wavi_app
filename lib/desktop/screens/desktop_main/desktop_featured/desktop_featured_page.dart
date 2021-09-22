@@ -2,10 +2,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_featured/deskto
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_featured/desktop_twitter_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
-import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../app.dart';
 
 class DesktopFeaturedPage extends StatefulWidget {
   const DesktopFeaturedPage({Key? key}) : super(key: key);
@@ -23,7 +20,6 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-    _tabController.addListener(_handleTabSelection);
     super.initState();
   }
 
@@ -95,18 +91,5 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
   void dispose() {
     _tabController.dispose();
     super.dispose();
-  }
-
-  void _handleTabSelection() {
-    if (_tabController.indexIsChanging) {
-      switch (_tabController.index) {
-        case 0:
-          currentScreen = '';
-          break;
-        case 1:
-          currentScreen = '';
-          break;
-      }
-    }
   }
 }
