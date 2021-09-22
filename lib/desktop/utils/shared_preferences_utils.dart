@@ -14,3 +14,18 @@ Future<String?> getStringFromSharedPreferences({
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getString(key);
 }
+
+Future saveListStringToSharedPreferences({
+  required String key,
+  required List<String> value,
+}) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setStringList(key, value);
+}
+
+Future<List<String>?> getListStringFromSharedPreferences({
+  required String key,
+}) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getStringList(key);
+}

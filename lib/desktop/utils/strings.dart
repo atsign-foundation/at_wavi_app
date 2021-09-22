@@ -21,6 +21,9 @@ class Strings {
   static const String desktop_channels = 'Channels';
   static const String desktop_featured = 'Featured';
 
+  static const String desktop_reorder = 'Reorder';
+  static const String desktop_add_custom_content = 'Add Custom Content';
+
   static const String desktop_media = 'Media';
   static const String desktop_basic_details = 'Basic Details';
   static const String desktop_additional_details = 'Additional Details';

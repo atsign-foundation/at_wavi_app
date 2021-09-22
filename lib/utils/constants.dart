@@ -35,4 +35,11 @@ class MixedConstants {
   static final String twitterBearerToken = '';
   static const int responseTimeLimit = 30;
   static const String fieldOrderKey = 'field_order_of_self';
+
+  static const String LIST_DETAIL_KEY = 'list_detail';
+  static const String LIST_CHANNEL_KEY = 'list_channel';
+  static const String LIST_FEATURE_KEY = 'list_feature';
+
+
+
 }

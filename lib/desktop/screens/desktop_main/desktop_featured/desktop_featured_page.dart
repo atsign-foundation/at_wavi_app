@@ -1,14 +1,24 @@
+import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_featured/desktop_featured_model.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_featured/desktop_instagram_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_featured/desktop_twitter_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
-import 'package:at_wavi_app/desktop/utils/strings.dart';
+import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DesktopFeaturedPage extends StatefulWidget {
-  const DesktopFeaturedPage({Key? key}) : super(key: key);
+  DesktopFeaturedPage({Key? key}) : super(key: key);
+
+  _DesktopFeaturedPageState _desktopFeaturedPageState =
+      _DesktopFeaturedPageState();
 
   @override
-  _DesktopFeaturedPageState createState() => _DesktopFeaturedPageState();
+  _DesktopFeaturedPageState createState() => _desktopFeaturedPageState;
+
+  Future updateFeaturedFields() async {
+    await _desktopFeaturedPageState.updateFeaturedFields();
+  }
 }
 
 class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
@@ -16,6 +26,8 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
         SingleTickerProviderStateMixin,
         AutomaticKeepAliveClientMixin<DesktopFeaturedPage> {
   late TabController _tabController;
+
+  late DesktopFeaturedModel _model;
 
   @override
   void initState() {
@@ -26,65 +38,99 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
   @override
   bool get wantKeepAlive => true;
 
+  Future updateFeaturedFields() async {
+    if (this.mounted) {
+      await showReOderPopUp(
+        context,
+        (fields) {
+          /// Update Fields after reorder
+          _model.updateField(fields);
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
-    return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TabBar(
-            indicator: UnderlineTabIndicator(
-              borderSide: BorderSide(
-                width: 3,
-                color: appTheme.primaryColor,
-              ),
-              insets: EdgeInsets.only(
-                left: 0,
-                right: 8,
-                bottom: 4,
-              ),
-            ),
-            //    indicatorColor: appTheme.primaryColor,
-            isScrollable: true,
-            indicatorSize: TabBarIndicatorSize.label,
-            unselectedLabelStyle: TextStyle(
-              fontSize: 13,
-              color: appTheme.borderColor,
-              fontFamily: 'Inter',
-            ),
-            labelStyle: TextStyle(
-              fontSize: 13,
-              color: appTheme.primaryTextColor,
-              fontFamily: 'Inter',
-            ),
-            controller: _tabController,
-            tabs: [
-              Tab(
-                child: Text(
-                  Strings.desktop_instagram,
-                ),
-              ),
-              Tab(
-                child: Text(
-                  Strings.desktop_twitter,
-                ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                DesktopInstagramPage(),
-                DesktopTwitterPage(),
-              ],
-            ),
-          ),
-        ],
+    return ChangeNotifierProvider(
+      create: (BuildContext c) {
+        final userPreview = Provider.of<UserPreview>(context);
+        _model = DesktopFeaturedModel(userPreview: userPreview);
+        return _model;
+      },
+      child: Container(
+        child: Consumer<DesktopFeaturedModel>(
+          builder: (_, model, child) {
+            return model.fields.isEmpty
+                ? Container()
+                : Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TabBar(
+                        indicator: UnderlineTabIndicator(
+                          borderSide: BorderSide(
+                            width: 3,
+                            color: appTheme.primaryColor,
+                          ),
+                          insets: EdgeInsets.only(
+                            left: 0,
+                            right: 8,
+                            bottom: 4,
+                          ),
+                        ),
+                        //    indicatorColor: appTheme.primaryColor,
+                        isScrollable: true,
+                        indicatorSize: TabBarIndicatorSize.label,
+                        unselectedLabelStyle: TextStyle(
+                          fontSize: 13,
+                          color: appTheme.borderColor,
+                          fontFamily: 'Inter',
+                        ),
+                        labelStyle: TextStyle(
+                          fontSize: 13,
+                          color: appTheme.primaryTextColor,
+                          fontFamily: 'Inter',
+                        ),
+                        controller: _tabController,
+                        tabs: model.fields
+                            .map(
+                              (e) => Tab(
+                                child: Text(
+                                  e,
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: model.fields
+                              .map(
+                                (e) => getWidget(e),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                    ],
+                  );
+          },
+        ),
       ),
     );
+  }
+
+  Widget getWidget(String field) {
+    switch (field) {
+      case 'Instagram':
+        return DesktopInstagramPage();
+      case 'Twitter':
+        return DesktopTwitterPage();
+      default:
+        return Container();
+    }
   }
 
   @override

@@ -8,12 +8,16 @@ class DesktopShowCaseWidget extends StatelessWidget {
   IconData iconData;
   double iconSize;
   double childSize;
+  double overlayOpacity;
+  Color overlayColor;
 
   DesktopShowCaseWidget({
     Key? key,
     required this.globalKey,
     required this.container,
     required this.iconData,
+    this.overlayOpacity = 0.75,
+    this.overlayColor = Colors.black,
     this.iconSize = 16,
     this.childSize = 32,
   }) : super(key: key);
@@ -27,6 +31,8 @@ class DesktopShowCaseWidget extends StatelessWidget {
       disableAnimation: true,
       container: container,
       overlayPadding: EdgeInsets.all(6),
+      overlayOpacity: overlayOpacity,
+      overlayColor: overlayColor,
       height: childSize * 1.5,
       width: childSize * 1.5,
       child: Container(

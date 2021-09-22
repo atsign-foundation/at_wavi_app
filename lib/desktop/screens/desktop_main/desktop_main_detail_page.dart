@@ -1,4 +1,3 @@
-import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_reorder_basic_detail/desktop_reorder_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_channels/desktop_channels_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_details_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_media_detail/desktop_search_info_popup.dart';
@@ -10,12 +9,9 @@ import 'package:at_wavi_app/desktop/widgets/desktop_main_tabbar.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_showcase_widget.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
-import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 
-import '../../../app.dart';
 import 'desktop_featured/desktop_featured_page.dart';
 import 'desktop_main_detail_model.dart';
 
@@ -47,6 +43,10 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
   @override
   void initState() {
     _pageController = PageController();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      saveStringToSharedPreferences(
+          key: Strings.desktop_current_screen, value: AtCategory.DETAILS.name);
+    });
     super.initState();
   }
 
@@ -54,12 +54,8 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return ShowCaseWidget(
-      onStart: (index, key) {
-        print('onStart: $index, $key');
-      },
-      onComplete: (index, key) {
-        print('onComplete: $index, $key');
-      },
+      onStart: (index, key) {},
+      onComplete: (index, key) {},
       builder: Builder(
         builder: (context) => Container(
           color: ColorConstants.white,
@@ -78,7 +74,24 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
                     width: 100,
                   ),
                   DesktopMainTabBar(
-                    onSelected: (index) {
+                    onSelected: (index) async {
+                      switch (index) {
+                        case 0:
+                          await saveStringToSharedPreferences(
+                              key: Strings.desktop_current_screen,
+                              value: AtCategory.DETAILS.name);
+                          break;
+                        case 1:
+                          await saveStringToSharedPreferences(
+                              key: Strings.desktop_current_screen,
+                              value: AtCategory.SOCIAL.name);
+                          break;
+                        case 2:
+                          await saveStringToSharedPreferences(
+                              key: Strings.desktop_current_screen,
+                              value: AtCategory.FEATURED.name);
+                          break;
+                      }
                       _pageController.animateToPage(
                         index!,
                         duration: Duration(milliseconds: 300),
@@ -127,14 +140,39 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
                       SizedBox(
                         width: 24,
                       ),
-                      DesktopShowCaseWidget(
-                        globalKey: _notificationKey,
-                        container: DesktopNotificationPage(
-                          atSign: '',
-                          mainContext: context,
+                      PopupMenuButton<String>(
+                        padding: EdgeInsets.all(0),
+                        child: Container(
+                          height: 26,
+                          width: 26,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: appTheme.borderColor),
+                          child: Icon(
+                            Icons.notifications,
+                            size: 16,
+                            color: appTheme.primaryTextColor,
+                          ),
                         ),
-                        iconData: Icons.notifications,
+                        itemBuilder: (BuildContext context) => [
+                          PopupMenuItem<String>(
+                            value: 'reorder',
+                            padding: EdgeInsets.all(0),
+                            child: DesktopNotificationPage(
+                              atSign: '',
+                              mainContext: context,
+                            ),
+                          ),
+                        ],
                       ),
+                      // DesktopShowCaseWidget(
+                      //   globalKey: _notificationKey,
+                      //   container: DesktopNotificationPage(
+                      //     atSign: '',
+                      //     mainContext: context,
+                      //   ),
+                      //   iconData: Icons.notifications,
+                      // ),
                       SizedBox(
                         width: 24,
                       ),
@@ -175,45 +213,122 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
                         desktopFeaturedPage,
                       ],
                     ),
+                    // Positioned(
+                    //   top: 0,
+                    //   right: 0,
+                    //   child: Container(
+                    //     height: 24,
+                    //     width: 24,
+                    //     child: RawMaterialButton(
+                    //       shape: new CircleBorder(),
+                    //       elevation: 0.0,
+                    //       fillColor: appTheme.borderColor,
+                    //       child: Icon(
+                    //         Icons.edit,
+                    //         size: 16,
+                    //         color: appTheme.primaryTextColor,
+                    //       ),
+                    //       onPressed: _clickReOrder,
+                    //     ),
+                    //   ),
+                    // ),
                     Positioned(
                       top: 0,
                       right: 0,
-                      child: Container(
-                        height: 24,
-                        width: 24,
-                        child: RawMaterialButton(
-                          shape: new CircleBorder(),
-                          elevation: 0.0,
-                          fillColor: appTheme.borderColor,
+                      child: PopupMenuButton<String>(
+                        onSelected: (String value) async {
+                          switch (value) {
+                            case 'reorder':
+                              await _clickReOrder();
+                              break;
+                            case 'add_custom_content':
+                              await _clickAddCustomContent();
+                              break;
+                            case 'delete':
+                              await _clickDelete();
+                              break;
+                          }
+                        },
+                        child: Container(
+                          height: 26,
+                          width: 26,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: appTheme.borderColor),
                           child: Icon(
                             Icons.edit,
                             size: 16,
                             color: appTheme.primaryTextColor,
                           ),
-                          onPressed: _clickReOrder,
                         ),
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuEntry<String>>[
+                          PopupMenuItem<String>(
+                            value: 'reorder',
+                            child: Text(
+                              Strings.desktop_reorder,
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          PopupMenuItem<String>(
+                            value: 'add_custom_content',
+                            child: Text(
+                              Strings.desktop_add_custom_content,
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          PopupMenuItem<String>(
+                            value: 'delete',
+                            child: Text(
+                              Strings.desktop_delete,
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
+
+                      // DesktopShowCaseWidget(
+                      //   globalKey: _editKey,
+                      //   overlayColor: Colors.transparent,
+                      //   overlayOpacity: 0,
+                      //   container: DesktopEditMainPopUp(
+                      //     clickReorder: () {
+                      //       ShowCaseWidget.of(context)!.dismiss();
+                      //       _clickReOrder();
+                      //     },
+                      //     clickAddCustomContent: () {
+                      //       ShowCaseWidget.of(context)!.dismiss();
+                      //       _clickAddCustomContent();
+                      //     },
+                      //     clickDelete: () {
+                      //       ShowCaseWidget.of(context)!.dismiss();
+                      //       _clickDelete();
+                      //     },
+                      //   ),
+
+                      //   DesktopSearchInfoPopUp(
+                      //     atSign: '',
+                      //     icon: 'assets/images/info4.png',
+                      //     description: Strings.desktop_edit_feature,
+                      //     onNext: () {
+                      //       ShowCaseWidget.of(context)!.dismiss();
+                      //     },
+                      //     onCancel: () {
+                      //       ShowCaseWidget.of(context)!.dismiss();
+                      //     },
+                      //   ),
+                      // iconData: Icons.edit,
+                      // childSize: 24,
                     ),
-                    // Positioned(
-                    //   top: 0,
-                    //   right: 0,
-                    //   child: DesktopShowCaseWidget(
-                    //     globalKey: _editKey,
-                    //     container: DesktopSearchInfoPopUp(
-                    //       atSign: '',
-                    //       icon: 'assets/images/info4.png',
-                    //       description: Strings.desktop_edit_feature,
-                    //       onNext: () {
-                    //         ShowCaseWidget.of(context)!.dismiss();
-                    //       },
-                    //       onCancel: () {
-                    //         ShowCaseWidget.of(context)!.dismiss();
-                    //       },
-                    //     ),
-                    //     iconData: Icons.edit,
-                    //     childSize: 24,
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -224,22 +339,23 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
     );
   }
 
-  void _clickReOrder() async {
+  Future _clickReOrder() async {
     var currentScreen = await getStringFromSharedPreferences(
         key: Strings.desktop_current_screen);
     switch (currentScreen) {
       case 'DETAILS':
-        await desktopDetailsPage.updateBasicDetailFields();
-        break;
-      case 'ADDITIONAL_DETAILS':
-        await desktopDetailsPage.updateAdditionalDetailFields();
+        await desktopDetailsPage.updateDetailFields();
         break;
       case 'SOCIAL':
-        await desktopChannelsPage.updateSocialFields();
+        await desktopChannelsPage.updateChannelFields();
         break;
-      case 'GAMER':
-        await desktopChannelsPage.updateGameFields();
+      case 'FEATURED':
+        await desktopFeaturedPage.updateFeaturedFields();
         break;
     }
   }
+
+  Future _clickAddCustomContent() async {}
+
+  Future _clickDelete() async {}
 }

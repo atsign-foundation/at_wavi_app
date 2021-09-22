@@ -223,7 +223,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
         ),
       ),
     );
-    if (result == 'saved') {
+    if (result != null) {
       _model.fetchBasicData();
     }
   }

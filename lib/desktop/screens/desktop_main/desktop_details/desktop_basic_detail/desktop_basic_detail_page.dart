@@ -1,8 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
-import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
-import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
-import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +16,6 @@ class DesktopBasicDetailPage extends StatefulWidget {
 
   @override
   _DesktopBasicDetailPageState createState() => _desktopBasicDetailPageState;
-
-  Future updateFields() async {
-    await _desktopBasicDetailPageState.updateFields();
-  }
 }
 
 class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
@@ -37,15 +30,6 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
     super.initState();
   }
 
-  Future updateFields() async {
-    await showReOderPopUp(
-      context,
-      (fields) {
-        _model.updateField(fields);
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
@@ -55,65 +39,62 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
         _model = DesktopBasicDetailModel(userPreview: userPreview);
         return _model;
       },
-      child: DesktopVisibilityDetectorWidget(
-        keyScreen: AtCategory.DETAILS.name,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 8),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: ColorConstants.LIGHT_GREY,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              child: Consumer<DesktopBasicDetailModel>(
-                builder: (_, model, child) {
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: model.fields.length,
-                    itemBuilder: (context, index) {
-                      return DesktopBasicItem(
-                        title: getTitle(model.fields[index]),
-                        value: '',
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return Container(
-                        margin: EdgeInsets.symmetric(horizontal: 16),
-                        child: Divider(
-                          height: 1,
-                          color: appTheme.borderColor,
-                        ),
-                      );
-                    },
-                  );
-                  //   Column(
-                  //     mainAxisSize: MainAxisSize.min,
-                  //     children: [
-                  //       DesktopBasicItem(
-                  //         title: Strings.desktop_phone_number,
-                  //         value: '+84 3354335562',
-                  //       ),
-                  //       Container(
-                  //         height: 1,
-                  //         margin: EdgeInsets.symmetric(horizontal: 16),
-                  //         color: appTheme.borderColor,
-                  //       ),
-                  //       DesktopBasicItem(
-                  //         title: Strings.desktop_email_address,
-                  //         value: 'duc1@gmail.com',
-                  //       ),
-                  //     ],
-                  //   );
-                },
-              ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 8),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: ColorConstants.LIGHT_GREY,
+              borderRadius: BorderRadius.circular(5.0),
             ),
-            Expanded(
-              child: Container(),
+            child: Consumer<DesktopBasicDetailModel>(
+              builder: (_, model, child) {
+                return ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: model.fields.length,
+                  itemBuilder: (context, index) {
+                    return DesktopBasicItem(
+                      title: getTitle(model.fields[index]),
+                      value: '',
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Container(
+                      margin: EdgeInsets.symmetric(horizontal: 16),
+                      child: Divider(
+                        height: 1,
+                        color: appTheme.borderColor,
+                      ),
+                    );
+                  },
+                );
+                //   Column(
+                //     mainAxisSize: MainAxisSize.min,
+                //     children: [
+                //       DesktopBasicItem(
+                //         title: Strings.desktop_phone_number,
+                //         value: '+84 3354335562',
+                //       ),
+                //       Container(
+                //         height: 1,
+                //         margin: EdgeInsets.symmetric(horizontal: 16),
+                //         color: appTheme.borderColor,
+                //       ),
+                //       DesktopBasicItem(
+                //         title: Strings.desktop_email_address,
+                //         value: 'duc1@gmail.com',
+                //       ),
+                //     ],
+                //   );
+              },
             ),
-          ],
-        ),
+          ),
+          Expanded(
+            child: Container(),
+          ),
+        ],
       ),
     );
   }

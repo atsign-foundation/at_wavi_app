@@ -31,8 +31,8 @@ class DesktopNotificationItem extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(90.0),
             child: Container(
-              width: 56,
-              height: 56,
+              width: 48,
+              height: 48,
               decoration: BoxDecoration(
                 color: appTheme.borderColor,
                 borderRadius: BorderRadius.all(Radius.circular(90)),
