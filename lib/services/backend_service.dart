@@ -46,7 +46,7 @@ class BackendService {
       atClientPreference: atClientPrefernce,
       domain: MixedConstants.ROOT_DOMAIN,
       appAPIKey: MixedConstants.devAPIKey,
-      appColor: ColorConstants.peach,
+      appColor: ColorConstants.green,
       onboard: (atClientServiceMap, onboardedAtsign) async {
         LoadingDialog().show(text: '$onboardedAtsign', heading: 'Loading');
         await onSuccessOnboard(atClientServiceMap, onboardedAtsign);

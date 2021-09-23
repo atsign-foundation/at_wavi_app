@@ -80,7 +80,7 @@ class _FollowingState extends State<Following>
                 onTap: (index) async {},
                 labelColor: widget.themeData.primaryColor,
                 indicatorWeight: 5.toHeight,
-                indicatorColor: ColorConstants.peach,
+                indicatorColor: ColorConstants.green,
                 indicatorSize: TabBarIndicatorSize.label,
                 unselectedLabelColor:
                     widget.themeData.primaryColor.withOpacity(0.5),
