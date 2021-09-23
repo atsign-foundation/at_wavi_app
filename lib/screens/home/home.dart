@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     if ((widget.isPreview) &&
         (_currentUser.atsign !=
-            BackendService().atClientInstance.getCurrentAtSign)) {
+            BackendService().atClientInstance.getCurrentAtSign())) {
       _isSearchScreen = true;
     }
 
@@ -431,7 +431,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                     _isSearchScreen && SearchService().isPrivateAccount
                         ? SizedBox()
-                        : homeContent()
+                        : Consumer<UserProvider>(
+                            builder: (context, _provider, _) {
+                            return homeContent();
+                          })
                   ],
                 ),
               ),
@@ -582,9 +585,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Widget followersFollowingRow() {
     return Consumer<FollowService>(builder: (context, _provider, _) {
-      print(
-          'Provider.of<FollowService>(context, listen: false).followers.list : ${Provider.of<FollowService>(context, listen: false).followers.list}');
-      print('_provider followservice in home: ${_provider.following.list}');
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

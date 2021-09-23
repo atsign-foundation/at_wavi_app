@@ -9,10 +9,6 @@ import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 
 class UserProvider extends BaseModel {
-  UserProvider._();
-  static UserProvider _instance = UserProvider._();
-  factory UserProvider() => _instance;
-
   User? user;
   String FETCH_USER = 'fetch_user_data';
   final String UPDATE_USER = 'update_user';

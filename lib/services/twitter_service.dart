@@ -4,6 +4,9 @@ import 'package:at_wavi_app/model/twitter.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
+import 'nav_service.dart';
 
 class TwitetrService {
   TwitetrService._();
@@ -20,9 +23,20 @@ class TwitetrService {
     String? username;
     if (searchedUsername != null) {
       username = searchedUsername;
-    } else if (UserProvider().user != null &&
-        UserProvider().user!.twitter != null) {
-      username = UserProvider().user!.twitter.value;
+    } else if (Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                    listen: false)
+                .user !=
+            null &&
+        Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                    listen: false)
+                .user!
+                .twitter !=
+            null) {
+      username = Provider.of<UserProvider>(NavService.navKey.currentContext!,
+              listen: false)
+          .user!
+          .twitter
+          .value;
     }
     // username = 'swyx';
 
