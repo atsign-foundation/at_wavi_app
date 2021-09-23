@@ -26,7 +26,7 @@ class SearchService {
   int? following_count;
   List<String>? followers;
   List<String>? following;
-  late bool isPrivateAccount;
+  late bool isPrivateAccount = false;
   Map<String, List<String>> fieldOrders = {};
 
   List<String> keysToIgnore = [

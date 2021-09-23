@@ -54,6 +54,7 @@ class _AtSignBottomSheetState extends State<AtSignBottomSheet> {
                           onTap: isLoading
                               ? () {}
                               : () async {
+                                  setState(() {});
                                   await backendService
                                       .onboard(widget.atSignList[index]);
                                 },
@@ -100,6 +101,7 @@ class _AtSignBottomSheetState extends State<AtSignBottomSheet> {
                           isLoading = true;
                           Navigator.pop(context);
                         });
+                        setState(() {});
                         await backendService.onboard('');
 
                         setState(() {

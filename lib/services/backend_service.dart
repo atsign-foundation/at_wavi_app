@@ -19,6 +19,7 @@ import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
+import 'package:at_client/src/service/sync_service.dart';
 
 class BackendService {
   static final BackendService _singleton = BackendService._internal();
@@ -30,6 +31,7 @@ class BackendService {
 
   late AtClientService atClientServiceInstance;
   late AtClient atClientInstance;
+  late SyncService syncService;
   String? currentAtSign;
   AtClientPreference? atClientPreference;
   Directory? downloadDirectory;
@@ -67,6 +69,7 @@ class BackendService {
     atClientInstance =
         atClientServiceMap[onboardedAtsign]!.atClientManager.atClient;
     atClientServiceMap = atClientServiceMap;
+    syncService = AtClientManager.getInstance().syncService;
     currentAtSign = atSign;
     KeychainUtil.makeAtSignPrimary(atSign!);
     atClientServiceInstance = atClientServiceMap[onboardedAtsign]!;
@@ -74,8 +77,10 @@ class BackendService {
 
     initializeContactsService(rootDomain: MixedConstants.ROOT_DOMAIN);
     Provider.of<FollowService>(NavService.navKey.currentContext!, listen: false)
+        .resetData();
+    Provider.of<FollowService>(NavService.navKey.currentContext!, listen: false)
         .init();
-
+    await sync();
     Provider.of<ThemeProvider>(NavService.navKey.currentContext!, listen: false)
         .resetThemeData();
     await Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
@@ -86,8 +91,6 @@ class BackendService {
     await Provider.of<UserProvider>(NavService.navKey.currentContext!,
             listen: false)
         .fetchUserData(BackendService().currentAtSign!);
-    await FollowService().getUserFollowsList(onboardedAtsign!);
-    print('getFieldOrder');
     await FieldOrderService().getFieldOrder();
   }
 
@@ -104,7 +107,6 @@ class BackendService {
       ..commitLogPath = downloadDirectory!.path
       ..downloadPath = downloadDirectory!.path
       ..namespace = MixedConstants.appNamespace
-      ..syncStrategy = SyncStrategy.ONDEMAND
       ..rootDomain = MixedConstants.ROOT_DOMAIN
       ..syncRegex = MixedConstants.regex
       ..outboundConnectionTimeout = MixedConstants.TIME_OUT
@@ -113,10 +115,13 @@ class BackendService {
   }
 
   sync() async {
-    var syncManager = atClientInstance.getSyncManager();
-    if (syncManager != null) {
-      await atClientInstance.getSyncManager()!.sync();
-    }
+    syncService = AtClientManager.getInstance().syncService;
+    syncService.sync(onDone: _onSuccessCallback);
+    syncService.setOnDone(_onSuccessCallback);
+  }
+
+  _onSuccessCallback() {
+    print('sync success');
   }
 
   ///Fetches privatekey for [atsign] from device keychain.

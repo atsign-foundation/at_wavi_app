@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:at_commons/at_commons.dart';
 import 'package:at_contact/at_contact.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
@@ -7,14 +5,9 @@ import 'package:at_follows_flutter/domain/at_follows_list.dart';
 import 'package:at_follows_flutter/utils/at_follow_services.dart';
 import 'package:at_wavi_app/common_components/confirmation_dialog.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
-import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
-import 'package:at_wavi_app/services/search_service.dart';
-import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 import 'package:easy_debounce/easy_debounce.dart';
-import 'package:http/http.dart' as http;
-import 'package:at_commons/at_commons.dart';
 
 class FollowService extends BaseModel {
   FollowService();
@@ -23,12 +16,23 @@ class FollowService extends BaseModel {
   final String FETCH_FOLLOWERS = 'fetch_followers';
   final String FETCH_FOLLOWING = 'fetch_followings';
 
-  bool isFollowsFetched = false;
+  bool isFollowersFetched = false;
+  bool isFollowingFetched = false;
 
   init() async {
-    await AtFollowServices()
-        .initializeFollowService(BackendService().atClientServiceInstance);
-    connectionProviderListener();
+    try {
+      await AtFollowServices()
+          .initializeFollowService(BackendService().atClientServiceInstance);
+      connectionProviderListener();
+    } catch (e) {
+      print('error in follows package init : ${e}');
+      connectionProviderListener();
+    }
+  }
+
+  resetData() {
+    followers = AtFollowsData();
+    following = AtFollowsData();
   }
 
 // listening for updates from at_follows_flutter package.
@@ -63,8 +67,9 @@ class FollowService extends BaseModel {
             .add(AtsignDetails(atcontact: AtContact(atSign: element)));
       });
 
+      // TODO: optimize
       // fetching details of  atsign list
-      await fetchAtsignDetails(this.followers.list!);
+      // await fetchAtsignDetails(this.followers.list!);
     }
     setStatus(FETCH_FOLLOWERS, Status.Done);
   }
@@ -88,8 +93,9 @@ class FollowService extends BaseModel {
             .add(AtsignDetails(atcontact: AtContact(atSign: element)));
       });
 
+      // TODO: optimize
       // fetching details for  atsign list
-      await fetchAtsignDetails(this.following.list!, isFollowing: true);
+      // await fetchAtsignDetails(this.following.list!, isFollowing: true);
     }
     setStatus(FETCH_FOLLOWING, Status.Done);
   }
@@ -149,7 +155,13 @@ class FollowService extends BaseModel {
 
     for (int i = 0; i < atsignList.length; i++) {
       var atcontact = await getAtSignDetails(atsignList[i]!);
-      this.following.atsignListDetails[i] = AtsignDetails(atcontact: atcontact);
+      if (isFollowing) {
+        this.following.atsignListDetails[i] =
+            AtsignDetails(atcontact: atcontact);
+      } else {
+        this.followers.atsignListDetails[i] =
+            AtsignDetails(atcontact: atcontact);
+      }
       notifyListeners();
     }
 
@@ -174,7 +186,7 @@ class FollowService extends BaseModel {
       } else {
         await AtFollowServices().follow(atsign);
       }
-      await BackendService().sync();
+      BackendService().sync();
       await getFollowing();
     } catch (e) {
       print('Error in performFollowUnfollow $e');
@@ -204,85 +216,11 @@ class FollowService extends BaseModel {
     }
   }
 
-  getUserFollowsList(String atsign) async {
-    try {
-      await fetchUserFollowsDataFromApi(atsign);
-      followers.atsignListDetails = <AtsignDetails>[];
-      following.atsignListDetails = <AtsignDetails>[];
-      this.followers.list!.forEach((element) {
-        followers.atsignListDetails
-            .add(AtsignDetails(atcontact: AtContact(atSign: element)));
-      });
-
-      this.following.list!.forEach((element) {
-        following.atsignListDetails
-            .add(AtsignDetails(atcontact: AtContact(atSign: element)));
-      });
-      // notify
-      print('this.followers.list : ${this.followers.list}');
-      print('this.following.list : ${this.following.list}');
-
-      Future.delayed(Duration(seconds: 10), () {
-        print('this.followers.list delay : ${this.followers.list}');
-        print('this.following.list  delay: ${this.following.list}');
-      });
-      notifyListeners();
-      // await fetchAtsignDetails(this.followers.list!);
-      // await fetchAtsignDetails(this.following.list!, isFollowing: true);
-    } catch (e) {
-      print('error in fetching follows data: ${e}');
-    }
-  }
-
-  Future<User?> fetchUserFollowsDataFromApi(String atsign) async {
-    try {
-      List<String> followersList = [];
-      List<String> followingList = [];
-
-      var _response =
-          await http.get(Uri.parse('${MixedConstants.WAVI_API}$atsign'));
-
-      print('_jsonData ${_response.body}');
-      print('_response.statusCode : ${_response.statusCode}');
-      // if(_response.statusCode == 200)
-      var _jsonData = jsonDecode(_response.body);
-
-      _jsonData.forEach((_data) {
-        var _keyValuePair = _data;
-        for (var field in _keyValuePair.entries) {
-          if (field.key == null) {
-            continue;
-          }
-
-          if ((field.key.contains(SearchService().followers_key)) ||
-              (field.key.contains(SearchService().new_followers_key))) {
-            followersList = _keyValuePair[field.key].split(',');
-            print('followingList : ${_keyValuePair[field.key]}');
-            // followers_count = followersList.length;
-            this.followers.list = followersList;
-
-            continue;
-          }
-
-          if ((field.key.contains(SearchService().following_key)) ||
-              (field.key.contains(SearchService().new_following_key))) {
-            followingList = _keyValuePair[field.key].split(',');
-            // following_count = followingList.length;
-            this.following.list = followingList;
-
-            continue;
-          }
-        }
-      });
-    } catch (e) {
-      print('Error in $e');
-    }
-  }
-
   addFollowersData(AtValue atValue) async {
+    if (atValue.value == null) return;
     List<String> followersList = atValue.value.split(',');
     this.followers.list = followersList;
-    isFollowsFetched = true;
+    isFollowersFetched = true;
     this.followers.list!.forEach((element) {
       followers.atsignListDetails
           .add(AtsignDetails(atcontact: AtContact(atSign: element)));
@@ -290,9 +228,10 @@ class FollowService extends BaseModel {
   }
 
   addFollowingData(AtValue atValue) async {
+    if (atValue.value == null) return;
     List<String> followingList = atValue.value.split(',');
     this.following.list = followingList;
-    isFollowsFetched = true;
+    isFollowingFetched = true;
     this.following.list!.forEach((element) {
       following.atsignListDetails
           .add(AtsignDetails(atcontact: AtContact(atSign: element)));

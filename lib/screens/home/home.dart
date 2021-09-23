@@ -82,19 +82,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
 
     initPackages();
-
     _getThemeData();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
       var followsProvider = Provider.of<FollowService>(
           NavService.navKey.currentContext!,
           listen: false);
-      await followsProvider.fetchAtsignDetails(followsProvider.followers.list!);
-      await followsProvider.fetchAtsignDetails(followsProvider.following.list!,
-          isFollowing: true);
-      // TODO: commenting for testing only
-      // Provider.of<FollowService>(NavService.navKey.currentContext!,
-      //         listen: false)
-      //     .init();
+      // TODO: we have to optimize fetching contact details
+      // await followsProvider.fetchAtsignDetails(followsProvider.followers.list!);
+      // await followsProvider.fetchAtsignDetails(followsProvider.following.list!,
+      // isFollowing: true);
+      Provider.of<FollowService>(NavService.navKey.currentContext!,
+              listen: false)
+          .init();
     });
     super.initState();
   }
@@ -820,7 +819,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     var followsProvider = Provider.of<FollowService>(
         NavService.navKey.currentContext!,
         listen: false);
-    if (!followsProvider.isFollowsFetched) {
+    if (!followsProvider.isFollowersFetched && isFollowers) {
+      return '--';
+    }
+
+    if (!followsProvider.isFollowingFetched && !isFollowers) {
       return '--';
     }
 
