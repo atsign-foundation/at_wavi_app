@@ -332,7 +332,7 @@ extension value on RootEnvironment {
 }
 
 enum CustomContentStatus { Exists, Success, Fails }
-enum CustomContentType { Text, Link, Number, Image, Youtube, Html }
+enum CustomContentType { Text, Link, Number, Image, Youtube, Html, Location }
 
 extension values on CustomContentType {
   String get name {
@@ -354,6 +354,9 @@ extension values on CustomContentType {
 
       case CustomContentType.Html:
         return 'Html';
+
+      case CustomContentType.Location:
+        return 'Location';
 
       default:
         return '';

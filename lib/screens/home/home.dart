@@ -77,19 +77,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     if ((widget.isPreview) &&
         (_currentUser.atsign !=
-            BackendService().atClientInstance.currentAtSign)) {
+            BackendService().atClientInstance.getCurrentAtSign)) {
       _isSearchScreen = true;
     }
 
     initPackages();
-
     _getThemeData();
-    // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
-    //   await Provider.of<FollowService>(NavService.navKey.currentContext!,
-    // listen: false)().getFollowers();
-    //   await Provider.of<FollowService>(NavService.navKey.currentContext!,
-    // listen: false)().getFollowing();
-    // });
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+      var followsProvider = Provider.of<FollowService>(
+          NavService.navKey.currentContext!,
+          listen: false);
+      // TODO: we have to optimize fetching contact details
+      // await followsProvider.fetchAtsignDetails(followsProvider.followers.list!);
+      // await followsProvider.fetchAtsignDetails(followsProvider.following.list!,
+      // isFollowing: true);
+      Provider.of<FollowService>(NavService.navKey.currentContext!,
+              listen: false)
+          .init();
+    });
     super.initState();
   }
 
@@ -577,6 +582,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Widget followersFollowingRow() {
     return Consumer<FollowService>(builder: (context, _provider, _) {
+      print(
+          'Provider.of<FollowService>(context, listen: false).followers.list : ${Provider.of<FollowService>(context, listen: false).followers.list}');
+      print('_provider followservice in home: ${_provider.following.list}');
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -599,7 +607,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Text(
                     _isSearchScreen
                         ? (SearchService().following_count ?? '-').toString()
-                        : '${followsCount(_provider.following)}',
+                        : '${followsCount()}',
                     style: TextStyle(
                         fontSize: 18.toFont,
                         color: _isDark
@@ -637,7 +645,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Text(
                     _isSearchScreen
                         ? (SearchService().followers_count ?? '-').toString()
-                        : '${followsCount(_provider.followers)}',
+                        : '${followsCount(isFollowers: true)}',
                     style: TextStyle(
                         fontSize: 18.toFont,
                         color: _isDark
@@ -806,9 +814,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  String followsCount(AtFollowsData atFollowsData) {
-    if (atFollowsData.getKey == null) {
+  String followsCount({bool isFollowers: false}) {
+    AtFollowsData atFollowsData;
+    var followsProvider = Provider.of<FollowService>(
+        NavService.navKey.currentContext!,
+        listen: false);
+    if (!followsProvider.isFollowersFetched && isFollowers) {
       return '--';
+    }
+
+    if (!followsProvider.isFollowingFetched && !isFollowers) {
+      return '--';
+    }
+
+    if (isFollowers) {
+      atFollowsData = followsProvider.followers;
+    } else {
+      atFollowsData = followsProvider.following;
     }
 
     int num = atFollowsData.list!.length;

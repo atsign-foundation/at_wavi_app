@@ -99,7 +99,7 @@ class LoadingDialog {
   // ignore: always_declare_return_types
   hide() {
     print('hide called');
-    if (_showing) {
+    if (_showing && NavService.navKey.currentState!.canPop()) {
       NavService.navKey.currentState!.pop();
       _showing = false;
     }

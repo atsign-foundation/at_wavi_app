@@ -43,8 +43,13 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
     // _isPrivate = false;
     if (widget.basicData != null) {
       _data = BasicData.fromJson(jsonDecode(widget.basicData!.toJson()));
+      if (widget.basicData!.type.toLowerCase() ==
+          CustomContentType.Text.name.toLowerCase()) {
+        widget.basicData!.type = CustomContentType.Location.name;
+      }
     } else {
-      _data = BasicData(isPrivate: false);
+      _data =
+          BasicData(isPrivate: false, type: CustomContentType.Location.name);
     }
     _osmLocationModel =
         OsmLocationModel.fromJson(jsonDecode(_data.value ?? '{}'));
@@ -329,7 +334,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
 
     // LoadingDialog().show(text: 'Adding custom location');
 
-    _data.type = CustomContentType.Text.name;
+    _data.type = CustomContentType.Location.name;
     if (!areBasicDataEqual(_data, widget.basicData ?? BasicData())) {
       // bool _previousKey = false;
       // if (widget.basicData != null) {

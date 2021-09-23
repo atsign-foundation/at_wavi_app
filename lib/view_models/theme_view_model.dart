@@ -39,8 +39,8 @@ class ThemeProvider extends BaseModel {
   // ignore: always_declare_return_types
   checkThemeFromSecondary({bool notifyListener = true}) async {
     if (currentAtsignThemeData == null) {
-      var _themePreference = await ThemeService()
-          .getThemePreference(BackendService().atClientInstance.currentAtSign!);
+      var _themePreference = await ThemeService().getThemePreference(
+          BackendService().atClientInstance.getCurrentAtSign()!);
 
       if ((_themePreference ?? '').toLowerCase() == 'dark') {
         currentAtsignThemeData = darktheme;
@@ -53,7 +53,7 @@ class ThemeProvider extends BaseModel {
 
     if (highlightColor == null) {
       var _highlightColorPreference = await ThemeService().getThemePreference(
-          BackendService().atClientInstance.currentAtSign!,
+          BackendService().atClientInstance.getCurrentAtSign()!,
           returnHighlightColorPreference: true);
 
       highlightColor = (_highlightColorPreference != null)
