@@ -74,7 +74,9 @@ class _DesktopReorderBasicDetailPageState
                   child: DesktopWhiteButton(
                     title: 'Cancel',
                     width: double.infinity,
-                    onPressed: _onSaveData,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
                 ),
               ],

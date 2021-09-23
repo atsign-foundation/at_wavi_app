@@ -4,6 +4,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_media/desktop_media_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
+import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,8 +20,16 @@ class DesktopDetailsPage extends StatefulWidget {
   @override
   _DesktopDetailsPageState createState() => _desktopDetailsPageState;
 
-  Future updateDetailFields() async {
-    await _desktopDetailsPageState.updateDetailFields();
+  Future showReOrderTabsPopUp() async {
+    await _desktopDetailsPageState.showReOrderTabsPopUp();
+  }
+
+  Future addFieldToBasicDetail(BasicData basicData) async {
+    await _desktopDetailsPageState.addFieldToBasicDetail(basicData);
+  }
+
+  Future addFieldToAdditionalDetail(BasicData basicData) async {
+    await _desktopDetailsPageState.addFieldToAdditionalDetail(basicData);
   }
 }
 
@@ -29,21 +38,30 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
         SingleTickerProviderStateMixin,
         AutomaticKeepAliveClientMixin<DesktopDetailsPage> {
   late TabController _tabController;
-
   late DesktopDetailsModel _model;
+
+  late DesktopMediaPage desktopMediaPage;
+  late DesktopBasicDetailPage desktopBasicDetailPage;
+  late DesktopAdditionalDetailPage desktopAdditionalDetailPage;
+  late DesktopLocationPage desktopLocationPage;
 
   @override
   void initState() {
     _tabController = TabController(length: 4, vsync: this);
+
+    desktopMediaPage = DesktopMediaPage();
+    desktopBasicDetailPage = DesktopBasicDetailPage();
+    desktopAdditionalDetailPage = DesktopAdditionalDetailPage();
+    desktopLocationPage = DesktopLocationPage();
     super.initState();
   }
 
   @override
   bool get wantKeepAlive => true;
 
-  Future updateDetailFields() async {
+  Future showReOrderTabsPopUp() async {
     if (this.mounted) {
-      await showReOderPopUp(
+      await showReOderTabsPopUp(
         context,
         (fields) {
           /// Update Fields after reorder
@@ -51,6 +69,14 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
         },
       );
     }
+  }
+
+  Future addFieldToBasicDetail(BasicData basicData) async {
+    await desktopBasicDetailPage.addField(basicData);
+  }
+
+  Future addFieldToAdditionalDetail(BasicData basicData) async {
+    await desktopAdditionalDetailPage.addField(basicData);
   }
 
   @override
@@ -134,13 +160,13 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
   Widget getWidget(String field) {
     switch (field) {
       case 'Media':
-        return DesktopMediaPage();
+        return desktopMediaPage;
       case 'Basic Details':
-        return DesktopBasicDetailPage();
+        return desktopBasicDetailPage;
       case 'Additional Details':
-        return DesktopAdditionalDetailPage();
+        return desktopAdditionalDetailPage;
       case 'Location':
-        return DesktopLocationPage();
+        return desktopLocationPage;
       default:
         return Container();
     }

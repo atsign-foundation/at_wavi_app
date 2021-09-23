@@ -18,7 +18,7 @@ class DesktopBasicItem extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 120,
+            width: 110,
             child: Text(
               title,
               style: TextStyle(

@@ -2,6 +2,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_channels/deskto
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_channels/desktop_social/desktop_social_account_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
+import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +18,16 @@ class DesktopChannelsPage extends StatefulWidget {
   @override
   _DesktopChannelsPageState createState() => _desktopChannelsPageState;
 
-  Future updateChannelFields() async {
-    await _desktopChannelsPageState.updateChannelFields();
+  Future showReOrderTabsPopUp() async {
+    await _desktopChannelsPageState.showReOrderTabsPopUp();
+  }
+
+  Future addFieldToSocial(BasicData basicData) async {
+    await _desktopChannelsPageState.addFieldToSocial(basicData);
+  }
+
+  Future addFieldToGame(BasicData basicData) async {
+    await _desktopChannelsPageState.addFieldToGame(basicData);
   }
 }
 
@@ -27,21 +36,27 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
         SingleTickerProviderStateMixin,
         AutomaticKeepAliveClientMixin<DesktopChannelsPage> {
   late TabController _tabController;
-
   late DesktopChannelsModel _model;
+
+  late DesktopSocialAccountPage desktopSocialAccountPage;
+  late DesktopGameAccountPage desktopGameAccountPage;
 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
+
+    desktopSocialAccountPage = DesktopSocialAccountPage();
+    desktopGameAccountPage = DesktopGameAccountPage();
+
     super.initState();
   }
 
   @override
   bool get wantKeepAlive => true;
 
-  Future updateChannelFields() async {
+  Future showReOrderTabsPopUp() async {
     if (this.mounted) {
-      await showReOderPopUp(
+      await showReOderTabsPopUp(
         context,
         (fields) {
           /// Update Fields after reorder
@@ -49,6 +64,14 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
         },
       );
     }
+  }
+
+  Future addFieldToSocial(BasicData basicData) async {
+    await desktopSocialAccountPage.addField(basicData);
+  }
+
+  Future addFieldToGame(BasicData basicData) async {
+    await desktopGameAccountPage.addField(basicData);
   }
 
   @override
@@ -125,9 +148,9 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
   Widget getWidget(String field) {
     switch (field) {
       case 'Social':
-        return DesktopSocialAccountPage();
+        return desktopSocialAccountPage;
       case 'Game':
-        return DesktopGameAccountPage();
+        return desktopGameAccountPage;
       default:
         return Container();
     }

@@ -1,6 +1,7 @@
 /// Strings used in the widgets.
 class Strings {
   static const String desktop_current_screen = 'currentScreen';
+  static const String desktop_current_tab = 'currentTab';
   static const String cancelButtonTitle = 'Cancel';
   static const String desktop_passcode_title = 'Enter a passcode sent to ';
   static const String desktop_wrong_passcode = 'Passcode is wrong.';
@@ -11,7 +12,7 @@ class Strings {
   static const String desktop_next = 'Next';
   static const String desktop_back = 'Back';
   static const String desktop_see_update = 'See updates from wave that you have missed';
-
+  static const String desktop_title = 'Title';
   static const String desktop_followers = 'Followers';
   static const String desktop_following = 'Following';
   static const String desktop_follow = 'Follow';
@@ -20,8 +21,13 @@ class Strings {
   static const String desktop_details = 'Details';
   static const String desktop_channels = 'Channels';
   static const String desktop_featured = 'Featured';
+  static const String desktop_select_type = 'Select a type';
+  static const String desktop_please_select_type = 'Please select content type';
+  static const String desktop_add_image = 'Add Image';
+  static const String desktop_please_add_image = 'Please Add Image';
 
   static const String desktop_reorder = 'Reorder';
+  static const String desktop_save_publish = 'Save & Publish';
   static const String desktop_add_custom_content = 'Add Custom Content';
 
   static const String desktop_media = 'Media';
@@ -45,7 +51,7 @@ class Strings {
   static const String desktop_xbox = 'Xbox';
   static const String desktop_twitch = 'Twitch';
   static const String desktop_facebook = 'Facebook';
-
+  static const String desktop_done = 'Done';
   static const String desktop_private_profile= 'Private Profile';
   static const String desktop_follow_user = 'Follow the user to know their details';
   static const String desktop_edit_feature = 'Edit features help you to reorder the content, add custom content';

@@ -1,3 +1,4 @@
+import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_add_basic_detail/desktop_add_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_channels/desktop_channels_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_details_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_media_detail/desktop_search_info_popup.dart';
@@ -7,8 +8,10 @@ import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_main_tabbar.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_showcase_widget.dart';
+import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -44,8 +47,9 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
   void initState() {
     _pageController = PageController();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
+      //  clearSharedPreferences();
       saveStringToSharedPreferences(
-          key: Strings.desktop_current_screen, value: AtCategory.DETAILS.name);
+          key: Strings.desktop_current_tab, value: AtCategory.DETAILS.name);
     });
     super.initState();
   }
@@ -78,17 +82,17 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
                       switch (index) {
                         case 0:
                           await saveStringToSharedPreferences(
-                              key: Strings.desktop_current_screen,
+                              key: Strings.desktop_current_tab,
                               value: AtCategory.DETAILS.name);
                           break;
                         case 1:
                           await saveStringToSharedPreferences(
-                              key: Strings.desktop_current_screen,
-                              value: AtCategory.SOCIAL.name);
+                              key: Strings.desktop_current_tab,
+                              value: AtCategory.CHANNELS.name);
                           break;
                         case 2:
                           await saveStringToSharedPreferences(
-                              key: Strings.desktop_current_screen,
+                              key: Strings.desktop_current_tab,
                               value: AtCategory.FEATURED.name);
                           break;
                       }
@@ -156,7 +160,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
                         ),
                         itemBuilder: (BuildContext context) => [
                           PopupMenuItem<String>(
-                            value: 'reorder',
+                            value: 'notification',
                             padding: EdgeInsets.all(0),
                             child: DesktopNotificationPage(
                               atSign: '',
@@ -283,19 +287,8 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
                               ),
                             ),
                           ),
-                          PopupMenuItem<String>(
-                            value: 'delete',
-                            child: Text(
-                              Strings.desktop_delete,
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
                         ],
                       ),
-
                       // DesktopShowCaseWidget(
                       //   globalKey: _editKey,
                       //   overlayColor: Colors.transparent,
@@ -340,22 +333,61 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
   }
 
   Future _clickReOrder() async {
-    var currentScreen = await getStringFromSharedPreferences(
-        key: Strings.desktop_current_screen);
+    var currentScreen =
+        await getStringFromSharedPreferences(key: Strings.desktop_current_tab);
     switch (currentScreen) {
       case 'DETAILS':
-        await desktopDetailsPage.updateDetailFields();
+        await desktopDetailsPage.showReOrderTabsPopUp();
         break;
-      case 'SOCIAL':
-        await desktopChannelsPage.updateChannelFields();
+      case 'CHANNELS':
+        await desktopChannelsPage.showReOrderTabsPopUp();
         break;
       case 'FEATURED':
-        await desktopFeaturedPage.updateFeaturedFields();
+        await desktopFeaturedPage.showReOrderTabsPopUp();
         break;
     }
   }
 
-  Future _clickAddCustomContent() async {}
+  Future _clickAddCustomContent() async {
+    final result = await showDialog<BasicData>(
+      context: context,
+      builder: (BuildContext context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: DesktopAddBasicDetailPage(),
+      ),
+    );
+    if (result != null) {
+      if (result is BasicData) {
+        var currentScreen = await getStringFromSharedPreferences(
+          key: Strings.desktop_current_screen,
+        );
+        switch (currentScreen) {
+          case MixedConstants.MEDIA_KEY:
+            break;
+          case MixedConstants.BASIC_DETAILS_KEY:
+            await desktopDetailsPage.addFieldToBasicDetail(result);
+            break;
+          case MixedConstants.ADDITIONAL_DETAILS_KEY:
+            await desktopDetailsPage.addFieldToAdditionalDetail(result);
+            break;
+          case MixedConstants.LOCATION_KEY:
+            break;
+          case MixedConstants.SOCIAL_KEY:
+            await desktopChannelsPage.addFieldToSocial(result);
+            break;
+          case MixedConstants.GAME_KEY:
+            await desktopChannelsPage.addFieldToGame(result);
+            break;
+          case MixedConstants.INSTAGRAM_KEY:
+            //      await desktopFeaturedPage.addFieldToInstagram(result);
+            break;
+          case MixedConstants.TWITTER_KEY:
+            //      await desktopFeaturedPage.addFieldToTwitter(result);
+            break;
+        }
+      }
+    }
+  }
 
   Future _clickDelete() async {}
 }

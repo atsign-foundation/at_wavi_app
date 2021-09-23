@@ -152,15 +152,16 @@ valueOf(String property) {
 
 /// new app doesnt have IMAGE
 enum AtCategory {
-  IMAGE,
   DETAILS,
+  CHANNELS,
+  FEATURED,
+
+  IMAGE,
   LOCATION,
   SOCIAL,
   GAMER,
-
-  /// Added for new wavi app
+  BASIC_DETAILS,
   ADDITIONAL_DETAILS,
-  FEATURED,
   OTHERS,
 }
 

@@ -1,9 +1,11 @@
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_reorder_basic_detail/widgets/desktop_reorderable_item_widget.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_show_hide_radio_button.dart';
 import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
+import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
@@ -53,7 +55,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Add Custom Content',
+              Strings.desktop_add_custom_content,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -62,7 +64,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
             ),
             SizedBox(height: 16),
             DesktopTextField(
-              title: 'Title',
+              title: Strings.desktop_title,
               controller: _titleTextController,
             ),
             _buildTypeSelectionWidget(),
@@ -74,7 +76,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
             ),
             SizedBox(height: 16),
             DesktopButton(
-              title: 'Done',
+              title: Strings.desktop_done,
               width: double.infinity,
               onPressed: _onSaveData,
             ),
@@ -90,7 +92,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
       return DropdownButtonFormField<CustomContentType>(
         dropdownColor: appTheme.backgroundColor,
         autovalidateMode: AutovalidateMode.disabled,
-        hint: Text('Select a type'),
+        hint: Text(Strings.desktop_select_type),
         decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: appTheme.separatorColor),
@@ -108,7 +110,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
         ),
         validator: (value) {
           if (value == null) {
-            return 'Please select content type';
+            return Strings.desktop_please_select_type;
           }
           return null;
         },
@@ -155,7 +157,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
               children: [
                 DesktopIconLabelButton(
                   iconData: Icons.add,
-                  label: 'Add Image',
+                  label: Strings.desktop_add_image,
                   onPressed: _onSelectImage,
                 ),
                 if (model.selectedImage != null)
@@ -188,6 +190,20 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
   }
 
   void _onSaveData() {
-    _model.saveData(context);
+    var basicData = BasicData(
+      value: _titleTextController.text,
+      accountName: _titleTextController.text,
+      type: _model.fieldType,
+    );
+    if (_model.fieldType == CustomContentType.Text) {
+      basicData.valueDescription = _textContentTextController.text;
+    } else if (_model.fieldType == CustomContentType.Link) {
+      basicData.valueDescription = _linkContentTextController.text;
+    } else if (_model.fieldType == CustomContentType.Number) {
+      basicData.valueDescription = _numberContentTextController.text;
+    } else if (_model.fieldType == CustomContentType.Youtube) {
+      basicData.valueDescription = _youtubeContentTextController.text;
+    }
+    _model.saveData(context, basicData);
   }
 }

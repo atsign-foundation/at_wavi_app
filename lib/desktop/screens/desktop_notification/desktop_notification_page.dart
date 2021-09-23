@@ -34,7 +34,7 @@ class _DesktopNotificationPageState extends State<DesktopNotificationPage>
     final appTheme = AppTheme.of(context);
     return Container(
       width: 400,
-      height: 270,
+      height: 320,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

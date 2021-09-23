@@ -7,38 +7,36 @@ import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/cupertino.dart';
 
-class DesktopAdditionalDetailModel extends ChangeNotifier {
+class DesktopSocialModel extends ChangeNotifier {
   final UserPreview userPreview;
 
   List<BasicData> _fields = [];
 
   List<BasicData> get fields => _fields;
 
-  static const _defaultAdditionalDetails = [
-    'Preferred Pronoun',
-    'About',
-    'Quote',
-    'Video',
+  static const _defaultSocials = [
+    'Facebook',
+    'Instagram',
+    'Twitter',
   ];
 
-  DesktopAdditionalDetailModel({required this.userPreview}) {
+  DesktopSocialModel({required this.userPreview}) {
     initFields();
   }
 
   Future initFields() async {
     var savedFields = await getListStringFromSharedPreferences(
-      key: MixedConstants.ADDITIONAL_DETAILS_KEY,
+      key: MixedConstants.SOCIAL_KEY,
     );
 
     var listBasicData;
     if (savedFields == null || savedFields.isEmpty) {
-      listBasicData = _defaultAdditionalDetails
+      listBasicData = _defaultSocials
           .map(
             (e) => BasicData(
               value: e,
               accountName: e,
-              valueDescription:
-                  '${_defaultAdditionalDetails.indexOf(e) + 1}. $e',
+              valueDescription: '${_defaultSocials.indexOf(e) + 1}. $e',
             ),
           )
           .toList();
@@ -51,15 +49,13 @@ class DesktopAdditionalDetailModel extends ChangeNotifier {
           )
           .toList();
     }
-    await updateField(
-      listBasicData,
-    );
+    await updateField(listBasicData);
   }
 
   Future addField(BasicData newField) async {
     _fields.add(newField);
     await saveListStringToSharedPreferences(
-      key: MixedConstants.ADDITIONAL_DETAILS_KEY,
+      key: MixedConstants.SOCIAL_KEY,
       value: _fields.map((e) => e.toJson() as String).toList(),
     );
     notifyListeners();
@@ -70,7 +66,7 @@ class DesktopAdditionalDetailModel extends ChangeNotifier {
     _fields = fields;
 
     await saveListStringToSharedPreferences(
-      key: MixedConstants.ADDITIONAL_DETAILS_KEY,
+      key: MixedConstants.SOCIAL_KEY,
       value: _fields.map((e) => e.toJson() as String).toList(),
     );
     notifyListeners();
@@ -79,7 +75,7 @@ class DesktopAdditionalDetailModel extends ChangeNotifier {
   Future reorderField(List<String> fields) async {
     _fields = sortBasicData(_fields, fields);
     await saveListStringToSharedPreferences(
-      key: MixedConstants.ADDITIONAL_DETAILS_KEY,
+      key: MixedConstants.SOCIAL_KEY,
       value: _fields.map((e) => e.toJson() as String).toList(),
     );
     notifyListeners();

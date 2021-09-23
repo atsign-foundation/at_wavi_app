@@ -29,3 +29,8 @@ Future<List<String>?> getListStringFromSharedPreferences({
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getStringList(key);
 }
+
+Future clearSharedPreferences() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  await preferences.clear();
+}

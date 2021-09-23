@@ -13,8 +13,7 @@ class DesktopTextField extends StatelessWidget {
   final double borderRadius;
   final Color borderColor;
   final double textSize;
-  final bool hasEnabledBorder;
-  final bool hasFocusBorder;
+  final bool hasBackground;
 
   DesktopTextField({
     required this.controller,
@@ -26,8 +25,7 @@ class DesktopTextField extends StatelessWidget {
     this.backgroundColor,
     this.borderRadius = 0,
     this.textSize = 16,
-    this.hasEnabledBorder = true,
-    this.hasFocusBorder = true,
+    this.hasBackground = false,
     this.borderColor = Colors.transparent,
   });
 
@@ -57,8 +55,9 @@ class DesktopTextField extends StatelessWidget {
           ),
           onChanged: onChanged,
           decoration: InputDecoration(
-            isDense: true,
-            contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+            isDense: hasBackground ? true : false,
+            contentPadding:
+                hasBackground ? EdgeInsets.fromLTRB(16, 16, 16, 16) : null,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
               borderSide: BorderSide.none,
@@ -71,20 +70,20 @@ class DesktopTextField extends StatelessWidget {
             ),
             filled: backgroundColor != null,
             fillColor: backgroundColor,
-            enabledBorder: hasEnabledBorder
-                ? UnderlineInputBorder(
+            enabledBorder: hasBackground
+                ? null
+                : UnderlineInputBorder(
                     borderRadius:
                         BorderRadius.all(Radius.circular(borderRadius)),
                     borderSide: BorderSide(color: appTheme.separatorColor),
-                  )
-                : null,
-            focusedBorder: hasFocusBorder
-                ? UnderlineInputBorder(
+                  ),
+            focusedBorder: hasBackground
+                ? null
+                : UnderlineInputBorder(
                     borderRadius:
                         BorderRadius.all(Radius.circular(borderRadius)),
                     borderSide: BorderSide(color: appTheme.primaryColor),
-                  )
-                : null,
+                  ),
             prefixIcon: prefixIcon,
           ),
         ),

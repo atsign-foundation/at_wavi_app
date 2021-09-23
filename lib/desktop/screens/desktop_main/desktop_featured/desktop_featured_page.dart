@@ -3,6 +3,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_featured/deskto
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_featured/desktop_twitter_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
+import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,8 +17,16 @@ class DesktopFeaturedPage extends StatefulWidget {
   @override
   _DesktopFeaturedPageState createState() => _desktopFeaturedPageState;
 
-  Future updateFeaturedFields() async {
-    await _desktopFeaturedPageState.updateFeaturedFields();
+  Future showReOrderTabsPopUp() async {
+    await _desktopFeaturedPageState.showReOrderTabsPopUp();
+  }
+
+  Future addFieldToInstagram(BasicData basicData) async {
+    await _desktopFeaturedPageState.addFieldToInstagram(basicData);
+  }
+
+  Future addFieldToTwitter(BasicData basicData) async {
+    await _desktopFeaturedPageState.addFieldToTwitter(basicData);
   }
 }
 
@@ -38,9 +47,9 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
   @override
   bool get wantKeepAlive => true;
 
-  Future updateFeaturedFields() async {
+  Future showReOrderTabsPopUp() async {
     if (this.mounted) {
-      await showReOderPopUp(
+      await showReOderTabsPopUp(
         context,
         (fields) {
           /// Update Fields after reorder
@@ -48,6 +57,14 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
         },
       );
     }
+  }
+
+  Future addFieldToInstagram(BasicData basicData) async {
+
+  }
+
+  Future addFieldToTwitter(BasicData basicData) async {
+
   }
 
   @override

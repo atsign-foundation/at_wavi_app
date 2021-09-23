@@ -1,6 +1,12 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
+import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,11 +17,15 @@ import 'desktop_basic_detail_model.dart';
 class DesktopBasicDetailPage extends StatefulWidget {
   DesktopBasicDetailPage({Key? key}) : super(key: key);
 
-  _DesktopBasicDetailPageState _desktopBasicDetailPageState =
-      _DesktopBasicDetailPageState();
+  var _desktopBasicDetailPageState = _DesktopBasicDetailPageState();
 
   @override
-  _DesktopBasicDetailPageState createState() => _desktopBasicDetailPageState;
+  _DesktopBasicDetailPageState createState() =>
+      this._desktopBasicDetailPageState = new _DesktopBasicDetailPageState();
+
+  Future addField(BasicData basicData) async {
+    await _desktopBasicDetailPageState.addField(basicData);
+  }
 }
 
 class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
@@ -30,83 +40,95 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
     super.initState();
   }
 
+  Future addField(BasicData basicData) async {
+    _model.addField(basicData);
+  }
+
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
-    return ChangeNotifierProvider(
-      create: (BuildContext c) {
-        final userPreview = Provider.of<UserPreview>(context);
-        _model = DesktopBasicDetailModel(userPreview: userPreview);
-        return _model;
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 8),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: ColorConstants.LIGHT_GREY,
-              borderRadius: BorderRadius.circular(5.0),
+    return DesktopVisibilityDetectorWidget(
+      keyScreen: MixedConstants.BASIC_DETAILS_KEY,
+      child: ChangeNotifierProvider(
+        create: (BuildContext c) {
+          final userPreview = Provider.of<UserPreview>(context);
+          _model = DesktopBasicDetailModel(userPreview: userPreview);
+          return _model;
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: ColorConstants.LIGHT_GREY,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: Consumer<DesktopBasicDetailModel>(
+                builder: (_, model, child) {
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: model.fields.length,
+                    itemBuilder: (context, index) {
+                      return DesktopBasicItem(
+                        title: model.fields[index].accountName ?? '',
+                        value: model.fields[index].valueDescription ?? '',
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(horizontal: 16),
+                        child: Divider(
+                          height: 1,
+                          color: appTheme.borderColor,
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
-            child: Consumer<DesktopBasicDetailModel>(
-              builder: (_, model, child) {
-                return ListView.separated(
-                  shrinkWrap: true,
-                  itemCount: model.fields.length,
-                  itemBuilder: (context, index) {
-                    return DesktopBasicItem(
-                      title: getTitle(model.fields[index]),
-                      value: '',
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 16),
-                      child: Divider(
-                        height: 1,
-                        color: appTheme.borderColor,
-                      ),
-                    );
-                  },
-                );
-                //   Column(
-                //     mainAxisSize: MainAxisSize.min,
-                //     children: [
-                //       DesktopBasicItem(
-                //         title: Strings.desktop_phone_number,
-                //         value: '+84 3354335562',
-                //       ),
-                //       Container(
-                //         height: 1,
-                //         margin: EdgeInsets.symmetric(horizontal: 16),
-                //         color: appTheme.borderColor,
-                //       ),
-                //       DesktopBasicItem(
-                //         title: Strings.desktop_email_address,
-                //         value: 'duc1@gmail.com',
-                //       ),
-                //     ],
-                //   );
-              },
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: Container(),
+                  ),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        DesktopWhiteButton(
+                          title: Strings.desktop_reorder,
+                          height: 48,
+                          onPressed: () async {
+                            await showReOderFieldsPopUp(
+                              context,
+                              AtCategory.BASIC_DETAILS,
+                              (fields) {
+                                /// Update Fields after reorder
+                                _model.reorderField(fields);
+                              },
+                            );
+                          },
+                        ),
+                        SizedBox(width: 12),
+                        DesktopButton(
+                          title: Strings.desktop_save_publish,
+                          height: 48,
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: Container(),
-          ),
-        ],
+          ],
+        ),
       ),
     );
-  }
-
-  String getTitle(String field) {
-    switch (field) {
-      case 'phone':
-        return Strings.desktop_phone_number;
-      case 'email':
-        return Strings.desktop_email_address;
-      default:
-        return '';
-    }
   }
 }

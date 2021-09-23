@@ -40,6 +40,13 @@ class MixedConstants {
   static const String LIST_CHANNEL_KEY = 'list_channel';
   static const String LIST_FEATURE_KEY = 'list_feature';
 
-
-
+  static const String MEDIA_KEY = 'media';
+  static const String BASIC_DETAILS_KEY = 'basic_details';
+  static const String ADDITIONAL_DETAILS_KEY = 'additional_details';
+  static const String LOCATION_KEY = 'location';
+  static const String SOCIAL_KEY = 'social';
+  static const String GAME_KEY = 'game';
+  static const String INSTAGRAM_KEY = 'instagram';
+  static const String TWITTER_KEY = 'twitter';
+  static const String FACEBOOK_KEY = 'facebook';
 }
