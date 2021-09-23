@@ -37,6 +37,9 @@ class UserProvider extends BaseModel {
     try {
       var atKeys = await AtKeySetService().getAtkeys();
       await FieldOrderService().updateFieldsOrder();
+      if (user.twitter.value != this.user!.twitter.value) {
+        await TwitetrService().getTweets();
+      }
       await AtKeySetService().updateDefinedFields(user, true, atKeys);
       await AtKeySetService().updateCustomData(user, true, atKeys);
       await BackendService().sync();

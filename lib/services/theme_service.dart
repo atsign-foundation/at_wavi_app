@@ -38,8 +38,7 @@ class ThemeService {
         }
       } else if (highlightColor != null) {
         _atKey.key = AtKeyConstants.highlightColorPreference;
-        // _value = highlightColor.toString().toLowerCase().substring(10, 16);
-        _value = getStringFromHighlightColor(highlightColor);
+        _value = highlightColor.toString().toLowerCase().substring(10, 16);
       }
 
       print('_value $_value');
@@ -87,64 +86,4 @@ class ThemeService {
       return '';
     }
   }
-
-  String getStringFromHighlightColor(Color _highlightColor) {
-    switch (_highlightColor.toString().toUpperCase()) {
-      case 'COLOR(0XFF58419C)':
-        return 'purple';
-      case 'COLOR(0XFF6EBCB7)':
-        return 'peach';
-      case 'COLOR(0XFF0455BF)':
-        return 'blue';
-      case 'COLOR(0XFFFE1094)':
-        return 'pink';
-      case 'COLOR(0XFFA77D60)':
-        return 'brown';
-      case 'COLOR(0XFFEF5743)':
-        return 'orange';
-      case 'COLOR(0XFF7CCB12)':
-        return 'green';
-      case 'COLOR(0XFFFFBE21)':
-        return 'yellow';
-      default:
-        return 'purple';
-    }
-  }
-
-  // deletePreviousKeys() async {
-  //   var _metaData = Metadata()
-  //     ..isPublic = true
-  //     ..ccd = true
-
-  //     /// TODO: true or false
-  //     ..namespaceAware = false
-  //     ..isEncrypted = false;
-
-  //   var _atKey = AtKey()..metadata = _metaData;
-
-  //   if (true) {
-  //     _atKey.key = 'THEME_PREFERENCE' + '.me';
-  //   } else {
-  //     _atKey.key = AtKeyConstants.highlightColorPreference;
-  //     // _value = highlightColor.toString();
-  //   }
-
-  //   // var response = await BackendService().atClientInstance.getKeys(
-  //   //       regex: 'THEME_PREFERENCE' + '.me',
-  //   //     );
-  //   // var atKey = AtKey.fromString(response[0]);
-  //   // atKey.metadata!.ttr = -1;
-
-  //   var result = await BackendService().atClientInstance.delete(_atKey);
-  //   print(' is deleted ? $result');
-
-  //   // var response2 = await BackendService().atClientInstance.getKeys(
-  //   //       regex: 'HIGHLIGHT_COLOR_PREFERENCE' + '.me',
-  //   //     );
-  //   // var atKey2 = AtKey.fromString(response2[0]);
-  //   // atKey2.metadata!.ttr = -1;
-
-  //   // var result2 = await BackendService().atClientInstance.delete(atKey2);
-  //   // print(' is deleted ? $result');
-  // }
 }

@@ -39,8 +39,8 @@ class ThemeProvider extends BaseModel {
   // ignore: always_declare_return_types
   checkThemeFromSecondary({bool notifyListener = true}) async {
     if (currentAtsignThemeData == null) {
-      var _themePreference = await ThemeService()
-          .getThemePreference(BackendService().atClientInstance.currentAtSign!);
+      var _themePreference = await ThemeService().getThemePreference(
+          BackendService().atClientInstance.getCurrentAtSign()!);
 
       if ((_themePreference ?? '').toLowerCase() == 'dark') {
         currentAtsignThemeData = darktheme;
@@ -53,12 +53,12 @@ class ThemeProvider extends BaseModel {
 
     if (highlightColor == null) {
       var _highlightColorPreference = await ThemeService().getThemePreference(
-          BackendService().atClientInstance.currentAtSign!,
+          BackendService().atClientInstance.getCurrentAtSign()!,
           returnHighlightColorPreference: true);
 
       highlightColor = (_highlightColorPreference != null)
           ? convertToHighlightColor(_highlightColorPreference)
-          : ColorConstants.peach;
+          : ColorConstants.green;
 
       // theme.highlightColor = highlightColor!;
       setHighlightColor(highlightColor!);
@@ -103,25 +103,25 @@ class ThemeProvider extends BaseModel {
   }
 
   convertToHighlightColor(String _color) {
-    switch (_color.toLowerCase()) {
-      case 'purple':
+    switch (_color.toUpperCase()) {
+      case '58419C':
         return ColorConstants.purple;
-      case 'peach':
-        return ColorConstants.peach;
-      case 'blue':
+      case '6EBCB7':
+        return ColorConstants.green;
+      case '3FC0F3':
         return ColorConstants.blue;
-      case 'pink':
+      case 'FEB8D5':
         return ColorConstants.solidPink;
-      case 'brown':
+      case 'A77D60':
         return ColorConstants.fadedBrown;
-      case 'orange':
-        return ColorConstants.solidOrange;
-      case 'green':
-        return ColorConstants.solidLightGreen;
-      case 'yellow':
+      case 'EF5743':
+        return ColorConstants.solidRed;
+      case 'F2A384':
+        return ColorConstants.solidPeach;
+      case 'FFBE21':
         return ColorConstants.solidYellow;
       default:
-        return ColorConstants.peach;
+        return ColorConstants.green;
     }
   }
 }

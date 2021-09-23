@@ -2,7 +2,7 @@ import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class Themes {
-  static ThemeData lightTheme({Color highlightColor = ColorConstants.peach}) {
+  static ThemeData lightTheme({Color highlightColor = ColorConstants.green}) {
     return ThemeData(
       brightness: Brightness.light,
       primaryColor: ColorConstants.black,
@@ -14,7 +14,7 @@ class Themes {
     );
   }
 
-  static ThemeData darkTheme({Color highlightColor = ColorConstants.peach}) {
+  static ThemeData darkTheme({Color highlightColor = ColorConstants.green}) {
     return ThemeData(
       brightness: Brightness.dark,
       canvasColor: Colors.white,

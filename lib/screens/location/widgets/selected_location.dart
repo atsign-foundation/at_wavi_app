@@ -300,8 +300,6 @@ class _SelectedLocationState extends State<SelectedLocation> {
 
             if (widget.callbackFunction != null) {
               widget.callbackFunction!(_finalData);
-            } else {
-              LocationWidgetData().update(_finalData);
             }
 
             Navigator.of(context).pop();

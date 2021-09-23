@@ -113,13 +113,19 @@ extension FieldsEnumValues on FieldsEnum {
         return 'Type postal code, city, country, or street';
 
       case FieldsEnum.TWITTER:
+        return 'Twitter';
       case FieldsEnum.INSTAGRAM:
+        return 'Instagram';
       case FieldsEnum.FACEBOOK:
+        return 'Facebook';
       case FieldsEnum.LINKEDIN:
+        return 'Linkedin';
       case FieldsEnum.TUMBLR:
+        return 'Tumblr';
       case FieldsEnum.MEDIUM:
+        return 'Medium';
       case FieldsEnum.YOUTUBE:
-        return 'USERNAME';
+        return 'Youtube';
 
       case FieldsEnum.PS4:
         return 'PS4';
@@ -326,7 +332,7 @@ extension value on RootEnvironment {
 }
 
 enum CustomContentStatus { Exists, Success, Fails }
-enum CustomContentType { Text, Link, Number, Image, Youtube, Html }
+enum CustomContentType { Text, Link, Number, Image, Youtube, Html, Location }
 
 extension values on CustomContentType {
   String get name {
@@ -348,6 +354,9 @@ extension values on CustomContentType {
 
       case CustomContentType.Html:
         return 'Html';
+
+      case CustomContentType.Location:
+        return 'Location';
 
       default:
         return '';

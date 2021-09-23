@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
 import 'package:at_wavi_app/common_components/switch_at_sign.dart';
@@ -69,9 +70,9 @@ class _OptionsState extends State<Options> {
       child: Column(
         children: <Widget>[
           CustomPersonHorizontalTile(
-            title:
-                widget.name ?? BackendService().atClientInstance.currentAtSign,
-            subTitle: BackendService().atClientInstance.currentAtSign,
+            title: widget.name ??
+                BackendService().atClientInstance.getCurrentAtSign(),
+            subTitle: BackendService().atClientInstance.getCurrentAtSign(),
             textColor: _themeData!.primaryColor,
             image: widget.image?.toList(),
           ),
@@ -197,9 +198,8 @@ class _OptionsState extends State<Options> {
             onTap: () async {
               String? atSign = await BackendService().getAtSign();
 
-              var atSignList = await BackendService()
-                  .atClientServiceInstance
-                  .getAtsignList();
+              var atSignList = await KeychainUtil.getAtsignList();
+
               await showModalBottomSheet(
                 context: NavService.navKey.currentContext!,
                 backgroundColor: Colors.transparent,
