@@ -1,30 +1,28 @@
 import 'dart:io';
-
-import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_reorder_basic_detail/widgets/desktop_reorderable_item_widget.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_show_hide_radio_button.dart';
 import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
-import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'desktop_add_basic_detail_model.dart';
+import 'desktop_add_location_model.dart';
 
-class DesktopAddBasicDetailPage extends StatefulWidget {
-  const DesktopAddBasicDetailPage({Key? key}) : super(key: key);
+
+class DesktopAddLocationPage extends StatefulWidget {
+  const DesktopAddLocationPage({Key? key}) : super(key: key);
 
   @override
-  _DesktopAddBasicDetailPageState createState() =>
-      _DesktopAddBasicDetailPageState();
+  _DesktopAddLocationPageState createState() =>
+      _DesktopAddLocationPageState();
 }
 
-class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
-  late DesktopAddBasicDetailModel _model;
+class _DesktopAddLocationPageState extends State<DesktopAddLocationPage> {
+  late DesktopAddLocationModel _model;
   final _showHideController = ShowHideController(isShow: true);
   final _titleTextController = TextEditingController();
   final _textContentTextController = TextEditingController();
@@ -41,7 +39,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
     return ChangeNotifierProvider(
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
-        _model = DesktopAddBasicDetailModel(userPreview: userPreview);
+        _model = DesktopAddLocationModel(userPreview: userPreview);
         return _model;
       },
       child: Container(
@@ -89,7 +87,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
 
   Widget _buildTypeSelectionWidget() {
     final appTheme = AppTheme.of(context);
-    return Consumer<DesktopAddBasicDetailModel>(builder: (_, model, child) {
+    return Consumer<DesktopAddLocationModel>(builder: (_, model, child) {
       return DropdownButtonFormField<CustomContentType>(
         dropdownColor: appTheme.backgroundColor,
         autovalidateMode: AutovalidateMode.disabled,
@@ -121,19 +119,19 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
           }
         },
         items: contentDropDown.map<DropdownMenuItem<CustomContentType>>(
-            (CustomContentType value) {
-          return DropdownMenuItem<CustomContentType>(
-            value: value,
-            child: Text(value.label),
-          );
-        }).toList(),
+                (CustomContentType value) {
+              return DropdownMenuItem<CustomContentType>(
+                value: value,
+                child: Text(value.label),
+              );
+            }).toList(),
       );
     });
   }
 
   Widget _buildFieldInputWidget() {
     final appTheme = AppTheme.of(context);
-    return Consumer<DesktopAddBasicDetailModel>(
+    return Consumer<DesktopAddLocationModel>(
       builder: (_, model, child) {
         if (_model.fieldType == CustomContentType.Text) {
           return DesktopTextField(

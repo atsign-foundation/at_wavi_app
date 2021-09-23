@@ -1,3 +1,4 @@
+import 'package:at_wavi_app/desktop/screens/desktop_home/desktop_home_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
@@ -129,7 +130,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                             titleColor: appTheme.primaryColor,
                             borderColor: appTheme.primaryColor,
                             title: Strings.desktop_edit_profile,
-                            onPressed: () async {},
+                            onPressed: _openEditProfile,
                           ),
                           SizedBox(
                             height: 16,
@@ -190,6 +191,13 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
           ),
         ),
       ],
+    );
+  }
+
+  void _openEditProfile() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => DesktopHomePage()),
     );
   }
 }

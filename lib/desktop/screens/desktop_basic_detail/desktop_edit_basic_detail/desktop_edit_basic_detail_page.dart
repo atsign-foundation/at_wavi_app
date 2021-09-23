@@ -89,7 +89,7 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
               itemBuilder: (c, index) {
                 final data = model.basicData[index];
                 return DesktopTextField(
-                  controller: data.controller,
+                  controller: data.controller ?? TextEditingController(),
                   title: data.data.accountName ?? '',
                 );
               },
