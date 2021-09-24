@@ -1,3 +1,4 @@
+import 'package:at_wavi_app/model/basic_data_model.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -6,23 +7,13 @@ import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class BasicItemViewModel {
-  final BasicData data;
-  final TextEditingController controller;
-
-  BasicItemViewModel({
-    required this.data,
-    required this.controller,
-  });
-}
-
 class DesktopEditBasicDetailModel extends ChangeNotifier {
   final UserPreview userPreview;
   final AtCategory atCategory;
 
-  List<BasicItemViewModel> _basicData = [];
+  List<BasicDataModel> _basicData = [];
 
-  List<BasicItemViewModel> get basicData => _basicData;
+  List<BasicDataModel> get basicData => _basicData;
 
   DesktopEditBasicDetailModel({
     required this.userPreview,
@@ -31,9 +22,7 @@ class DesktopEditBasicDetailModel extends ChangeNotifier {
     try {
       FieldOrderService().initCategoryFields(atCategory);
       fetchBasicData();
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 
   void fetchBasicData() {
@@ -43,12 +32,11 @@ class DesktopEditBasicDetailModel extends ChangeNotifier {
         userPreview.user()?.customFields[atCategory.name] ?? [];
 
     var fields = <String>[];
-    fields = [
-      ...FieldNames().getFieldList(atCategory, isPreview: true)
-    ];
+    fields = [...FieldNames().getFieldList(atCategory, isPreview: true)];
 
     for (int i = 0; i < fields.length; i++) {
       BasicData basicData = BasicData();
+      bool isCustomField = false;
 
       if (userMap.containsKey(fields[i])) {
         basicData = userMap[fields[i]];
@@ -59,7 +47,7 @@ class DesktopEditBasicDetailModel extends ChangeNotifier {
             customFields.indexWhere((el) => el.accountName == fields[i]);
         if (index != -1) {
           basicData = customFields[index];
-          // isCustomField = true;
+          isCustomField = true;
         }
       }
 
@@ -67,9 +55,10 @@ class DesktopEditBasicDetailModel extends ChangeNotifier {
         continue;
       }
       _basicData.add(
-        BasicItemViewModel(
+        BasicDataModel(
           data: basicData,
           controller: TextEditingController(text: basicData.value),
+          isCustomField: isCustomField,
         ),
       );
     }
@@ -79,7 +68,7 @@ class DesktopEditBasicDetailModel extends ChangeNotifier {
   void saveData(BuildContext context) {
     _basicData.forEach((element) {
       final newBasicData = element.data;
-      newBasicData.value = element.controller.text.trim();
+      newBasicData.value = element.controller?.text.trim();
       updateDefinedFields(context, newBasicData);
     });
     Navigator.of(context).pop('saved');
