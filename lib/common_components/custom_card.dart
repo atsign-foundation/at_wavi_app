@@ -57,7 +57,7 @@ class CustomCard extends StatelessWidget {
                             : _isDark
                                 ? themeData.primaryColor
                                 : themeData.highlightColor,
-                        fontSize: 18.toFont,
+                        fontSize: 16.toFont,
                       ),
                       webView: true,
                     ),
