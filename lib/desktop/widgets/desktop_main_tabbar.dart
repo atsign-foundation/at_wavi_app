@@ -4,12 +4,10 @@ import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class DesktopMainTabBar extends StatefulWidget {
-  final bool isSecured;
   final Function(int?)? onSelected;
 
   DesktopMainTabBar({
     Key? key,
-    this.isSecured = false,
     required this.onSelected,
   }) : super(key: key);
 

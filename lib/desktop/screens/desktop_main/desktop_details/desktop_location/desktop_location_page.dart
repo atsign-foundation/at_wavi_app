@@ -37,6 +37,7 @@ class _DesktopLocationPageState extends State<DesktopLocationPage>
             DesktopBasicItem(
               title: Strings.desktop_home,
               value: '',
+              onValueChanged: (text) {},
             ),
           ],
         ),

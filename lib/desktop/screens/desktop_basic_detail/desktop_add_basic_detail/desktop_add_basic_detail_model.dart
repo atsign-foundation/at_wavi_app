@@ -18,7 +18,15 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
 
   Uint8List? get selectedImage => _selectedImage;
 
+  bool isOnlyAddImage = false;
+
   DesktopAddBasicDetailModel({required this.userPreview});
+
+  void setIsOnlyAddImage(bool isOnlyAddImage) {
+    this.isOnlyAddImage = isOnlyAddImage;
+    _fieldType =
+        this.isOnlyAddImage ? CustomContentType.Image : CustomContentType.Text;
+  }
 
   void changeField(CustomContentType fieldType) {
     _fieldType = fieldType;

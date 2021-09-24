@@ -15,7 +15,12 @@ import 'package:provider/provider.dart';
 import 'desktop_add_basic_detail_model.dart';
 
 class DesktopAddBasicDetailPage extends StatefulWidget {
-  const DesktopAddBasicDetailPage({Key? key}) : super(key: key);
+  bool isOnlyAddImage;
+
+  DesktopAddBasicDetailPage({
+    Key? key,
+    this.isOnlyAddImage = false,
+  }) : super(key: key);
 
   @override
   _DesktopAddBasicDetailPageState createState() =>
@@ -32,7 +37,15 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
   final _imageContentTextController = TextEditingController();
   final _youtubeContentTextController = TextEditingController();
 
-  var contentDropDown = CustomContentType.values;
+  late var contentDropDown;
+
+  @override
+  void initState() {
+    contentDropDown = widget.isOnlyAddImage
+        ? [CustomContentType.Image]
+        : CustomContentType.values;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +54,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
         _model = DesktopAddBasicDetailModel(userPreview: userPreview);
+        _model.setIsOnlyAddImage(widget.isOnlyAddImage);
         return _model;
       },
       child: Container(
@@ -55,7 +69,9 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              Strings.desktop_add_custom_content,
+              widget.isOnlyAddImage
+                  ? Strings.desktop_add_media
+                  : Strings.desktop_add_custom_content,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,

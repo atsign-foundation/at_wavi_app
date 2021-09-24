@@ -52,7 +52,8 @@ class _DesktopSearchPageState extends State<DesktopSearchPage> {
               backgroundColor: ColorConstants.LIGHT_GREY,
               borderRadius: 10,
               textSize: 12,
-              hasBackground: true,
+              hasUnderlineBorder: false,
+              contentPadding: 16,
               onChanged: (text) {
                 _model.searchUser(text);
               },

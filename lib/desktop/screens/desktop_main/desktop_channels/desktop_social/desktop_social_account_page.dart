@@ -3,6 +3,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_link_item.dart'
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
+import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
 import 'package:at_wavi_app/model/user.dart';
@@ -72,6 +73,9 @@ class _DesktopSocialAccountPageState extends State<DesktopSocialAccountPage>
                           ? DesktopBasicItem(
                               title: model.fields[index].accountName ?? '',
                               value: model.fields[index].valueDescription ?? '',
+                              onValueChanged: (text) {
+                                _model.updateValues(index, text);
+                              },
                             )
                           : DesktopLinkItem(
                               title: model.fields[index].accountName ?? '',
@@ -123,7 +127,11 @@ class _DesktopSocialAccountPageState extends State<DesktopSocialAccountPage>
                         DesktopButton(
                           title: Strings.desktop_save_publish,
                           height: 48,
-                          onPressed: () {},
+                          onPressed: () async {
+                            await _model.saveAndPublish();
+                            showSnackBar(context, Strings.desktop_edit_success,
+                                appTheme.primaryColor);
+                          },
                         ),
                       ],
                     ),

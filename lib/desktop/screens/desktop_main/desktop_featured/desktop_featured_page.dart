@@ -9,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class DesktopFeaturedPage extends StatefulWidget {
-  DesktopFeaturedPage({Key? key}) : super(key: key);
+  DesktopFeaturedPage({
+    Key? key,
+  }) : super(key: key);
 
   _DesktopFeaturedPageState _desktopFeaturedPageState =
       _DesktopFeaturedPageState();
@@ -59,13 +61,9 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
     }
   }
 
-  Future addFieldToInstagram(BasicData basicData) async {
+  Future addFieldToInstagram(BasicData basicData) async {}
 
-  }
-
-  Future addFieldToTwitter(BasicData basicData) async {
-
-  }
+  Future addFieldToTwitter(BasicData basicData) async {}
 
   @override
   Widget build(BuildContext context) {

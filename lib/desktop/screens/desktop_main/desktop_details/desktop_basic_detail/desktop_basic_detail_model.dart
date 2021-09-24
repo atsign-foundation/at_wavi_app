@@ -14,6 +14,10 @@ class DesktopBasicDetailModel extends ChangeNotifier {
 
   List<BasicData> get fields => _fields;
 
+  List<String> _values = [];
+
+  List<String> get values => _values;
+
   static const _defaultBasicDetails = [
     'Phone',
     'Email',
@@ -48,6 +52,11 @@ class DesktopBasicDetailModel extends ChangeNotifier {
           )
           .toList();
     }
+
+    for (int i = 0; i < listBasicData.length; i++) {
+      _values.add(listBasicData[i].valueDescription);
+    }
+
     await updateField(
       listBasicData,
     );
@@ -80,5 +89,16 @@ class DesktopBasicDetailModel extends ChangeNotifier {
       value: _fields.map((e) => e.toJson() as String).toList(),
     );
     notifyListeners();
+  }
+
+  void updateValues(int index, String value) {
+    _fields[index].valueDescription = value;
+  }
+
+  Future saveAndPublish() async {
+    await saveListStringToSharedPreferences(
+      key: MixedConstants.BASIC_DETAILS_KEY,
+      value: _fields.map((e) => e.toJson() as String).toList(),
+    );
   }
 }

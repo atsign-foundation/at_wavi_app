@@ -80,4 +80,15 @@ class DesktopGameModel extends ChangeNotifier {
     );
     notifyListeners();
   }
+
+  void updateValues(int index, String value) {
+    _fields[index].valueDescription = value;
+  }
+
+  Future saveAndPublish() async {
+    await saveListStringToSharedPreferences(
+      key: MixedConstants.GAME_KEY,
+      value: _fields.map((e) => e.toJson() as String).toList(),
+    );
+  }
 }

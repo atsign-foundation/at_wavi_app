@@ -1,6 +1,7 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
+import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
 import 'package:at_wavi_app/model/user.dart';
@@ -69,6 +70,9 @@ class _DesktopGameAccountPageState extends State<DesktopGameAccountPage>
                       return DesktopBasicItem(
                         title: model.fields[index].accountName ?? '',
                         value: model.fields[index].valueDescription ?? '',
+                        onValueChanged: (text) {
+                          _model.updateValues(index, text);
+                        },
                       );
                     },
                     separatorBuilder: (BuildContext context, int index) {
@@ -113,7 +117,11 @@ class _DesktopGameAccountPageState extends State<DesktopGameAccountPage>
                         DesktopButton(
                           title: Strings.desktop_save_publish,
                           height: 48,
-                          onPressed: () {},
+                          onPressed: () async {
+                            await _model.saveAndPublish();
+                            showSnackBar(context, Strings.desktop_edit_success,
+                                appTheme.primaryColor);
+                          },
                         ),
                       ],
                     ),

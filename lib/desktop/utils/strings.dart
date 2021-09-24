@@ -29,6 +29,8 @@ class Strings {
   static const String desktop_reorder = 'Reorder';
   static const String desktop_save_publish = 'Save & Publish';
   static const String desktop_add_custom_content = 'Add Custom Content';
+  static const String desktop_add_location = 'Add Location';
+  static const String desktop_add_media = 'Add Media';
 
   static const String desktop_media = 'Media';
   static const String desktop_basic_details = 'Basic Details';
@@ -69,6 +71,7 @@ class Strings {
   static const String desktop_search_follower = 'Search Follower';
   static const String desktop_search_following = 'Search Following';
 
+  static const String desktop_edit_success = 'Edit Success';
   static const String desktop_notifications = 'Notifications';
   static const String desktop_new_request = 'New Request';
   static const String desktop_send = 'SEND';

@@ -10,7 +10,10 @@ import 'package:provider/provider.dart';
 import 'desktop_channels_model.dart';
 
 class DesktopChannelsPage extends StatefulWidget {
-  DesktopChannelsPage({Key? key}) : super(key: key);
+
+  DesktopChannelsPage({
+    Key? key,
+  }) : super(key: key);
 
   _DesktopChannelsPageState _desktopChannelsPageState =
       _DesktopChannelsPageState();
@@ -44,7 +47,6 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-
     desktopSocialAccountPage = DesktopSocialAccountPage();
     desktopGameAccountPage = DesktopGameAccountPage();
 

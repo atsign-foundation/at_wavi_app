@@ -44,4 +44,5 @@ class DesktopLocationModel extends ChangeNotifier {
     }
     notifyListeners();
   }
+
 }
