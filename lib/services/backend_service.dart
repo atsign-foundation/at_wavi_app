@@ -8,9 +8,9 @@ import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/view_models/base_model.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
-// import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -20,6 +20,7 @@ import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
 import 'package:at_client/src/service/sync_service.dart';
+import 'package:at_client/src/service/sync_service_impl.dart';
 
 class BackendService {
   static final BackendService _singleton = BackendService._internal();
@@ -91,7 +92,6 @@ class BackendService {
     await Provider.of<UserProvider>(NavService.navKey.currentContext!,
             listen: false)
         .fetchUserData(BackendService().currentAtSign!);
-    await FieldOrderService().getFieldOrder();
   }
 
   Future<AtClientPreference> getAtClientPreference() async {
@@ -120,8 +120,17 @@ class BackendService {
     syncService.setOnDone(_onSuccessCallback);
   }
 
-  _onSuccessCallback() {
-    print('sync success');
+  _onSuccessCallback(SyncResult syncStatus) async {
+    print(
+        'syncStatus type : $syncStatus, datachanged : ${syncStatus.dataChange}');
+    var userProvider = Provider.of<UserProvider>(
+        NavService.navKey.currentContext!,
+        listen: false);
+
+    if (syncStatus.dataChange &&
+        userProvider.status[userProvider.FETCH_USER] != Status.Loading) {
+      await userProvider.fetchUserData(BackendService().currentAtSign!);
+    }
   }
 
   ///Fetches privatekey for [atsign] from device keychain.

@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     if ((widget.isPreview) &&
         (_currentUser.atsign !=
-            BackendService().atClientInstance.getCurrentAtSign)) {
+            BackendService().atClientInstance.getCurrentAtSign())) {
       _isSearchScreen = true;
     }
 
@@ -170,25 +170,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     } else {
       return Scaffold(
         backgroundColor: _themeData!.scaffoldBackgroundColor,
-        bottomNavigationBar: widget.isPreview
-            ? null
-            : BottomNavigationBar(
-                backgroundColor: _themeData!.scaffoldBackgroundColor,
-                items: const <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.notifications),
-                    label: '',
-                  )
-                ],
-                currentIndex: _selectedIndex,
-                selectedItemColor: ColorConstants.orange,
-                onTap: _onItemTapped,
-                // elevation: 0,
-              ),
+        // TODO: commented notification screen because we don't show notification updates
+        // bottomNavigationBar: widget.isPreview
+        //     ? null
+        //     : BottomNavigationBar(
+        //         backgroundColor: _themeData!.scaffoldBackgroundColor,
+        //         items: const <BottomNavigationBarItem>[
+        //           BottomNavigationBarItem(
+        //             icon: Icon(Icons.person),
+        //             label: '',
+        //           ),
+        //           BottomNavigationBarItem(
+        //             icon: Icon(Icons.notifications),
+        //             label: '',
+        //           )
+        //         ],
+        //         currentIndex: _selectedIndex,
+        //         selectedItemColor: ColorConstants.orange,
+        //         onTap: _onItemTapped,
+        //         // elevation: 0,
+        //       ),
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.all(15.0.toWidth),
@@ -212,62 +213,70 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         : SizedBox(),
                     SizedBox(height: 30.toHeight),
                     // content
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: 116.toWidth,
-                          height: 116.toWidth,
-                          decoration: BoxDecoration(
-                            color: ColorConstants.white.withOpacity(0.8),
-                            borderRadius: BorderRadius.circular(60.toWidth),
-                          ),
-                          child: (_currentUser.image.value != null)
-                              ? CircleAvatar(
-                                  radius: 50.toFont,
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage:
-                                      Image.memory(_currentUser.image.value)
-                                          .image,
-                                )
-                              : Icon(
-                                  Icons.person,
-                                  size: 50.toFont,
-                                ),
-                        ),
-                        SizedBox(
-                          width: 10.toWidth,
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(_name,
-                                  style: TextStyle(
+                    Consumer<UserProvider>(
+                      builder: (context, _provider, _) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              width: 116.toWidth,
+                              height: 116.toWidth,
+                              decoration: BoxDecoration(
+                                color: ColorConstants.white.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(60.toWidth),
+                              ),
+                              child: (_currentUser.image.value != null)
+                                  ? CircleAvatar(
+                                      radius: 50.toFont,
+                                      backgroundColor: Colors.transparent,
+                                      backgroundImage:
+                                          Image.memory(_currentUser.image.value)
+                                              .image,
+                                    )
+                                  : Icon(
+                                      Icons.person,
+                                      size: 50.toFont,
+                                    ),
+                            ),
+                            SizedBox(
+                              width: 10.toWidth,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(_name,
+                                      style: TextStyle(
+                                          fontSize: 18.toFont,
+                                          color: _themeData!.primaryColor,
+                                          fontWeight: FontWeight.w600)),
+                                  SizedBox(height: 8.toHeight),
+                                  Text(
+                                    _currentUser.atsign,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: ColorConstants.orange,
                                       fontSize: 18.toFont,
-                                      color: _themeData!.primaryColor,
-                                      fontWeight: FontWeight.w600)),
-                              SizedBox(height: 8.toHeight),
-                              Text(
-                                _currentUser.atsign,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: ColorConstants.orange,
-                                  fontSize: 18.toFont,
-                                ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 18.5.toHeight),
+                                  Divider(
+                                    color: _themeData!.highlightColor,
+                                  ),
+                                  SizedBox(height: 18.5.toHeight),
+                                  Consumer<UserProvider>(
+                                      builder: (context, _provider, _) {
+                                    return followersFollowingRow();
+                                  })
+                                ],
                               ),
-                              SizedBox(height: 18.5.toHeight),
-                              Divider(
-                                color: _themeData!.highlightColor,
-                              ),
-                              SizedBox(height: 18.5.toHeight),
-                              followersFollowingRow(),
-                            ],
-                          ),
-                        )
-                      ],
+                            )
+                          ],
+                        );
+                      },
                     ),
+
                     SizedBox(height: 20.toHeight),
                     Row(
                       children: <Widget>[
@@ -431,7 +440,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                     _isSearchScreen && SearchService().isPrivateAccount
                         ? SizedBox()
-                        : homeContent()
+                        : Consumer<UserProvider>(
+                            builder: (context, _provider, _) {
+                            return homeContent();
+                          })
                   ],
                 ),
               ),
@@ -582,9 +594,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Widget followersFollowingRow() {
     return Consumer<FollowService>(builder: (context, _provider, _) {
-      print(
-          'Provider.of<FollowService>(context, listen: false).followers.list : ${Provider.of<FollowService>(context, listen: false).followers.list}');
-      print('_provider followservice in home: ${_provider.following.list}');
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
