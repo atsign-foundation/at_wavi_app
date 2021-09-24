@@ -92,7 +92,6 @@ class BackendService {
     await Provider.of<UserProvider>(NavService.navKey.currentContext!,
             listen: false)
         .fetchUserData(BackendService().currentAtSign!);
-    await FieldOrderService().getFieldOrder();
   }
 
   Future<AtClientPreference> getAtClientPreference() async {

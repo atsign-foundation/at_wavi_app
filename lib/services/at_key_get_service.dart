@@ -5,6 +5,7 @@ import 'package:at_commons/at_commons.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
@@ -93,6 +94,10 @@ class AtKeyGetService {
     }
 
     var successValue = await BackendService().atClientInstance.get(atKey);
+
+    if (atKey.key!.contains(MixedConstants.fieldOrderKey)) {
+      FieldOrderService().addFieldOrder(successValue);
+    }
 
     if (atKey.key!.contains(MixedConstants.FOLLOWERS_KEY)) {
       Provider.of<FollowService>(NavService.navKey.currentContext!,

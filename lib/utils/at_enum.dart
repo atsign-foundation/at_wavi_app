@@ -95,16 +95,16 @@ extension FieldsEnumValues on FieldsEnum {
         return 'Last name';
 
       case FieldsEnum.PHONE:
-        return 'Phone';
+        return 'Phone Number';
 
       case FieldsEnum.EMAIL:
-        return 'Email';
+        return 'Email Address';
 
       case FieldsEnum.ABOUT:
-        return 'Write a short bio or quote';
+        return 'About';
 
       case FieldsEnum.PRONOUN:
-        return 'Preferred pronoun';
+        return 'Preferred Pronoun';
 
       case FieldsEnum.LOCATIONNICKNAME:
         return 'Home, Office, School, etc...';
