@@ -110,7 +110,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
 
     _pageController = PageController();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      //  clearSharedPreferences();
+      //   clearSharedPreferences();
       saveStringToSharedPreferences(
           key: Strings.desktop_current_tab, value: AtCategory.DETAILS.name);
     });

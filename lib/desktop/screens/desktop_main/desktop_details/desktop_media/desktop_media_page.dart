@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_media/desktop_full_image_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_media/desktop_media_model.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
@@ -62,28 +63,43 @@ class _DesktopMediaPageState extends State<DesktopMediaPage>
                 ),
                 padding: EdgeInsets.all(8),
                 itemBuilder: (context, index) {
-                  return AspectRatio(
-                    aspectRatio: 1.0,
-                    child: index % 2 != 0
-                        ? Image.file(
+                  return GestureDetector(
+                    onTap: () async {
+                      final result = await showDialog<BasicData>(
+                        context: context,
+                        builder: (BuildContext context) => Dialog(
+                          backgroundColor: Colors.transparent,
+                          child: DesktopFullImagePage(
+                            path: model.fields[index].path!,
+                          ),
+                        ),
+                      );
+                    },
+                    child: AspectRatio(
+                      aspectRatio: 1.0,
+                      child: Stack(
+                        children: [
+                          Image.file(
                             File(model.fields[index].path!),
                             fit: BoxFit.fitWidth,
-                          )
-                        : Stack(
-                            children: [
-                              Image.file(
-                                File(model.fields[index].path!),
-                                fit: BoxFit.fitWidth,
-                              ),
-                              Center(
-                                child: Icon(
-                                  Icons.play_circle_fill,
-                                  size: 56,
-                                  color: ColorConstants.white,
-                                ),
-                              ),
-                            ],
                           ),
+                          Positioned(
+                            right: 0,
+                            top: 0,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.cancel,
+                                size: 24,
+                                color: ColorConstants.DARK_GREY,
+                              ),
+                              onPressed: () {
+                                _model.deleteMedia(index);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   );
                 },
                 itemCount: model.fields.length,

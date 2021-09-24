@@ -59,87 +59,96 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 8),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: ColorConstants.LIGHT_GREY,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              child: Consumer<DesktopBasicDetailModel>(
-                builder: (_, model, child) {
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: model.fields.length,
-                    itemBuilder: (context, index) {
-                      return (model.fields[index].path != null &&
-                              model.fields[index].path! != 'null')
-                          ? DesktopImageItem(
-                              title: model.fields[index].accountName ?? '',
-                              path: model.fields[index].path ?? '',
-                            )
-                          : DesktopBasicItem(
-                              title: model.fields[index].accountName ?? '',
-                              value: model.fields[index].valueDescription ?? '',
-                              onValueChanged: (text) {
-                                _model.updateValues(index, text);
-                              },
-                            );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return Container(
-                        margin: EdgeInsets.symmetric(horizontal: 16),
-                        child: Divider(
-                          height: 1,
-                          color: appTheme.borderColor,
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
             Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
-                    child: Container(),
-                  ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        DesktopWhiteButton(
-                          title: Strings.desktop_reorder,
-                          height: 48,
-                          onPressed: () async {
-                            await showReOderFieldsPopUp(
-                              context,
-                              AtCategory.BASIC_DETAILS,
-                              (fields) {
-                                /// Update Fields after reorder
-                                _model.reorderField(fields);
-                              },
-                            );
-                          },
-                        ),
-                        SizedBox(width: 12),
-                        DesktopButton(
-                          title: Strings.desktop_save_publish,
-                          height: 48,
-                          onPressed: () async {
-                            await _model.saveAndPublish();
-                            showSnackBar(context, Strings.desktop_edit_success,
-                                appTheme.primaryColor);
-                          },
-                        ),
-                      ],
+                  Flexible(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 8),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16,
+                      ),
+                      decoration: BoxDecoration(
+                        color: ColorConstants.LIGHT_GREY,
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Consumer<DesktopBasicDetailModel>(
+                        builder: (_, model, child) {
+                          return ListView.separated(
+                            shrinkWrap: true,
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            itemCount: model.fields.length,
+                            itemBuilder: (context, index) {
+                              return (model.fields[index].path != null &&
+                                      model.fields[index].path! != 'null')
+                                  ? DesktopImageItem(
+                                      title:
+                                          model.fields[index].accountName ?? '',
+                                      path: model.fields[index].path ?? '',
+                                    )
+                                  : DesktopBasicItem(
+                                      title:
+                                          model.fields[index].accountName ?? '',
+                                      value: model
+                                              .fields[index].valueDescription ??
+                                          '',
+                                      onValueChanged: (text) {
+                                        _model.updateValues(index, text);
+                                      },
+                                    );
+                            },
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return Container(
+                                margin: EdgeInsets.symmetric(horizontal: 16),
+                                child: Divider(
+                                  height: 1,
+                                  color: appTheme.borderColor,
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],
               ),
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                DesktopWhiteButton(
+                  title: Strings.desktop_reorder,
+                  height: 48,
+                  onPressed: () async {
+                    await showReOderFieldsPopUp(
+                      context,
+                      AtCategory.BASIC_DETAILS,
+                      (fields) {
+                        /// Update Fields after reorder
+                        _model.reorderField(fields);
+                      },
+                    );
+                  },
+                ),
+                SizedBox(width: 12),
+                DesktopButton(
+                  title: Strings.desktop_save_publish,
+                  height: 48,
+                  onPressed: () async {
+                    await _model.saveAndPublish();
+                    showSnackBar(context, Strings.desktop_edit_success,
+                        appTheme.primaryColor);
+                  },
+                ),
+              ],
             ),
           ],
         ),

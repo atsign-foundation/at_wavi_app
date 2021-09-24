@@ -29,6 +29,15 @@ class DesktopMediaModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future deleteMedia(int index) async {
+    _fields.removeAt(index);
+    await saveListStringToSharedPreferences(
+      key: MixedConstants.MEDIA_KEY,
+      value: _fields.map((e) => e.toJson() as String).toList(),
+    );
+    notifyListeners();
+  }
+
   Future initFields() async {
     var savedFields = await getListStringFromSharedPreferences(
       key: MixedConstants.MEDIA_KEY,
