@@ -258,7 +258,7 @@ class CommonFunctions {
             SizedBox(
                 width: double.infinity,
                 child: CustomCard(
-                  title: basicData.accountName,
+                  title: getTitle(basicData.accountName!),
                   subtitle: basicData.value,
                   themeData: _themeData,
                 )),
@@ -605,5 +605,14 @@ class CommonFunctions {
         ),
       ],
     );
+  }
+
+  getTitle(String value) {
+    var _valueOf = valueOf(value);
+    if (_valueOf is FieldsEnum) {
+      return _valueOf.hintText;
+    } else {
+      return value;
+    }
   }
 }

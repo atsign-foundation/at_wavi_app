@@ -113,13 +113,19 @@ extension FieldsEnumValues on FieldsEnum {
         return 'Type postal code, city, country, or street';
 
       case FieldsEnum.TWITTER:
+        return 'Twitter';
       case FieldsEnum.INSTAGRAM:
+        return 'Instagram';
       case FieldsEnum.FACEBOOK:
+        return 'Facebook';
       case FieldsEnum.LINKEDIN:
+        return 'Linkedin';
       case FieldsEnum.TUMBLR:
+        return 'Tumblr';
       case FieldsEnum.MEDIUM:
+        return 'Medium';
       case FieldsEnum.YOUTUBE:
-        return 'USERNAME';
+        return 'Youtube';
 
       case FieldsEnum.PS4:
         return 'PS4';
