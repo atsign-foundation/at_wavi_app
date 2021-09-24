@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:at_wavi_app/desktop/utils/strings.dart';
@@ -18,6 +19,10 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
 
   Uint8List? get selectedImage => _selectedImage;
 
+  String? _selectedImagePath;
+
+  String? get selectedImagePath => _selectedImagePath;
+
   bool isOnlyAddImage = false;
 
   DesktopAddBasicDetailModel({required this.userPreview});
@@ -33,8 +38,10 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void didSelectImage(Uint8List selectedImage) {
-    _selectedImage = selectedImage;
+  void didSelectImage(File selectedImage) {
+    final imageData = selectedImage.readAsBytesSync();
+    _selectedImage = imageData;
+    _selectedImagePath = selectedImage.path;
     notifyListeners();
   }
 

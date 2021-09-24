@@ -55,17 +55,19 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
     desktopChannelsPage = DesktopChannelsPage();
     desktopFeaturedPage = DesktopFeaturedPage();
 
-    menuDetails = <PopupMenuEntry<String>>[
-      PopupMenuItem<String>(
-        value: 'reorder',
-        child: Text(
-          Strings.desktop_reorder,
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 14,
-          ),
+    PopupMenuItem<String> popupMenuItem = PopupMenuItem<String>(
+      value: 'reorder',
+      child: Text(
+        Strings.desktop_reorder,
+        style: TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 14,
         ),
       ),
+    );
+
+    menuDetails = <PopupMenuEntry<String>>[
+      popupMenuItem,
       PopupMenuItem<String>(
         value: 'add_custom_content',
         child: Text(
@@ -79,6 +81,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
     ];
 
     menuLocations = <PopupMenuEntry<String>>[
+      popupMenuItem,
       PopupMenuItem<String>(
         value: 'add_location',
         child: Text(
@@ -92,6 +95,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
     ];
 
     menuMedias = <PopupMenuEntry<String>>[
+      popupMenuItem,
       PopupMenuItem<String>(
         value: 'add_media',
         child: Text(

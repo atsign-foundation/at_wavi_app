@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../desktop_basic_item.dart';
+import '../../desktop_image_item.dart';
 
 class DesktopSocialAccountPage extends StatefulWidget {
   DesktopSocialAccountPage({Key? key}) : super(key: key);
@@ -69,21 +70,28 @@ class _DesktopSocialAccountPageState extends State<DesktopSocialAccountPage>
                     shrinkWrap: true,
                     itemCount: model.fields.length,
                     itemBuilder: (context, index) {
-                      return model.fields[index].accountName == 'Twitter'
-                          ? DesktopBasicItem(
+                      return (model.fields[index].path != null &&
+                              model.fields[index].path! != 'null')
+                          ? DesktopImageItem(
                               title: model.fields[index].accountName ?? '',
-                              value: model.fields[index].valueDescription ?? '',
-                              onValueChanged: (text) {
-                                _model.updateValues(index, text);
-                              },
+                              path: model.fields[index].path ?? '',
                             )
-                          : DesktopLinkItem(
-                              title: model.fields[index].accountName ?? '',
-                              name: 'Lauren',
-                              description: 'I tell story to entertain',
-                              follow: '345 Followers, 645 Following',
-                              link: 'www.facebook.com/lauren',
-                            );
+                          : model.fields[index].accountName == 'Twitter'
+                              ? DesktopBasicItem(
+                                  title: model.fields[index].accountName ?? '',
+                                  value: model.fields[index].valueDescription ??
+                                      '',
+                                  onValueChanged: (text) {
+                                    _model.updateValues(index, text);
+                                  },
+                                )
+                              : DesktopLinkItem(
+                                  title: model.fields[index].accountName ?? '',
+                                  name: 'Lauren',
+                                  description: 'I tell story to entertain',
+                                  follow: '345 Followers, 645 Following',
+                                  link: 'www.facebook.com/lauren',
+                                );
                     },
                     separatorBuilder: (BuildContext context, int index) {
                       return Container(

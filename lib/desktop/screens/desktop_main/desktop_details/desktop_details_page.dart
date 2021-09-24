@@ -81,7 +81,9 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
     }
   }
 
-  Future addMedia(BasicData basicData) async {}
+  Future addMedia(BasicData basicData) async {
+    await desktopMediaPage.addMedia(basicData);
+  }
 
   Future addFieldToBasicDetail(BasicData basicData) async {
     await desktopBasicDetailPage.addField(basicData);

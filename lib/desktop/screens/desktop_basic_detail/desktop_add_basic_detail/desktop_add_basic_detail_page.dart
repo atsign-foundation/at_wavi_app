@@ -208,8 +208,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
     );
     if (result?.files.single.path != null) {
       File file = File(result!.files.single.path!);
-      final imageData = file.readAsBytesSync();
-      _model.didSelectImage(imageData);
+      _model.didSelectImage(file);
     } else {
       // User canceled the picker
     }
@@ -229,6 +228,8 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
       basicData.valueDescription = _numberContentTextController.text;
     } else if (_model.fieldType == CustomContentType.Youtube) {
       basicData.valueDescription = _youtubeContentTextController.text;
+    } else if (_model.fieldType == CustomContentType.Image) {
+      basicData.path = _model.selectedImagePath;
     }
     _model.saveData(context, basicData);
   }

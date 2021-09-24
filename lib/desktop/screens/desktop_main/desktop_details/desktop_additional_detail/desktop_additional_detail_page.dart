@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../desktop_basic_item.dart';
+import '../../desktop_image_item.dart';
 
 class DesktopAdditionalDetailPage extends StatefulWidget {
   DesktopAdditionalDetailPage({Key? key}) : super(key: key);
@@ -70,7 +71,13 @@ class _DesktopAdditionalDetailPageState
                     shrinkWrap: true,
                     itemCount: model.fields.length,
                     itemBuilder: (context, index) {
-                      return DesktopBasicItem(
+                      return (model.fields[index].path != null &&
+                          model.fields[index].path! != 'null')
+                          ? DesktopImageItem(
+                        title: model.fields[index].accountName ?? '',
+                        path: model.fields[index].path ?? '',
+                      )
+                          : DesktopBasicItem(
                         title: model.fields[index].accountName ?? '',
                         value: model.fields[index].valueDescription ?? '',
                         onValueChanged: (text) {
