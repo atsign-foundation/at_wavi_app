@@ -32,58 +32,54 @@ class _DesktopNotificationPageState extends State<DesktopNotificationPage>
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
-    return Card(
-      elevation: 3,
-      child: Container(
-        width: 320,
-        height: 270,
-        padding: EdgeInsets.all(4),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TabBar(
-              indicatorColor: appTheme.primaryColor,
-              isScrollable: true,
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorWeight: 3,
-              unselectedLabelStyle: TextStyle(
-                fontSize: 13,
-                color: appTheme.borderColor,
-                fontFamily: 'Inter',
+    return Container(
+      width: 400,
+      height: 320,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TabBar(
+            indicatorColor: appTheme.primaryColor,
+            isScrollable: true,
+            indicatorSize: TabBarIndicatorSize.label,
+            indicatorWeight: 3,
+            unselectedLabelStyle: TextStyle(
+              fontSize: 13,
+              color: appTheme.borderColor,
+              fontFamily: 'Inter',
+            ),
+            labelStyle: TextStyle(
+              fontSize: 13,
+              color: appTheme.primaryTextColor,
+              fontFamily: 'Inter',
+            ),
+            controller: _tabController,
+            tabs: [
+              Tab(
+                child: Text(
+                  Strings.desktop_notifications,
+                ),
               ),
-              labelStyle: TextStyle(
-                fontSize: 13,
-                color: appTheme.primaryTextColor,
-                fontFamily: 'Inter',
+              Tab(
+                child: Text(
+                  Strings.desktop_new_request,
+                ),
               ),
+            ],
+          ),
+          Expanded(
+            child: TabBarView(
               controller: _tabController,
-              tabs: [
-                Tab(
-                  child: Text(
-                    Strings.desktop_notifications,
-                  ),
+              children: [
+                DesktopNotificationListPage(
+                  mainContext: widget.mainContext,
                 ),
-                Tab(
-                  child: Text(
-                    Strings.desktop_new_request,
-                  ),
-                ),
+                DesktopNewRequestPage(),
               ],
             ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  DesktopNotificationListPage(
-                    mainContext: widget.mainContext,
-                  ),
-                  DesktopNewRequestPage(),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

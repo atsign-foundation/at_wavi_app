@@ -152,15 +152,17 @@ valueOf(String property) {
 
 /// new app doesnt have IMAGE
 enum AtCategory {
-  IMAGE,
   DETAILS,
+  CHANNELS,
+  FEATURED,
+
+  IMAGE,
   LOCATION,
   SOCIAL,
   GAMER,
-
-  /// Added for new wavi app
+  BASIC_DETAILS,
   ADDITIONAL_DETAILS,
-  FEATURED
+  OTHERS,
 }
 
 extension AtCategoryValues on AtCategory {
@@ -354,6 +356,8 @@ extension values on CustomContentType {
   String get label {
     if (this == CustomContentType.Youtube) {
       return 'YouTube';
+    } else  if (this == CustomContentType.Image) {
+      return 'Image/Video';
     } else {
       return this.name;
     }

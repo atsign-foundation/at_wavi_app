@@ -8,6 +8,13 @@ class DesktopTextField extends StatelessWidget {
   final String hint;
   final TextInputType? keyboardType;
   final ValueChanged<String>? onChanged;
+  final Widget? prefixIcon;
+  final Color? backgroundColor;
+  final double borderRadius;
+  final Color borderColor;
+  final double textSize;
+  final bool hasUnderlineBorder;
+  final double contentPadding;
 
   DesktopTextField({
     required this.controller,
@@ -15,6 +22,13 @@ class DesktopTextField extends StatelessWidget {
     this.hint = '',
     this.keyboardType,
     this.onChanged,
+    this.prefixIcon,
+    this.backgroundColor,
+    this.borderRadius = 0,
+    this.textSize = 16,
+    this.hasUnderlineBorder = true,
+    this.contentPadding = 0,
+    this.borderColor = Colors.transparent,
   });
 
   @override
@@ -37,19 +51,42 @@ class DesktopTextField extends StatelessWidget {
           controller: controller,
           keyboardType: keyboardType,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: textSize,
             fontWeight: FontWeight.normal,
             color: appTheme.primaryTextColor,
           ),
           onChanged: onChanged,
           decoration: InputDecoration(
+            isDense: contentPadding == 0 ? false : true,
+            contentPadding: EdgeInsets.fromLTRB(
+                contentPadding, contentPadding, contentPadding, contentPadding),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+              borderSide: BorderSide.none,
+            ),
             hintText: hint,
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: appTheme.separatorColor),
+            hintStyle: TextStyle(
+              color: appTheme.secondaryTextColor,
+              fontSize: 12,
+              fontFamily: 'Inter',
             ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: appTheme.primaryColor),
-            ),
+            filled: backgroundColor != null,
+            fillColor: backgroundColor,
+            enabledBorder: hasUnderlineBorder
+                ? UnderlineInputBorder(
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(borderRadius)),
+                    borderSide: BorderSide(color: appTheme.separatorColor),
+                  )
+                : null,
+            focusedBorder: hasUnderlineBorder
+                ? UnderlineInputBorder(
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(borderRadius)),
+                    borderSide: BorderSide(color: appTheme.primaryColor),
+                  )
+                : null,
+            prefixIcon: prefixIcon,
           ),
         ),
       ],

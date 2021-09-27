@@ -2,6 +2,7 @@ import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
+import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
     atSignTextEditingController = TextEditingController(
       text: '',
     );
-  //  _checkToOnboard();
+    //  _checkToOnboard();
     super.initState();
   }
 
@@ -148,21 +149,15 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
   }
 
   _buildLoginTextField(AppTheme appTheme) {
-    return TextFormField(
+    return DesktopTextField(
       controller: atSignTextEditingController,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          borderSide: BorderSide.none,
-        ),
-        hintStyle: TextStyle(
-          color: appTheme.secondaryTextColor,
-          fontSize: 14,
-        ),
-        filled: true,
-        fillColor: appTheme.borderColor,
-        hintText: Strings.desktop_enter_sign,
-      ),
+      hint: Strings.desktop_enter_sign,
+      backgroundColor: ColorConstants.LIGHT_GREY,
+      borderRadius: 5,
+      textSize: 14,
+      hasUnderlineBorder: false,
+      contentPadding: 20,
+      onChanged: (text) {},
     );
   }
 

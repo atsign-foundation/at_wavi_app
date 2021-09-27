@@ -65,6 +65,7 @@ class _DesktopReorderBasicDetailPageState
                   child: DesktopButton(
                     title: 'Save New Order',
                     width: double.infinity,
+                    backgroundColor: appTheme.primaryColor,
                     onPressed: _onSaveData,
                   ),
                 ),
@@ -73,7 +74,9 @@ class _DesktopReorderBasicDetailPageState
                   child: DesktopWhiteButton(
                     title: 'Cancel',
                     width: double.infinity,
-                    onPressed: _onSaveData,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
                 ),
               ],
@@ -97,7 +100,7 @@ class _DesktopReorderBasicDetailPageState
               return DesktopReorderableItemWidget(
                 key: Key(e),
                 title: e,
-                margin: EdgeInsets.symmetric(vertical: 2),
+                margin: EdgeInsets.symmetric(vertical: 4),
               );
             }).toList(),
             shrinkWrap: true,

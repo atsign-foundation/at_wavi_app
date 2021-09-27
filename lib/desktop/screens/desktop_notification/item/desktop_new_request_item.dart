@@ -25,8 +25,8 @@ class DesktopNewRequestItem extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(90.0),
             child: Container(
-              width: 56,
-              height: 56,
+              width: 48,
+              height: 48,
               decoration: BoxDecoration(
                 color: appTheme.borderColor,
                 borderRadius: BorderRadius.all(Radius.circular(90)),
@@ -67,9 +67,9 @@ class DesktopNewRequestItem extends StatelessWidget {
             width: 8,
           ),
           DesktopButton(
-            width: 64,
+            width: 56,
             height: 32,
-            textSize: 12,
+            textSize: 10,
             titleColor: appTheme.primaryTextColor,
             backgroundColor: appTheme.borderColor,
             borderColor: appTheme.separatorColor,
@@ -77,12 +77,12 @@ class DesktopNewRequestItem extends StatelessWidget {
             onPressed: () async {},
           ),
           SizedBox(
-            width: 8,
+            width: 5,
           ),
           DesktopButton(
-            width: 64,
+            width: 56,
             height: 32,
-            textSize: 12,
+            textSize: 10,
             backgroundColor: appTheme.primaryColor,
             title: Strings.desktop_confirm,
             onPressed: () async {},

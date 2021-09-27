@@ -174,12 +174,15 @@ class BasicData {
   var value;
   bool isPrivate = false;
   Icon? icon;
+  String? path;
   String? accountName, valueDescription;
   var type;
+
   BasicData(
       {this.value,
       this.isPrivate = false,
       this.icon,
+      this.path,
       this.accountName,
       this.type,
       this.valueDescription});
@@ -201,11 +204,13 @@ class BasicData {
         json['value'] = null;
       }
       return BasicData(
-          value: json['value'],
-          isPrivate: json['isPrivate'] == 'false' ? false : true,
-          accountName: json['accountName'],
-          valueDescription: json['valueDescription'],
-          type: json['type']);
+        value: json['value'],
+        isPrivate: json['isPrivate'] == 'false' ? false : true,
+        accountName: json['accountName'],
+        valueDescription: json['valueDescription'],
+        type: json['type'],
+        path: json['path'],
+      );
     } else {
       return BasicData();
     }
@@ -219,12 +224,13 @@ class BasicData {
       'accountName': accountName.toString(),
       'valueDescription': valueDescription.toString(),
       'type': type.toString(),
+      'path': path.toString(),
     });
   }
 
   @override
   String toString() {
-    return 'value: $value, isPrivate: $isPrivate, icon: $icon, accountName:$accountName, type:$type, valueDescription:$valueDescription';
+    return 'value: $value, isPrivate: $isPrivate, icon: $icon, accountName:$accountName, type:$type, valueDescription:$valueDescription, path:$path';
   }
 }
 
