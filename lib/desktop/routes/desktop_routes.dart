@@ -19,8 +19,7 @@ class DesktopSetupRoutes {
 
   static Map<String, WidgetBuilder> get routes {
     return {
-      DesktopRoutes.DESKTOP_HOME: (context) =>
-          DesktopHomePage(key: UniqueKey()),
+      DesktopRoutes.DESKTOP_HOME: (context) => DesktopHomePage(),
       DesktopRoutes.DESKTOP_PROFILE: (context) =>
           DesktopProfilePage(key: UniqueKey()),
       DesktopRoutes.DESKTOP_LOGIN: (context) =>

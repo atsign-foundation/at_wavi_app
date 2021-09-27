@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:at_location_flutter/map_content/flutter_map/flutter_map.dart';
 import 'package:at_wavi_app/common_components/create_marker.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_select_location/desktop_select_location_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
@@ -58,8 +59,8 @@ class _DesktopAddLocationPageState extends State<DesktopAddLocationPage> {
           children: [
             ConstrainedBox(
               constraints: BoxConstraints(
-                maxHeight: 400,
-                minHeight: 400, 
+                maxHeight: 320,
+                minHeight: 320,
               ),
               child: AbsorbPointer(
                 absorbing: true,
@@ -105,32 +106,38 @@ class _DesktopAddLocationPageState extends State<DesktopAddLocationPage> {
               ),
             ),
             SizedBox(height: 8),
-            TextFormField(
-              controller: _locationTextController,
-              enabled: false,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
-                color: appTheme.primaryTextColor,
-              ),
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: appTheme.borderColor),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: appTheme.primaryColor),
-                ),
-                disabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: appTheme.borderColor),
-                ),
-                suffixIcon: GestureDetector(
-                  child: Container(
-                    width: 80,
-                    child: Center(
-                      child: Text(
-                        'Change',
-                        style: TextStyle(
-                          color: appTheme.primaryColor,
+            GestureDetector(
+              onTap: openSelectLocation,
+              child: Container(
+                height: 48,
+                child: TextFormField(
+                  controller: _locationTextController,
+                  enabled: false,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                    color: appTheme.primaryTextColor,
+                  ),
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: appTheme.borderColor),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: appTheme.primaryColor),
+                    ),
+                    disabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: appTheme.borderColor),
+                    ),
+                    suffixIcon: InkWell(
+                      child: Container(
+                        width: 80,
+                        child: Center(
+                          child: Text(
+                            'Change',
+                            style: TextStyle(
+                              color: appTheme.primaryColor,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -147,19 +154,22 @@ class _DesktopAddLocationPageState extends State<DesktopAddLocationPage> {
               ),
             ),
             SizedBox(height: 8),
-            TextFormField(
-              controller: _tagTextController,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
-                color: appTheme.primaryTextColor,
-              ),
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: appTheme.borderColor),
+            Container(
+              height: 48,
+              child: TextFormField(
+                controller: _tagTextController,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.normal,
+                  color: appTheme.primaryTextColor,
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: appTheme.primaryColor),
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: appTheme.borderColor),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: appTheme.primaryColor),
+                  ),
                 ),
               ),
             ),
@@ -169,6 +179,7 @@ class _DesktopAddLocationPageState extends State<DesktopAddLocationPage> {
               child: DesktopButton(
                 title: 'Save',
                 width: 180,
+                height: 48,
                 onPressed: _onSaveData,
               ),
             ),
@@ -176,6 +187,31 @@ class _DesktopAddLocationPageState extends State<DesktopAddLocationPage> {
         ),
       ),
     );
+  }
+
+  void openSelectLocation() async {
+    print('Open location picker');
+    final result = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: DesktopSelectLocationPage(
+          'Ha noi',
+          LatLng(21.028511, 105.804817),
+        ),
+      ),
+    );
+    if (result == 'saved') {
+
+    }
+    // Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (context) => DesktopSelectLocationPage(
+    //       'Ha noi',
+    //       LatLng(21.028511, 105.804817),
+    //     ),
+    //   ),
+    // );
   }
 
   void _onSaveData() {

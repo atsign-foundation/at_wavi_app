@@ -85,7 +85,9 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
             child: Center(
               child: DesktopEmptyCategoryWidget(
                 atCategory: widget.atCategory,
-                onAddDetailsPressed: _showEditDetailPopup,
+                onAddDetailsPressed: widget.atCategory == AtCategory.LOCATION
+                    ? _showAddLocation
+                    : _showAddDetailPopup,
               ),
             ),
           ),
@@ -127,7 +129,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                     onPressed: _showAddLocation,
                   ),
                 DesktopPreviewButton(
-                  onPressed: _showEditDetailPopup,
+                  onPressed: _showAddDetailPopup,
                 ),
               ],
             ),
@@ -278,7 +280,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
     );
   }
 
-  void _showEditDetailPopup() async {
+  void _showAddDetailPopup() async {
     final result = await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
