@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_media/desktop_full_image_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_media/desktop_media_model.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_video_thumbnail_widget.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -10,6 +11,8 @@ import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'desktop_full_video_page.dart';
 
 class DesktopMediaPage extends StatefulWidget {
   DesktopMediaPage({Key? key}) : super(key: key);
@@ -69,9 +72,14 @@ class _DesktopMediaPageState extends State<DesktopMediaPage>
                         context: context,
                         builder: (BuildContext context) => Dialog(
                           backgroundColor: Colors.transparent,
-                          child: DesktopFullImagePage(
-                            path: model.fields[index].path!,
-                          ),
+                          child: (model.fields[index].type == 'jpg' ||
+                                  model.fields[index].type == 'png')
+                              ? DesktopFullImagePage(
+                                  path: model.fields[index].path!,
+                                )
+                              : DesktopFullVideoPage(
+                                  path: model.fields[index].path!,
+                                ),
                         ),
                       );
                     },
@@ -79,10 +87,16 @@ class _DesktopMediaPageState extends State<DesktopMediaPage>
                       aspectRatio: 1.0,
                       child: Stack(
                         children: [
-                          Image.file(
-                            File(model.fields[index].path!),
-                            fit: BoxFit.fitWidth,
-                          ),
+                          (model.fields[index].type == 'jpg' ||
+                                  model.fields[index].type == 'png')
+                              ? Image.file(
+                                  File(model.fields[index].path!),
+                                  fit: BoxFit.fitWidth,
+                                )
+                              : DesktopVideoThumbnailWidget(
+                                  path: model.fields[index].path!,
+                                  type: model.fields[index].type ?? '',
+                                ),
                           Positioned(
                             right: 0,
                             top: 0,

@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../desktop_basic_item.dart';
-import '../../desktop_image_item.dart';
+import '../../desktop_media_item.dart';
 
 class DesktopAdditionalDetailPage extends StatefulWidget {
   DesktopAdditionalDetailPage({Key? key}) : super(key: key);
@@ -80,22 +80,23 @@ class _DesktopAdditionalDetailPageState
                             itemCount: model.fields.length,
                             itemBuilder: (context, index) {
                               return (model.fields[index].path != null &&
-                                  model.fields[index].path! != 'null')
-                                  ? DesktopImageItem(
-                                title:
-                                model.fields[index].accountName ?? '',
-                                path: model.fields[index].path ?? '',
-                              )
+                                      model.fields[index].path! != 'null')
+                                  ? DesktopMediaItem(
+                                      title:
+                                          model.fields[index].accountName ?? '',
+                                      path: model.fields[index].path ?? '',
+                                      type: model.fields[index].type ?? '',
+                                    )
                                   : DesktopBasicItem(
-                                title:
-                                model.fields[index].accountName ?? '',
-                                value: model
-                                    .fields[index].valueDescription ??
-                                    '',
-                                onValueChanged: (text) {
-                                  _model.updateValues(index, text);
-                                },
-                              );
+                                      title:
+                                          model.fields[index].accountName ?? '',
+                                      value: model
+                                              .fields[index].valueDescription ??
+                                          '',
+                                      onValueChanged: (text) {
+                                        _model.updateValues(index, text);
+                                      },
+                                    );
                             },
                             separatorBuilder:
                                 (BuildContext context, int index) {

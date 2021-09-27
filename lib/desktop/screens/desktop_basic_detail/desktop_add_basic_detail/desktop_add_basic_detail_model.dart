@@ -15,22 +15,26 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
 
   CustomContentType get fieldType => _fieldType;
 
-  Uint8List? _selectedImage;
+  Uint8List? _selectedMedia;
 
-  Uint8List? get selectedImage => _selectedImage;
+  Uint8List? get selectedMedia => _selectedMedia;
 
-  String? _selectedImagePath;
+  String? _selectedMediaPath;
 
-  String? get selectedImagePath => _selectedImagePath;
+  String? get selectedMediaPath => _selectedMediaPath;
 
-  bool isOnlyAddImage = false;
+  String? _selectedMediaExtension;
+
+  String? get selectedMediaExtension => _selectedMediaExtension;
+
+  bool isOnlyAddMedia = false;
 
   DesktopAddBasicDetailModel({required this.userPreview});
 
-  void setIsOnlyAddImage(bool isOnlyAddImage) {
-    this.isOnlyAddImage = isOnlyAddImage;
+  void setIsOnlyAddMedia(bool isOnlyAddMedia) {
+    this.isOnlyAddMedia = isOnlyAddMedia;
     _fieldType =
-        this.isOnlyAddImage ? CustomContentType.Image : CustomContentType.Text;
+        this.isOnlyAddMedia ? CustomContentType.Image : CustomContentType.Text;
   }
 
   void changeField(CustomContentType fieldType) {
@@ -38,15 +42,16 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void didSelectImage(File selectedImage) {
-    final imageData = selectedImage.readAsBytesSync();
-    _selectedImage = imageData;
-    _selectedImagePath = selectedImage.path;
+  void didSelectMedia(File selectedMedia, String type) {
+    final mediaData = selectedMedia.readAsBytesSync();
+    _selectedMedia = mediaData;
+    _selectedMediaPath = selectedMedia.path;
+    _selectedMediaExtension = type;
     notifyListeners();
   }
 
   void saveData(BuildContext context, BasicData basicData) {
-    if (_fieldType == CustomContentType.Image && _selectedImage == null) {
+    if (_fieldType == CustomContentType.Image && _selectedMedia == null) {
       CommonFunctions().showSnackBar(Strings.desktop_please_add_image);
       return;
     }

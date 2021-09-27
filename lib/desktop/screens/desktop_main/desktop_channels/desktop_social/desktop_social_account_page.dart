@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../desktop_basic_item.dart';
-import '../../desktop_image_item.dart';
+import '../../desktop_media_item.dart';
 
 class DesktopSocialAccountPage extends StatefulWidget {
   DesktopSocialAccountPage({Key? key}) : super(key: key);
@@ -72,9 +72,10 @@ class _DesktopSocialAccountPageState extends State<DesktopSocialAccountPage>
                     itemBuilder: (context, index) {
                       return (model.fields[index].path != null &&
                               model.fields[index].path! != 'null')
-                          ? DesktopImageItem(
+                          ? DesktopMediaItem(
                               title: model.fields[index].accountName ?? '',
                               path: model.fields[index].path ?? '',
+                              type: model.fields[index].type ?? '',
                             )
                           : model.fields[index].accountName == 'Twitter'
                               ? DesktopBasicItem(

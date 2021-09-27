@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:video_compress/video_compress.dart';
 
 List<BasicData> sortBasicData(
     List<BasicData> listBasicData, List<String> listTitle) {
@@ -38,4 +41,10 @@ void showSnackBar(BuildContext context, String message, Color color) {
   );
 }
 
-
+Future<Uint8List?> getVideoThumbnail(String path) async {
+  final uInt8list = await VideoCompress.getByteThumbnail(
+    path,
+    quality: 50,
+  );
+  return uInt8list;
+}

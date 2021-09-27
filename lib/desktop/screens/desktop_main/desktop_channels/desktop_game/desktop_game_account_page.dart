@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../desktop_basic_item.dart';
-import '../../desktop_image_item.dart';
+import '../../desktop_media_item.dart';
 import 'desktop_game_model.dart';
 
 class DesktopGameAccountPage extends StatefulWidget {
@@ -70,9 +70,10 @@ class _DesktopGameAccountPageState extends State<DesktopGameAccountPage>
                     itemBuilder: (context, index) {
                       if ((model.fields[index].path != null &&
                           model.fields[index].path! != 'null')) {
-                        return DesktopImageItem(
+                        return DesktopMediaItem(
                           title: model.fields[index].accountName ?? '',
                           path: model.fields[index].path ?? '',
+                          type: model.fields[index].type ?? '',
                         );
                       } else {
                         return DesktopBasicItem(

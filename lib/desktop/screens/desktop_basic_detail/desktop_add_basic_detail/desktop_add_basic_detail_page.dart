@@ -1,14 +1,14 @@
 import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_reorder_basic_detail/widgets/desktop_reorderable_item_widget.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_show_hide_radio_button.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_video_thumbnail_widget.dart';
 import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
 import 'package:at_wavi_app/model/user.dart';
-import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:file_picker/file_picker.dart';
@@ -57,7 +57,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
         _model = DesktopAddBasicDetailModel(userPreview: userPreview);
-        _model.setIsOnlyAddImage(widget.isOnlyAddImage);
+        _model.setIsOnlyAddMedia(widget.isOnlyAddImage);
         return _model;
       },
       child: Container(
@@ -177,16 +177,15 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
               children: [
                 DesktopIconLabelButton(
                   iconData: Icons.add,
-                  label: Strings.desktop_add_image,
-                  onPressed: _onSelectImage,
+                  label: Strings.desktop_add_media,
+                  onPressed: _onSelectMedia,
                 ),
-                if (model.selectedImage != null)
-                  ConstrainedBox(
-                    constraints: new BoxConstraints(
-                      maxHeight: 200.0,
-                    ),
-                    child: Image.memory(model.selectedImage!),
-                  ),
+                SizedBox(
+                  height: 8,
+                ),
+                if (model.selectedMedia != null)
+                  _buildMediaWidget(model.selectedMedia!,
+                      model.selectedMediaPath!, model.selectedMediaExtension!),
               ],
             ),
           );
@@ -202,13 +201,30 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
     );
   }
 
-  void _onSelectImage() async {
+  _buildMediaWidget(Uint8List uint8list, String path, String type) {
+    if (path.contains('jpg') || path.contains('png')) {
+      return ConstrainedBox(
+        constraints: new BoxConstraints(
+          maxHeight: 200.0,
+        ),
+        child: Image.memory(uint8list),
+      );
+    } else {
+      return DesktopVideoThumbnailWidget(
+        path: path,
+        type: type ?? '',
+      );
+    }
+  }
+
+  void _onSelectMedia() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'png', 'mp4', 'wmv'],
     );
     if (result?.files.single.path != null) {
       File file = File(result!.files.single.path!);
-      _model.didSelectImage(file);
+      _model.didSelectMedia(file, result.files.single.extension!);
     } else {
       // User canceled the picker
     }
@@ -229,7 +245,8 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
     } else if (_model.fieldType == CustomContentType.Youtube) {
       basicData.valueDescription = _youtubeContentTextController.text;
     } else if (_model.fieldType == CustomContentType.Image) {
-      basicData.path = _model.selectedImagePath;
+      basicData.path = _model.selectedMediaPath;
+      basicData.type = _model.selectedMediaExtension;
     }
     _model.saveData(context, basicData);
   }
