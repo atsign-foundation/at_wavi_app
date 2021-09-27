@@ -212,7 +212,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
     } else {
       return DesktopVideoThumbnailWidget(
         path: path,
-        type: type ?? '',
+        type: type,
       );
     }
   }

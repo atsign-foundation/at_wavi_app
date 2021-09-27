@@ -2,6 +2,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_add_loc
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_basic_detail_item_widget.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_empty_category_widget.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/mock_data.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
@@ -239,7 +240,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
             ),
             child: DesktopLocationItemWidget(
               title: _model.locationNicknameData?.value ?? '',
-              description: _model.locationData?.value,
+              description: _model.locationData?.value?.toString() ?? '',
             ),
           );
         }
@@ -252,7 +253,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
           ),
           child: DesktopLocationItemWidget(
             title: item.data.accountName ?? '',
-            description: item.data.value ?? '',
+            description: item.data.value.toString(),
           ),
         );
       },
