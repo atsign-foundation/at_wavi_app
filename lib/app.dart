@@ -19,6 +19,8 @@ import 'package:provider/provider.dart';
 import 'desktop/routes/desktop_routes.dart';
 import 'desktop/services/theme/app_theme.dart';
 import 'desktop/services/theme/inherited_app_theme.dart';
+import 'desktop/utils/mock_data.dart';
+import 'services/field_order_service.dart';
 
 class MyApp extends StatefulWidget {
   MyApp();
@@ -81,6 +83,11 @@ class MaterialAppClass extends StatelessWidget {
   Widget build(BuildContext context) {
     /// MaterialApp for desktop
     if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
+      /// Mock data
+      Provider.of<UserPreview>(context, listen: false).setUser = MockData.getMockUser;
+      FieldOrderService().setPreviewOrder = MockData.getMockPreviewOrders;
+      FieldOrderService().setFieldOrder = MockData.getMockFieldOrders;
+
       return StreamBuilder<AppTheme>(
         stream: appThemeController.stream,
         initialData: AppTheme.from(),
