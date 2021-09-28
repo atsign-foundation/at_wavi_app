@@ -1,6 +1,9 @@
 PODS:
   - audio_session (0.0.1):
     - FlutterMacOS
+  - dart_vlc (0.0.1):
+    - FlutterMacOS
+    - VLCKit (~> 3.3)
   - desktop_window (0.0.1):
     - FlutterMacOS
   - FlutterMacOS (1.0.0)
@@ -22,11 +25,13 @@ PODS:
     - FlutterMacOS
   - video_compress (0.3.0):
     - FlutterMacOS
+  - VLCKit (3.3.17)
   - wakelock_macos (0.0.1):
     - FlutterMacOS
 
 DEPENDENCIES:
   - audio_session (from `Flutter/ephemeral/.symlinks/plugins/audio_session/macos`)
+  - dart_vlc (from `Flutter/ephemeral/.symlinks/plugins/dart_vlc/macos`)
   - desktop_window (from `Flutter/ephemeral/.symlinks/plugins/desktop_window/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - geolocator_apple (from `Flutter/ephemeral/.symlinks/plugins/geolocator_apple/macos`)
@@ -41,10 +46,13 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - FMDB
+    - VLCKit
 
 EXTERNAL SOURCES:
   audio_session:
     :path: Flutter/ephemeral/.symlinks/plugins/audio_session/macos
+  dart_vlc:
+    :path: Flutter/ephemeral/.symlinks/plugins/dart_vlc/macos
   desktop_window:
     :path: Flutter/ephemeral/.symlinks/plugins/desktop_window/macos
   FlutterMacOS:
@@ -68,6 +76,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   audio_session: dea1f41890dbf1718f04a56f1d6150fd50039b72
+  dart_vlc: de4ba59a6ded5a914a14fb026f7bcbe74c471dee
   desktop_window: fb7c4f12c1129f947ac482296b6f14059d57a3c3
   FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
@@ -78,6 +87,7 @@ SPEC CHECKSUMS:
   sqflite: a5789cceda41d54d23f31d6de539d65bb14100ea
   url_launcher_macos: 45af3d61de06997666568a7149c1be98b41c95d4
   video_compress: c896234f100791b5fef7f049afa38f6d2ef7b42f
+  VLCKit: 21651e881f19774ecf9a86ca2c2010859fe68a08
   wakelock_macos: bc3f2a9bd8d2e6c89fee1e1822e7ddac3bd004a9
 
 PODFILE CHECKSUM: 8d40c19d3cbdb380d870685c3a564c989f1efa52

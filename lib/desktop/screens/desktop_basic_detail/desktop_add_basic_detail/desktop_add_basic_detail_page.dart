@@ -170,11 +170,14 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
           );
         } else if (_model.fieldType == CustomContentType.Image) {
           return Directionality(
-            textDirection: TextDirection.rtl,
+            textDirection: TextDirection.ltr,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: 8,
+                ),
                 DesktopIconLabelButton(
                   iconData: Icons.add,
                   label: Strings.desktop_add_media,
@@ -185,7 +188,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
                 ),
                 if (model.selectedMedia != null)
                   _buildMediaWidget(model.selectedMedia!,
-                      model.selectedMediaPath!, model.selectedMediaExtension!),
+                      model.selectedMediaPath!, model.selectedMediaExtension),
               ],
             ),
           );
@@ -201,7 +204,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
     );
   }
 
-  _buildMediaWidget(Uint8List uint8list, String path, String type) {
+  _buildMediaWidget(Uint8List uint8list, String path, String? type) {
     if (path.contains('jpg') || path.contains('png')) {
       return ConstrainedBox(
         constraints: new BoxConstraints(

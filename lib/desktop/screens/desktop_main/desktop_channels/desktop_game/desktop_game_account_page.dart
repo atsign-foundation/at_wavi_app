@@ -71,14 +71,11 @@ class _DesktopGameAccountPageState extends State<DesktopGameAccountPage>
                       if ((model.fields[index].path != null &&
                           model.fields[index].path! != 'null')) {
                         return DesktopMediaItem(
-                          title: model.fields[index].accountName ?? '',
-                          path: model.fields[index].path ?? '',
-                          type: model.fields[index].type ?? '',
+                          data: model.fields[index],
                         );
                       } else {
                         return DesktopBasicItem(
-                          title: model.fields[index].accountName ?? '',
-                          value: model.fields[index].valueDescription ?? '',
+                          data: model.fields[index],
                           onValueChanged: (text) {
                             _model.updateValues(index, text);
                           },

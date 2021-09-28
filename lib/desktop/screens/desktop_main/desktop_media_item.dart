@@ -2,17 +2,14 @@ import 'dart:io';
 
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_video_thumbnail_widget.dart';
+import 'package:at_wavi_app/model/user.dart';
 import 'package:flutter/cupertino.dart';
 
 class DesktopMediaItem extends StatelessWidget {
-  String title;
-  String path;
-  String type;
+  BasicData data;
 
   DesktopMediaItem({
-    required this.title,
-    required this.path,
-    required this.type,
+    required this.data,
   });
 
   @override
@@ -28,7 +25,7 @@ class DesktopMediaItem extends StatelessWidget {
           Container(
             width: 110,
             child: Text(
-              title,
+              data.accountName ?? '',
               style: TextStyle(
                   fontSize: 12,
                   color: appTheme.secondaryTextColor,
@@ -39,16 +36,16 @@ class DesktopMediaItem extends StatelessWidget {
             width: 16,
           ),
           Container(
-            width: 88,
-            height: 88,
-            child: (type == 'jpg' || type == 'png')
+            width: 200,
+            height: 200,
+            child: (data.type == 'jpg' || data.type == 'png')
                 ? Image.file(
-                    File(path),
+                    File(data.path!),
                     fit: BoxFit.fitWidth,
                   )
                 : DesktopVideoThumbnailWidget(
-                    path: path,
-                    type: type ?? '',
+                    path: data.path!,
+                    type: data.type ?? '',
                   ),
           ),
           Expanded(

@@ -34,6 +34,10 @@ class _DesktopFollowItemState extends State<DesktopFollowItem>
                 color: appTheme.borderColor,
                 borderRadius: BorderRadius.all(Radius.circular(90)),
               ),
+              child: Image.network(
+                'https://i.picsum.photos/id/39/300/300.jpg?hmac=HoD3iHGTRG4yexpPUPH8iFp_qzgST0rFI5X7u0JxGOw',
+                fit: BoxFit.fitWidth,
+              ),
             ),
           ),
           SizedBox(

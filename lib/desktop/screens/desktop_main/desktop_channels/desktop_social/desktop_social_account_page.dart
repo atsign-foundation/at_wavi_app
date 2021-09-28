@@ -73,15 +73,11 @@ class _DesktopSocialAccountPageState extends State<DesktopSocialAccountPage>
                       return (model.fields[index].path != null &&
                               model.fields[index].path! != 'null')
                           ? DesktopMediaItem(
-                              title: model.fields[index].accountName ?? '',
-                              path: model.fields[index].path ?? '',
-                              type: model.fields[index].type ?? '',
+                              data: model.fields[index],
                             )
                           : model.fields[index].accountName == 'Twitter'
                               ? DesktopBasicItem(
-                                  title: model.fields[index].accountName ?? '',
-                                  value: model.fields[index].valueDescription ??
-                                      '',
+                                  data: model.fields[index],
                                   onValueChanged: (text) {
                                     _model.updateValues(index, text);
                                   },

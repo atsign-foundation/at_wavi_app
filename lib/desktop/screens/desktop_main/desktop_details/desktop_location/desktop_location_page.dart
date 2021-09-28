@@ -1,6 +1,7 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
+import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +36,10 @@ class _DesktopLocationPageState extends State<DesktopLocationPage>
           mainAxisSize: MainAxisSize.min,
           children: [
             DesktopBasicItem(
-              title: Strings.desktop_home,
-              value: '',
+              data: BasicData(
+                accountName: Strings.desktop_home,
+                valueDescription: '',
+              ),
               onValueChanged: (text) {},
             ),
           ],

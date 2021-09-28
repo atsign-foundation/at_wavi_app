@@ -19,15 +19,18 @@ class DesktopSearchModel extends ChangeNotifier {
     searchTextEditingController = TextEditingController(
       text: '',
     );
+    for (int i = 0; i < 6; i++) {
+      _users.add(User(atsign: 'duc$i'));
+    }
     searchUser('');
   }
 
   void searchUser(String text) {
     _searchUsers.clear();
-    for (int i = 0; i < text.length; i++) {
-      _searchUsers.add(
-        User(atsign: 'duc$i'),
-      );
+    for (int i = 0; i < _users.length; i++) {
+      if (_users[i].atsign.toLowerCase().contains(text)) {
+        _searchUsers.add(_users[i]);
+      }
     }
     notifyListeners();
   }

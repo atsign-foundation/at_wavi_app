@@ -102,7 +102,7 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
                           ),
                           insets: EdgeInsets.only(
                             left: 0,
-                            right: 8,
+                            right: 12,
                             bottom: 4,
                           ),
                         ),

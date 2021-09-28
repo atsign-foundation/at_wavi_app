@@ -91,7 +91,7 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
                           ),
                           insets: EdgeInsets.only(
                             left: 0,
-                            right: 8,
+                            right: 12,
                             bottom: 4,
                           ),
                         ),
