@@ -253,17 +253,17 @@ final mockUser = """
     "path": null
   },
   "twitter": {
-    "value": null,
+    "value": "twitter.com/duc",
     "isPrivate": false,
-    "accountName": null,
+    "accountName": "twitter",
     "valueDescription": null,
     "type": null,
     "path": null
   },
   "facebook": {
-    "value": null,
+    "value": "facebook.com/duc",
     "isPrivate": false,
-    "accountName": null,
+    "accountName": "facebook",
     "valueDescription": null,
     "type": null,
     "path": null
@@ -277,9 +277,9 @@ final mockUser = """
     "path": null
   },
   "instagram": {
-    "value": null,
+    "value": "instagram.com/duc",
     "isPrivate": false,
-    "accountName": null,
+    "accountName": "instagram",
     "valueDescription": null,
     "type": null,
     "path": null

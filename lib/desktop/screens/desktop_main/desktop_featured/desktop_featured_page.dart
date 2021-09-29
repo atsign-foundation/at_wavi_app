@@ -3,6 +3,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_featured/deskto
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_featured/desktop_twitter_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
+import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class DesktopFeaturedPage extends StatefulWidget {
 
 class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
     with
-        SingleTickerProviderStateMixin,
+        TickerProviderStateMixin,
         AutomaticKeepAliveClientMixin<DesktopFeaturedPage> {
   late TabController _tabController;
 
@@ -42,7 +43,7 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 0, vsync: this);
     super.initState();
   }
 
@@ -77,6 +78,8 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
       child: Container(
         child: Consumer<DesktopFeaturedModel>(
           builder: (_, model, child) {
+            _tabController =
+                TabController(length: model.fields.length, vsync: this);
             return model.fields.isEmpty
                 ? Container()
                 : Column(
@@ -113,7 +116,7 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
                             .map(
                               (e) => Tab(
                                 child: Text(
-                                  e,
+                                  getTitle(e),
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: appTheme.primaryTextColor,
@@ -144,9 +147,9 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
 
   Widget getWidget(String field) {
     switch (field) {
-      case 'Instagram':
+      case 'instagram':
         return DesktopInstagramPage();
-      case 'Twitter':
+      case 'twitter':
         return DesktopTwitterPage();
       default:
         return Container();
