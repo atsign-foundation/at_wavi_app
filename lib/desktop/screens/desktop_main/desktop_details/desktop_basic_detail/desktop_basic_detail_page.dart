@@ -4,7 +4,6 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
-import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
@@ -25,8 +24,8 @@ class DesktopBasicDetailPage extends StatefulWidget {
   _DesktopBasicDetailPageState createState() =>
       this._desktopBasicDetailPageState = new _DesktopBasicDetailPageState();
 
-  Future addField(BasicData basicData) async {
-    await _desktopBasicDetailPageState.addField(basicData);
+  Future addField() async {
+    await _desktopBasicDetailPageState.addField();
   }
 }
 
@@ -42,8 +41,8 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
     super.initState();
   }
 
-  Future addField(BasicData basicData) async {
-    _model.addField(basicData);
+  Future addField() async {
+    _model.addField();
   }
 
   @override
@@ -82,20 +81,12 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                             padding: EdgeInsets.symmetric(vertical: 8),
                             itemCount: model.fields.length,
                             itemBuilder: (context, index) {
-                              return (model.fields[index].path != null &&
-                                      model.fields[index].path! != 'null')
+                              return (model.fields[index].extension != null)
                                   ? DesktopMediaItem(
-                                      title:
-                                          model.fields[index].accountName ?? '',
-                                      path: model.fields[index].path ?? '',
-                                      type: model.fields[index].type ?? '',
+                                      data: model.fields[index],
                                     )
                                   : DesktopBasicItem(
-                                      title:
-                                          model.fields[index].accountName ?? '',
-                                      value: model
-                                              .fields[index].valueDescription ??
-                                          '',
+                                      data: model.fields[index],
                                       onValueChanged: (text) {
                                         _model.updateValues(index, text);
                                       },
@@ -131,10 +122,10 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                   onPressed: () async {
                     await showReOderFieldsPopUp(
                       context,
-                      AtCategory.BASIC_DETAILS,
-                      (fields) {
+                      AtCategory.DETAILS,
+                      () {
                         /// Update Fields after reorder
-                        _model.reorderField(fields);
+                        _model.fetchBasicData();
                       },
                     );
                   },

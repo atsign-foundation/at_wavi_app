@@ -23,8 +23,8 @@ class DesktopMediaPage extends StatefulWidget {
   _DesktopMediaPageState createState() =>
       this._desktopMediaPageState = new _DesktopMediaPageState();
 
-  Future addMedia(BasicData basicData) async {
-    await _desktopMediaPageState.addMedia(basicData);
+  Future addMedia() async {
+    await _desktopMediaPageState.addMedia();
   }
 }
 
@@ -40,8 +40,8 @@ class _DesktopMediaPageState extends State<DesktopMediaPage>
     super.initState();
   }
 
-  Future addMedia(BasicData basicData) async {
-    _model.addMedia(basicData);
+  Future addMedia() async {
+    _model.addMedia();
   }
 
   @override
@@ -75,10 +75,10 @@ class _DesktopMediaPageState extends State<DesktopMediaPage>
                           child: (model.fields[index].type == 'jpg' ||
                                   model.fields[index].type == 'png')
                               ? DesktopFullImagePage(
-                                  path: model.fields[index].path!,
+                                  path: model.fields[index].value!,
                                 )
                               : DesktopFullVideoPage(
-                                  path: model.fields[index].path!,
+                                  path: model.fields[index].value!,
                                 ),
                         ),
                       );
@@ -87,15 +87,16 @@ class _DesktopMediaPageState extends State<DesktopMediaPage>
                       aspectRatio: 1.0,
                       child: Stack(
                         children: [
-                          (model.fields[index].type == 'jpg' ||
-                                  model.fields[index].type == 'png')
+                          (model.fields[index].extension == 'jpg' ||
+                                  model.fields[index].extension == 'png')
                               ? Image.file(
-                                  File(model.fields[index].path!),
+                                  File(model.fields[index].value!),
                                   fit: BoxFit.fitWidth,
                                 )
                               : DesktopVideoThumbnailWidget(
-                                  path: model.fields[index].path!,
-                                  type: model.fields[index].type ?? '',
+                                  path: model.fields[index].value!,
+                                  extension:
+                                      model.fields[index].extension ?? '',
                                 ),
                           Positioned(
                             right: 0,
@@ -107,7 +108,7 @@ class _DesktopMediaPageState extends State<DesktopMediaPage>
                                 color: ColorConstants.DARK_GREY,
                               ),
                               onPressed: () {
-                                _model.deleteMedia(index);
+                                _model.deleteMedia(context, index);
                               },
                             ),
                           ),

@@ -4,8 +4,6 @@ import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_media/desktop_media_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
-import 'package:at_wavi_app/model/user.dart';
-import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,20 +25,20 @@ class DesktopDetailsPage extends StatefulWidget {
     await _desktopDetailsPageState.showReOrderTabsPopUp();
   }
 
-  Future addMedia(BasicData basicData) async {
-    await _desktopDetailsPageState.addMedia(basicData);
+  Future addMedia() async {
+    await _desktopDetailsPageState.addMedia();
   }
 
-  Future addFieldToBasicDetail(BasicData basicData) async {
-    await _desktopDetailsPageState.addFieldToBasicDetail(basicData);
+  Future addFieldToBasicDetail() async {
+    await _desktopDetailsPageState.addFieldToBasicDetail();
   }
 
-  Future addFieldToAdditionalDetail(BasicData basicData) async {
-    await _desktopDetailsPageState.addFieldToAdditionalDetail(basicData);
+  Future addFieldToAdditionalDetail() async {
+    await _desktopDetailsPageState.addFieldToAdditionalDetail();
   }
 
-  Future addLocation(BasicData basicData) async {
-    await _desktopDetailsPageState.addLocation(basicData);
+  Future addLocation() async {
+    await _desktopDetailsPageState.addLocation();
   }
 }
 
@@ -81,19 +79,21 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
     }
   }
 
-  Future addMedia(BasicData basicData) async {
-    await desktopMediaPage.addMedia(basicData);
+  Future addMedia() async {
+    await desktopMediaPage.addMedia();
   }
 
-  Future addFieldToBasicDetail(BasicData basicData) async {
-    await desktopBasicDetailPage.addField(basicData);
+  Future addFieldToBasicDetail() async {
+    await desktopBasicDetailPage.addField();
   }
 
-  Future addFieldToAdditionalDetail(BasicData basicData) async {
-    await desktopAdditionalDetailPage.addField(basicData);
+  Future addFieldToAdditionalDetail() async {
+    await desktopAdditionalDetailPage.addField();
   }
 
-  Future addLocation(BasicData basicData) async {}
+  Future addLocation() async {
+    await desktopLocationPage.addLocation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +121,7 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
                           ),
                           insets: EdgeInsets.only(
                             left: 0,
-                            right: 8,
+                            right: 12,
                             bottom: 4,
                           ),
                         ),

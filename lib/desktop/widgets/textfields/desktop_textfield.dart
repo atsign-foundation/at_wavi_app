@@ -15,6 +15,7 @@ class DesktopTextField extends StatelessWidget {
   final double textSize;
   final bool hasUnderlineBorder;
   final double contentPadding;
+  final bool readOnly;
 
   DesktopTextField({
     required this.controller,
@@ -28,6 +29,7 @@ class DesktopTextField extends StatelessWidget {
     this.textSize = 16,
     this.hasUnderlineBorder = true,
     this.contentPadding = 0,
+    this.readOnly = false,
     this.borderColor = Colors.transparent,
   });
 
@@ -50,6 +52,7 @@ class DesktopTextField extends StatelessWidget {
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
+          readOnly: readOnly,
           style: TextStyle(
             fontSize: textSize,
             fontWeight: FontWeight.normal,

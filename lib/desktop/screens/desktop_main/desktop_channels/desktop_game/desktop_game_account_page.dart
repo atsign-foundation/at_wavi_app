@@ -4,7 +4,6 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
-import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
@@ -25,8 +24,8 @@ class DesktopGameAccountPage extends StatefulWidget {
   _DesktopGameAccountPageState createState() =>
       this._desktopGameAccountPageState = new _DesktopGameAccountPageState();
 
-  Future addField(BasicData basicData) async {
-    await _desktopGameAccountPageState.addField(basicData);
+  Future addField() async {
+    await _desktopGameAccountPageState.addField();
   }
 }
 
@@ -37,8 +36,8 @@ class _DesktopGameAccountPageState extends State<DesktopGameAccountPage>
   @override
   bool get wantKeepAlive => true;
 
-  Future addField(BasicData basicData) async {
-    _model.addField(basicData);
+  Future addField() async {
+    _model.addField();
   }
 
   @override
@@ -68,17 +67,13 @@ class _DesktopGameAccountPageState extends State<DesktopGameAccountPage>
                     shrinkWrap: true,
                     itemCount: model.fields.length,
                     itemBuilder: (context, index) {
-                      if ((model.fields[index].path != null &&
-                          model.fields[index].path! != 'null')) {
+                      if (model.fields[index].extension != null) {
                         return DesktopMediaItem(
-                          title: model.fields[index].accountName ?? '',
-                          path: model.fields[index].path ?? '',
-                          type: model.fields[index].type ?? '',
+                          data: model.fields[index],
                         );
                       } else {
                         return DesktopBasicItem(
-                          title: model.fields[index].accountName ?? '',
-                          value: model.fields[index].valueDescription ?? '',
+                          data: model.fields[index],
                           onValueChanged: (text) {
                             _model.updateValues(index, text);
                           },
@@ -116,9 +111,9 @@ class _DesktopGameAccountPageState extends State<DesktopGameAccountPage>
                             await showReOderFieldsPopUp(
                               context,
                               AtCategory.GAMER,
-                              (fields) {
+                              () {
                                 /// Update Fields after reorder
-                                _model.reorderField(fields);
+                                _model.fetchBasicData();
                               },
                             );
                           },

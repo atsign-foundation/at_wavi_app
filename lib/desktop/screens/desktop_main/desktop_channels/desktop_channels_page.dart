@@ -25,12 +25,12 @@ class DesktopChannelsPage extends StatefulWidget {
     await _desktopChannelsPageState.showReOrderTabsPopUp();
   }
 
-  Future addFieldToSocial(BasicData basicData) async {
-    await _desktopChannelsPageState.addFieldToSocial(basicData);
+  Future addFieldToSocial() async {
+    await _desktopChannelsPageState.addFieldToSocial();
   }
 
-  Future addFieldToGame(BasicData basicData) async {
-    await _desktopChannelsPageState.addFieldToGame(basicData);
+  Future addFieldToGame() async {
+    await _desktopChannelsPageState.addFieldToGame();
   }
 }
 
@@ -68,12 +68,12 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
     }
   }
 
-  Future addFieldToSocial(BasicData basicData) async {
-    await desktopSocialAccountPage.addField(basicData);
+  Future addFieldToSocial() async {
+    await desktopSocialAccountPage.addField();
   }
 
-  Future addFieldToGame(BasicData basicData) async {
-    await desktopGameAccountPage.addField(basicData);
+  Future addFieldToGame() async {
+    await desktopGameAccountPage.addField();
   }
 
   @override
@@ -102,7 +102,7 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
                           ),
                           insets: EdgeInsets.only(
                             left: 0,
-                            right: 8,
+                            right: 12,
                             bottom: 4,
                           ),
                         ),

@@ -79,7 +79,7 @@ extension FieldsEnumValues on FieldsEnum {
 
   String get title {
     return this == FieldsEnum.ABOUT
-        ? 'about me'
+        ? 'About Me'
         : this.toString().split('.').last.toLowerCase();
   }
 
@@ -89,10 +89,10 @@ extension FieldsEnumValues on FieldsEnum {
         return 'Private Account';
 
       case FieldsEnum.FIRSTNAME:
-        return 'First name';
+        return 'First Name';
 
       case FieldsEnum.LASTNAME:
-        return 'Last name';
+        return 'Last Name';
 
       case FieldsEnum.PHONE:
         return 'Phone';
@@ -104,7 +104,7 @@ extension FieldsEnumValues on FieldsEnum {
         return 'Write a short bio or quote';
 
       case FieldsEnum.PRONOUN:
-        return 'Preferred pronoun';
+        return 'Preferred Pronoun';
 
       case FieldsEnum.LOCATIONNICKNAME:
         return 'Home, Office, School, etc...';
@@ -125,7 +125,7 @@ extension FieldsEnumValues on FieldsEnum {
         return 'PS4';
 
       case FieldsEnum.XBOX:
-        return 'XBOX';
+        return 'XBox';
 
       case FieldsEnum.STEAM:
         return 'Steam (PC)';
@@ -152,7 +152,7 @@ valueOf(String property) {
 
 /// new app doesnt have IMAGE
 enum AtCategory {
-  DETAILS,
+  DETAILS_TAB,
   CHANNELS,
   FEATURED,
 
@@ -160,7 +160,7 @@ enum AtCategory {
   LOCATION,
   SOCIAL,
   GAMER,
-  BASIC_DETAILS,
+  DETAILS,
   ADDITIONAL_DETAILS,
   OTHERS,
 }

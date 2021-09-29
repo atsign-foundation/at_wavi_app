@@ -5,6 +5,7 @@ import 'package:at_location_flutter/common_components/circle_marker_painter.dart
 import 'package:at_location_flutter/common_components/marker_custom_painter.dart';
 import 'package:at_location_flutter/map_content/flutter_map/flutter_map.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/screens/location/location_widget.dart';
@@ -326,9 +327,15 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
     Navigator.of(context).pop();
   }
 
-  void onConfirmPressed() {
-    var _finalData = OsmLocationModel(null, null, zoom, diameterOfCircle,
-        latitude: center.latitude, longitude: center.longitude);
+  void onConfirmPressed() async {
+    var _finalData = OsmLocationModel(
+      null,
+      null,
+      zoom,
+      diameterOfCircle,
+      latitude: center.latitude,
+      longitude: center.longitude,
+    );
     if (widget.callbackFunction != null) {
       widget.callbackFunction!(_finalData);
     } else {

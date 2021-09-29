@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:at_wavi_app/desktop/utils/strings.dart';
+import 'package:at_wavi_app/desktop/utils/utils.dart';
+import 'package:at_wavi_app/model/basic_data_model.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -15,21 +17,22 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
 
   CustomContentType get fieldType => _fieldType;
 
-  Uint8List? _selectedMedia;
+  BasicData? _basicData;
 
-  Uint8List? get selectedMedia => _selectedMedia;
+  BasicData? get basicData => _basicData;
 
-  String? _selectedMediaPath;
+  Uint8List? _uInt8list;
 
-  String? get selectedMediaPath => _selectedMediaPath;
-
-  String? _selectedMediaExtension;
-
-  String? get selectedMediaExtension => _selectedMediaExtension;
+  Uint8List? get uInt8list => _uInt8list;
 
   bool isOnlyAddMedia = false;
 
-  DesktopAddBasicDetailModel({required this.userPreview});
+  var titleTextController = TextEditingController(text: '');
+  var valueContentTextController = TextEditingController(text: '');
+
+  DesktopAddBasicDetailModel({required this.userPreview}) {
+    _basicData = BasicData();
+  }
 
   void setIsOnlyAddMedia(bool isOnlyAddMedia) {
     this.isOnlyAddMedia = isOnlyAddMedia;
@@ -42,19 +45,30 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void didSelectMedia(File selectedMedia, String type) {
-    final mediaData = selectedMedia.readAsBytesSync();
-    _selectedMedia = mediaData;
-    _selectedMediaPath = selectedMedia.path;
-    _selectedMediaExtension = type;
+  Future didSelectMedia(File selectedMedia, String extension) async {
+    final mediaData = await selectedMedia.readAsBytes();
+    _basicData!.value = selectedMedia.path;
+    _basicData!.extension = extension;
+    _uInt8list = mediaData;
     notifyListeners();
   }
 
-  void saveData(BuildContext context, BasicData basicData) {
-    if (_fieldType == CustomContentType.Image && _selectedMedia == null) {
+  Future saveData(BuildContext context) async {
+    if (_fieldType == CustomContentType.Image && _basicData!.value == null) {
       CommonFunctions().showSnackBar(Strings.desktop_please_add_image);
       return;
     }
-    Navigator.of(context).pop(basicData);
+    _basicData!.accountName = titleTextController.text;
+    if (_fieldType != CustomContentType.Image) {
+      _basicData!.value = valueContentTextController.text;
+    }
+    _basicData!.type = fieldType;
+    await updateDefinedFields(
+      context,
+      _basicData!,
+      isCustomData: true,
+    );
+
+    Navigator.of(context).pop('saved');
   }
 }
