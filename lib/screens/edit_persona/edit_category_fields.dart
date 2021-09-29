@@ -659,7 +659,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
           if (value == 'Edit') {
             onEditToolTip(basicData);
           } else {
-            UserPreview().deletCustomField(widget.category, basicData);
+            UserPreview().deleteCustomField(widget.category, basicData);
             // FieldOrderService()
             //     .deleteField(widget.category, basicData.accountName!);
           }

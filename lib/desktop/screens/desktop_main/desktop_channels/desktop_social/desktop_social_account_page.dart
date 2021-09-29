@@ -27,8 +27,8 @@ class DesktopSocialAccountPage extends StatefulWidget {
       this._desktopSocialAccountPageState =
           new _DesktopSocialAccountPageState();
 
-  Future addField(BasicData basicData) async {
-    await _desktopSocialAccountPageState.addField(basicData);
+  Future addField() async {
+    await _desktopSocialAccountPageState.addField();
   }
 }
 
@@ -39,8 +39,8 @@ class _DesktopSocialAccountPageState extends State<DesktopSocialAccountPage>
   @override
   bool get wantKeepAlive => true;
 
-  Future addField(BasicData basicData) async {
-    _model.addField(basicData);
+  Future addField() async {
+    _model.addField();
   }
 
   @override
@@ -57,92 +57,97 @@ class _DesktopSocialAccountPageState extends State<DesktopSocialAccountPage>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 8),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: ColorConstants.LIGHT_GREY,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              child: Consumer<DesktopSocialModel>(
-                builder: (_, model, child) {
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: model.fields.length,
-                    itemBuilder: (context, index) {
-                      return (model.fields[index].path != null &&
-                              model.fields[index].path! != 'null')
-                          ? DesktopMediaItem(
-                              data: model.fields[index],
-                            )
-                          : model.fields[index].accountName == 'Twitter'
-                              ? DesktopBasicItem(
-                                  data: model.fields[index],
-                                  onValueChanged: (text) {
-                                    _model.updateValues(index, text);
-                                  },
-                                )
-                              : DesktopLinkItem(
-                                  title: model.fields[index].accountName ?? '',
-                                  name: 'Lauren',
-                                  description: 'I tell story to entertain',
-                                  follow: '345 Followers, 645 Following',
-                                  link: 'www.facebook.com/lauren',
-                                );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return Container(
-                        margin: EdgeInsets.symmetric(horizontal: 16),
-                        child: Divider(
-                          height: 1,
-                          color: appTheme.borderColor,
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
             Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
-                    child: Container(),
-                  ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        DesktopWhiteButton(
-                          title: Strings.desktop_reorder,
-                          height: 48,
-                          onPressed: () async {
-                            await showReOderFieldsPopUp(
-                              context,
-                              AtCategory.SOCIAL,
-                              (fields) {
-                                /// Update Fields after reorder
-                                _model.reorderField(fields);
-                              },
-                            );
-                          },
-                        ),
-                        SizedBox(width: 12),
-                        DesktopButton(
-                          title: Strings.desktop_save_publish,
-                          height: 48,
-                          onPressed: () async {
-                            await _model.saveAndPublish();
-                            showSnackBar(context, Strings.desktop_edit_success,
-                                appTheme.primaryColor);
-                          },
-                        ),
-                      ],
+                  Flexible(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 8),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: ColorConstants.LIGHT_GREY,
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Consumer<DesktopSocialModel>(
+                        builder: (_, model, child) {
+                          return ListView.separated(
+                            shrinkWrap: true,
+                            itemCount: model.fields.length,
+                            itemBuilder: (context, index) {
+                              return (model.fields[index].extension != null)
+                                  ? DesktopMediaItem(
+                                      data: model.fields[index],
+                                    )
+                                  : model.fields[index].accountName == 'Twitter'
+                                      ? DesktopBasicItem(
+                                          data: model.fields[index],
+                                          onValueChanged: (text) {
+                                            _model.updateValues(index, text);
+                                          },
+                                        )
+                                      : DesktopLinkItem(
+                                          title:
+                                              model.fields[index].accountName ??
+                                                  '',
+                                          name: 'Lauren',
+                                          description:
+                                              'I tell story to entertain',
+                                          follow:
+                                              '345 Followers, 645 Following',
+                                          link: 'www.facebook.com/lauren',
+                                        );
+                            },
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return Container(
+                                margin: EdgeInsets.symmetric(horizontal: 16),
+                                child: Divider(
+                                  height: 1,
+                                  color: appTheme.borderColor,
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],
               ),
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                DesktopWhiteButton(
+                  title: Strings.desktop_reorder,
+                  height: 48,
+                  onPressed: () async {
+                    await showReOderFieldsPopUp(
+                      context,
+                      AtCategory.SOCIAL,
+                      (fields) {
+                        /// Update Fields after reorder
+                        _model.reorderField(fields);
+                      },
+                    );
+                  },
+                ),
+                SizedBox(width: 12),
+                DesktopButton(
+                  title: Strings.desktop_save_publish,
+                  height: 48,
+                  onPressed: () async {
+                    await _model.saveAndPublish();
+                    showSnackBar(context, Strings.desktop_edit_success,
+                        appTheme.primaryColor);
+                  },
+                ),
+              ],
             ),
           ],
         ),

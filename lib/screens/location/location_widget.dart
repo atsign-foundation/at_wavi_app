@@ -575,7 +575,7 @@ class _LocationWidgetState extends State<LocationWidget> {
 
   _deleteKey(BasicData _basicData) async {
     Provider.of<UserPreview>(context, listen: false)
-        .deletCustomField(AtCategory.LOCATION, _basicData);
+        .deleteCustomField(AtCategory.LOCATION, _basicData);
     setState(() {});
 
     // LoadingDialog().show(text: 'Deleting $key');

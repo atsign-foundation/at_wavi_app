@@ -39,7 +39,7 @@ class UserPreview extends BaseModel {
         isPrivate: basicData.isPrivate));
   }
 
-  deletCustomField(AtCategory category, BasicData basicData) {
+  deleteCustomField(AtCategory category, BasicData basicData) {
     List<BasicData>? customFields = _user!.customFields[category.name];
     var newIndex = customFields!
         .indexWhere((element) => element.accountName == basicData.accountName);

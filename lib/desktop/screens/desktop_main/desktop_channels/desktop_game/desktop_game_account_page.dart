@@ -25,8 +25,8 @@ class DesktopGameAccountPage extends StatefulWidget {
   _DesktopGameAccountPageState createState() =>
       this._desktopGameAccountPageState = new _DesktopGameAccountPageState();
 
-  Future addField(BasicData basicData) async {
-    await _desktopGameAccountPageState.addField(basicData);
+  Future addField() async {
+    await _desktopGameAccountPageState.addField();
   }
 }
 
@@ -37,8 +37,8 @@ class _DesktopGameAccountPageState extends State<DesktopGameAccountPage>
   @override
   bool get wantKeepAlive => true;
 
-  Future addField(BasicData basicData) async {
-    _model.addField(basicData);
+  Future addField() async {
+    _model.addField();
   }
 
   @override
@@ -68,8 +68,7 @@ class _DesktopGameAccountPageState extends State<DesktopGameAccountPage>
                     shrinkWrap: true,
                     itemCount: model.fields.length,
                     itemBuilder: (context, index) {
-                      if ((model.fields[index].path != null &&
-                          model.fields[index].path! != 'null')) {
+                      if (model.fields[index].extension != null) {
                         return DesktopMediaItem(
                           data: model.fields[index],
                         );

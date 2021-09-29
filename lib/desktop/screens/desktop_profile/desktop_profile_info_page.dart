@@ -202,7 +202,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   }
 
   void _openEditProfile() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => DesktopHomePage()),
     );

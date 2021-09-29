@@ -20,7 +20,8 @@ class MockData {
 
   static Map<String, List<String>> get getMockPreviewOrders {
     Map<String, List<String>> result = Map<String, List<String>>();
-    (jsonDecode(mockPreviewOrders) as Map<String, dynamic>).forEach((key, value) {
+    (jsonDecode(mockPreviewOrders) as Map<String, dynamic>)
+        .forEach((key, value) {
       result[key] = (value as List<dynamic>).map((e) => e.toString()).toList();
     });
     return result;
@@ -46,39 +47,46 @@ class MockData {
       return User(
         allPrivate: userMap['allPrivate'],
         atsign: userMap[FieldsEnum.ATSIGN.name],
-        image: BasicData.fromJson(userMap[FieldsEnum.IMAGE.name] as Map<String, dynamic>),
-        firstname:
-        BasicData.fromJson(userMap[FieldsEnum.FIRSTNAME.name] as Map<String, dynamic>),
-        lastname:
-        BasicData.fromJson(userMap[FieldsEnum.LASTNAME.name] as Map<String, dynamic>),
-        location:
-        BasicData.fromJson(userMap[FieldsEnum.LOCATION.name] as Map<String, dynamic>),
+        image: BasicData.fromJson(
+            userMap[FieldsEnum.IMAGE.name] as Map<String, dynamic>),
+        firstname: BasicData.fromJson(
+            userMap[FieldsEnum.FIRSTNAME.name] as Map<String, dynamic>),
+        lastname: BasicData.fromJson(
+            userMap[FieldsEnum.LASTNAME.name] as Map<String, dynamic>),
+        location: BasicData.fromJson(
+            userMap[FieldsEnum.LOCATION.name] as Map<String, dynamic>),
         locationNickName: BasicData.fromJson(
             userMap[FieldsEnum.LOCATIONNICKNAME.name] as Map<String, dynamic>),
-        pronoun:
-        BasicData.fromJson(userMap[FieldsEnum.PRONOUN.name] as Map<String, dynamic>),
-        phone: BasicData.fromJson(userMap[FieldsEnum.PHONE.name] as Map<String, dynamic>),
-        email: BasicData.fromJson(userMap[FieldsEnum.EMAIL.name] as Map<String, dynamic>),
-        about: BasicData.fromJson(userMap[FieldsEnum.ABOUT.name] as Map<String, dynamic>),
-        twitter:
-        BasicData.fromJson(userMap[FieldsEnum.TWITTER.name] as Map<String, dynamic>),
-        facebook:
-        BasicData.fromJson(userMap[FieldsEnum.FACEBOOK.name] as Map<String, dynamic>),
-        linkedin:
-        BasicData.fromJson(userMap[FieldsEnum.LINKEDIN.name] as Map<String, dynamic>),
-        instagram:
-        BasicData.fromJson(userMap[FieldsEnum.INSTAGRAM.name] as Map<String, dynamic>),
-        youtube:
-        BasicData.fromJson(userMap[FieldsEnum.YOUTUBE.name] as Map<String, dynamic>),
-        tumbler:
-        BasicData.fromJson(userMap[FieldsEnum.TUMBLR.name] as Map<String, dynamic>),
-        medium:
-        BasicData.fromJson(userMap[FieldsEnum.MEDIUM.name] as Map<String, dynamic>),
-        ps4: BasicData.fromJson(userMap[FieldsEnum.PS4.name] as Map<String, dynamic>),
-        xbox: BasicData.fromJson(userMap[FieldsEnum.XBOX.name] as Map<String, dynamic>),
-        steam: BasicData.fromJson(userMap[FieldsEnum.STEAM.name] as Map<String, dynamic>),
-        discord:
-        BasicData.fromJson(userMap[FieldsEnum.DISCORD.name] as Map<String, dynamic>),
+        pronoun: BasicData.fromJson(
+            userMap[FieldsEnum.PRONOUN.name] as Map<String, dynamic>),
+        phone: BasicData.fromJson(
+            userMap[FieldsEnum.PHONE.name] as Map<String, dynamic>),
+        email: BasicData.fromJson(
+            userMap[FieldsEnum.EMAIL.name] as Map<String, dynamic>),
+        about: BasicData.fromJson(
+            userMap[FieldsEnum.ABOUT.name] as Map<String, dynamic>),
+        twitter: BasicData.fromJson(
+            userMap[FieldsEnum.TWITTER.name] as Map<String, dynamic>),
+        facebook: BasicData.fromJson(
+            userMap[FieldsEnum.FACEBOOK.name] as Map<String, dynamic>),
+        linkedin: BasicData.fromJson(
+            userMap[FieldsEnum.LINKEDIN.name] as Map<String, dynamic>),
+        instagram: BasicData.fromJson(
+            userMap[FieldsEnum.INSTAGRAM.name] as Map<String, dynamic>),
+        youtube: BasicData.fromJson(
+            userMap[FieldsEnum.YOUTUBE.name] as Map<String, dynamic>),
+        tumbler: BasicData.fromJson(
+            userMap[FieldsEnum.TUMBLR.name] as Map<String, dynamic>),
+        medium: BasicData.fromJson(
+            userMap[FieldsEnum.MEDIUM.name] as Map<String, dynamic>),
+        ps4: BasicData.fromJson(
+            userMap[FieldsEnum.PS4.name] as Map<String, dynamic>),
+        xbox: BasicData.fromJson(
+            userMap[FieldsEnum.XBOX.name] as Map<String, dynamic>),
+        steam: BasicData.fromJson(
+            userMap[FieldsEnum.STEAM.name] as Map<String, dynamic>),
+        discord: BasicData.fromJson(
+            userMap[FieldsEnum.DISCORD.name] as Map<String, dynamic>),
         customFields: customFields,
       );
     } catch (e, s) {
@@ -105,7 +113,7 @@ final mockFieldOrders = """
   "LOCATION": [
     "locationnickname",
     "location",
-    "abc"
+    "office"
   ],
   "SOCIAL": [
     "twitter",
@@ -141,7 +149,7 @@ final mockPreviewOrders = """
   "LOCATION": [
     "locationnickname",
     "location",
-    "abc"
+    "office"
   ],
   "SOCIAL": [
     "twitter",
@@ -223,7 +231,7 @@ final mockUser = """
       "longitude": "-122.0312186"
     },
     "isPrivate": false,
-    "accountName": "location",
+    "accountName": "Home",
     "valueDescription": null,
     "type": "TextInputType(name: TextInputType.text, signed: null, decimal: null)",
     "path": null
@@ -344,7 +352,7 @@ final mockUser = """
           "longitude": "-122.0312186"
         },
         "isPrivate": false,
-        "accountName": "abc",
+        "accountName": "Office",
         "valueDescription": "",
         "type": "Text",
         "path": null

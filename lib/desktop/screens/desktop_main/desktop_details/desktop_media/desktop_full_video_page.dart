@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/utils/colors.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 //import 'package:video_player/video_player.dart';
@@ -39,17 +40,35 @@ class _DesktopFullVideoPageState extends State<DesktopFullVideoPage> {
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
-    return Container(
-      width: 600,
-      height: 600,
-      color: Colors.transparent,
-      child: Center(
-        child: Video(
-          player: _player,
-          height: 600,
+    return Stack(
+      children: [
+        Container(
           width: 600,
+          height: 600,
+          color: Colors.transparent,
+          child: Center(
+            child: Video(
+              player: _player,
+              height: 600,
+              width: 600,
+            ),
+          ),
         ),
-      ),
+        Positioned(
+          right: 8,
+          top: 2,
+          child: IconButton(
+            icon: Icon(
+              Icons.clear,
+              size: 32,
+              color: ColorConstants.white,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+      ],
     );
   }
 

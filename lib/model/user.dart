@@ -174,18 +174,19 @@ class BasicData {
   var value;
   bool isPrivate = false;
   Icon? icon;
-  String? path;
   String? accountName, valueDescription;
   var type;
+  String? extension;
 
-  BasicData(
-      {this.value,
-      this.isPrivate = false,
-      this.icon,
-      this.path,
-      this.accountName,
-      this.type,
-      this.valueDescription});
+  BasicData({
+    this.value,
+    this.isPrivate = false,
+    this.icon,
+    this.accountName,
+    this.type,
+    this.valueDescription,
+    this.extension,
+  });
 
   factory BasicData.fromJson(Map<String, dynamic> json) {
     if (json['value'] != null &&
@@ -209,7 +210,7 @@ class BasicData {
         accountName: json['accountName'],
         valueDescription: json['valueDescription'],
         type: json['type'],
-        path: json['path'],
+        extension: json['extension'],
       );
     } else {
       return BasicData();
@@ -224,13 +225,13 @@ class BasicData {
       'accountName': accountName.toString(),
       'valueDescription': valueDescription.toString(),
       'type': type.toString(),
-      'path': path.toString(),
+      'extension': extension.toString(),
     });
   }
 
   @override
   String toString() {
-    return 'value: $value, isPrivate: $isPrivate, icon: $icon, accountName:$accountName, type:$type, valueDescription:$valueDescription, path:$path';
+    return 'value: $value, isPrivate: $isPrivate, icon: $icon, accountName:$accountName, type:$type, valueDescription:$valueDescription';
   }
 }
 

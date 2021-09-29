@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_add_basic_detail/desktop_add_basic_detail_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_add_location/desktop_add_location_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_channels/desktop_channels_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_details_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_media_detail/desktop_search_info_popup.dart';
@@ -110,7 +111,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
 
     _pageController = PageController();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      //  clearSharedPreferences();
+    //  clearSharedPreferences();
       saveStringToSharedPreferences(
           key: Strings.desktop_current_tab, value: AtCategory.DETAILS.name);
     });
@@ -368,7 +369,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
   }
 
   Future _clickAddCustomContent() async {
-    final result = await showDialog<BasicData>(
+    final result = await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -376,22 +377,22 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
       ),
     );
     if (result != null) {
-      if (result is BasicData) {
+      if (result == 'saved') {
         var currentScreen = await getStringFromSharedPreferences(
           key: Strings.desktop_current_screen,
         );
         switch (currentScreen) {
           case MixedConstants.BASIC_DETAILS_KEY:
-            await desktopDetailsPage.addFieldToBasicDetail(result);
+            await desktopDetailsPage.addFieldToBasicDetail();
             break;
           case MixedConstants.ADDITIONAL_DETAILS_KEY:
-            await desktopDetailsPage.addFieldToAdditionalDetail(result);
+            await desktopDetailsPage.addFieldToAdditionalDetail();
             break;
           case MixedConstants.SOCIAL_KEY:
-            await desktopChannelsPage.addFieldToSocial(result);
+            await desktopChannelsPage.addFieldToSocial();
             break;
           case MixedConstants.GAME_KEY:
-            await desktopChannelsPage.addFieldToGame(result);
+            await desktopChannelsPage.addFieldToGame();
             break;
           case MixedConstants.INSTAGRAM_KEY:
             //      await desktopFeaturedPage.addFieldToInstagram(result);
@@ -406,11 +407,23 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
 
   Future _clickAddLocation() async {
     print('_clickAddLocation');
+    final result = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: DesktopAddLocationPage(),
+      ),
+    );
+    if (result != null) {
+      if (result == 'saved') {
+        await desktopDetailsPage.addLocation();
+      }
+    }
   }
 
   Future _clickAddMedia() async {
     print('_clickAddMedia');
-    final result = await showDialog<BasicData>(
+    final result = await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -420,8 +433,8 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
       ),
     );
     if (result != null) {
-      if (result is BasicData) {
-        await desktopDetailsPage.addMedia(result);
+      if (result == 'saved') {
+        await desktopDetailsPage.addMedia();
       }
     }
   }

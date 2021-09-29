@@ -119,7 +119,7 @@ class DesktopReorderBasicDetailModel extends ChangeNotifier {
       } else {
         _fields = savedFields;
       }
-    } else if (category == AtCategory.BASIC_DETAILS) {
+    } else if (category == AtCategory.DETAILS) {
       var savedFields = await getListStringFromSharedPreferences(
         key: MixedConstants.BASIC_DETAILS_KEY,
       );

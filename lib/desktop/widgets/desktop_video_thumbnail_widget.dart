@@ -4,17 +4,16 @@ import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/model/user.dart';
-import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class DesktopVideoThumbnailWidget extends StatelessWidget {
   String path;
-  String type;
+  String extension;
 
   DesktopVideoThumbnailWidget({
     Key? key,
     required this.path,
-    required this.type,
+    required this.extension,
   }) : super(key: key);
 
   @override
@@ -47,7 +46,7 @@ class DesktopVideoThumbnailWidget extends StatelessWidget {
               }
             },
           ),
-          (type.isNotEmpty && type != 'jpg' && type != 'png')
+          (extension.isNotEmpty && extension != 'jpg' && extension != 'png')
               ? Center(
                   child: GestureDetector(
                     child: Container(

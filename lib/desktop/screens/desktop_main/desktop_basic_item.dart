@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,7 +26,7 @@ class DesktopBasicItem extends StatelessWidget {
           Container(
             width: 110,
             child: Text(
-              data.accountName ?? '',
+              getTitle(data.accountName ?? ''),
               style: TextStyle(
                   fontSize: 12,
                   color: appTheme.secondaryTextColor,
@@ -38,7 +39,7 @@ class DesktopBasicItem extends StatelessWidget {
           Expanded(
             child: DesktopTextField(
               controller: TextEditingController(
-                text: data.valueDescription,
+                text: data.value,
               ),
               readOnly: true,
               borderRadius: 10,

@@ -33,12 +33,6 @@ class DesktopAddBasicDetailPage extends StatefulWidget {
 class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
   late DesktopAddBasicDetailModel _model;
   final _showHideController = ShowHideController(isShow: true);
-  final _titleTextController = TextEditingController();
-  final _textContentTextController = TextEditingController();
-  final _linkContentTextController = TextEditingController();
-  final _numberContentTextController = TextEditingController();
-  final _imageContentTextController = TextEditingController();
-  final _youtubeContentTextController = TextEditingController();
 
   late var contentDropDown;
 
@@ -60,115 +54,117 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
         _model.setIsOnlyAddMedia(widget.isOnlyAddImage);
         return _model;
       },
-      child: Container(
-        width: 434,
-        padding: EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: appTheme.backgroundColor,
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.isOnlyAddImage
-                  ? Strings.desktop_add_media
-                  : Strings.desktop_add_custom_content,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: appTheme.primaryTextColor,
-              ),
+      child: Consumer<DesktopAddBasicDetailModel>(
+        builder: (_, model, child) {
+          return Container(
+            width: 434,
+            padding: EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: appTheme.backgroundColor,
+              borderRadius: BorderRadius.all(Radius.circular(8)),
             ),
-            SizedBox(height: 16),
-            DesktopTextField(
-              title: Strings.desktop_title,
-              controller: _titleTextController,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.isOnlyAddImage
+                      ? Strings.desktop_add_media
+                      : Strings.desktop_add_custom_content,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: appTheme.primaryTextColor,
+                  ),
+                ),
+                SizedBox(height: 16),
+                DesktopTextField(
+                  title: Strings.desktop_title,
+                  controller: model.titleTextController,
+                ),
+                _buildTypeSelectionWidget(model),
+                _buildFieldInputWidget(model),
+                Container(height: 1, color: appTheme.separatorColor),
+                SizedBox(height: 16),
+                DesktopShowHideRadioButton(
+                  controller: _showHideController,
+                ),
+                SizedBox(height: 16),
+                DesktopButton(
+                  title: Strings.desktop_done,
+                  width: double.infinity,
+                  onPressed: _onSaveData,
+                ),
+              ],
             ),
-            _buildTypeSelectionWidget(),
-            _buildFieldInputWidget(),
-            Container(height: 1, color: appTheme.separatorColor),
-            SizedBox(height: 16),
-            DesktopShowHideRadioButton(
-              controller: _showHideController,
-            ),
-            SizedBox(height: 16),
-            DesktopButton(
-              title: Strings.desktop_done,
-              width: double.infinity,
-              onPressed: _onSaveData,
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildTypeSelectionWidget() {
+  Widget _buildTypeSelectionWidget(DesktopAddBasicDetailModel model) {
     final appTheme = AppTheme.of(context);
-    return Consumer<DesktopAddBasicDetailModel>(builder: (_, model, child) {
-      return DropdownButtonFormField<CustomContentType>(
-        dropdownColor: appTheme.backgroundColor,
-        autovalidateMode: AutovalidateMode.disabled,
-        hint: Text(Strings.desktop_select_type),
-        decoration: InputDecoration(
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: appTheme.separatorColor),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: appTheme.primaryColor),
-          ),
+    return DropdownButtonFormField<CustomContentType>(
+      dropdownColor: appTheme.backgroundColor,
+      autovalidateMode: AutovalidateMode.disabled,
+      hint: Text(Strings.desktop_select_type),
+      decoration: InputDecoration(
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: appTheme.separatorColor),
         ),
-        value: model.fieldType,
-        icon: Icon(Icons.keyboard_arrow_down),
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-          color: appTheme.primaryTextColor,
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: appTheme.primaryColor),
         ),
-        validator: (value) {
-          if (value == null) {
-            return Strings.desktop_please_select_type;
-          }
-          return null;
-        },
-        onChanged: (newValue) {
-          if (newValue != null) {
-            _model.changeField(newValue);
-          }
-        },
-        items: contentDropDown.map<DropdownMenuItem<CustomContentType>>(
-            (CustomContentType value) {
-          return DropdownMenuItem<CustomContentType>(
-            value: value,
-            child: Text(value.label),
-          );
-        }).toList(),
-      );
-    });
+      ),
+      value: model.fieldType,
+      icon: Icon(Icons.keyboard_arrow_down),
+      style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+        color: appTheme.primaryTextColor,
+      ),
+      validator: (value) {
+        if (value == null) {
+          return Strings.desktop_please_select_type;
+        }
+        return null;
+      },
+      onChanged: (newValue) {
+        if (newValue != null) {
+          _model.changeField(newValue);
+        }
+      },
+      items: contentDropDown
+          .map<DropdownMenuItem<CustomContentType>>((CustomContentType value) {
+        return DropdownMenuItem<CustomContentType>(
+          value: value,
+          child: Text(value.label),
+        );
+      }).toList(),
+    );
   }
 
-  Widget _buildFieldInputWidget() {
+  Widget _buildFieldInputWidget(DesktopAddBasicDetailModel model) {
     final appTheme = AppTheme.of(context);
     return Consumer<DesktopAddBasicDetailModel>(
       builder: (_, model, child) {
-        if (_model.fieldType == CustomContentType.Text) {
+        if (model.fieldType == CustomContentType.Text) {
           return DesktopTextField(
-            controller: _textContentTextController,
+            controller: model.valueContentTextController,
             hint: '',
           );
-        } else if (_model.fieldType == CustomContentType.Link) {
+        } else if (model.fieldType == CustomContentType.Link) {
           return DesktopTextField(
-            controller: _linkContentTextController,
+            controller: model.valueContentTextController,
             hint: 'https:www//example.com',
           );
-        } else if (_model.fieldType == CustomContentType.Number) {
+        } else if (model.fieldType == CustomContentType.Number) {
           return DesktopTextField(
-            controller: _numberContentTextController,
+            controller: model.valueContentTextController,
             hint: '',
           );
-        } else if (_model.fieldType == CustomContentType.Image) {
+        } else if (model.fieldType == CustomContentType.Image) {
           return Directionality(
             textDirection: TextDirection.ltr,
             child: Column(
@@ -186,15 +182,15 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
                 SizedBox(
                   height: 8,
                 ),
-                if (model.selectedMedia != null)
-                  _buildMediaWidget(model.selectedMedia!,
-                      model.selectedMediaPath!, model.selectedMediaExtension),
+                if (model.basicData!.extension != null)
+                  _buildMediaWidget(model.uInt8list!, model.basicData!.value!,
+                      model.basicData!.extension),
               ],
             ),
           );
-        } else if (_model.fieldType == CustomContentType.Youtube) {
+        } else if (model.fieldType == CustomContentType.Youtube) {
           return DesktopTextField(
-            controller: _youtubeContentTextController,
+            controller: model.valueContentTextController,
             hint: 'https://www.youtube.com',
           );
         } else {
@@ -204,18 +200,18 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
     );
   }
 
-  _buildMediaWidget(Uint8List uint8list, String path, String? type) {
-    if (path.contains('jpg') || path.contains('png')) {
+  _buildMediaWidget(Uint8List uInt8list, String path, String? extension) {
+    if (extension == 'jpg' || extension == 'png') {
       return ConstrainedBox(
-        constraints: new BoxConstraints(
+        constraints: BoxConstraints(
           maxHeight: 200.0,
         ),
-        child: Image.memory(uint8list),
+        child: Image.memory(uInt8list),
       );
     } else {
       return DesktopVideoThumbnailWidget(
         path: path,
-        type: type,
+        extension: extension ?? '',
       );
     }
   }
@@ -227,30 +223,13 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
     );
     if (result?.files.single.path != null) {
       File file = File(result!.files.single.path!);
-      _model.didSelectMedia(file, result.files.single.extension!);
+      await _model.didSelectMedia(file, result.files.single.extension!);
     } else {
       // User canceled the picker
     }
   }
 
   void _onSaveData() {
-    var basicData = BasicData(
-      value: _titleTextController.text,
-      accountName: _titleTextController.text,
-      type: _model.fieldType,
-    );
-    if (_model.fieldType == CustomContentType.Text) {
-      basicData.valueDescription = _textContentTextController.text;
-    } else if (_model.fieldType == CustomContentType.Link) {
-      basicData.valueDescription = _linkContentTextController.text;
-    } else if (_model.fieldType == CustomContentType.Number) {
-      basicData.valueDescription = _numberContentTextController.text;
-    } else if (_model.fieldType == CustomContentType.Youtube) {
-      basicData.valueDescription = _youtubeContentTextController.text;
-    } else if (_model.fieldType == CustomContentType.Image) {
-      basicData.path = _model.selectedMediaPath;
-      basicData.type = _model.selectedMediaExtension;
-    }
-    _model.saveData(context, basicData);
+    _model.saveData(context);
   }
 }

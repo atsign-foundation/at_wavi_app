@@ -25,8 +25,8 @@ class DesktopBasicDetailPage extends StatefulWidget {
   _DesktopBasicDetailPageState createState() =>
       this._desktopBasicDetailPageState = new _DesktopBasicDetailPageState();
 
-  Future addField(BasicData basicData) async {
-    await _desktopBasicDetailPageState.addField(basicData);
+  Future addField() async {
+    await _desktopBasicDetailPageState.addField();
   }
 }
 
@@ -42,8 +42,8 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
     super.initState();
   }
 
-  Future addField(BasicData basicData) async {
-    _model.addField(basicData);
+  Future addField() async {
+    _model.addField();
   }
 
   @override
@@ -82,8 +82,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                             padding: EdgeInsets.symmetric(vertical: 8),
                             itemCount: model.fields.length,
                             itemBuilder: (context, index) {
-                              return (model.fields[index].path != null &&
-                                      model.fields[index].path! != 'null')
+                              return (model.fields[index].extension != null)
                                   ? DesktopMediaItem(
                                       data: model.fields[index],
                                     )
@@ -124,7 +123,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                   onPressed: () async {
                     await showReOderFieldsPopUp(
                       context,
-                      AtCategory.BASIC_DETAILS,
+                      AtCategory.DETAILS,
                       (fields) {
                         /// Update Fields after reorder
                         _model.reorderField(fields);

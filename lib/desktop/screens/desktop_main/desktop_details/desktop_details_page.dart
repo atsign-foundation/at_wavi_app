@@ -27,20 +27,20 @@ class DesktopDetailsPage extends StatefulWidget {
     await _desktopDetailsPageState.showReOrderTabsPopUp();
   }
 
-  Future addMedia(BasicData basicData) async {
-    await _desktopDetailsPageState.addMedia(basicData);
+  Future addMedia() async {
+    await _desktopDetailsPageState.addMedia();
   }
 
-  Future addFieldToBasicDetail(BasicData basicData) async {
-    await _desktopDetailsPageState.addFieldToBasicDetail(basicData);
+  Future addFieldToBasicDetail() async {
+    await _desktopDetailsPageState.addFieldToBasicDetail();
   }
 
-  Future addFieldToAdditionalDetail(BasicData basicData) async {
-    await _desktopDetailsPageState.addFieldToAdditionalDetail(basicData);
+  Future addFieldToAdditionalDetail() async {
+    await _desktopDetailsPageState.addFieldToAdditionalDetail();
   }
 
-  Future addLocation(BasicData basicData) async {
-    await _desktopDetailsPageState.addLocation(basicData);
+  Future addLocation() async {
+    await _desktopDetailsPageState.addLocation();
   }
 }
 
@@ -81,19 +81,21 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
     }
   }
 
-  Future addMedia(BasicData basicData) async {
-    await desktopMediaPage.addMedia(basicData);
+  Future addMedia() async {
+    await desktopMediaPage.addMedia();
   }
 
-  Future addFieldToBasicDetail(BasicData basicData) async {
-    await desktopBasicDetailPage.addField(basicData);
+  Future addFieldToBasicDetail() async {
+    await desktopBasicDetailPage.addField();
   }
 
-  Future addFieldToAdditionalDetail(BasicData basicData) async {
-    await desktopAdditionalDetailPage.addField(basicData);
+  Future addFieldToAdditionalDetail() async {
+    await desktopAdditionalDetailPage.addField();
   }
 
-  Future addLocation(BasicData basicData) async {}
+  Future addLocation() async {
+    await desktopLocationPage.addLocation();
+  }
 
   @override
   Widget build(BuildContext context) {

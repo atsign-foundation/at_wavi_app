@@ -40,12 +40,12 @@ class DesktopMediaItem extends StatelessWidget {
             height: 200,
             child: (data.type == 'jpg' || data.type == 'png')
                 ? Image.file(
-                    File(data.path!),
+                    File(data.value!),
                     fit: BoxFit.fitWidth,
                   )
                 : DesktopVideoThumbnailWidget(
-                    path: data.path!,
-                    type: data.type ?? '',
+                    path: data.value!,
+                    extension: data.extension ?? '',
                   ),
           ),
           Expanded(

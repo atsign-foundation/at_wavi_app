@@ -26,8 +26,8 @@ class DesktopAdditionalDetailPage extends StatefulWidget {
       this._desktopAdditionalDetailPageState =
           new _DesktopAdditionalDetailPageState();
 
-  Future addField(BasicData basicData) async {
-    await _desktopAdditionalDetailPageState.addField(basicData);
+  Future addField() async {
+    await _desktopAdditionalDetailPageState.addField();
   }
 }
 
@@ -39,8 +39,8 @@ class _DesktopAdditionalDetailPageState
   @override
   bool get wantKeepAlive => true;
 
-  Future addField(BasicData basicData) async {
-    _model.addField(basicData);
+  Future addField() async {
+    _model.addField();
   }
 
   @override
@@ -79,8 +79,7 @@ class _DesktopAdditionalDetailPageState
                             padding: EdgeInsets.symmetric(vertical: 8),
                             itemCount: model.fields.length,
                             itemBuilder: (context, index) {
-                              return (model.fields[index].path != null &&
-                                      model.fields[index].path! != 'null')
+                              return (model.fields[index].extension != null)
                                   ? DesktopMediaItem(
                                       data: model.fields[index],
                                     )
