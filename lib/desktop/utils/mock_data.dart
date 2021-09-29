@@ -182,7 +182,7 @@ final mockUser = """
     "path": null
   },
   "firstname": {
-    "value": "Michel",
+    "value": "",
     "isPrivate": false,
     "accountName": "firstname",
     "valueDescription": null,

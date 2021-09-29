@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/utils/utils.dart';
-import 'package:at_wavi_app/model/basic_data_model.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';

@@ -76,13 +76,4 @@ class DesktopMediaModel extends ChangeNotifier {
     );
     notifyListeners();
   }
-
-  Future reorderField(List<String> fields) async {
-    _fields = sortBasicData(_fields, fields);
-    await saveListStringToSharedPreferences(
-      key: MixedConstants.MEDIA_KEY,
-      value: _fields.map((e) => e.toJson() as String).toList(),
-    );
-    notifyListeners();
-  }
 }
