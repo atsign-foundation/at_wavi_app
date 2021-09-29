@@ -249,23 +249,39 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
                         SizedBox(
                           width: 24,
                         ),
-                        DesktopShowCaseWidget(
-                          globalKey: _menuKey,
-                          container: DesktopSearchInfoPopUp(
-                            atSign: '',
-                            icon: 'assets/images/info3.png',
-                            description: Strings.desktop_find_more_privacy,
-                            onNext: () {
-                              ShowCaseWidget.of(context)!.dismiss();
-                              ShowCaseWidget.of(context)!
-                                  .startShowCase([_editKey]);
-                            },
-                            onCancel: () {
-                              ShowCaseWidget.of(context)!.dismiss();
+                        Container(
+                          height: 32,
+                          width: 32,
+                          child: RawMaterialButton(
+                            shape: new CircleBorder(),
+                            elevation: 0.0,
+                            fillColor: appTheme.borderColor,
+                            child: Icon(
+                              Icons.more_vert,
+                              size: 16,
+                              color: ColorConstants.blackShade2,
+                            ),
+                            onPressed: () {
                             },
                           ),
-                          iconData: Icons.more_vert,
                         ),
+                        // DesktopShowCaseWidget(
+                        //   globalKey: _menuKey,
+                        //   container: DesktopSearchInfoPopUp(
+                        //     atSign: '',
+                        //     icon: 'assets/images/info3.png',
+                        //     description: Strings.desktop_find_more_privacy,
+                        //     onNext: () {
+                        //       ShowCaseWidget.of(context)!.dismiss();
+                        //       ShowCaseWidget.of(context)!
+                        //           .startShowCase([_editKey]);
+                        //     },
+                        //     onCancel: () {
+                        //       ShowCaseWidget.of(context)!.dismiss();
+                        //     },
+                        //   ),
+                        //   iconData: Icons.more_vert,
+                        // ),
                       ],
                     ),
                   ],

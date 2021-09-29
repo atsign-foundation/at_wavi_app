@@ -57,6 +57,10 @@ class DesktopReorderBasicDetailModel extends ChangeNotifier {
           if (basicData.value is OsmLocationModel) {
             _fields.add(basicData.accountName!);
           }
+        } else if (atCategory == AtCategory.SOCIAL) {
+          if (basicData.value != null && basicData.value.isNotEmpty) {
+            _fields.add(basicData.accountName!);
+          }
         } else {
           _fields.add(basicData.accountName!);
         }
