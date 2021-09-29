@@ -1,6 +1,7 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
+import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
 
 class DesktopNewRequestItem extends StatelessWidget {
@@ -44,7 +45,7 @@ class DesktopNewRequestItem extends StatelessWidget {
                 Text(
                   '@lauren changed her profile picture',
                   style: TextStyle(
-                    color: appTheme.primaryTextColor,
+                    color: ColorConstants.blackShade2,
                     fontSize: 10,
                     fontFamily: 'Inter',
                   ),

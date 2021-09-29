@@ -110,7 +110,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
 
     _pageController = PageController();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-    //  clearSharedPreferences();
+      //  clearSharedPreferences();
       saveStringToSharedPreferences(
           key: Strings.desktop_current_tab, value: AtCategory.DETAILS_TAB.name);
     });
@@ -131,7 +131,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
         onComplete: (index, key) {},
         builder: Builder(
           builder: (context) => Container(
-            color: ColorConstants.white,
+            color: appTheme.backgroundColor,
             padding: EdgeInsets.symmetric(
               horizontal: 64,
               vertical: 40,
@@ -186,7 +186,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
                             child: Icon(
                               Icons.search,
                               size: 16,
-                              color: appTheme.primaryTextColor,
+                              color: ColorConstants.blackShade2,
                             ),
                             onPressed: () {
                               widget.onClickSearch();
@@ -224,7 +224,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
                             child: Icon(
                               Icons.notifications,
                               size: 16,
-                              color: appTheme.primaryTextColor,
+                              color: ColorConstants.blackShade2,
                             ),
                           ),
                           itemBuilder: (BuildContext context) => [
@@ -303,7 +303,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
                             child: Icon(
                               Icons.edit,
                               size: 16,
-                              color: appTheme.primaryTextColor,
+                              color: ColorConstants.blackShade2,
                             ),
                           ),
                         ),

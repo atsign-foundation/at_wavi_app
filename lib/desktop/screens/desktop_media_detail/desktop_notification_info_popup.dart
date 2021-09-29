@@ -51,7 +51,7 @@ class _DesktopNotificationInfoPopUpState
                 itemBuilder: (context, i) {
                   return DesktopNotificationItem(
                     mainContext: context,
-                    backgroundColor: appTheme.primaryLighterColor,
+                    backgroundColor: appTheme.backgroundColor,
                   );
                 },
               ),

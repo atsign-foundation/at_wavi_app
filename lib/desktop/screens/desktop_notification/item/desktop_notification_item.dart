@@ -2,6 +2,7 @@ import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/desktop/routes/desktop_routes.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/enums.dart';
+import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -50,7 +51,7 @@ class DesktopNotificationItem extends StatelessWidget {
                 Text(
                   '@lauren changed her profile picture',
                   style: TextStyle(
-                    color: appTheme.primaryTextColor,
+                    color: ColorConstants.blackShade2,
                     fontSize: 10,
                     fontFamily: 'Inter',
                   ),

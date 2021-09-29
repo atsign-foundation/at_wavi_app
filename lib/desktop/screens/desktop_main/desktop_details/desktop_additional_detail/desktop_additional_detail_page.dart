@@ -113,9 +113,12 @@ class _DesktopAdditionalDetailPageState
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                DesktopWhiteButton(
+                DesktopButton(
                   title: Strings.desktop_reorder,
                   height: 48,
+                  backgroundColor: appTheme.backgroundColor,
+                  borderColor: appTheme.primaryTextColor,
+                  titleColor: appTheme.primaryTextColor,
                   onPressed: () async {
                     await showReOderFieldsPopUp(
                       context,

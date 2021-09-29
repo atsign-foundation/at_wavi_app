@@ -64,7 +64,7 @@ class _DesktopFollowerPageState extends State<DesktopFollowerPage>
                   Strings.desktop_prefix_sign,
                   style: TextStyle(
                     fontSize: 12,
-                    color: appTheme.primaryTextColor,
+                    color: ColorConstants.blackShade2,
                     fontFamily: 'Inter',
                   ),
                 ),

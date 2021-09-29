@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -45,7 +46,7 @@ class DesktopShowCaseWidget extends StatelessWidget {
           child: Icon(
             iconData,
             size: iconSize,
-            color: appTheme.primaryTextColor,
+            color: ColorConstants.blackShade2,
           ),
           onPressed: () {
             ShowCaseWidget.of(context)!.dismiss();

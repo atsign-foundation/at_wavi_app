@@ -76,17 +76,16 @@ class _DesktopSocialAccountPageState extends State<DesktopSocialAccountPage>
                             itemCount: model.fields.length,
                             itemBuilder: (context, index) {
                               return (model.fields[index].extension != null)
-                                  ? DesktopMediaItem(
-                                      data: model.fields[index],
-                                    )
-                                  : model.fields[index].accountName == 'Twitter'
-                                      ? DesktopBasicItem(
+                                      ? DesktopMediaItem(
+                                          data: model.fields[index],
+                                        )
+                                      : DesktopBasicItem(
                                           data: model.fields[index],
                                           onValueChanged: (text) {
                                             _model.updateValues(index, text);
                                           },
                                         )
-                                      : DesktopLinkItem(
+                                  /*: DesktopLinkItem(
                                           title:
                                               model.fields[index].accountName ??
                                                   '',
@@ -96,7 +95,8 @@ class _DesktopSocialAccountPageState extends State<DesktopSocialAccountPage>
                                           follow:
                                               '345 Followers, 645 Following',
                                           link: 'www.facebook.com/lauren',
-                                        );
+                                        )*/
+                                  ;
                             },
                             separatorBuilder:
                                 (BuildContext context, int index) {
@@ -122,9 +122,12 @@ class _DesktopSocialAccountPageState extends State<DesktopSocialAccountPage>
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                DesktopWhiteButton(
+                DesktopButton(
                   title: Strings.desktop_reorder,
                   height: 48,
+                  backgroundColor: appTheme.backgroundColor,
+                  borderColor: appTheme.primaryTextColor,
+                  titleColor: appTheme.primaryTextColor,
                   onPressed: () async {
                     await showReOderFieldsPopUp(
                       context,

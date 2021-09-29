@@ -130,7 +130,7 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
                         indicatorSize: TabBarIndicatorSize.label,
                         unselectedLabelStyle: TextStyle(
                           fontSize: 13,
-                          color: appTheme.borderColor,
+                          color: appTheme.primaryTextColor,
                           fontFamily: 'Inter',
                         ),
                         labelStyle: TextStyle(
@@ -144,6 +144,11 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
                               (e) => Tab(
                                 child: Text(
                                   e,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: appTheme.primaryTextColor,
+                                    fontFamily: 'Inter',
+                                  ),
                                 ),
                               ),
                             )

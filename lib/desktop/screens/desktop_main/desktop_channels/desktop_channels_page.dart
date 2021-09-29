@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'desktop_channels_model.dart';
 
 class DesktopChannelsPage extends StatefulWidget {
-
   DesktopChannelsPage({
     Key? key,
   }) : super(key: key);
@@ -124,6 +123,11 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
                               (e) => Tab(
                                 child: Text(
                                   e,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: appTheme.primaryTextColor,
+                                    fontFamily: 'Inter',
+                                  ),
                                 ),
                               ),
                             )

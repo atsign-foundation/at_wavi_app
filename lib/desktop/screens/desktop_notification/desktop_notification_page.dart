@@ -59,11 +59,21 @@ class _DesktopNotificationPageState extends State<DesktopNotificationPage>
               Tab(
                 child: Text(
                   Strings.desktop_notifications,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: appTheme.primaryTextColor,
+                    fontFamily: 'Inter',
+                  ),
                 ),
               ),
               Tab(
                 child: Text(
                   Strings.desktop_new_request,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: appTheme.primaryTextColor,
+                    fontFamily: 'Inter',
+                  ),
                 ),
               ),
             ],

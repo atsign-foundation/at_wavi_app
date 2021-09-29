@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -56,7 +57,7 @@ class DesktopTextField extends StatelessWidget {
           style: TextStyle(
             fontSize: textSize,
             fontWeight: FontWeight.normal,
-            color: appTheme.primaryTextColor,
+            color: ColorConstants.blackShade2,
           ),
           onChanged: onChanged,
           decoration: InputDecoration(

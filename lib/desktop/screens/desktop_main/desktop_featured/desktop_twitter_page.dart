@@ -60,7 +60,7 @@ class _DesktopTwitterPageState extends State<DesktopTwitterPage>
                         twitterPosts[index],
                         style: TextStyle(
                             fontSize: 12,
-                            color: appTheme.primaryTextColor,
+                            color: ColorConstants.blackShade2,
                             fontFamily: 'Inter'),
                       ),
                       SizedBox(

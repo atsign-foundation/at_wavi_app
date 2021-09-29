@@ -114,6 +114,11 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
                               (e) => Tab(
                                 child: Text(
                                   e,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: appTheme.primaryTextColor,
+                                    fontFamily: 'Inter',
+                                  ),
                                 ),
                               ),
                             )

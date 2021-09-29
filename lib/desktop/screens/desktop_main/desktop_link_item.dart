@@ -1,5 +1,6 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/utils.dart';
+import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
 
 class DesktopLinkItem extends StatelessWidget {
@@ -59,7 +60,7 @@ class DesktopLinkItem extends StatelessWidget {
                   name,
                   style: TextStyle(
                       fontSize: 14,
-                      color: appTheme.primaryTextColor,
+                      color: ColorConstants.blackShade2,
                       fontFamily: 'Inter'),
                 ),
                 SizedBox(
@@ -79,7 +80,7 @@ class DesktopLinkItem extends StatelessWidget {
                   follow,
                   style: TextStyle(
                       fontSize: 14,
-                      color: appTheme.primaryTextColor,
+                      color: ColorConstants.blackShade2,
                       fontFamily: 'Inter'),
                 ),
                 SizedBox(

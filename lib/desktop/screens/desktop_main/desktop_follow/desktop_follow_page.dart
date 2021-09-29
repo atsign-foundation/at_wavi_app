@@ -76,11 +76,21 @@ class _DesktopFollowPageState extends State<DesktopFollowPage>
               Tab(
                 child: Text(
                   Strings.desktop_followers,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: appTheme.primaryTextColor,
+                    fontFamily: 'Inter',
+                  ),
                 ),
               ),
               Tab(
                 child: Text(
                   Strings.desktop_following,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: appTheme.primaryTextColor,
+                    fontFamily: 'Inter',
+                  ),
                 ),
               ),
             ],
