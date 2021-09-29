@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
 import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/model/user.dart';

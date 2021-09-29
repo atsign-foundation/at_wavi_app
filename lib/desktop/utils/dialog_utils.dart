@@ -6,8 +6,6 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:flutter/material.dart';
 
-import '../../app.dart';
-
 Future<dynamic> showPassCodeDialog(
   BuildContext context, {
   required String atSign,
@@ -88,15 +86,13 @@ Future showReOderTabsPopUp(
     ),
   );
   if (results != null) {
-    if (results is List<String>) {
-      List<String> fields = results;
-      updateFields(fields);
-    }
+    List<String> fields = results;
+    updateFields(fields);
   }
 }
 
 Future showReOderFieldsPopUp(BuildContext context, AtCategory atCategory,
-    Function(List<String>) updateFields) async {
+    Function() updateFields) async {
   final results = await showDialog<List<String>>(
     context: context,
     builder: (BuildContext context) => Dialog(
@@ -107,9 +103,6 @@ Future showReOderFieldsPopUp(BuildContext context, AtCategory atCategory,
     ),
   );
   if (results != null) {
-    if (results is List<String>) {
-      List<String> fields = results;
-      updateFields(fields);
-    }
+    updateFields();
   }
 }

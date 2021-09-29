@@ -4,11 +4,9 @@ import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
-import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
 import 'package:at_wavi_app/model/osm_location_model.dart';
-import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
@@ -196,9 +194,9 @@ class _DesktopLocationPageState extends State<DesktopLocationPage>
                               await showReOderFieldsPopUp(
                                 context,
                                 AtCategory.LOCATION,
-                                (fields) {
+                                () {
                                   /// Update Fields after reorder
-                                  _model.reorderField(fields);
+                                  _model.fetchBasicData();
                                 },
                               );
                             },

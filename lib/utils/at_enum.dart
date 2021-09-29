@@ -152,7 +152,7 @@ valueOf(String property) {
 
 /// new app doesnt have IMAGE
 enum AtCategory {
-  DETAILS,
+  DETAILS_TAB,
   CHANNELS,
   FEATURED,
 
@@ -160,6 +160,7 @@ enum AtCategory {
   LOCATION,
   SOCIAL,
   GAMER,
+  DETAILS,
   ADDITIONAL_DETAILS,
   OTHERS,
 }

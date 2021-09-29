@@ -6,7 +6,6 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
-import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
@@ -130,9 +129,9 @@ class _DesktopSocialAccountPageState extends State<DesktopSocialAccountPage>
                     await showReOderFieldsPopUp(
                       context,
                       AtCategory.SOCIAL,
-                      (fields) {
+                      () {
                         /// Update Fields after reorder
-                        _model.reorderField(fields);
+                        _model.fetchBasicData();
                       },
                     );
                   },

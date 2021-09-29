@@ -9,7 +9,6 @@ import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_main_tabbar.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_showcase_widget.dart';
-import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
@@ -113,7 +112,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
     //  clearSharedPreferences();
       saveStringToSharedPreferences(
-          key: Strings.desktop_current_tab, value: AtCategory.DETAILS.name);
+          key: Strings.desktop_current_tab, value: AtCategory.DETAILS_TAB.name);
     });
     super.initState();
   }
@@ -153,7 +152,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
                           case 0:
                             await saveStringToSharedPreferences(
                                 key: Strings.desktop_current_tab,
-                                value: AtCategory.DETAILS.name);
+                                value: AtCategory.DETAILS_TAB.name);
                             break;
                           case 1:
                             await saveStringToSharedPreferences(
@@ -356,7 +355,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
     var currentScreen =
         await getStringFromSharedPreferences(key: Strings.desktop_current_tab);
     switch (currentScreen) {
-      case 'DETAILS':
+      case 'DETAILS_TAB':
         await desktopDetailsPage.showReOrderTabsPopUp();
         break;
       case 'CHANNELS':

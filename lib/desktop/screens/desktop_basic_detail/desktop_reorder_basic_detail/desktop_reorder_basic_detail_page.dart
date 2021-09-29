@@ -1,5 +1,6 @@
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_reorder_basic_detail/widgets/desktop_reorderable_item_widget.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
@@ -99,7 +100,7 @@ class _DesktopReorderBasicDetailPageState
             children: model.fields.map((e) {
               return DesktopReorderableItemWidget(
                 key: Key(e),
-                title: e,
+                title: getTitle(e),
                 margin: EdgeInsets.symmetric(vertical: 4),
               );
             }).toList(),
