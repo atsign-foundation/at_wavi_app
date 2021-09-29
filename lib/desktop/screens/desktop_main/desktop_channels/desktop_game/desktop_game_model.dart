@@ -66,17 +66,8 @@ class DesktopGameModel extends ChangeNotifier {
     fetchBasicData();
   }
 
-  Future reorderField(List<String> fields) async {
-    _fields = sortBasicData(_fields, fields);
-    await saveListStringToSharedPreferences(
-      key: MixedConstants.GAME_KEY,
-      value: _fields.map((e) => e.toJson() as String).toList(),
-    );
-    notifyListeners();
-  }
-
   void updateValues(int index, String value) {
-    _fields[index].valueDescription = value;
+    _fields[index].value = value;
   }
 
   Future saveAndPublish() async {

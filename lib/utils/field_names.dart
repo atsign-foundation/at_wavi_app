@@ -122,7 +122,7 @@ class FieldNames {
     } else if (category == AtCategory.CHANNELS) {
       fields = [..._channelsTabs];
     } else if (category == AtCategory.FEATURED) {
-      fields = [..._featuredTabs];
+      fields = [..._socialAccounts];
     }
 
     var sortedFields = [...fields];

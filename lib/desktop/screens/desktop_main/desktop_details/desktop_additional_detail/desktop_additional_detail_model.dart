@@ -1,9 +1,6 @@
-import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
-import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
-import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/cupertino.dart';
@@ -66,23 +63,11 @@ class DesktopAdditionalDetailModel extends ChangeNotifier {
     fetchBasicData();
   }
 
-  Future reorderField(List<String> fields) async {
-    _fields = sortBasicData(_fields, fields);
-    await saveListStringToSharedPreferences(
-      key: MixedConstants.ADDITIONAL_DETAILS_KEY,
-      value: _fields.map((e) => e.toJson() as String).toList(),
-    );
-    notifyListeners();
-  }
-
   void updateValues(int index, String value) {
-    _fields[index].valueDescription = value;
+    _fields[index].value = value;
   }
 
   Future saveAndPublish() async {
-    await saveListStringToSharedPreferences(
-      key: MixedConstants.ADDITIONAL_DETAILS_KEY,
-      value: _fields.map((e) => e.toJson() as String).toList(),
-    );
+
   }
 }

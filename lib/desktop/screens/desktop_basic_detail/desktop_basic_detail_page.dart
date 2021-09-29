@@ -328,7 +328,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
   }
 
   void _showReorderDetailPopup() async {
-    final result = await showDialog<String>(
+    final result = await showDialog<List<String>>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -337,7 +337,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
         ),
       ),
     );
-    if (result == 'saved') {
+    if (result != null) {
       _model.fetchBasicData();
     }
   }

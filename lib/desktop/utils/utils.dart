@@ -8,25 +8,8 @@ import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoder/geocoder.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:video_compress/video_compress.dart';
-
-List<BasicData> sortBasicData(
-    List<BasicData> listBasicData, List<String> listTitle) {
-  List<BasicData> newListBasicData = [];
-  for (int i = 0; i < listTitle.length; i++) {
-    var newBasicData = listBasicData.firstWhere(
-        (element) => element.accountName == listTitle[i],
-        orElse: () => BasicData());
-    if (newBasicData.accountName != null &&
-        newBasicData.accountName!.isNotEmpty) {
-      newListBasicData.add(newBasicData);
-    }
-  }
-  return newListBasicData;
-}
 
 void showSnackBar(BuildContext context, String message, Color color) {
   ScaffoldMessenger.of(context).showSnackBar(

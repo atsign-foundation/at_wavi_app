@@ -67,17 +67,7 @@ class DesktopLocationModel extends ChangeNotifier {
     Navigator.of(context).pop('saved');
   }
 
-  /// ///////////////////////////////////////////
   Future addField() async {
     fetchBasicData();
-  }
-
-  Future reorderField(List<String> fields) async {
-    _fields = sortBasicData(_fields, fields);
-    await saveListStringToSharedPreferences(
-      key: MixedConstants.LOCATION_KEY,
-      value: _fields.map((e) => e.toJson() as String).toList(),
-    );
-    notifyListeners();
   }
 }

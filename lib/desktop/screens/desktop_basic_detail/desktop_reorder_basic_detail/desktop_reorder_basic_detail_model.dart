@@ -32,8 +32,7 @@ class DesktopReorderBasicDetailModel extends ChangeNotifier {
     fields = [...FieldNames().getFieldList(atCategory, isPreview: true)];
 
     if (atCategory == AtCategory.DETAILS_TAB ||
-        atCategory == AtCategory.CHANNELS ||
-        atCategory == AtCategory.FEATURED) {
+        atCategory == AtCategory.CHANNELS) {
       _fields = fields;
     } else {
       for (int i = 0; i < fields.length; i++) {
@@ -57,7 +56,7 @@ class DesktopReorderBasicDetailModel extends ChangeNotifier {
           if (basicData.value is OsmLocationModel) {
             _fields.add(basicData.accountName!);
           }
-        } else if (atCategory == AtCategory.SOCIAL) {
+        } else if (atCategory == AtCategory.FEATURED) {
           if (basicData.value != null && basicData.value.isNotEmpty) {
             _fields.add(basicData.accountName!);
           }

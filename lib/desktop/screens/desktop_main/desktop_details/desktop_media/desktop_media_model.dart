@@ -62,7 +62,6 @@ class DesktopMediaModel extends ChangeNotifier {
     Navigator.of(context).pop('saved');
   }
 
-  /// ///////////////////////////////////////////
   Future addMedia() async {
     fetchBasicData();
   }
