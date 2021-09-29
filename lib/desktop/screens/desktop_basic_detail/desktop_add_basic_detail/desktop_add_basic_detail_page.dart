@@ -8,7 +8,6 @@ import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_show_hide_radio_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_video_thumbnail_widget.dart';
 import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
-import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:file_picker/file_picker.dart';
@@ -16,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'desktop_add_basic_detail_model.dart';
+import 'widgets/desktop_html_preview_page.dart';
 
 class DesktopAddBasicDetailPage extends StatefulWidget {
   bool isOnlyAddImage;
@@ -33,6 +33,14 @@ class DesktopAddBasicDetailPage extends StatefulWidget {
 class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
   late DesktopAddBasicDetailModel _model;
   final _showHideController = ShowHideController(isShow: true);
+
+  final _titleTextController = TextEditingController();
+  final _textContentTextController = TextEditingController();
+  final _linkContentTextController = TextEditingController();
+  final _numberContentTextController = TextEditingController();
+  final _imageContentTextController = TextEditingController();
+  final _youtubeContentTextController = TextEditingController();
+  final _htmlContentTextController = TextEditingController();
 
   late var contentDropDown;
 
@@ -159,11 +167,18 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
             controller: model.valueContentTextController,
             hint: 'https:www//example.com',
           );
-        } else if (model.fieldType == CustomContentType.Number) {
+        } else if (_model.fieldType == CustomContentType.Number) {
           return DesktopTextField(
-            controller: model.valueContentTextController,
+            controller: _numberContentTextController,
             hint: '',
           );
+          // return Container(
+          //   padding: EdgeInsets.symmetric(vertical: 10),
+          //   child: DesktopHtmlEditorPage(
+          //     textController: _htmlContentTextController,
+          //     onPreviewPressed: _openHtmlPreview,
+          //   ),
+          // );
         } else if (model.fieldType == CustomContentType.Image) {
           return Directionality(
             textDirection: TextDirection.ltr,
@@ -231,5 +246,16 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
 
   void _onSaveData() {
     _model.saveData(context);
+  }
+
+  void _openHtmlPreview() {
+    final html = _htmlContentTextController.text.trim();
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: DesktopHtmlPreviewPage(html: html),
+      ),
+    );
   }
 }

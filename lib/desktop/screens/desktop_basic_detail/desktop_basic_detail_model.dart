@@ -15,9 +15,26 @@ class DesktopBasicDetailModel extends ChangeNotifier {
   List<BasicDataModel> get basicData => _basicData;
 
   BasicData? _locationData;
+
   BasicData? get locationData => _locationData;
   BasicData? _locationNicknameData;
+
   BasicData? get locationNicknameData => _locationNicknameData;
+
+  bool get isEmptyData {
+    bool isEmpty = true;
+    basicData.forEach((element) {
+      final value = element.data.value;
+      if (value is String) {
+        if (value.isNotEmpty) {
+          isEmpty = false;
+        }
+      } else if (value != null) {
+        isEmpty = false;
+      }
+    });
+    return isEmpty;
+  }
 
   DesktopBasicDetailModel({
     required this.userPreview,
@@ -27,9 +44,7 @@ class DesktopBasicDetailModel extends ChangeNotifier {
       FieldOrderService().initCategoryFields(atCategory);
       fetchBasicData();
       //
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 
   void fetchBasicData() {
@@ -39,9 +54,7 @@ class DesktopBasicDetailModel extends ChangeNotifier {
         userPreview.user()?.customFields[atCategory.name] ?? [];
 
     var fields = <String>[];
-    fields = [
-      ...FieldNames().getFieldList(atCategory, isPreview: true)
-    ];
+    fields = [...FieldNames().getFieldList(atCategory, isPreview: true)];
 
     for (int i = 0; i < fields.length; i++) {
       bool isCustomField = false;

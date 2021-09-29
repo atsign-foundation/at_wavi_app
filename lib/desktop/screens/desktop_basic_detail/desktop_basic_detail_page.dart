@@ -64,7 +64,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
   Widget _buildBodyWidget() {
     return Consumer<DesktopBasicDetailModel>(
       builder: (_, model, child) {
-        if (model.basicData.isEmpty) {
+        if (model.isEmptyData) {
           return _buildEmptyWidget();
         } else {
           return _buildContentWidget(

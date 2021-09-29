@@ -82,6 +82,7 @@ class DesktopWhiteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
+    final isDark = appTheme.isDark;
     return Container(
       width: width,
       height: height,
@@ -100,13 +101,15 @@ class DesktopWhiteButton extends StatelessWidget {
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4.0),
               side: BorderSide(
-                color: borderColor ?? appTheme.accentColor,
+                color: borderColor ??
+                    (isDark ? Colors.white : appTheme.accentColor),
                 width: 0.5,
               ),
             ),
           ),
           elevation: MaterialStateProperty.all(0),
-          backgroundColor: MaterialStateProperty.all(ColorConstants.white),
+          backgroundColor: MaterialStateProperty.all(
+              isDark ? Colors.transparent : ColorConstants.white),
         ),
       ),
     );
