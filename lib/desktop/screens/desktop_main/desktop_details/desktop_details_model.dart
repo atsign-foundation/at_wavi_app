@@ -1,5 +1,8 @@
 import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
+import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/constants.dart';
+import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -18,35 +21,22 @@ class DesktopDetailsModel extends ChangeNotifier {
   ];
 
   DesktopDetailsModel({required this.userPreview}) {
-    initFields();
+    fetchBasicData();
   }
 
-  Future initFields() async {
-    var savedFields = await getListStringFromSharedPreferences(
-      key: MixedConstants.LIST_DETAIL_KEY,
-    );
-    if (savedFields == null || savedFields.isEmpty) {
-      savedFields = [..._defaultDetails];
-    }
-    await updateField(
-      savedFields,
-      isInit: true,
-    );
+  void fetchBasicData() {
+    _fields.clear();
+    var fields = <String>[];
+    fields = [
+      ...FieldNames().getFieldList(AtCategory.DETAILS_TAB, isPreview: true)
+    ];
+    updateField(fields);
+    notifyListeners();
   }
 
-  Future updateField(
-    List<String> fields, {
-    bool isInit = false,
-  }) async {
+  void updateField(List<String> fields) {
     _fields.clear();
     _fields = fields;
-
-    if (!isInit) {
-      await saveListStringToSharedPreferences(
-        key: MixedConstants.LIST_DETAIL_KEY,
-        value: _fields,
-      );
-    }
     notifyListeners();
   }
 }
