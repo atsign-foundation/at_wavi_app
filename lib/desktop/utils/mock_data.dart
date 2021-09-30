@@ -111,9 +111,9 @@ final mockFieldOrders = """
     "about"
   ],
   "LOCATION": [
-    "locationnickname",
     "location",
-    "office"
+    "office",
+    "locationnickname"
   ],
   "SOCIAL": [
     "twitter",
@@ -147,9 +147,9 @@ final mockPreviewOrders = """
     "about"
   ],
   "LOCATION": [
-    "locationnickname",
     "location",
-    "office"
+    "office",
+    "locationnickname"
   ],
   "SOCIAL": [
     "twitter",
@@ -237,9 +237,16 @@ final mockUser = """
     "path": null
   },
   "locationnickname": {
-    "value": "123",
+    "value": {
+      "location": null,
+      "radius": null,
+      "diameter": "100.0",
+      "zoom": "16.0",
+      "latitude": "37.33233141",
+      "longitude": "-122.0312186"
+    },
     "isPrivate": false,
-    "accountName": "locationnickname",
+    "accountName": "Coffee",
     "valueDescription": null,
     "type": "TextInputType(name: TextInputType.text, signed: null, decimal: null)",
     "path": null

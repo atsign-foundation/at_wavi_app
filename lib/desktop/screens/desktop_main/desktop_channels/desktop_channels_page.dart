@@ -1,8 +1,7 @@
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_channels/desktop_game/desktop_game_account_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_channels/desktop_social/desktop_social_account_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_basic_detail/desktop_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
-import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,14 +39,18 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
   late TabController _tabController;
   late DesktopChannelsModel _model;
 
-  late DesktopSocialAccountPage desktopSocialAccountPage;
-  late DesktopGameAccountPage desktopGameAccountPage;
+  late DesktopBasicDetailPage desktopSocialAccountPage;
+  late DesktopBasicDetailPage desktopGameAccountPage;
 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-    desktopSocialAccountPage = DesktopSocialAccountPage();
-    desktopGameAccountPage = DesktopGameAccountPage();
+    desktopSocialAccountPage = DesktopBasicDetailPage(
+      atCategory: AtCategory.SOCIAL,
+    );
+    desktopGameAccountPage = DesktopBasicDetailPage(
+      atCategory: AtCategory.GAMER,
+    );
 
     super.initState();
   }

@@ -1,3 +1,4 @@
+import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -16,9 +17,15 @@ class DesktopBasicDetailModel extends ChangeNotifier {
 
   List<String> get values => _values;
 
-  DesktopBasicDetailModel({required this.userPreview}) {
+  late AtCategory atCategory;
+
+  DesktopBasicDetailModel({
+    required this.userPreview,
+    required this.atCategory,
+  }) {
     try {
-      FieldOrderService().initCategoryFields(AtCategory.DETAILS);
+      this.atCategory = atCategory;
+      FieldOrderService().initCategoryFields(this.atCategory);
       fetchBasicData();
     } catch (e) {}
   }
@@ -27,12 +34,10 @@ class DesktopBasicDetailModel extends ChangeNotifier {
     _fields.clear();
     var userMap = User.toJson(userPreview.user());
     List<BasicData>? customFields =
-        userPreview.user()?.customFields[AtCategory.DETAILS.name] ?? [];
+        userPreview.user()?.customFields[this.atCategory.name] ?? [];
 
     var fields = <String>[];
-    fields = [
-      ...FieldNames().getFieldList(AtCategory.DETAILS, isPreview: true)
-    ];
+    fields = [...FieldNames().getFieldList(this.atCategory, isPreview: true)];
 
     for (int i = 0; i < fields.length; i++) {
       BasicData basicData = BasicData();
@@ -49,6 +54,10 @@ class DesktopBasicDetailModel extends ChangeNotifier {
           basicData = customFields[index];
           isCustomField = true;
         }
+      }
+      if (basicData.value is Map) {
+        var location = OsmLocationModel.fromJson(basicData.value);
+        basicData.value = location;
       }
       _fields.add(basicData);
     }
@@ -67,7 +76,5 @@ class DesktopBasicDetailModel extends ChangeNotifier {
     _fields[index].value = value;
   }
 
-  Future saveAndPublish() async {
-
-  }
+  Future saveAndPublish() async {}
 }

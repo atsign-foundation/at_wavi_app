@@ -5,7 +5,6 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
-import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -81,25 +80,6 @@ String getTitle(String title) {
   }
 }
 
-String getCategory(String screen) {
-  switch (screen) {
-    case MixedConstants.BASIC_DETAILS_KEY:
-      return AtCategory.DETAILS.name;
-    case MixedConstants.ADDITIONAL_DETAILS_KEY:
-      return AtCategory.ADDITIONAL_DETAILS.name;
-    case MixedConstants.MEDIA_KEY:
-      return AtCategory.IMAGE.name;
-    case MixedConstants.LOCATION_KEY:
-      return AtCategory.LOCATION.name;
-    case MixedConstants.GAME_KEY:
-      return AtCategory.GAMER.name;
-    case MixedConstants.SOCIAL_KEY:
-      return AtCategory.SOCIAL.name;
-    default:
-      return '';
-  }
-}
-
 Future updateCustomFields(
   BuildContext context,
   List<BasicData> listBasicData, {
@@ -108,10 +88,9 @@ Future updateCustomFields(
   var currentScreen = await getStringFromSharedPreferences(
     key: Strings.desktop_current_screen,
   );
-  var category = getCategory(currentScreen!);
   Provider.of<UserPreview>(context, listen: false)
       .user()!
-      .customFields[category] = listBasicData;
+      .customFields[currentScreen!] = listBasicData;
 }
 
 /// [updateDefinedFields]can be used to either update or delete value
@@ -126,16 +105,15 @@ Future updateDefinedFields(
     var currentScreen = await getStringFromSharedPreferences(
       key: Strings.desktop_current_screen,
     );
-    var category = getCategory(currentScreen!);
     var customFields = Provider.of<UserPreview>(context, listen: false)
             .user()!
-            .customFields[category] ??
+            .customFields[currentScreen] ??
         [];
     customFields.add(basicData);
 
     Provider.of<UserPreview>(context, listen: false)
         .user()!
-        .customFields[category] = customFields;
+        .customFields[currentScreen!] = customFields;
   } else {
     if (basicData.accountName == FieldsEnum.IMAGE.name) {
       Provider.of<UserPreview>(context, listen: false).user()!.image =

@@ -6,6 +6,7 @@ import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_video_thumbnail_widget.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
@@ -48,7 +49,7 @@ class _DesktopMediaPageState extends State<DesktopMediaPage>
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return DesktopVisibilityDetectorWidget(
-      keyScreen: MixedConstants.MEDIA_KEY,
+      keyScreen: AtCategory.IMAGE.name,
       child: ChangeNotifierProvider(
         create: (BuildContext c) {
           final userPreview = Provider.of<UserPreview>(context);
@@ -72,8 +73,8 @@ class _DesktopMediaPageState extends State<DesktopMediaPage>
                         context: context,
                         builder: (BuildContext context) => Dialog(
                           backgroundColor: Colors.transparent,
-                          child: (model.fields[index].type == 'jpg' ||
-                                  model.fields[index].type == 'png')
+                          child: (model.fields[index].extension == 'jpg' ||
+                                  model.fields[index].extension == 'png')
                               ? DesktopFullImagePage(
                                   path: model.fields[index].value!,
                                 )

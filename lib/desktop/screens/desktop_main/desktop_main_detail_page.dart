@@ -7,6 +7,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_notification/desktop_notific
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
+import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_main_tabbar.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_showcase_widget.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -110,7 +111,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
 
     _pageController = PageController();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      //  clearSharedPreferences();
+      //clearSharedPreferences();
       saveStringToSharedPreferences(
           key: Strings.desktop_current_tab, value: AtCategory.DETAILS_TAB.name);
     });
@@ -261,8 +262,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
                               size: 16,
                               color: ColorConstants.blackShade2,
                             ),
-                            onPressed: () {
-                            },
+                            onPressed: () {},
                           ),
                         ),
                         // DesktopShowCaseWidget(
@@ -397,16 +397,16 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
           key: Strings.desktop_current_screen,
         );
         switch (currentScreen) {
-          case MixedConstants.BASIC_DETAILS_KEY:
+          case 'DETAILS':
             await desktopDetailsPage.addFieldToBasicDetail();
             break;
-          case MixedConstants.ADDITIONAL_DETAILS_KEY:
+          case 'ADDITIONAL_DETAILS':
             await desktopDetailsPage.addFieldToAdditionalDetail();
             break;
-          case MixedConstants.SOCIAL_KEY:
+          case 'SOCIAL':
             await desktopChannelsPage.addFieldToSocial();
             break;
-          case MixedConstants.GAME_KEY:
+          case 'GAMER':
             await desktopChannelsPage.addFieldToGame();
             break;
           case MixedConstants.INSTAGRAM_KEY:
@@ -458,10 +458,10 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
     );
     List<PopupMenuEntry<String>> menus = [];
     switch (currentScreen) {
-      case MixedConstants.MEDIA_KEY:
+      case 'IMAGE':
         menus = menuMedias;
         break;
-      case MixedConstants.LOCATION_KEY:
+      case 'LOCATION':
         menus = menuLocations;
         break;
       default:

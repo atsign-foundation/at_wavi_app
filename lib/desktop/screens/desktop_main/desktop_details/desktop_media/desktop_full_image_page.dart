@@ -40,7 +40,7 @@ class _DesktopFullImagePageState extends State<DesktopFullImagePage> {
         ),
         Positioned(
           right: 8,
-          top: 2,
+          top: 0,
           child: IconButton(
             icon: Icon(
               Icons.clear,

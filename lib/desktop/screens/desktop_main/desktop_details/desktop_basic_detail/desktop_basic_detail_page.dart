@@ -4,19 +4,26 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
+import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
-import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 import '../../desktop_basic_item.dart';
+import '../../desktop_location_item.dart';
 import '../../desktop_media_item.dart';
 import 'desktop_basic_detail_model.dart';
 
 class DesktopBasicDetailPage extends StatefulWidget {
-  DesktopBasicDetailPage({Key? key}) : super(key: key);
+  late AtCategory atCategory;
+
+  DesktopBasicDetailPage({
+    Key? key,
+    required this.atCategory,
+  }) : super(key: key);
 
   var _desktopBasicDetailPageState = _DesktopBasicDetailPageState();
 
@@ -49,11 +56,14 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return DesktopVisibilityDetectorWidget(
-      keyScreen: MixedConstants.BASIC_DETAILS_KEY,
+      keyScreen: widget.atCategory.name,
       child: ChangeNotifierProvider(
         create: (BuildContext c) {
           final userPreview = Provider.of<UserPreview>(context);
-          _model = DesktopBasicDetailModel(userPreview: userPreview);
+          _model = DesktopBasicDetailModel(
+            userPreview: userPreview,
+            atCategory: widget.atCategory,
+          );
           return _model;
         },
         child: Column(
@@ -81,16 +91,27 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                             padding: EdgeInsets.symmetric(vertical: 8),
                             itemCount: model.fields.length,
                             itemBuilder: (context, index) {
-                              return (model.fields[index].extension != null)
-                                  ? DesktopMediaItem(
-                                      data: model.fields[index],
-                                    )
-                                  : DesktopBasicItem(
-                                      data: model.fields[index],
-                                      onValueChanged: (text) {
-                                        _model.updateValues(index, text);
-                                      },
-                                    );
+                              if ((model.fields[index].extension != null)) {
+                                return DesktopMediaItem(
+                                  data: model.fields[index],
+                                );
+                              } else if (model.fields[index].value
+                                  is OsmLocationModel) {
+                                var latLng = LatLng(
+                                    model.fields[index].value.latitude,
+                                    model.fields[index].value.longitude);
+                                return DesktopLocationItem(
+                                  data: model.fields[index],
+                                  latLng: latLng,
+                                );
+                              } else {
+                                return DesktopBasicItem(
+                                  data: model.fields[index],
+                                  onValueChanged: (text) {
+                                    _model.updateValues(index, text);
+                                  },
+                                );
+                              }
                             },
                             separatorBuilder:
                                 (BuildContext context, int index) {
@@ -125,7 +146,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                   onPressed: () async {
                     await showReOderFieldsPopUp(
                       context,
-                      AtCategory.DETAILS,
+                      widget.atCategory,
                       () {
                         /// Update Fields after reorder
                         _model.fetchBasicData();
