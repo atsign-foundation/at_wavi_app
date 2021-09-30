@@ -1,7 +1,9 @@
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_add_location/desktop_add_location_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_basic_detail_item_widget.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_empty_category_widget.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_media_item_widget.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_main_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_media_item.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart';
@@ -155,7 +157,8 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => DesktopMainPage()),
+                      MaterialPageRoute(
+                          builder: (context) => DesktopMainPage()),
                     );
                   },
                 ),
@@ -198,10 +201,14 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
             color: Color(0xF5f5f5).withOpacity(0.5),
             borderRadius: borderRadius,
           ),
-          child: DesktopBasicDetailItemWidget(
-            title: item.data.accountName ?? '',
-            description: item.data.value ?? '',
-          ),
+          child: item.data.extension != null
+              ? DesktopMediaItemWidget(
+                  data: item.data,
+                )
+              : DesktopBasicDetailItemWidget(
+                  title: item.data.accountName ?? '',
+                  description: item.data.value ?? '',
+                ),
         );
       },
       separatorBuilder: (context, index) {

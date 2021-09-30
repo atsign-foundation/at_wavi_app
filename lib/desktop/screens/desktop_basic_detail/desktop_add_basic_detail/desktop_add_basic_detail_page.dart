@@ -34,12 +34,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
   late DesktopAddBasicDetailModel _model;
   final _showHideController = ShowHideController(isShow: true);
 
-  final _titleTextController = TextEditingController();
-  final _textContentTextController = TextEditingController();
-  final _linkContentTextController = TextEditingController();
   final _numberContentTextController = TextEditingController();
-  final _imageContentTextController = TextEditingController();
-  final _youtubeContentTextController = TextEditingController();
   final _htmlContentTextController = TextEditingController();
 
   late var contentDropDown;

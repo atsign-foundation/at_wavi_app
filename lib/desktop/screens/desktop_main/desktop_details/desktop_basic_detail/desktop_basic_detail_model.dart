@@ -50,10 +50,6 @@ class DesktopBasicDetailModel extends ChangeNotifier {
           isCustomField = true;
         }
       }
-
-      if (basicData.accountName == null) {
-        continue;
-      }
       _fields.add(basicData);
     }
     notifyListeners();

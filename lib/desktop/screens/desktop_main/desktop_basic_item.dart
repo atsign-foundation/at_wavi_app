@@ -24,7 +24,7 @@ class DesktopBasicItem extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 110,
+            width: 120,
             child: Text(
               getTitle(data.accountName ?? ''),
               style: TextStyle(

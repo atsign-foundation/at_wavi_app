@@ -28,7 +28,7 @@ class DesktopLinkItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            width: 110,
+            width: 120,
             child: Text(
                 getTitle(title),
               style: TextStyle(

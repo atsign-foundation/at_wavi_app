@@ -1,6 +1,7 @@
 import 'package:at_location_flutter/map_content/flutter_map/flutter_map.dart';
 import 'package:at_wavi_app/common_components/create_marker.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_location/desktop_location_model.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_location_item.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
@@ -82,81 +83,9 @@ class _DesktopLocationPageState extends State<DesktopLocationPage>
                                       var latLng = LatLng(
                                           model.fields[index].value.latitude,
                                           model.fields[index].value.longitude);
-                                      return Container(
-                                        padding: EdgeInsets.all(16),
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              width: 110,
-                                              child: Text(
-                                                model.fields[index]
-                                                        .accountName ??
-                                                    '',
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: appTheme
-                                                        .secondaryTextColor,
-                                                    fontFamily: 'Inter'),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 16,
-                                            ),
-                                            Expanded(
-                                              child: ConstrainedBox(
-                                                constraints: BoxConstraints(
-                                                  maxHeight: 320,
-                                                  minHeight: 320,
-                                                ),
-                                                child: AbsorbPointer(
-                                                  absorbing: true,
-                                                  child: FlutterMap(
-                                                    options: MapOptions(
-                                                      boundsOptions:
-                                                          FitBoundsOptions(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(0)),
-                                                      center: latLng,
-                                                      zoom: 14.0,
-                                                    ),
-                                                    layers: [
-                                                      TileLayerOptions(
-                                                        urlTemplate:
-                                                            'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Jr6qaSd6EftaATGRMYaN',
-                                                        subdomains: [
-                                                          'a',
-                                                          'b',
-                                                          'c'
-                                                        ],
-                                                        minNativeZoom: 2,
-                                                        maxNativeZoom: 18,
-                                                        minZoom: 1,
-                                                        tileProvider:
-                                                            NonCachingNetworkTileProvider(),
-                                                      ),
-                                                      MarkerLayerOptions(
-                                                        markers: [
-                                                          Marker(
-                                                            width: 40,
-                                                            height: 50,
-                                                            point: latLng,
-                                                            builder: (ctx) =>
-                                                                Container(
-                                                              child: createMarker(
-                                                                  diameterOfCircle:
-                                                                      0),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                      return DesktopLocationItem(
+                                        data: model.fields[index],
+                                        latLng: latLng,
                                       );
                                     } else {
                                       return Container();

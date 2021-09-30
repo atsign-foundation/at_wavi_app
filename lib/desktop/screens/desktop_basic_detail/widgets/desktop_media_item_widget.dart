@@ -5,10 +5,10 @@ import 'package:at_wavi_app/desktop/widgets/desktop_video_thumbnail_widget.dart'
 import 'package:at_wavi_app/model/user.dart';
 import 'package:flutter/cupertino.dart';
 
-class DesktopMediaItem extends StatelessWidget {
+class DesktopMediaItemWidget extends StatelessWidget {
   BasicData data;
 
-  DesktopMediaItem({
+  DesktopMediaItemWidget({
     required this.data,
   });
 
@@ -22,12 +22,13 @@ class DesktopMediaItem extends StatelessWidget {
       ),
       child: Row(
         children: [
+          SizedBox(width: 11),
           Container(
-            width: 120,
+            width: 200,
             child: Text(
               data.accountName ?? '',
               style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 16,
                   color: appTheme.secondaryTextColor,
                   fontFamily: 'Inter'),
             ),
@@ -40,13 +41,13 @@ class DesktopMediaItem extends StatelessWidget {
             height: 200,
             child: (data.extension == 'jpg' || data.extension == 'png')
                 ? Image.file(
-                    File(data.value!),
-                    fit: BoxFit.fitWidth,
-                  )
+              File(data.value!),
+              fit: BoxFit.fitWidth,
+            )
                 : DesktopVideoThumbnailWidget(
-                    path: data.value!,
-                    extension: data.extension ?? '',
-                  ),
+              path: data.value!,
+              extension: data.extension ?? '',
+            ),
           ),
           Expanded(
             child: Container(),

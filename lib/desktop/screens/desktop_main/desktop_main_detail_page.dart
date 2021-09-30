@@ -410,10 +410,8 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
             await desktopChannelsPage.addFieldToGame();
             break;
           case MixedConstants.INSTAGRAM_KEY:
-            //      await desktopFeaturedPage.addFieldToInstagram(result);
             break;
           case MixedConstants.TWITTER_KEY:
-            //      await desktopFeaturedPage.addFieldToTwitter(result);
             break;
         }
       }

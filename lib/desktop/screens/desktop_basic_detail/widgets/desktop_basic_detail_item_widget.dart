@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class DesktopBasicDetailItemWidget extends StatelessWidget {
@@ -22,7 +23,7 @@ class DesktopBasicDetailItemWidget extends StatelessWidget {
           Container(
             width: 200,
             child: Text(
-              title,
+              getTitle(title),
               style: TextStyle(color: appTheme.secondaryTextColor, fontSize: 16),
             ),
           ),
