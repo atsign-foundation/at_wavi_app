@@ -20,14 +20,13 @@ class DesktopAddLocationModel extends ChangeNotifier {
 
   BasicData? get data => _data;
   late bool _isPrivate;
-  String _locationString = '', _locationNickname = '';
+  String _locationString = '';
 
   var locationTextController = TextEditingController();
   var tagTextController = TextEditingController();
 
   DesktopAddLocationModel({required this.userPreview}) {
     _data = userPreview.user()!.location;
-    _locationNickname = userPreview.user()!.locationNickName.value ?? '';
     _isPrivate = userPreview.user()!.location.isPrivate;
 
     _osmLocationModel = OsmLocationModel(
