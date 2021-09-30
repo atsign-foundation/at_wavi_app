@@ -80,7 +80,7 @@ class _DesktopPassCodeDialogState extends State<DesktopPassCodeDialog> {
               await Future.delayed(const Duration(milliseconds: 500));
               DesktopSetupRoutes.push(
                 context,
-                DesktopRoutes.DESKTOP_MAIN,
+                DesktopRoutes.DESKTOP_HOME,
                 arguments: {
                   'index': 1,
                 },
