@@ -2,7 +2,7 @@ import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
-import 'desktop_login_guide_page.dart';
+import 'desktop_onboarding_page.dart';
 import 'desktop_login_page.dart';
 
 class DesktopLoginLandingPage extends StatefulWidget {
@@ -18,7 +18,7 @@ class _DesktopLoginLandingPageState extends State<DesktopLoginLandingPage> {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Scaffold(
-      backgroundColor: ColorConstants.white,
+      backgroundColor: appTheme.backgroundColor,
       body: Container(
         child: Row(
           children: [
@@ -26,13 +26,9 @@ class _DesktopLoginLandingPageState extends State<DesktopLoginLandingPage> {
               flex: 1,
               child: DesktopLoginPage(),
             ),
-            Container(
-              width: 1,
-              color: appTheme.borderColor,
-            ),
             Expanded(
               flex: 1,
-              child: DesktopLoginGuidePage(),
+              child: DesktopOnBoardingPage(),
             ),
           ],
         ),

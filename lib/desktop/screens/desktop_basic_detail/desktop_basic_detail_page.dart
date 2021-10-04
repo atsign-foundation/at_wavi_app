@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_add_location/desktop_add_location_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_basic_detail_item_widget.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_empty_category_widget.dart';
@@ -252,7 +254,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
             ),
             child: DesktopLocationItemWidget(
               title: _model.locationNicknameData?.value ?? '',
-              description: _model.locationData?.value?.toString() ?? '',
+              description: jsonEncode(_model.locationData?.value),
             ),
           );
         }
@@ -265,7 +267,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
           ),
           child: DesktopLocationItemWidget(
             title: item.data.accountName ?? '',
-            description: item.data.value.toString(),
+            description: jsonEncode(_model.locationData?.value),
           ),
         );
       },

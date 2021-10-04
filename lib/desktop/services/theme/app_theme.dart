@@ -21,6 +21,7 @@ class AppTheme {
 
   /// A color that typically appears behind scrollable content.
   final Color backgroundColor;
+  final Color secondaryBackgroundColor;
 
   final Color primaryTextColor;
   final Color secondaryTextColor;
@@ -36,6 +37,7 @@ class AppTheme {
     required this.primaryColor,
     required this.secondaryColor,
     required this.backgroundColor,
+    required this.secondaryBackgroundColor,
     required this.primaryTextColor,
     required this.secondaryTextColor,
     required this.separatorColor,
@@ -47,6 +49,7 @@ class AppTheme {
     Color primaryColor = ColorConstants.desktopPrimaryDefault,
     Color? secondaryColor,
     Color? backgroundColor,
+    Color? secondaryBackgroundColor,
     Color? primaryTextColor,
     Color? secondaryTextColor,
     Color? separatorColor,
@@ -60,6 +63,10 @@ class AppTheme {
           (brightness == Brightness.dark
               ? ColorConstants.desktopBackgroundDark
               : ColorConstants.desktopBackgroundLight),
+      secondaryBackgroundColor: secondaryBackgroundColor ??
+          (brightness == Brightness.dark
+              ? ColorConstants.desktopSecondaryBackgroundDark
+              : ColorConstants.desktopSecondaryBackgroundLight),
       primaryTextColor: primaryTextColor ??
           (brightness == Brightness.dark
               ? ColorConstants.desktopPrimaryTextDark

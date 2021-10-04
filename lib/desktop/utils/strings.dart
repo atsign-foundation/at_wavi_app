@@ -62,9 +62,9 @@ class Strings {
 
   static const String desktop_all_links_in_one = 'All links in one!';
   static const String desktop_create_persona = 'Create your persona in a single link and share it with others.';
-  static const String desktop_get_sign = 'Don\'t have an sign? Get now.';
+  static const String desktop_get_sign = 'Don’t have an @sign? Get now.';
   static const String desktop_sign = '@sign';
-  static const String desktop_enter_sign = 'Enter @Sign';
+  static const String desktop_enter_sign = 'Enter @sign';
   static const String desktop_search_sign = 'Search sign';
   static const String desktop_recent_search = 'Recent Search';
   static const String desktop_prefix_sign = '@sign';

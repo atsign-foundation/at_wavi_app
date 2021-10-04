@@ -57,7 +57,7 @@ class DesktopTextField extends StatelessWidget {
           style: TextStyle(
             fontSize: textSize,
             fontWeight: FontWeight.normal,
-            color: ColorConstants.blackShade2,
+            color: appTheme.primaryTextColor,
           ),
           onChanged: onChanged,
           decoration: InputDecoration(
@@ -71,8 +71,7 @@ class DesktopTextField extends StatelessWidget {
             hintText: hint,
             hintStyle: TextStyle(
               color: appTheme.secondaryTextColor,
-              fontSize: 12,
-              fontFamily: 'Inter',
+              fontSize: textSize,
             ),
             filled: backgroundColor != null,
             fillColor: backgroundColor,

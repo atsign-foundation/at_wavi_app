@@ -31,9 +31,6 @@ class ColorConstants {
   static const Color lightGrey = Color(0xFFF5F4F9);
   static const Color greyText = Color(0xFF98A0B1);
 
-  static const Color desktopGreen = Color(0xFF00B7B8);
-  static const Color desktopBackgroundLightGreen = Color(0xFFFAFFFF);
-
   /// Opacity color
   static Color dullColor({Color color = Colors.black, double opacity = 0.5}) =>
       color.withOpacity(opacity);
@@ -49,6 +46,8 @@ class ColorConstants {
   static const Color desktopPrimaryDefault = Color(0xFF00B7B8);
   static const Color desktopBackgroundLight = Colors.white;
   static const Color desktopBackgroundDark = Color(0xFF121212);
+  static const Color desktopSecondaryBackgroundLight = Color(0x10F5F5F5);
+  static const Color desktopSecondaryBackgroundDark = Color(0x10F5F5F5);
   static const Color desktopPrimaryTextLight = Color(0xFF0D1F44);
   static const Color desktopPrimaryTextDark = Colors.white;
   static const Color desktopSecondaryTextLight = Color(0xFF98A0B1);

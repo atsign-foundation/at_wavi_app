@@ -7,6 +7,7 @@ class DesktopButton extends StatelessWidget {
   final Color? titleColor;
   final Color? backgroundColor;
   final Color? borderColor;
+  final double borderRadius;
   final double width;
   final double height;
   final double textSize;
@@ -18,6 +19,7 @@ class DesktopButton extends StatelessWidget {
     this.titleColor,
     this.backgroundColor,
     this.borderColor,
+    this.borderRadius = 5,
     this.textSize = 16,
     this.width = 184,
     this.height = 56,
@@ -43,7 +45,7 @@ class DesktopButton extends StatelessWidget {
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4.0),
+              borderRadius: BorderRadius.circular(borderRadius),
               side: BorderSide(
                 color: borderColor ?? Colors.transparent,
                 width: 0.5,

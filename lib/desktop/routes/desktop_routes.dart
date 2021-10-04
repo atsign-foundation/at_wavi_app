@@ -19,25 +19,22 @@ class DesktopSetupRoutes {
 
   static Map<String, WidgetBuilder> get routes {
     return {
-      DesktopRoutes.DESKTOP_HOME: (context) => DesktopHomePage(),
-      DesktopRoutes.DESKTOP_PROFILE: (context) =>
-          DesktopProfilePage(key: UniqueKey()),
-      DesktopRoutes.DESKTOP_LOGIN: (context) =>
-          DesktopLoginLandingPage(key: UniqueKey()),
-      DesktopRoutes.DESKTOP_MAIN: (context) =>
-          DesktopMainPage(key: UniqueKey()),
-    };
-  }
-
-  static Map<String, WidgetBuilder> routeBuilders(
-      BuildContext context, RouteSettings routeSettings) {
-    return {
+      DesktopRoutes.DESKTOP_LOGIN: (context) => DesktopLoginLandingPage(),
       DesktopRoutes.DESKTOP_HOME: (context) => DesktopHomePage(),
       DesktopRoutes.DESKTOP_PROFILE: (context) => DesktopProfilePage(),
-      DesktopRoutes.DESKTOP_LOGIN: (context) => DesktopLoginLandingPage(),
       DesktopRoutes.DESKTOP_MAIN: (context) => DesktopMainPage(),
     };
   }
+
+  // static Map<String, WidgetBuilder> routeBuilders(
+  //     BuildContext context, RouteSettings routeSettings) {
+  //   return {
+  //     DesktopRoutes.DESKTOP_HOME: (context) => DesktopHomePage(),
+  //     DesktopRoutes.DESKTOP_PROFILE: (context) => DesktopProfilePage(),
+  //     DesktopRoutes.DESKTOP_LOGIN: (context) => DesktopLoginLandingPage(),
+  //     DesktopRoutes.DESKTOP_MAIN: (context) => DesktopMainPage(),
+  //   };
+  // }
 
   static Future push(BuildContext context, String value,
       {Object? arguments, Function? callbackAfterNavigation}) {

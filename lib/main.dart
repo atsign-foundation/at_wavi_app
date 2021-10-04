@@ -12,7 +12,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runZoned<Future<void>>(() async {
     if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-      await DesktopWindow.setWindowSize(Size(1200, 700));
+      await DesktopWindow.setWindowSize(Size(1366, 768));
       await DesktopWindow.setMinWindowSize(Size(1200, 700));
       DartVLC.initialize();
     }

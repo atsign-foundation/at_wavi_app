@@ -33,6 +33,8 @@ class _DesktopPassCodeDialogState extends State<DesktopPassCodeDialog> {
     final appTheme = AppTheme.of(context);
     return Container(
       width: 400,
+      color: appTheme.backgroundColor,
+      padding: EdgeInsets.all(16.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,

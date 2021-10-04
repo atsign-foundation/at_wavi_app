@@ -5,6 +5,7 @@ import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/material.dart';
 
 class DesktopLoginPage extends StatefulWidget {
@@ -44,124 +45,110 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Scaffold(
-      backgroundColor: ColorConstants.white,
+      backgroundColor: appTheme.backgroundColor,
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 60, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: 78),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              margin: EdgeInsets.only(top: 32),
+              margin: EdgeInsets.only(top: 60),
               child: Image.asset(
-                'assets/images/logo_dark.png',
-                fit: BoxFit.fitHeight,
-                height: 24,
+                appTheme.isDark ? Images.logoLight : Images.logoDark,
+                width: 90,
+                height: 34,
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  Strings.desktop_all_links_in_one,
-                  style: TextStyle(
-                    fontSize: 40,
-                    color: appTheme.primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'PlayfairDisplay',
-                  ),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                Text(
-                  Strings.desktop_create_persona,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: appTheme.secondaryTextColor,
-                    fontWeight: FontWeight.normal,
-                    fontFamily: 'Inter',
-                  ),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  Strings.desktop_sign,
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: appTheme.primaryTextColor,
-                    fontWeight: FontWeight.normal,
-                    fontFamily: 'Inter',
-                  ),
-                ),
-                SizedBox(
-                  height: 12,
-                ),
-                _buildLoginTextField(appTheme),
-                SizedBox(
-                  height: 16,
-                ),
-                DesktopButton(
-                  width: 540,
-                  backgroundColor: appTheme.primaryColor,
-                  title: Strings.desktop_send,
-                  onPressed: () async {
-                    await showPassCodeDialog(context,
-                        atSign: atSignTextEditingController.text);
-                  },
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {});
-                    BackendService().onboard('');
-                  },
-                  child: Text(
-                    Strings.desktop_get_sign,
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    Strings.desktop_all_links_in_one,
                     style: TextStyle(
-                      fontSize: 12,
-                      color: appTheme.primaryColor,
-                      fontWeight: FontWeight.normal,
-                      fontFamily: 'Inter',
+                      fontSize: 60,
+                      color: appTheme.primaryTextColor,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'PlayfairDisplay',
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(height: 12),
+                  Text(
+                    Strings.desktop_create_persona,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: appTheme.secondaryTextColor,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  SizedBox(height: 68),
+                  Text(
+                    Strings.desktop_sign,
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: appTheme.primaryTextColor,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Container(
+                    width: 540,
+                    child: DesktopTextField(
+                      controller: atSignTextEditingController,
+                      hint: Strings.desktop_enter_sign,
+                      backgroundColor: appTheme.secondaryBackgroundColor,
+                      borderRadius: 10,
+                      textSize: 24,
+                      hasUnderlineBorder: false,
+                      contentPadding: 26,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  DesktopButton(
+                    width: 540,
+                    backgroundColor: appTheme.primaryColor,
+                    title: Strings.desktop_send,
+                    borderRadius: 10,
+                    height: 72,
+                    onPressed: () async {
+                      await showPassCodeDialog(context,
+                          atSign: atSignTextEditingController.text);
+                    },
+                  ),
+                  SizedBox(
+                    height: 22,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      BackendService().onboard('');
+                    },
+                    child: Text(
+                      Strings.desktop_get_sign,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: appTheme.primaryColor,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(
-              height: 32,
-            ),
-            _buildFooterWidget(appTheme),
+            SizedBox(),
+            _buildFooterWidget(),
           ],
         ),
       ),
     );
   }
 
-  _buildLoginTextField(AppTheme appTheme) {
-    return DesktopTextField(
-      controller: atSignTextEditingController,
-      hint: Strings.desktop_enter_sign,
-      backgroundColor: ColorConstants.LIGHT_GREY,
-      borderRadius: 5,
-      textSize: 14,
-      hasUnderlineBorder: false,
-      contentPadding: 20,
-      onChanged: (text) {},
-    );
-  }
-
-  _buildFooterWidget(AppTheme appTheme) {
+  _buildFooterWidget() {
+    final appTheme = AppTheme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -169,26 +156,21 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
         Text(
           Strings.desktop_wavi,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 16,
             color: appTheme.primaryTextColor,
             fontWeight: FontWeight.w400,
-            fontFamily: 'Inter',
           ),
         ),
-        SizedBox(
-          height: 5,
-        ),
+        SizedBox(height: 4),
         Text(
           Strings.desktop_company_copyrights,
           style: TextStyle(
-            fontSize: 11,
+            fontSize: 12,
             color: appTheme.secondaryTextColor,
             fontWeight: FontWeight.normal,
           ),
         ),
-        SizedBox(
-          height: 5,
-        ),
+        SizedBox(height: 24),
       ],
     );
   }

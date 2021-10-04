@@ -1,6 +1,7 @@
 import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_reorder_basic_detail/desktop_reorder_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_login/desktop_passcode_dialog.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_notification/desktop_notification_page.dart';
+import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -14,6 +15,7 @@ Future<dynamic> showPassCodeDialog(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
+      final appTheme = AppTheme.of(context);
       return Center(
         child: Card(
           shape: RoundedRectangleBorder(
@@ -21,10 +23,10 @@ Future<dynamic> showPassCodeDialog(
           ),
           child: Container(
             decoration: BoxDecoration(
-                //    border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(5),
-                color: Colors.white),
-            padding: EdgeInsets.all(16.0),
+              //    border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(5),
+              color: appTheme.backgroundColor,
+            ),
             child: DesktopPassCodeDialog(
               atSign: atSign,
             ),
