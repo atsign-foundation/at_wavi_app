@@ -105,7 +105,9 @@ class _PassCodeWidgetState extends State<PassCodeWidget> {
                       letter: letter,
                       indicatorColor: appTheme.primaryColor,
                       textStyle: TextStyle(
-                        fontSize: 18,
+                        fontSize: 28,
+                        fontWeight: FontWeight.w500,
+                        color: appTheme.primaryTextColor,
                       ),
                     ),
                   );
@@ -119,7 +121,8 @@ class _PassCodeWidgetState extends State<PassCodeWidget> {
   }
 }
 
-class _SingleLetterWidget extends StatelessWidget {
+class _SingleLetterWidget
+    extends StatelessWidget {
   final String letter;
   final double width;
   final double height;
@@ -130,8 +133,8 @@ class _SingleLetterWidget extends StatelessWidget {
   const _SingleLetterWidget({
     Key? key,
     required this.letter,
-    this.width = 36,
-    this.height = 48,
+    this.width = 67,
+    this.height = 78,
     this.indicatorHeight = 3,
     required this.indicatorColor,
     required this.textStyle,
@@ -141,12 +144,10 @@ class _SingleLetterWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      decoration: new BoxDecoration(color: appTheme.borderColor
-          // borderRadius: new BorderRadius.all(
-          //   Radius.circular(10.0),
-          // ),
-          // border: Border.all(color: appTheme.primaryColor),
-          ),
+      decoration: new BoxDecoration(
+        color: appTheme.secondaryBackgroundColor,
+        borderRadius: BorderRadius.circular(4)
+      ),
       width: this.width,
       height: this.height,
       child: Column(

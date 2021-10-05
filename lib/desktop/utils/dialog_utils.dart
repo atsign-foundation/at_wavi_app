@@ -7,34 +7,29 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:flutter/material.dart';
 
-Future<dynamic> showPassCodeDialog(
-  BuildContext context, {
-  required String atSign,
-}) async {
-  return showDialog<dynamic>(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      final appTheme = AppTheme.of(context);
-      return Center(
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              //    border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(5),
-              color: appTheme.backgroundColor,
-            ),
-            child: DesktopPassCodeDialog(
-              atSign: atSign,
-            ),
+class DialogUtils {
+  static void showError({
+    required BuildContext context,
+    required String message,
+  }) {
+    ScaffoldMessenger.of(context)
+        .hideCurrentSnackBar(reason: SnackBarClosedReason.remove);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
           ),
         ),
-      );
-    },
-  );
+        backgroundColor: Colors.redAccent,
+        duration: Duration(
+          seconds: 2,
+        ),
+      ),
+    );
+  }
 }
 
 Future<dynamic> showNotificationsDialog(

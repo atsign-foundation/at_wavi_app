@@ -4,9 +4,10 @@ import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/passcode_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class DesktopPassCodeDialog extends StatefulWidget {
-  String atSign;
+  final String atSign;
 
   DesktopPassCodeDialog({
     Key? key,
@@ -32,46 +33,45 @@ class _DesktopPassCodeDialogState extends State<DesktopPassCodeDialog> {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      width: 400,
-      color: appTheme.backgroundColor,
-      padding: EdgeInsets.all(16.0),
+      width: 680,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: appTheme.backgroundColor,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Stack(
             children: [
-              SizedBox(
-                width: 16,
-              ),
               Container(
-                margin: EdgeInsets.only(
-                  top: 10,
-                ),
-                child: Text(
-                  '${Strings.desktop_passcode_title} @${widget.atSign}',
-                  style: TextStyle(
-                    color: appTheme.primaryTextColor,
-                    fontSize: 14,
-                    fontFamily: 'Inter',
+                margin: EdgeInsets.only(top: 48, bottom: 32),
+                child: Center(
+                  child: Text(
+                    '${Strings.desktop_passcode_title} @${widget.atSign}',
+                    style: TextStyle(
+                      color: appTheme.primaryTextColor,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  Icons.clear,
-                  size: 24,
-                  color: appTheme.primaryTextColor,
+              Positioned(
+                top: 16,
+                right: 16,
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.clear,
+                    size: 28,
+                    color: appTheme.primaryTextColor,
+                  ),
                 ),
               ),
             ],
-          ),
-          SizedBox(
-            height: 24,
           ),
           PassCodeWidget(
             controller: passCodeTextEditingController,
@@ -79,37 +79,30 @@ class _DesktopPassCodeDialogState extends State<DesktopPassCodeDialog> {
             isSecured: false,
             textWarning: Strings.desktop_wrong_passcode,
             onDone: (text) async {
-              await Future.delayed(const Duration(milliseconds: 500));
-              DesktopSetupRoutes.push(
-                context,
-                DesktopRoutes.DESKTOP_HOME,
-                arguments: {
-                  'index': 1,
-                },
-              );
+              //Todo: verify passcode
+              Navigator.pop(context, 'success');
             },
           ),
+          SizedBox(height: 40),
           Text(
             Strings.desktop_or,
             style: TextStyle(
-              color: appTheme.primaryTextColor,
-              fontSize: 14,
+              color: appTheme.secondaryTextColor,
+              fontSize: 24,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(
-            height: 16,
-          ),
+          SizedBox(height: 32),
           Text(
             Strings.desktop_passcode_description,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: appTheme.primaryTextColor,
-              fontSize: 14,
-              fontFamily: 'Inter',
+              fontSize: 24,
             ),
           ),
           SizedBox(
-            height: 20,
+            height: 56,
           ),
         ],
       ),

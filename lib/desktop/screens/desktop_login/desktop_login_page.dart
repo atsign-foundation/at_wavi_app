@@ -1,3 +1,4 @@
+import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
@@ -7,6 +8,8 @@ import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/material.dart';
+
+import 'desktop_passcode_dialog.dart';
 
 class DesktopLoginPage extends StatefulWidget {
   const DesktopLoginPage({Key? key}) : super(key: key);
@@ -115,10 +118,7 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                     title: Strings.desktop_send,
                     borderRadius: 10,
                     height: 72,
-                    onPressed: () async {
-                      await showPassCodeDialog(context,
-                          atSign: atSignTextEditingController.text);
-                    },
+                    onPressed: _showPassCodeDialog,
                   ),
                   SizedBox(
                     height: 22,
@@ -173,5 +173,32 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
         SizedBox(height: 24),
       ],
     );
+  }
+
+  void _showPassCodeDialog() async {
+    final atSign = atSignTextEditingController.text;
+    if (atSign.trim().isEmpty) {
+      DialogUtils.showError(
+        context: context,
+        message: "Lỗi lòi ra"
+      );
+      return;
+    }
+    final result = await showDialog<dynamic>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: DesktopPassCodeDialog(
+            atSign: atSign,
+          ),
+        );
+      },
+    );
+    if (result == 'success') {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          DesktopRoutes.DESKTOP_MAIN, (Route<dynamic> route) => false);
+    }
   }
 }
