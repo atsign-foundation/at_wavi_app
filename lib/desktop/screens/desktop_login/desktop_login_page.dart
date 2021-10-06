@@ -212,7 +212,7 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
     );
     if (result == 'success') {
       Navigator.of(context).pushNamedAndRemoveUntil(
-          DesktopRoutes.DESKTOP_MAIN, (Route<dynamic> route) => false);
+          DesktopRoutes.DESKTOP_MY_PROFILE, (Route<dynamic> route) => false);
     }
   }
 }

@@ -1,6 +1,5 @@
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_follow/desktop_follow_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_search/desktop_search_page.dart';
-import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_follow/desktop_follow_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_search/desktop_search_page.dart';
 import 'package:at_wavi_app/desktop/utils/enums.dart';
 import 'package:flutter/material.dart';
 

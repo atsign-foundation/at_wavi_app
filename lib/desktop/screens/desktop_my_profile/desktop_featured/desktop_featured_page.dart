@@ -1,6 +1,3 @@
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_featured/desktop_featured_model.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_featured/desktop_instagram_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_featured/desktop_twitter_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/desktop/utils/utils.dart';
@@ -8,6 +5,10 @@ import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'desktop_featured_model.dart';
+import 'desktop_instagram_page.dart';
+import 'desktop_twitter_page.dart';
 
 class DesktopFeaturedPage extends StatefulWidget {
   DesktopFeaturedPage({

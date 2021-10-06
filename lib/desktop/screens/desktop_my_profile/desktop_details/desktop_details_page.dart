@@ -1,5 +1,3 @@
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_basic_detail/desktop_basic_detail_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_media/desktop_media_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -7,7 +5,9 @@ import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'desktop_basic_detail/desktop_basic_detail_page.dart';
 import 'desktop_details_model.dart';
+import 'desktop_media/desktop_media_page.dart';
 
 class DesktopDetailsPage extends StatefulWidget {
   DesktopDetailsPage({

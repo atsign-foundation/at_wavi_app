@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_main_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_my_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart';
@@ -159,7 +159,7 @@ class _DesktopProfileBasicInfoPageState extends State<DesktopProfileBasicInfoPag
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DesktopMainPage()),
+                          builder: (context) => DesktopMyProfilePage()),
                     );
                   },
                 ),

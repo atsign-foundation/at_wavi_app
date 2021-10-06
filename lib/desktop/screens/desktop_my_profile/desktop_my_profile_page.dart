@@ -1,23 +1,22 @@
-import 'package:at_wavi_app/desktop/screens/desktop_profile/desktop_profile_info_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_profile_info_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/enums.dart';
-import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 import 'desktop_drawer/desktop_drawer_page.dart';
 import 'desktop_main_detail_page.dart';
 
-class DesktopMainPage extends StatefulWidget {
-  DesktopMainPage({
+class DesktopMyProfilePage extends StatefulWidget {
+  DesktopMyProfilePage({
     Key? key,
   }) : super(key: key);
 
   @override
-  _DesktopMainPageState createState() => _DesktopMainPageState();
+  _DesktopMyProfilePageState createState() => _DesktopMyProfilePageState();
 }
 
-class _DesktopMainPageState extends State<DesktopMainPage> {
+class _DesktopMyProfilePageState extends State<DesktopMyProfilePage> {
   GlobalKey _globalKey = GlobalKey();
   DrawerType drawerType = DrawerType.Search;
   bool isFollower = true;
@@ -54,7 +53,7 @@ class _DesktopMainPageState extends State<DesktopMainPage> {
               ),
               Container(
                 width: 1,
-                color: ColorConstants.lightGrey,
+                color: appTheme.separatorColor,
               ),
               Expanded(
                 child: DesktopMainDetailPage(

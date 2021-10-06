@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_media/desktop_full_video_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_details/desktop_media/desktop_full_video_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/model/user.dart';

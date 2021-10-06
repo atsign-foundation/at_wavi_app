@@ -1,8 +1,8 @@
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_follow/desktop_follower/desktop_follower_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:flutter/material.dart';
 
+import 'desktop_follower/desktop_follower_page.dart';
 import 'desktop_following/desktop_following_page.dart';
 
 class DesktopFollowPage extends StatefulWidget {

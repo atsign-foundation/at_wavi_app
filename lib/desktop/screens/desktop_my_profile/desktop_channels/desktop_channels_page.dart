@@ -1,4 +1,4 @@
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_basic_detail/desktop_basic_detail_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_details/desktop_basic_detail/desktop_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';

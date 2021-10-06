@@ -78,7 +78,7 @@ class DesktopNotificationItem extends StatelessWidget {
                               const Duration(milliseconds: 500));
                           DesktopSetupRoutes.push(
                             context,
-                            DesktopRoutes.DESKTOP_PROFILE,
+                            DesktopRoutes.DESKTOP_USER_PROFILE,
                             arguments: {
                               'index': 1,
                             },

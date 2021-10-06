@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'desktop_profile_info_page.dart';
 import 'desktop_profile_private_page.dart';
 
-class DesktopProfilePage extends StatefulWidget {
-  const DesktopProfilePage({Key? key}) : super(key: key);
+class DesktopUserProfilePage extends StatefulWidget {
+  const DesktopUserProfilePage({Key? key}) : super(key: key);
 
   @override
-  _DesktopProfilePageState createState() => _DesktopProfilePageState();
+  _DesktopUserProfilePageState createState() => _DesktopUserProfilePageState();
 }
 
-class _DesktopProfilePageState extends State<DesktopProfilePage> {
+class _DesktopUserProfilePageState extends State<DesktopUserProfilePage> {
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
@@ -31,8 +31,9 @@ class _DesktopProfilePageState extends State<DesktopProfilePage> {
               ),
             ),
             Container(
-              width: 1,
-              color: ColorConstants.lightGrey,
+              width: 10,
+              height: double.infinity,
+              color: appTheme.separatorColor,
             ),
             Expanded(
               child: DesktopProfilePrivatePage(),

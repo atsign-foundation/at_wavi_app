@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_media/desktop_full_image_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_media/desktop_media_model.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_video_thumbnail_widget.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_visibility_detector_widget.dart';
@@ -13,7 +11,9 @@ import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'desktop_full_image_page.dart';
 import 'desktop_full_video_page.dart';
+import 'desktop_media_model.dart';
 
 class DesktopMediaPage extends StatefulWidget {
   DesktopMediaPage({Key? key}) : super(key: key);

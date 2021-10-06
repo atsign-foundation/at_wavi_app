@@ -1,5 +1,3 @@
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_channels/desktop_channels_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_details_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_notification/desktop_notification_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_add_basic_detail/desktop_add_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_add_location/desktop_add_location_page.dart';
@@ -15,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 
+import 'desktop_channels/desktop_channels_page.dart';
+import 'desktop_details/desktop_details_page.dart';
 import 'desktop_featured/desktop_featured_page.dart';
 import 'desktop_main_detail_model.dart';
 

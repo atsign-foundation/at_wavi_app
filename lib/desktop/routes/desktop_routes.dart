@@ -1,7 +1,7 @@
 import 'package:at_wavi_app/desktop/screens/desktop_edit_profile/desktop_edit_profile_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_login/desktop_login_landing_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_main_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_profile/desktop_profile_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_my_profile_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_user_profile_page.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +21,8 @@ class DesktopSetupRoutes {
     return {
       DesktopRoutes.DESKTOP_LOGIN: (context) => DesktopLoginLandingPage(),
       DesktopRoutes.DESKTOP_EDIT_PROFILE: (context) => DesktopEditProfilePage(),
-      DesktopRoutes.DESKTOP_PROFILE: (context) => DesktopProfilePage(),
-      DesktopRoutes.DESKTOP_MAIN: (context) => DesktopMainPage(),
+      DesktopRoutes.DESKTOP_USER_PROFILE: (context) => DesktopUserProfilePage(),
+      DesktopRoutes.DESKTOP_MY_PROFILE: (context) => DesktopMyProfilePage(),
     };
   }
 
