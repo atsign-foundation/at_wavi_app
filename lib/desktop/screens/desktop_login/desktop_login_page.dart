@@ -22,6 +22,8 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
   late TextEditingController atSignTextEditingController;
   var atClientPrefernce;
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     atSignTextEditingController = TextEditingController(
@@ -99,14 +101,23 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                   ),
                   Container(
                     width: 540,
-                    child: DesktopTextField(
-                      controller: atSignTextEditingController,
-                      hint: Strings.desktop_enter_sign,
-                      backgroundColor: appTheme.secondaryBackgroundColor,
-                      borderRadius: 10,
-                      textSize: 24,
-                      hasUnderlineBorder: false,
-                      contentPadding: 26,
+                    child: Form(
+                      key: _formKey,
+                      child: DesktopTextField(
+                        controller: atSignTextEditingController,
+                        hint: Strings.desktop_enter_sign,
+                        backgroundColor: appTheme.secondaryBackgroundColor,
+                        borderRadius: 10,
+                        textSize: 24,
+                        hasUnderlineBorder: false,
+                        contentPadding: 26,
+                        validator: (value) {
+                          if ((value ?? '').trim().isEmpty) {
+                            return 'Please enter your @sign';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -176,14 +187,17 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
   }
 
   void _showPassCodeDialog() async {
-    final atSign = atSignTextEditingController.text;
-    if (atSign.trim().isEmpty) {
-      DialogUtils.showError(
-        context: context,
-        message: 'You must enter your @sign'
-      );
+    if(_formKey.currentState?.validate() == false) {
       return;
     }
+    final atSign = atSignTextEditingController.text;
+    // if (atSign.trim().isEmpty) {
+    //   DialogUtils.showError(
+    //     context: context,
+    //     message: 'You must enter your @sign'
+    //   );
+    //   return;
+    // }
     final result = await showDialog<dynamic>(
       context: context,
       barrierDismissible: false,

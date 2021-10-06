@@ -1,5 +1,4 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
-import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +16,7 @@ class DesktopTextField extends StatelessWidget {
   final bool hasUnderlineBorder;
   final double contentPadding;
   final bool readOnly;
+  final FormFieldValidator<String>? validator;
 
   DesktopTextField({
     required this.controller,
@@ -32,6 +32,7 @@ class DesktopTextField extends StatelessWidget {
     this.contentPadding = 0,
     this.readOnly = false,
     this.borderColor = Colors.transparent,
+    this.validator,
   });
 
   @override
@@ -60,6 +61,7 @@ class DesktopTextField extends StatelessWidget {
             color: appTheme.primaryTextColor,
           ),
           onChanged: onChanged,
+          validator: validator,
           decoration: InputDecoration(
             isDense: contentPadding == 0 ? false : true,
             contentPadding: EdgeInsets.fromLTRB(
