@@ -1,11 +1,6 @@
 import 'dart:convert';
 
-import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_add_location/desktop_add_location_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_basic_detail_item_widget.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_empty_category_widget.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/widgets/desktop_media_item_widget.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_main_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_media_item.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart';
@@ -19,24 +14,28 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'desktop_add_basic_detail/desktop_add_basic_detail_page.dart';
-import 'desktop_basic_detail_model.dart';
+import 'desktop_add_location/desktop_add_location_page.dart';
+import 'desktop_profile_basic_info_model.dart';
 import 'desktop_edit_basic_detail/desktop_edit_basic_detail_page.dart';
-import 'desktop_reorder_basic_detail/desktop_reorder_basic_detail_page.dart';
+import 'desktop_reorder_basic_info/desktop_reorder_basic_info_page.dart';
+import 'widgets/desktop_basic_detail_item_widget.dart';
+import 'widgets/desktop_empty_category_widget.dart';
 import 'widgets/desktop_location_item_widget.dart';
+import 'widgets/desktop_media_item_widget.dart';
 
-class DesktopBasicDetailPage extends StatefulWidget {
+class DesktopProfileBasicInfoPage extends StatefulWidget {
   final AtCategory atCategory;
 
-  const DesktopBasicDetailPage({
+  const DesktopProfileBasicInfoPage({
     Key? key,
     required this.atCategory,
   }) : super(key: key);
 
   @override
-  _DesktopBasicDetailPageState createState() => _DesktopBasicDetailPageState();
+  _DesktopProfileBasicInfoPageState createState() => _DesktopProfileBasicInfoPageState();
 }
 
-class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
+class _DesktopProfileBasicInfoPageState extends State<DesktopProfileBasicInfoPage>
     with AutomaticKeepAliveClientMixin {
   late DesktopBasicDetailModel _model;
 

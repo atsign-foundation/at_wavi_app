@@ -24,8 +24,10 @@ class _DesktopProfilePageState extends State<DesktopProfilePage> {
             Container(
               width: 360,
               child: DesktopProfileInfoPage(
-                isMyProfile: false,
-                onClickFollow: (type) {},
+                atSign: '',
+                ///Todo
+                // isMyProfile: false,
+                // onClickFollow: (type) {},
               ),
             ),
             Container(

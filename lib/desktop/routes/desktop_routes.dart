@@ -1,4 +1,4 @@
-import 'package:at_wavi_app/desktop/screens/desktop_home/desktop_home_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_edit_profile/desktop_edit_profile_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_login/desktop_login_landing_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_main_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile/desktop_profile_page.dart';
@@ -20,7 +20,7 @@ class DesktopSetupRoutes {
   static Map<String, WidgetBuilder> get routes {
     return {
       DesktopRoutes.DESKTOP_LOGIN: (context) => DesktopLoginLandingPage(),
-      DesktopRoutes.DESKTOP_HOME: (context) => DesktopHomePage(),
+      DesktopRoutes.DESKTOP_EDIT_PROFILE: (context) => DesktopEditProfilePage(),
       DesktopRoutes.DESKTOP_PROFILE: (context) => DesktopProfilePage(),
       DesktopRoutes.DESKTOP_MAIN: (context) => DesktopMainPage(),
     };
@@ -65,7 +65,7 @@ class DesktopSetupRoutes {
     Navigator.of(context)
         .pushNamedAndRemoveUntil(
       value,
-          (_) => false,
+      (_) => false,
       arguments: arguments,
     )
         .then((response) {

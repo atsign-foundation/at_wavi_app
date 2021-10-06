@@ -41,13 +41,15 @@ class _DesktopMainPageState extends State<DesktopMainPage> {
               Container(
                 width: 360,
                 child: DesktopProfileInfoPage(
-                  isMyProfile: true,
-                  onClickFollow: (title) {
-                    drawerType = DrawerType.Follow;
-                    isFollower = title == Strings.desktop_followers;
-                    setState(() {});
-                    Scaffold.of(context).openEndDrawer();
-                  },
+                  atSign: '',
+                  //Todo
+                  // isMyProfile: true,
+                  // onClickFollow: (title) {
+                  //   drawerType = DrawerType.Follow;
+                  //   isFollower = title == Strings.desktop_followers;
+                  //   setState(() {});
+                  //   Scaffold.of(context).openEndDrawer();
+                  // },
                 ),
               ),
               Container(

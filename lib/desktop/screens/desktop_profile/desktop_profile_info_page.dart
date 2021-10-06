@@ -1,18 +1,16 @@
-import 'package:at_wavi_app/desktop/screens/desktop_home/desktop_home_page.dart';
+import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
-import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/material.dart';
 
 class DesktopProfileInfoPage extends StatefulWidget {
-  late bool isMyProfile;
-  Function(String) onClickFollow;
+  final String? atSign;
 
   DesktopProfileInfoPage({
     Key? key,
-    this.isMyProfile = false,
-    required this.onClickFollow,
+    required this.atSign,
   }) : super(key: key);
 
   @override
@@ -20,6 +18,8 @@ class DesktopProfileInfoPage extends StatefulWidget {
 }
 
 class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
+  bool isMyProfile = true;
+
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
@@ -28,14 +28,15 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          widget.isMyProfile
+          isMyProfile
               ? Container(
-                  margin: EdgeInsets.only(top: 32),
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    'assets/images/logo_dark.png',
-                    fit: BoxFit.fitHeight,
-                    height: 32,
+                  padding: EdgeInsets.only(top: 60),
+                  child: Center(
+                    child: Image.asset(
+                      appTheme.isDark ? Images.logoLight : Images.logoDark,
+                      width: 90,
+                      height: 34,
+                    ),
                   ),
                 )
               : GestureDetector(
@@ -58,15 +59,14 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
           Expanded(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  width: 120,
-                  height: 120,
+                  width: 160,
+                  height: 160,
                   child: Icon(
                     Icons.account_circle,
-                    size: 100,
+                    size: 160,
                   ),
                   // ClipRRect(
                   //   borderRadius:
@@ -91,10 +91,9 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                 Text(
                   'Lauren London',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 24,
                     color: appTheme.primaryTextColor,
-                    fontWeight: FontWeight.normal,
-                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 SizedBox(
@@ -103,10 +102,9 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                 Text(
                   '@laurenlondon',
                   style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 18,
                     color: appTheme.primaryColor,
                     fontWeight: FontWeight.normal,
-                    fontFamily: 'Inter',
                   ),
                 ),
                 SizedBox(
@@ -122,13 +120,13 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                 SizedBox(
                   height: 32,
                 ),
-                widget.isMyProfile
+                isMyProfile
                     ? Column(
                         children: [
                           DesktopButton(
                             width: 280,
-                            height: 40,
-                            backgroundColor: ColorConstants.white,
+                            height: 46,
+                            backgroundColor: Colors.transparent,
                             titleColor: appTheme.primaryColor,
                             borderColor: appTheme.primaryColor,
                             title: Strings.desktop_edit_profile,
@@ -139,7 +137,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                           ),
                           DesktopButton(
                             width: 280,
-                            height: 40,
+                            height: 46,
                             title: Strings.desktop_share_profile,
                             backgroundColor: appTheme.primaryColor,
                             onPressed: () async {},
@@ -148,7 +146,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                       )
                     : DesktopButton(
                         width: 280,
-                        height: 40,
+                        height: 46,
                         backgroundColor: appTheme.primaryColor,
                         title: Strings.desktop_follow,
                         onPressed: () async {},
@@ -170,41 +168,36 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   _buildInteractiveItem(String title, String subTitle, AppTheme appTheme) {
     return GestureDetector(
       onTap: () {
-        widget.onClickFollow(title);
+        //Todo
+        // widget.onClickFollow(title);
       },
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+          SizedBox(width: 40),
           Text(
             title,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 16,
               color: appTheme.secondaryTextColor,
               fontWeight: FontWeight.normal,
-              fontFamily: 'Inter',
             ),
           ),
-          SizedBox(
-            width: 32,
-          ),
+          Spacer(),
           Text(
             subTitle,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 18,
               color: appTheme.primaryTextColor,
-              fontWeight: FontWeight.normal,
-              fontFamily: 'Inter',
+              fontWeight: FontWeight.w600,
             ),
           ),
+          SizedBox(width: 40),
         ],
       ),
     );
   }
 
   void _openEditProfile() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => DesktopHomePage()),
-    );
+    Navigator.pushNamed(context, DesktopRoutes.DESKTOP_EDIT_PROFILE);
   }
 }

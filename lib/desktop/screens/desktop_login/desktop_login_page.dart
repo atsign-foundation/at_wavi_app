@@ -180,7 +180,7 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
     if (atSign.trim().isEmpty) {
       DialogUtils.showError(
         context: context,
-        message: "Lỗi lòi ra"
+        message: 'You must enter your @sign'
       );
       return;
     }

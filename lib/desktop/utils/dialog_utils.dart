@@ -1,7 +1,5 @@
-import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_reorder_basic_detail/desktop_reorder_basic_detail_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_login/desktop_passcode_dialog.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_notification/desktop_notification_page.dart';
-import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_reorder_basic_info/desktop_reorder_basic_info_page.dart';
 import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -24,9 +22,6 @@ class DialogUtils {
           ),
         ),
         backgroundColor: Colors.redAccent,
-        duration: Duration(
-          seconds: 2,
-        ),
       ),
     );
   }

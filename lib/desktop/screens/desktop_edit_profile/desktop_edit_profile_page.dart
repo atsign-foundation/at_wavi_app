@@ -1,29 +1,30 @@
 import 'package:at_wavi_app/desktop/screens/desktop_appearance/desktop_appearance_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_basic_detail_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_home/desktop_side_menu.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_home/widgets/desktop_side_menu_widget.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_main/desktop_details/desktop_basic_detail/desktop_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'desktop_home_model.dart';
+import 'desktop_edit_profile_model.dart';
+import 'desktop_side_menu.dart';
+import 'widgets/desktop_side_menu_widget.dart';
 
-class DesktopHomePage extends StatefulWidget {
-  const DesktopHomePage({Key? key}) : super(key: key);
+class DesktopEditProfilePage extends StatefulWidget {
+  const DesktopEditProfilePage({Key? key}) : super(key: key);
 
   @override
-  _DesktopHomePageState createState() => _DesktopHomePageState();
+  _DesktopEditProfilePageState createState() => _DesktopEditProfilePageState();
 }
 
-class _DesktopHomePageState extends State<DesktopHomePage> {
-  late DesktopHomeModel _model;
+class _DesktopEditProfilePageState extends State<DesktopEditProfilePage> {
+  late DesktopEditProfileModel _model;
   final PageController _pageController = PageController(initialPage: 0);
 
   @override
   void initState() {
-    _model = DesktopHomeModel();
+    _model = DesktopEditProfileModel();
     super.initState();
     _model.addListener(() {
       final index = DesktopSideMenu.values.indexOf(_model.selectedMenu);
@@ -64,7 +65,7 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
 
   Widget buildSideMenus() {
     final appTheme = AppTheme.of(context);
-    return Consumer<DesktopHomeModel>(
+    return Consumer<DesktopEditProfileModel>(
       builder: (context, provider, child) {
         return Container(
           width: 360,
@@ -73,12 +74,26 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
             children: [
               Container(
                 height: 150,
-                child: Center(
-                  child: Image.asset(
-                    appTheme.isDark ? Images.logoLight : Images.logoDark,
-                    width: 89,
-                    height: 33,
-                  ),
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Image.asset(
+                        appTheme.isDark ? Images.logoLight : Images.logoDark,
+                        width: 89,
+                        height: 33,
+                      ),
+                    ),
+                    Positioned(
+                      top: 10,
+                      left: 10,
+                      child: DesktopIconButton(
+                        iconData: Icons.close_rounded,
+                        onPressed: (){
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Expanded(

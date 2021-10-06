@@ -1,6 +1,6 @@
 import 'package:at_location_flutter/map_content/flutter_map/flutter_map.dart';
 import 'package:at_wavi_app/common_components/create_marker.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_basic_detail/desktop_select_location/desktop_select_location_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_select_location/desktop_select_location_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
