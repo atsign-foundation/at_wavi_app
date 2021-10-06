@@ -4,18 +4,16 @@ import 'package:at_location_flutter/map_content/flutter_map/flutter_map.dart';
 import 'package:at_wavi_app/common_components/create_marker.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/model/osm_location_model.dart';
-import 'package:at_wavi_app/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
 
 class DesktopLocationItemWidget extends StatelessWidget {
-  final String title;
-  final String description;
+  final String? title;
+  final String? location;
 
   DesktopLocationItemWidget({
     Key? key,
-    this.title = '',
-    this.description = '',
+    this.title,
+    this.location,
   }) : super(key: key);
 
   @override
@@ -24,7 +22,7 @@ class DesktopLocationItemWidget extends StatelessWidget {
 
     OsmLocationModel? osmLocationModel;
     try {
-      osmLocationModel = OsmLocationModel.fromJson(jsonDecode(description));
+      osmLocationModel = OsmLocationModel.fromJson(jsonDecode(location ?? "{}"));
     } catch (e) {
       print(e);
     }
@@ -37,7 +35,7 @@ class DesktopLocationItemWidget extends StatelessWidget {
           Container(
             width: 100,
             child: Text(
-              title,
+              title ?? '',
               style:
                   TextStyle(color: appTheme.secondaryTextColor, fontSize: 16),
             ),

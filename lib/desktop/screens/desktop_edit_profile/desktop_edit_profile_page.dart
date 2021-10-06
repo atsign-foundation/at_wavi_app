@@ -1,5 +1,6 @@
 import 'package:at_wavi_app/desktop/screens/desktop_appearance/desktop_appearance_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_details/desktop_basic_detail/desktop_basic_detail_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_details/desktop_media/desktop_media_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_basic_info_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -130,17 +131,21 @@ class _DesktopEditProfilePageState extends State<DesktopEditProfilePage> {
           switch (e) {
             case DesktopSideMenu.profile:
               return Container(color: Colors.red);
+            case DesktopSideMenu.media:
+              return DesktopMediaPage();
             case DesktopSideMenu.basicDetails:
-              return DesktopBasicDetailPage(atCategory: AtCategory.DETAILS);
+              return DesktopProfileBasicInfoPage(atCategory: AtCategory.DETAILS);
             case DesktopSideMenu.additionalDetails:
-              return DesktopBasicDetailPage(
+              return DesktopProfileBasicInfoPage(
                   atCategory: AtCategory.ADDITIONAL_DETAILS);
             case DesktopSideMenu.location:
-              return DesktopBasicDetailPage(atCategory: AtCategory.LOCATION);
+              return DesktopProfileBasicInfoPage(atCategory: AtCategory.LOCATION);
             case DesktopSideMenu.socialChannel:
-              return DesktopBasicDetailPage(atCategory: AtCategory.SOCIAL);
+              return DesktopProfileBasicInfoPage(atCategory: AtCategory.SOCIAL);
             case DesktopSideMenu.gameChannel:
-              return DesktopBasicDetailPage(atCategory: AtCategory.GAMER);
+              return DesktopProfileBasicInfoPage(atCategory: AtCategory.GAMER);
+            case DesktopSideMenu.featuredChannel:
+              return DesktopProfileBasicInfoPage(atCategory: AtCategory.FEATURED);
             case DesktopSideMenu.appearance:
               return DesktopAppearancePage();
             default:

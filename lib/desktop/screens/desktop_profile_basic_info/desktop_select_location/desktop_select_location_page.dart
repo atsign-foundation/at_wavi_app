@@ -1,29 +1,23 @@
-import 'package:at_common_flutter/services/size_config.dart';
-import 'package:at_common_flutter/widgets/custom_button.dart';
 import 'package:at_location_flutter/at_location_flutter.dart';
 import 'package:at_location_flutter/common_components/circle_marker_painter.dart';
-import 'package:at_location_flutter/common_components/marker_custom_painter.dart';
 import 'package:at_location_flutter/map_content/flutter_map/flutter_map.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
-import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/screens/location/location_widget.dart';
-import 'package:at_wavi_app/utils/colors.dart';
-import 'package:at_wavi_app/utils/constants.dart';
-import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
-
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:latlong2/latlong.dart';
 
 class DesktopSelectLocationPage extends StatefulWidget {
   final LatLng point;
   final String displayName;
-  final Function(OsmLocationModel)? callbackFunction;
+  final Function(OsmLocationModel)? onLocationPicked;
 
-  DesktopSelectLocationPage(this.displayName, this.point,
-      {this.callbackFunction});
+  DesktopSelectLocationPage(
+    this.displayName,
+    this.point, {
+    this.onLocationPicked,
+  });
 
   @override
   _DesktopSelectLocationPageState createState() =>
@@ -336,8 +330,8 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
       latitude: center.latitude,
       longitude: center.longitude,
     );
-    if (widget.callbackFunction != null) {
-      widget.callbackFunction!(_finalData);
+    if (widget.onLocationPicked != null) {
+      widget.onLocationPicked?.call(_finalData);
     } else {
       LocationWidgetData().update(_finalData);
     }

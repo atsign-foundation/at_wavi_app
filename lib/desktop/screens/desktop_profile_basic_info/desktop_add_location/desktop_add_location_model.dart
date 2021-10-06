@@ -60,7 +60,7 @@ class DesktopAddLocationModel extends ChangeNotifier {
           osmLocationModel!.diameter,
           latitude: osmLocationModel!.latitude,
           longitude: osmLocationModel!.longitude,
-        ),
+        ).toJson(),
       );
       await updateDefinedFields(
         context,

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:at_wavi_app/common_components/provider_callback.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_my_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
@@ -8,8 +9,11 @@ import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_welcome_widget.dart';
 import 'package:at_wavi_app/model/basic_data_model.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/routes/route_names.dart';
+import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +22,7 @@ import 'desktop_add_location/desktop_add_location_page.dart';
 import 'desktop_profile_basic_info_model.dart';
 import 'desktop_edit_basic_detail/desktop_edit_basic_detail_page.dart';
 import 'desktop_reorder_basic_info/desktop_reorder_basic_info_page.dart';
-import 'widgets/desktop_basic_detail_item_widget.dart';
+import 'widgets/desktop_basic_info_widget.dart';
 import 'widgets/desktop_empty_category_widget.dart';
 import 'widgets/desktop_location_item_widget.dart';
 import 'widgets/desktop_media_item_widget.dart';
@@ -32,10 +36,12 @@ class DesktopProfileBasicInfoPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DesktopProfileBasicInfoPageState createState() => _DesktopProfileBasicInfoPageState();
+  _DesktopProfileBasicInfoPageState createState() =>
+      _DesktopProfileBasicInfoPageState();
 }
 
-class _DesktopProfileBasicInfoPageState extends State<DesktopProfileBasicInfoPage>
+class _DesktopProfileBasicInfoPageState
+    extends State<DesktopProfileBasicInfoPage>
     with AutomaticKeepAliveClientMixin {
   late DesktopBasicDetailModel _model;
 
@@ -155,13 +161,14 @@ class _DesktopProfileBasicInfoPageState extends State<DesktopProfileBasicInfoPag
                 SizedBox(width: 12),
                 DesktopButton(
                   title: 'Save & Next',
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DesktopMyProfilePage()),
-                    );
-                  },
+                  onPressed: _handleSaveAndNext,
+                  // onPressed: () {
+                  //   Navigator.pushReplacement(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => DesktopMyProfilePage()),
+                  //   );
+                  // },
                 ),
               ],
             ),
@@ -190,7 +197,7 @@ class _DesktopProfileBasicInfoPageState extends State<DesktopProfileBasicInfoPag
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             );
-          } else if (index == data.length) {
+          } else if (index == data.length - 1) {
             borderRadius = BorderRadius.only(
               bottomLeft: Radius.circular(10),
               bottomRight: Radius.circular(10),
@@ -199,17 +206,20 @@ class _DesktopProfileBasicInfoPageState extends State<DesktopProfileBasicInfoPag
         }
         return Container(
           decoration: BoxDecoration(
-            color: Color(0xF5f5f5).withOpacity(0.5),
+            color: appTheme.secondaryBackgroundColor,
             borderRadius: borderRadius,
           ),
-          child: item.data.extension != null
-              ? DesktopMediaItemWidget(
-                  data: item.data,
-                )
-              : DesktopBasicDetailItemWidget(
-                  title: item.data.accountName ?? '',
-                  description: item.data.value ?? '',
-                ),
+          child: DesktopBasicInfoWidget(
+            data: item.data,
+          ),
+          // child: item.data.extension != null
+          //     ? DesktopMediaItemWidget(
+          //         data: item.data,
+          //       )
+          //     : DesktopBasicDetailItemWidget(
+          //         title: item.data.accountName ?? '',
+          //         description: item.data.value ?? '',
+          //       ),
         );
       },
       separatorBuilder: (context, index) {
@@ -230,7 +240,7 @@ class _DesktopProfileBasicInfoPageState extends State<DesktopProfileBasicInfoPag
     return ListView.separated(
       itemBuilder: (context, index) {
         BorderRadius? borderRadius;
-        if (data.length == 0) {
+        if (data.length == 1) {
           borderRadius = BorderRadius.all(Radius.circular(10));
         } else {
           if (index == 0) {
@@ -238,7 +248,7 @@ class _DesktopProfileBasicInfoPageState extends State<DesktopProfileBasicInfoPag
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             );
-          } else if (index == data.length) {
+          } else if (index == data.length - 1) {
             borderRadius = BorderRadius.only(
               bottomLeft: Radius.circular(10),
               bottomRight: Radius.circular(10),
@@ -246,14 +256,15 @@ class _DesktopProfileBasicInfoPageState extends State<DesktopProfileBasicInfoPag
           }
         }
         if (index == 0) {
+          print(_model.locationData?.value);
           return Container(
             decoration: BoxDecoration(
-              color: Color(0xF5f5f5).withOpacity(0.5),
+              color: appTheme.secondaryBackgroundColor,
               borderRadius: borderRadius,
             ),
             child: DesktopLocationItemWidget(
               title: _model.locationNicknameData?.value ?? '',
-              description: jsonEncode(_model.locationData?.value),
+              location: _model.locationData?.value as String?,
             ),
           );
         }
@@ -261,12 +272,12 @@ class _DesktopProfileBasicInfoPageState extends State<DesktopProfileBasicInfoPag
         final item = data[index - 1];
         return Container(
           decoration: BoxDecoration(
-            color: Color(0xF5f5f5).withOpacity(0.5),
+            color: appTheme.secondaryBackgroundColor,
             borderRadius: borderRadius,
           ),
           child: DesktopLocationItemWidget(
-            title: item.data.accountName ?? '',
-            description: jsonEncode(_model.locationData?.value),
+            title: item.data.accountName,
+            location: item.data.value,
           ),
         );
       },
@@ -348,5 +359,23 @@ class _DesktopProfileBasicInfoPageState extends State<DesktopProfileBasicInfoPag
     if (result != null) {
       _model.fetchBasicData();
     }
+  }
+
+  void _handleSaveAndNext() async {
+    await providerCallback<UserProvider>(
+      context,
+      task: (provider) async {
+        await provider.saveUserData(
+            Provider.of<UserPreview>(context, listen: false).user()!);
+      },
+      onError: (provider) {},
+      showDialog: false,
+      text: 'Saving user data',
+      taskName: (provider) => provider.UPDATE_USER,
+      onSuccess: (provider) async {
+        Navigator.pop(context, 'saved');
+        // await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
+      },
+    );
   }
 }

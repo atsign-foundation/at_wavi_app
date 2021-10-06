@@ -180,29 +180,19 @@ class _DesktopAddLocationPageState extends State<DesktopAddLocationPage> {
   }
 
   void openSelectLocation(LatLng latLng) async {
-    print('Open location picker');
-    final result = await showDialog<String>(
+    await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
         child: DesktopSelectLocationPage(
           'Ha noi',
           latLng,
-          callbackFunction: (location) {
+          onLocationPicked: (location) {
             _model.changeLocation(location);
           },
         ),
       ),
     );
-    if (result == 'saved') {}
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => DesktopSelectLocationPage(
-    //       'Ha noi',
-    //       LatLng(21.028511, 105.804817),
-    //     ),
-    //   ),
-    // );
   }
 
   Future _onSaveData() async {
