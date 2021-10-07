@@ -1,50 +1,61 @@
+import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_profile_details/desktop_basic_detail/desktop_basic_detail_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_basic_info_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
-import 'package:at_wavi_app/desktop/utils/utils.dart';
-import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_tabbar.dart';
+import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'desktop_featured_model.dart';
-import 'desktop_instagram_page.dart';
-import 'desktop_twitter_page.dart';
+import 'desktop_profile_channels_model.dart';
 
-class DesktopFeaturedPage extends StatefulWidget {
-  DesktopFeaturedPage({
+class DesktopProfileChannelsPage extends StatefulWidget {
+  DesktopProfileChannelsPage({
     Key? key,
   }) : super(key: key);
 
-  _DesktopFeaturedPageState _desktopFeaturedPageState =
-      _DesktopFeaturedPageState();
+  _DesktopProfileChannelsPageState _desktopChannelsPageState =
+      _DesktopProfileChannelsPageState();
 
   @override
-  _DesktopFeaturedPageState createState() => _desktopFeaturedPageState;
+  _DesktopProfileChannelsPageState createState() => _desktopChannelsPageState;
 
   Future showReOrderTabsPopUp() async {
-    await _desktopFeaturedPageState.showReOrderTabsPopUp();
+    await _desktopChannelsPageState.showReOrderTabsPopUp();
   }
 
-  Future addFieldToInstagram(BasicData basicData) async {
-    await _desktopFeaturedPageState.addFieldToInstagram(basicData);
+  Future addFieldToSocial() async {
+    await _desktopChannelsPageState.addFieldToSocial();
   }
 
-  Future addFieldToTwitter(BasicData basicData) async {
-    await _desktopFeaturedPageState.addFieldToTwitter(basicData);
+  Future addFieldToGame() async {
+    await _desktopChannelsPageState.addFieldToGame();
   }
 }
 
-class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
+class _DesktopProfileChannelsPageState extends State<DesktopProfileChannelsPage>
     with
-        TickerProviderStateMixin,
-        AutomaticKeepAliveClientMixin<DesktopFeaturedPage> {
+        SingleTickerProviderStateMixin,
+        AutomaticKeepAliveClientMixin<DesktopProfileChannelsPage> {
   late TabController _tabController;
+  late DesktopProfileChannelsModel _model;
 
-  late DesktopFeaturedModel _model;
+  late DesktopBasicDetailPage desktopSocialAccountPage;
+  late DesktopBasicDetailPage desktopGameAccountPage;
+
+  final _pageController = PageController();
 
   @override
   void initState() {
-    _tabController = TabController(length: 0, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
+    desktopSocialAccountPage = DesktopBasicDetailPage(
+      atCategory: AtCategory.SOCIAL,
+    );
+    desktopGameAccountPage = DesktopBasicDetailPage(
+      atCategory: AtCategory.GAMER,
+    );
+
     super.initState();
   }
 
@@ -63,9 +74,13 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
     }
   }
 
-  Future addFieldToInstagram(BasicData basicData) async {}
+  Future addFieldToSocial() async {
+    await desktopSocialAccountPage.addField();
+  }
 
-  Future addFieldToTwitter(BasicData basicData) async {}
+  Future addFieldToGame() async {
+    await desktopGameAccountPage.addField();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,14 +88,12 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
     return ChangeNotifierProvider(
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
-        _model = DesktopFeaturedModel(userPreview: userPreview);
+        _model = DesktopProfileChannelsModel(userPreview: userPreview);
         return _model;
       },
       child: Container(
-        child: Consumer<DesktopFeaturedModel>(
+        child: Consumer<DesktopProfileChannelsModel>(
           builder: (_, model, child) {
-            _tabController =
-                TabController(length: model.fields.length, vsync: this);
             return model.fields.isEmpty
                 ? Container()
                 : Column(
@@ -99,7 +112,6 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
                             bottom: 4,
                           ),
                         ),
-                        //    indicatorColor: appTheme.primaryColor,
                         isScrollable: true,
                         indicatorSize: TabBarIndicatorSize.label,
                         unselectedLabelStyle: TextStyle(
@@ -117,7 +129,7 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
                             .map(
                               (e) => Tab(
                                 child: Text(
-                                  getTitle(e),
+                                  e,
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: appTheme.primaryTextColor,
@@ -148,18 +160,12 @@ class _DesktopFeaturedPageState extends State<DesktopFeaturedPage>
 
   Widget getWidget(String field) {
     switch (field) {
-      case 'instagram':
-        return DesktopInstagramPage();
-      case 'twitter':
-        return DesktopTwitterPage();
+      case 'Social':
+        return desktopSocialAccountPage;
+      case 'Game':
+        return desktopGameAccountPage;
       default:
         return Container();
     }
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
   }
 }

@@ -2,7 +2,7 @@ import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/cupertino.dart';
 
-class DesktopSearchModel extends ChangeNotifier {
+class DesktopSearchAtSignModel extends ChangeNotifier {
   final UserPreview userPreview;
 
   List<User> _users = [];
@@ -14,13 +14,12 @@ class DesktopSearchModel extends ChangeNotifier {
 
   late TextEditingController searchTextEditingController;
 
-  DesktopSearchModel({required this.userPreview}) {
-    //  FieldOrderService().initCategoryFields(AtCategory.DETAILS);
+  DesktopSearchAtSignModel({required this.userPreview}) {
     searchTextEditingController = TextEditingController(
       text: '',
     );
     for (int i = 0; i < 6; i++) {
-      _users.add(User(atsign: 'duc$i'));
+      _users.add(User(atsign: 'AtSing$i'));
     }
     searchUser('');
   }

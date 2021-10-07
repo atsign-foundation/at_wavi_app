@@ -4,14 +4,14 @@ import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/cupertino.dart';
 
-class DesktopFeaturedModel extends ChangeNotifier {
+class DesktopProfileFeaturedModel extends ChangeNotifier {
   final UserPreview userPreview;
 
   List<String> _fields = [];
 
   List<String> get fields => _fields;
 
-  DesktopFeaturedModel({required this.userPreview}) {
+  DesktopProfileFeaturedModel({required this.userPreview}) {
     fetchBasicData();
   }
 

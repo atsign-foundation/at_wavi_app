@@ -5,7 +5,6 @@ import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
-import 'package:at_wavi_app/desktop/widgets/desktop_main_tabbar.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
@@ -13,19 +12,20 @@ import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
-
-import 'desktop_channels/desktop_channels_page.dart';
-import 'desktop_details/desktop_details_page.dart';
-import 'desktop_featured/desktop_featured_page.dart';
 import 'desktop_main_detail_model.dart';
+import 'desktop_profile_channels/desktop_profile_channels_page.dart';
+import 'desktop_profile_details/desktop_profile_details_page.dart';
+import 'desktop_profile_featured/desktop_profile_featured_page.dart';
 import 'widgets/desktop_profile_tabbar.dart';
 
 class DesktopMainDetailPage extends StatefulWidget {
-  Function onClickSearch;
+  final VoidCallback? onSearchPressed;
+  final VoidCallback? onSettingPressed;
 
   DesktopMainDetailPage({
     Key? key,
-    required this.onClickSearch,
+    this.onSearchPressed,
+    this.onSettingPressed,
   }) : super(key: key);
 
   @override
@@ -42,9 +42,9 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
 
   late DesktopMainDetailModel _model;
 
-  late DesktopDetailsPage desktopDetailsPage;
-  late DesktopChannelsPage desktopChannelsPage;
-  late DesktopFeaturedPage desktopFeaturedPage;
+  late DesktopProfileDetailsPage profileDetailsPage;
+  late DesktopProfileChannelsPage profileChannelsPage;
+  late DesktopProfileFeaturedPage profileFeaturedPage;
 
   late List<PopupMenuEntry<String>> menuDetails;
   late List<PopupMenuEntry<String>> menuLocations;
@@ -54,9 +54,9 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
 
   @override
   void initState() {
-    desktopDetailsPage = DesktopDetailsPage();
-    desktopChannelsPage = DesktopChannelsPage();
-    desktopFeaturedPage = DesktopFeaturedPage();
+    profileDetailsPage = DesktopProfileDetailsPage();
+    profileChannelsPage = DesktopProfileChannelsPage();
+    profileFeaturedPage = DesktopProfileFeaturedPage();
 
     _tabController = TabController(length: 3, vsync: this);
 
@@ -190,7 +190,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
                             iconColor: appTheme.primaryTextColor,
                             backgroundColor: appTheme.secondaryBackgroundColor,
                             onPressed: () {
-                              widget.onClickSearch();
+                              widget.onSearchPressed?.call();
                             },
                           ),
                           // Container(
@@ -235,7 +235,8 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
                             child: DesktopIconButton(
                               iconData: Icons.notifications,
                               iconColor: appTheme.primaryTextColor,
-                              backgroundColor: appTheme.secondaryBackgroundColor,
+                              backgroundColor:
+                                  appTheme.secondaryBackgroundColor,
                               // onPressed: (){},
                             ),
                             itemBuilder: (BuildContext context) => [
@@ -265,7 +266,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
                             iconColor: appTheme.primaryTextColor,
                             backgroundColor: appTheme.secondaryBackgroundColor,
                             onPressed: () {
-                              widget.onClickSearch();
+                              widget.onSettingPressed?.call();
                             },
                           ),
                           // Container(
@@ -316,9 +317,9 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
                         onPageChanged: (int page) {},
                         controller: _pageController,
                         children: [
-                          desktopDetailsPage,
-                          desktopChannelsPage,
-                          desktopFeaturedPage,
+                          profileDetailsPage,
+                          profileChannelsPage,
+                          profileFeaturedPage,
                         ],
                       ),
                       Positioned(
@@ -391,13 +392,13 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
         await getStringFromSharedPreferences(key: Strings.desktop_current_tab);
     switch (currentScreen) {
       case 'DETAILS_TAB':
-        await desktopDetailsPage.showReOrderTabsPopUp();
+        await profileDetailsPage.showReOrderTabsPopUp();
         break;
       case 'CHANNELS':
-        await desktopChannelsPage.showReOrderTabsPopUp();
+        await profileChannelsPage.showReOrderTabsPopUp();
         break;
       case 'FEATURED':
-        await desktopFeaturedPage.showReOrderTabsPopUp();
+        await profileFeaturedPage.showReOrderTabsPopUp();
         break;
     }
   }
@@ -417,16 +418,16 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
         );
         switch (currentScreen) {
           case 'DETAILS':
-            await desktopDetailsPage.addFieldToBasicDetail();
+            await profileDetailsPage.addFieldToBasicDetail();
             break;
           case 'ADDITIONAL_DETAILS':
-            await desktopDetailsPage.addFieldToAdditionalDetail();
+            await profileDetailsPage.addFieldToAdditionalDetail();
             break;
           case 'SOCIAL':
-            await desktopChannelsPage.addFieldToSocial();
+            await profileChannelsPage.addFieldToSocial();
             break;
           case 'GAMER':
-            await desktopChannelsPage.addFieldToGame();
+            await profileChannelsPage.addFieldToGame();
             break;
           case MixedConstants.INSTAGRAM_KEY:
             break;
@@ -448,7 +449,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
     );
     if (result != null) {
       if (result == 'saved') {
-        await desktopDetailsPage.addLocation();
+        await profileDetailsPage.addLocation();
       }
     }
   }
@@ -466,7 +467,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
     );
     if (result != null) {
       if (result == 'saved') {
-        await desktopDetailsPage.addMedia();
+        await profileDetailsPage.addMedia();
       }
     }
   }

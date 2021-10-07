@@ -1,71 +1,50 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
-import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/desktop/utils/utils.dart';
+import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'desktop_basic_detail/desktop_basic_detail_page.dart';
-import 'desktop_details_model.dart';
-import 'desktop_media/desktop_media_page.dart';
+import 'desktop_profile_featured_model.dart';
+import 'desktop_instagram_page.dart';
+import 'desktop_twitter_page.dart';
 
-class DesktopDetailsPage extends StatefulWidget {
-  DesktopDetailsPage({
+class DesktopProfileFeaturedPage extends StatefulWidget {
+  DesktopProfileFeaturedPage({
     Key? key,
   }) : super(key: key);
 
-  _DesktopDetailsPageState _desktopDetailsPageState =
-      _DesktopDetailsPageState();
+  _DesktopProfileFeaturedPageState _desktopFeaturedPageState =
+      _DesktopProfileFeaturedPageState();
 
   @override
-  _DesktopDetailsPageState createState() => _desktopDetailsPageState;
+  _DesktopProfileFeaturedPageState createState() => _desktopFeaturedPageState;
 
   Future showReOrderTabsPopUp() async {
-    await _desktopDetailsPageState.showReOrderTabsPopUp();
+    await _desktopFeaturedPageState.showReOrderTabsPopUp();
   }
 
-  Future addMedia() async {
-    await _desktopDetailsPageState.addMedia();
+  Future addFieldToInstagram(BasicData basicData) async {
+    await _desktopFeaturedPageState.addFieldToInstagram(basicData);
   }
 
-  Future addFieldToBasicDetail() async {
-    await _desktopDetailsPageState.addFieldToBasicDetail();
-  }
-
-  Future addFieldToAdditionalDetail() async {
-    await _desktopDetailsPageState.addFieldToAdditionalDetail();
-  }
-
-  Future addLocation() async {
-    await _desktopDetailsPageState.addLocation();
+  Future addFieldToTwitter(BasicData basicData) async {
+    await _desktopFeaturedPageState.addFieldToTwitter(basicData);
   }
 }
 
-class _DesktopDetailsPageState extends State<DesktopDetailsPage>
+class _DesktopProfileFeaturedPageState extends State<DesktopProfileFeaturedPage>
     with
-        SingleTickerProviderStateMixin,
-        AutomaticKeepAliveClientMixin<DesktopDetailsPage> {
+        TickerProviderStateMixin,
+        AutomaticKeepAliveClientMixin<DesktopProfileFeaturedPage> {
   late TabController _tabController;
-  late DesktopDetailsModel _model;
 
-  late DesktopMediaPage desktopMediaPage;
-  late DesktopBasicDetailPage desktopBasicDetailPage;
-  late DesktopBasicDetailPage desktopAdditionalDetailPage;
-  late DesktopBasicDetailPage desktopLocationPage;
+  late DesktopProfileFeaturedModel _model;
 
   @override
   void initState() {
-    _tabController = TabController(length: 4, vsync: this);
-    desktopMediaPage = DesktopMediaPage();
-    desktopBasicDetailPage = DesktopBasicDetailPage(
-      atCategory: AtCategory.DETAILS,
-    );
-    desktopAdditionalDetailPage = DesktopBasicDetailPage(
-      atCategory: AtCategory.ADDITIONAL_DETAILS,
-    );
-    desktopLocationPage = DesktopBasicDetailPage(
-      atCategory: AtCategory.LOCATION,
-    );
+    _tabController = TabController(length: 0, vsync: this);
     super.initState();
   }
 
@@ -84,21 +63,9 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
     }
   }
 
-  Future addMedia() async {
-    await desktopMediaPage.addMedia();
-  }
+  Future addFieldToInstagram(BasicData basicData) async {}
 
-  Future addFieldToBasicDetail() async {
-    await desktopBasicDetailPage.addField();
-  }
-
-  Future addFieldToAdditionalDetail() async {
-    await desktopAdditionalDetailPage.addField();
-  }
-
-  Future addLocation() async {
-    await desktopLocationPage.addField();
-  }
+  Future addFieldToTwitter(BasicData basicData) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -106,12 +73,14 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
     return ChangeNotifierProvider(
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
-        _model = DesktopDetailsModel(userPreview: userPreview);
+        _model = DesktopProfileFeaturedModel(userPreview: userPreview);
         return _model;
       },
       child: Container(
-        child: Consumer<DesktopDetailsModel>(
+        child: Consumer<DesktopProfileFeaturedModel>(
           builder: (_, model, child) {
+            _tabController =
+                TabController(length: model.fields.length, vsync: this);
             return model.fields.isEmpty
                 ? Container()
                 : Column(
@@ -135,7 +104,7 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
                         indicatorSize: TabBarIndicatorSize.label,
                         unselectedLabelStyle: TextStyle(
                           fontSize: 13,
-                          color: appTheme.primaryTextColor,
+                          color: appTheme.borderColor,
                           fontFamily: 'Inter',
                         ),
                         labelStyle: TextStyle(
@@ -148,7 +117,7 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
                             .map(
                               (e) => Tab(
                                 child: Text(
-                                  e,
+                                  getTitle(e),
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: appTheme.primaryTextColor,
@@ -177,24 +146,20 @@ class _DesktopDetailsPageState extends State<DesktopDetailsPage>
     );
   }
 
+  Widget getWidget(String field) {
+    switch (field) {
+      case 'instagram':
+        return DesktopInstagramPage();
+      case 'twitter':
+        return DesktopTwitterPage();
+      default:
+        return Container();
+    }
+  }
+
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
-  }
-
-  Widget getWidget(String field) {
-    switch (field) {
-      case 'Media':
-        return desktopMediaPage;
-      case 'Basic Details':
-        return desktopBasicDetailPage;
-      case 'Additional Details':
-        return desktopAdditionalDetailPage;
-      case 'Location':
-        return desktopLocationPage;
-      default:
-        return Container();
-    }
   }
 }

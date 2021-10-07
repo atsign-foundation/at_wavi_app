@@ -8,17 +8,17 @@ import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'desktop_search_model.dart';
+import 'desktop_search_atsign_model.dart';
 
-class DesktopSearchPage extends StatefulWidget {
-  const DesktopSearchPage({Key? key}) : super(key: key);
+class DesktopSearchAtSignPage extends StatefulWidget {
+  const DesktopSearchAtSignPage({Key? key}) : super(key: key);
 
   @override
-  _DesktopSearchPageState createState() => _DesktopSearchPageState();
+  _DesktopSearchAtSignPageState createState() => _DesktopSearchAtSignPageState();
 }
 
-class _DesktopSearchPageState extends State<DesktopSearchPage> {
-  late DesktopSearchModel _model;
+class _DesktopSearchAtSignPageState extends State<DesktopSearchAtSignPage> {
+  late DesktopSearchAtSignModel _model;
 
   @override
   void initState() {
@@ -31,7 +31,7 @@ class _DesktopSearchPageState extends State<DesktopSearchPage> {
     return ChangeNotifierProvider(
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
-        _model = DesktopSearchModel(userPreview: userPreview);
+        _model = DesktopSearchAtSignModel(userPreview: userPreview);
         return _model;
       },
       child: Container(
@@ -86,7 +86,7 @@ class _DesktopSearchPageState extends State<DesktopSearchPage> {
               height: 8,
             ),
             Expanded(
-              child: Consumer<DesktopSearchModel>(
+              child: Consumer<DesktopSearchAtSignModel>(
                 builder: (_, model, child) {
                   if (model.searchUsers.isEmpty) {
                     return Center(

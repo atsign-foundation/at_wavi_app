@@ -1,4 +1,3 @@
-import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_details/desktop_basic_detail/desktop_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -6,52 +5,67 @@ import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'desktop_channels_model.dart';
+import 'desktop_basic_detail/desktop_basic_detail_page.dart';
+import 'desktop_profile_details_model.dart';
+import 'desktop_media/desktop_media_page.dart';
 
-class DesktopChannelsPage extends StatefulWidget {
-  DesktopChannelsPage({
+class DesktopProfileDetailsPage extends StatefulWidget {
+  DesktopProfileDetailsPage({
     Key? key,
   }) : super(key: key);
 
-  _DesktopChannelsPageState _desktopChannelsPageState =
-      _DesktopChannelsPageState();
+  _DesktopProfileDetailsPageState _desktopDetailsPageState =
+      _DesktopProfileDetailsPageState();
 
   @override
-  _DesktopChannelsPageState createState() => _desktopChannelsPageState;
+  _DesktopProfileDetailsPageState createState() => _desktopDetailsPageState;
 
   Future showReOrderTabsPopUp() async {
-    await _desktopChannelsPageState.showReOrderTabsPopUp();
+    await _desktopDetailsPageState.showReOrderTabsPopUp();
   }
 
-  Future addFieldToSocial() async {
-    await _desktopChannelsPageState.addFieldToSocial();
+  Future addMedia() async {
+    await _desktopDetailsPageState.addMedia();
   }
 
-  Future addFieldToGame() async {
-    await _desktopChannelsPageState.addFieldToGame();
+  Future addFieldToBasicDetail() async {
+    await _desktopDetailsPageState.addFieldToBasicDetail();
+  }
+
+  Future addFieldToAdditionalDetail() async {
+    await _desktopDetailsPageState.addFieldToAdditionalDetail();
+  }
+
+  Future addLocation() async {
+    await _desktopDetailsPageState.addLocation();
   }
 }
 
-class _DesktopChannelsPageState extends State<DesktopChannelsPage>
+class _DesktopProfileDetailsPageState extends State<DesktopProfileDetailsPage>
     with
         SingleTickerProviderStateMixin,
-        AutomaticKeepAliveClientMixin<DesktopChannelsPage> {
+        AutomaticKeepAliveClientMixin<DesktopProfileDetailsPage> {
   late TabController _tabController;
-  late DesktopChannelsModel _model;
+  late DesktopProfileDetailsModel _model;
 
-  late DesktopBasicDetailPage desktopSocialAccountPage;
-  late DesktopBasicDetailPage desktopGameAccountPage;
+  late DesktopMediaPage desktopMediaPage;
+  late DesktopBasicDetailPage desktopBasicDetailPage;
+  late DesktopBasicDetailPage desktopAdditionalDetailPage;
+  late DesktopBasicDetailPage desktopLocationPage;
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
-    desktopSocialAccountPage = DesktopBasicDetailPage(
-      atCategory: AtCategory.SOCIAL,
+    _tabController = TabController(length: 4, vsync: this);
+    desktopMediaPage = DesktopMediaPage();
+    desktopBasicDetailPage = DesktopBasicDetailPage(
+      atCategory: AtCategory.DETAILS,
     );
-    desktopGameAccountPage = DesktopBasicDetailPage(
-      atCategory: AtCategory.GAMER,
+    desktopAdditionalDetailPage = DesktopBasicDetailPage(
+      atCategory: AtCategory.ADDITIONAL_DETAILS,
     );
-
+    desktopLocationPage = DesktopBasicDetailPage(
+      atCategory: AtCategory.LOCATION,
+    );
     super.initState();
   }
 
@@ -70,12 +84,20 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
     }
   }
 
-  Future addFieldToSocial() async {
-    await desktopSocialAccountPage.addField();
+  Future addMedia() async {
+    await desktopMediaPage.addMedia();
   }
 
-  Future addFieldToGame() async {
-    await desktopGameAccountPage.addField();
+  Future addFieldToBasicDetail() async {
+    await desktopBasicDetailPage.addField();
+  }
+
+  Future addFieldToAdditionalDetail() async {
+    await desktopAdditionalDetailPage.addField();
+  }
+
+  Future addLocation() async {
+    await desktopLocationPage.addField();
   }
 
   @override
@@ -84,11 +106,11 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
     return ChangeNotifierProvider(
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
-        _model = DesktopChannelsModel(userPreview: userPreview);
+        _model = DesktopProfileDetailsModel(userPreview: userPreview);
         return _model;
       },
       child: Container(
-        child: Consumer<DesktopChannelsModel>(
+        child: Consumer<DesktopProfileDetailsModel>(
           builder: (_, model, child) {
             return model.fields.isEmpty
                 ? Container()
@@ -108,11 +130,12 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
                             bottom: 4,
                           ),
                         ),
+                        //    indicatorColor: appTheme.primaryColor,
                         isScrollable: true,
                         indicatorSize: TabBarIndicatorSize.label,
                         unselectedLabelStyle: TextStyle(
                           fontSize: 13,
-                          color: appTheme.borderColor,
+                          color: appTheme.primaryTextColor,
                           fontFamily: 'Inter',
                         ),
                         labelStyle: TextStyle(
@@ -154,12 +177,22 @@ class _DesktopChannelsPageState extends State<DesktopChannelsPage>
     );
   }
 
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   Widget getWidget(String field) {
     switch (field) {
-      case 'Social':
-        return desktopSocialAccountPage;
-      case 'Game':
-        return desktopGameAccountPage;
+      case 'Media':
+        return desktopMediaPage;
+      case 'Basic Details':
+        return desktopBasicDetailPage;
+      case 'Additional Details':
+        return desktopAdditionalDetailPage;
+      case 'Location':
+        return desktopLocationPage;
       default:
         return Container();
     }
