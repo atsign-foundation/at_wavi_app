@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:at_wavi_app/common_components/provider_callback.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_my_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
@@ -138,6 +139,11 @@ class _DesktopProfileBasicInfoPageState
                     label: 'Add location',
                     onPressed: _showAddLocation,
                   ),
+                DesktopIconButton(
+                  iconData: Icons.edit_rounded,
+                  onPressed: _showAddDetailPopup,
+                ),
+                SizedBox(width: 10),
                 DesktopPreviewButton(
                   onPressed: _showAddDetailPopup,
                 ),
@@ -149,7 +155,7 @@ class _DesktopProfileBasicInfoPageState
             child: _buildFieldsWidget(data, locationData: locationData),
           ),
           Container(
-            margin: EdgeInsets.only(bottom: 64),
+            margin: EdgeInsets.only(bottom: 64, top: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -263,7 +269,7 @@ class _DesktopProfileBasicInfoPageState
               borderRadius: borderRadius,
             ),
             child: DesktopLocationItemWidget(
-              title: _model.locationNicknameData?.value ?? '',
+              title: _model.locationNicknameData?.accountName ?? '',
               location: _model.locationData?.value as String?,
             ),
           );

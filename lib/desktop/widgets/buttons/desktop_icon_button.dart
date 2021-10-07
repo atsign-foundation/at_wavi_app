@@ -5,12 +5,16 @@ class DesktopIconButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final IconData iconData;
   final double size;
+  final Color? backgroundColor;
+  final Color? iconColor;
 
   const DesktopIconButton({
     Key? key,
     required this.iconData,
     this.onPressed,
     this.size = 40,
+    this.backgroundColor,
+    this.iconColor,
   }) : super(key: key);
 
   @override
@@ -19,15 +23,16 @@ class DesktopIconButton extends StatelessWidget {
     return SizedBox(
       width: size,
       height: size,
-      child: FloatingActionButton(
+      child: RawMaterialButton(
+        shape: new CircleBorder(),
         onPressed: onPressed,
         child: Icon(
           iconData,
-          color: appTheme.primaryColor,
+          color: iconColor ?? appTheme.primaryColor,
           size: size / 2,
         ),
         elevation: 0,
-        backgroundColor: appTheme.primaryLighterColor,
+        fillColor: backgroundColor ?? appTheme.primaryLighterColor,
         hoverElevation: 0,
         focusElevation: 0,
         highlightElevation: 0,

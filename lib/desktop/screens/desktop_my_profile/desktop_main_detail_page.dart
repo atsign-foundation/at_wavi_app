@@ -4,6 +4,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_a
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
+import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_main_tabbar.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -17,6 +18,7 @@ import 'desktop_channels/desktop_channels_page.dart';
 import 'desktop_details/desktop_details_page.dart';
 import 'desktop_featured/desktop_featured_page.dart';
 import 'desktop_main_detail_model.dart';
+import 'widgets/desktop_profile_tabbar.dart';
 
 class DesktopMainDetailPage extends StatefulWidget {
   Function onClickSearch;
@@ -30,7 +32,8 @@ class DesktopMainDetailPage extends StatefulWidget {
   _DesktopMainDetailPageState createState() => _DesktopMainDetailPageState();
 }
 
-class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
+class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
+    with SingleTickerProviderStateMixin {
   GlobalKey _searchKey = GlobalKey();
   GlobalKey _notificationKey = GlobalKey();
   GlobalKey _menuKey = GlobalKey();
@@ -47,11 +50,15 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
   late List<PopupMenuEntry<String>> menuLocations;
   late List<PopupMenuEntry<String>> menuMedias;
 
+  late TabController _tabController;
+
   @override
   void initState() {
     desktopDetailsPage = DesktopDetailsPage();
     desktopChannelsPage = DesktopChannelsPage();
     desktopFeaturedPage = DesktopFeaturedPage();
+
+    _tabController = TabController(length: 3, vsync: this);
 
     PopupMenuItem<String> popupMenuItem = PopupMenuItem<String>(
       value: 'reorder',
@@ -141,145 +148,160 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      width: 100,
-                    ),
-                    DesktopMainTabBar(
-                      onSelected: (index) async {
-                        switch (index) {
-                          case 0:
-                            await saveStringToSharedPreferences(
-                                key: Strings.desktop_current_tab,
-                                value: AtCategory.DETAILS_TAB.name);
-                            break;
-                          case 1:
-                            await saveStringToSharedPreferences(
-                                key: Strings.desktop_current_tab,
-                                value: AtCategory.CHANNELS.name);
-                            break;
-                          case 2:
-                            await saveStringToSharedPreferences(
-                                key: Strings.desktop_current_tab,
-                                value: AtCategory.FEATURED.name);
-                            break;
-                        }
-                        _pageController.animateToPage(
-                          index!,
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves.ease,
-                        );
+                    Expanded(child: Container(), flex: 1),
+                    DesktopProfileTabBar(
+                      onTap: (index) {
+                        _pageController.jumpToPage(index);
                       },
+                      tab: _tabController,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          height: 32,
-                          width: 32,
-                          child: RawMaterialButton(
-                            shape: new CircleBorder(),
-                            elevation: 0.0,
-                            fillColor: appTheme.borderColor,
-                            child: Icon(
-                              Icons.search,
-                              size: 16,
-                              color: ColorConstants.blackShade2,
-                            ),
+                    // DesktopMainTabBar(
+                    //   onSelected: (index) async {
+                    //     switch (index) {
+                    //       case 0:
+                    //         await saveStringToSharedPreferences(
+                    //             key: Strings.desktop_current_tab,
+                    //             value: AtCategory.DETAILS_TAB.name);
+                    //         break;
+                    //       case 1:
+                    //         await saveStringToSharedPreferences(
+                    //             key: Strings.desktop_current_tab,
+                    //             value: AtCategory.CHANNELS.name);
+                    //         break;
+                    //       case 2:
+                    //         await saveStringToSharedPreferences(
+                    //             key: Strings.desktop_current_tab,
+                    //             value: AtCategory.FEATURED.name);
+                    //         break;
+                    //     }
+                    //     _pageController.jumpToPage(
+                    //       index ?? 0
+                    //     );
+                    //   },
+                    // ),
+                    Expanded(
+                      flex: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          DesktopIconButton(
+                            iconData: Icons.search,
+                            iconColor: appTheme.primaryTextColor,
+                            backgroundColor: appTheme.secondaryBackgroundColor,
                             onPressed: () {
                               widget.onClickSearch();
                             },
                           ),
-                        ),
-                        // DesktopShowCaseWidget(
-                        //   globalKey: _searchKey,
-                        //   container: DesktopSearchInfoPopUp(
-                        //     atSign: '',
-                        //     icon: 'assets/images/info1.png',
-                        //     description: Strings.desktop_search_user,
-                        //     onNext: () {
-                        //       ShowCaseWidget.of(context)!.dismiss();
-                        //       ShowCaseWidget.of(context)!
-                        //           .startShowCase([_notificationKey]);
-                        //     },
-                        //     onCancel: () {
-                        //       ShowCaseWidget.of(context)!.dismiss();
-                        //     },
-                        //   ),
-                        //   iconData: Icons.search,
-                        // ),
-                        SizedBox(
-                          width: 24,
-                        ),
-                        PopupMenuButton<String>(
-                          padding: EdgeInsets.all(0),
-                          child: Container(
-                            height: 26,
-                            width: 26,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: appTheme.borderColor),
-                            child: Icon(
-                              Icons.notifications,
-                              size: 16,
-                              color: ColorConstants.blackShade2,
-                            ),
+                          // Container(
+                          //   height: 32,
+                          //   width: 32,
+                          //   child: RawMaterialButton(
+                          //     shape: new CircleBorder(),
+                          //     elevation: 0.0,
+                          //     fillColor: appTheme.borderColor,
+                          //     child: Icon(
+                          //       Icons.search,
+                          //       size: 16,
+                          //       color: ColorConstants.blackShade2,
+                          //     ),
+                          //     onPressed: () {
+                          //       widget.onClickSearch();
+                          //     },
+                          //   ),
+                          // ),
+                          // DesktopShowCaseWidget(
+                          //   globalKey: _searchKey,
+                          //   container: DesktopSearchInfoPopUp(
+                          //     atSign: '',
+                          //     icon: 'assets/images/info1.png',
+                          //     description: Strings.desktop_search_user,
+                          //     onNext: () {
+                          //       ShowCaseWidget.of(context)!.dismiss();
+                          //       ShowCaseWidget.of(context)!
+                          //           .startShowCase([_notificationKey]);
+                          //     },
+                          //     onCancel: () {
+                          //       ShowCaseWidget.of(context)!.dismiss();
+                          //     },
+                          //   ),
+                          //   iconData: Icons.search,
+                          // ),
+                          SizedBox(
+                            width: 24,
                           ),
-                          itemBuilder: (BuildContext context) => [
-                            PopupMenuItem<String>(
-                              value: 'notification',
-                              padding: EdgeInsets.all(0),
-                              child: DesktopNotificationPage(
-                                atSign: '',
-                                mainContext: context,
+                          PopupMenuButton<String>(
+                            padding: EdgeInsets.all(0),
+                            child: DesktopIconButton(
+                              iconData: Icons.notifications,
+                              iconColor: appTheme.primaryTextColor,
+                              backgroundColor: appTheme.secondaryBackgroundColor,
+                              // onPressed: (){},
+                            ),
+                            itemBuilder: (BuildContext context) => [
+                              PopupMenuItem<String>(
+                                value: 'notification',
+                                padding: EdgeInsets.all(0),
+                                child: DesktopNotificationPage(
+                                  atSign: '',
+                                  mainContext: context,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        // DesktopShowCaseWidget(
-                        //   globalKey: _notificationKey,
-                        //   container: DesktopNotificationPage(
-                        //     atSign: '',
-                        //     mainContext: context,
-                        //   ),
-                        //   iconData: Icons.notifications,
-                        // ),
-                        SizedBox(
-                          width: 24,
-                        ),
-                        Container(
-                          height: 32,
-                          width: 32,
-                          child: RawMaterialButton(
-                            shape: new CircleBorder(),
-                            elevation: 0.0,
-                            fillColor: appTheme.borderColor,
-                            child: Icon(
-                              Icons.more_vert,
-                              size: 16,
-                              color: ColorConstants.blackShade2,
-                            ),
-                            onPressed: () {},
+                            ],
                           ),
-                        ),
-                        // DesktopShowCaseWidget(
-                        //   globalKey: _menuKey,
-                        //   container: DesktopSearchInfoPopUp(
-                        //     atSign: '',
-                        //     icon: 'assets/images/info3.png',
-                        //     description: Strings.desktop_find_more_privacy,
-                        //     onNext: () {
-                        //       ShowCaseWidget.of(context)!.dismiss();
-                        //       ShowCaseWidget.of(context)!
-                        //           .startShowCase([_editKey]);
-                        //     },
-                        //     onCancel: () {
-                        //       ShowCaseWidget.of(context)!.dismiss();
-                        //     },
-                        //   ),
-                        //   iconData: Icons.more_vert,
-                        // ),
-                      ],
+                          // DesktopShowCaseWidget(
+                          //   globalKey: _notificationKey,
+                          //   container: DesktopNotificationPage(
+                          //     atSign: '',
+                          //     mainContext: context,
+                          //   ),
+                          //   iconData: Icons.notifications,
+                          // ),
+                          SizedBox(
+                            width: 24,
+                          ),
+                          DesktopIconButton(
+                            iconData: Icons.more_vert,
+                            iconColor: appTheme.primaryTextColor,
+                            backgroundColor: appTheme.secondaryBackgroundColor,
+                            onPressed: () {
+                              widget.onClickSearch();
+                            },
+                          ),
+                          // Container(
+                          //   height: 32,
+                          //   width: 32,
+                          //   child: RawMaterialButton(
+                          //     shape: new CircleBorder(),
+                          //     elevation: 0.0,
+                          //     fillColor: appTheme.borderColor,
+                          //     child: Icon(
+                          //       Icons.more_vert,
+                          //       size: 16,
+                          //       color: ColorConstants.blackShade2,
+                          //     ),
+                          //     onPressed: () {},
+                          //   ),
+                          // ),
+                          // DesktopShowCaseWidget(
+                          //   globalKey: _menuKey,
+                          //   container: DesktopSearchInfoPopUp(
+                          //     atSign: '',
+                          //     icon: 'assets/images/info3.png',
+                          //     description: Strings.desktop_find_more_privacy,
+                          //     onNext: () {
+                          //       ShowCaseWidget.of(context)!.dismiss();
+                          //       ShowCaseWidget.of(context)!
+                          //           .startShowCase([_editKey]);
+                          //     },
+                          //     onCancel: () {
+                          //       ShowCaseWidget.of(context)!.dismiss();
+                          //     },
+                          //   ),
+                          //   iconData: Icons.more_vert,
+                          // ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
