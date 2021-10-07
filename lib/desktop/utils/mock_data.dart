@@ -222,7 +222,7 @@ final mockUser = """
     "path": null
   },
   "location": {
-    "value": {\"location\":\"abc\",\"radius\":\"null\",\"diameter\":\"175.0\",\"zoom\":\"16.0\",\"latitude\":\"21.028511\",\"longitude\":\"105.804817\"},
+    "value": \"{\\\"location\\\":\\\"null\\\",\\\"radius\\\":\\\"null\\\",\\\"diameter\\\":\\\"100.0\\\",\\\"zoom\\\":\\\"16.0\\\",\\\"latitude\\\":\\\"37.33233141\\\",\\\"longitude\\\":\\\"-122.0312186\\\"}\",
     "isPrivate": false,
     "accountName": "Home",
     "valueDescription": null,
@@ -230,7 +230,7 @@ final mockUser = """
     "path": null
   },
   "locationnickname": {
-    "value": {\"location\":\"abc\",\"radius\":\"null\",\"diameter\":\"175.0\",\"zoom\":\"16.0\",\"latitude\":\"21.028511\",\"longitude\":\"105.804817\"},
+    "value": \"{\\\"location\\\":\\\"null\\\",\\\"radius\\\":\\\"null\\\",\\\"diameter\\\":\\\"100.0\\\",\\\"zoom\\\":\\\"16.0\\\",\\\"latitude\\\":\\\"37.33233141\\\",\\\"longitude\\\":\\\"-122.0312186\\\"}\",
     "isPrivate": false,
     "accountName": "Coffee",
     "valueDescription": null,
@@ -336,7 +336,7 @@ final mockUser = """
   "customFields": {
     "LOCATION": [
       {
-        "value": {\"location\":\"abc\",\"radius\":\"null\",\"diameter\":\"175.0\",\"zoom\":\"16.0\",\"latitude\":\"21.028511\",\"longitude\":\"105.804817\"},
+        "value": \"{\\\"location\\\":\\\"null\\\",\\\"radius\\\":\\\"null\\\",\\\"diameter\\\":\\\"100.0\\\",\\\"zoom\\\":\\\"16.0\\\",\\\"latitude\\\":\\\"37.33233141\\\",\\\"longitude\\\":\\\"-122.0312186\\\"}\",
         "isPrivate": false,
         "accountName": "Office",
         "valueDescription": "",
