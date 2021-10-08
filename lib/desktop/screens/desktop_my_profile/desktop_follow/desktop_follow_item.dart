@@ -26,18 +26,12 @@ class _DesktopFollowItemState extends State<DesktopFollowItem>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(90.0),
-            child: Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                color: appTheme.borderColor,
-                borderRadius: BorderRadius.all(Radius.circular(90)),
-              ),
-              child: Image.network(
-                'https://i.picsum.photos/id/39/300/300.jpg?hmac=HoD3iHGTRG4yexpPUPH8iFp_qzgST0rFI5X7u0JxGOw',
-                fit: BoxFit.fitWidth,
-              ),
+            borderRadius: BorderRadius.circular(30.0),
+            child: Image.network(
+              'https://i.picsum.photos/id/39/300/300.jpg?hmac=HoD3iHGTRG4yexpPUPH8iFp_qzgST0rFI5X7u0JxGOw',
+              fit: BoxFit.fitWidth,
+              width: 60,
+              height: 60,
             ),
           ),
           SizedBox(
@@ -52,8 +46,7 @@ class _DesktopFollowItemState extends State<DesktopFollowItem>
                   widget.title,
                   style: TextStyle(
                     color: appTheme.primaryTextColor,
-                    fontSize: 10,
-                    fontFamily: 'Inter',
+                    fontSize: 16,
                   ),
                 ),
                 SizedBox(
@@ -63,19 +56,25 @@ class _DesktopFollowItemState extends State<DesktopFollowItem>
                   widget.subTitle,
                   style: TextStyle(
                     color: appTheme.secondaryTextColor,
-                    fontSize: 11,
-                    fontFamily: 'Inter',
+                    fontSize: 16,
                   ),
-                ),
-                SizedBox(
-                  height: 8,
                 ),
               ],
             ),
           ),
-          SizedBox(
-            width: 28,
-          ),
+          GestureDetector(
+            child: Container(
+              child: Center(
+                child: Text(
+                  'Unfollow',
+                  style: TextStyle(
+                    color: appTheme.secondaryTextColor,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );

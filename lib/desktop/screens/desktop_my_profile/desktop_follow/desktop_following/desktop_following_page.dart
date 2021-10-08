@@ -49,22 +49,37 @@ class _DesktopFollowingPageState extends State<DesktopFollowingPage>
               controller: TextEditingController(
                 text: '',
               ),
-              hint: Strings.desktop_search_following,
-              backgroundColor: ColorConstants.LIGHT_GREY,
+              hint: Strings.desktop_search_sign,
+              backgroundColor: appTheme.secondaryBackgroundColor,
               borderRadius: 10,
               hasUnderlineBorder: false,
-              contentPadding: 16,
+              contentPadding: 0,
               onChanged: (text) {
                 _model.searchUser(text);
               },
-              prefixIcon: Padding(
-                padding: EdgeInsets.all(15),
-                child: Text(
-                  Strings.desktop_prefix_sign,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: ColorConstants.blackShade2,
-                    fontFamily: 'Inter',
+              prefixIcon: Container(
+                width: 60,
+                margin: EdgeInsets.only(left: 10, bottom: 1),
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '@',
+                          style: TextStyle(
+                            color: appTheme.primaryColor,
+                            fontSize: 16,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'sign',
+                          style: TextStyle(
+                            color: appTheme.primaryTextColor,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

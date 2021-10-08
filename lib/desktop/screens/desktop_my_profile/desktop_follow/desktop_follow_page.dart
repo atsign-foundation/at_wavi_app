@@ -1,5 +1,6 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_tabbar.dart';
 import 'package:flutter/material.dart';
 
 import 'desktop_follower/desktop_follower_page.dart';
@@ -49,52 +50,11 @@ class _DesktopFollowPageState extends State<DesktopFollowPage>
           SizedBox(
             height: 40,
           ),
-          TabBar(
-            indicator: UnderlineTabIndicator(
-              borderSide: BorderSide(
-                width: 3,
-                color: appTheme.primaryColor,
-              ),
-              insets: EdgeInsets.only(
-                left: 0,
-                right: 8,
-                bottom: 4,
-              ),
-            ),
-            isScrollable: true,
-            indicatorSize: TabBarIndicatorSize.label,
-            unselectedLabelStyle: TextStyle(
-              fontSize: 13,
-              color: appTheme.borderColor,
-              fontFamily: 'Inter',
-            ),
-            labelStyle: TextStyle(
-              fontSize: 13,
-              color: appTheme.primaryTextColor,
-              fontFamily: 'Inter',
-            ),
+          DesktopTabBar(
             controller: _tabController,
-            tabs: [
-              Tab(
-                child: Text(
-                  Strings.desktop_followers,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: appTheme.primaryTextColor,
-                    fontFamily: 'Inter',
-                  ),
-                ),
-              ),
-              Tab(
-                child: Text(
-                  Strings.desktop_following,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: appTheme.primaryTextColor,
-                    fontFamily: 'Inter',
-                  ),
-                ),
-              ),
+            tabTitles: [
+              Strings.desktop_followers,
+              Strings.desktop_following,
             ],
           ),
           Expanded(
