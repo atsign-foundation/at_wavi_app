@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_login/desktop_login_otp/desktop_login_otp_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
@@ -204,7 +205,7 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
       builder: (BuildContext context) {
         return Dialog(
           backgroundColor: Colors.transparent,
-          child: DesktopPassCodeDialog(
+          child: DesktopLoginOTPPage(
             atSign: atSign,
           ),
         );
