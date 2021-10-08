@@ -21,7 +21,7 @@ class DesktopSettingWidget extends StatelessWidget {
           SizedBox(width: 24),
           Icon(
             prefixIcon,
-            color: appTheme.secondaryColor,
+            color: appTheme.primaryTextColor,
           ),
           SizedBox(width: 12),
           Text(

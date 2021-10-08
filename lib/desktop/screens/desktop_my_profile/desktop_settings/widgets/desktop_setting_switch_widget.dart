@@ -22,7 +22,7 @@ class DesktopSettingSwitchWidget extends StatelessWidget {
           SizedBox(width: 24),
           Icon(
             prefixIcon,
-            color: appTheme.secondaryColor,
+            color: appTheme.primaryTextColor,
           ),
           SizedBox(width: 12),
           Text(
@@ -34,7 +34,11 @@ class DesktopSettingSwitchWidget extends StatelessWidget {
             ),
           ),
           Spacer(),
-          Switch(value: true, onChanged: (value) {}),
+          Switch(
+            value: true,
+            onChanged: (value) {},
+            activeColor: appTheme.primaryColor,
+          ),
           SizedBox(width: 24),
         ],
       ),

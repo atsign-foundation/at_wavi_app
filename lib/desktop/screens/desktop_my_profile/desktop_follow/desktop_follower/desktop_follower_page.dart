@@ -52,7 +52,6 @@ class _DesktopFollowerPageState extends State<DesktopFollowerPage>
               hint: Strings.desktop_search_follower,
               backgroundColor: ColorConstants.LIGHT_GREY,
               borderRadius: 10,
-              textSize: 12,
               hasUnderlineBorder: false,
               contentPadding: 16,
               onChanged: (text) {

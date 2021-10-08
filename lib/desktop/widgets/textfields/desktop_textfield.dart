@@ -6,13 +6,14 @@ class DesktopTextField extends StatelessWidget {
   final TextEditingController controller;
   final String title;
   final String hint;
+  final TextStyle? style;
+  final TextStyle? hintStyle;
   final TextInputType? keyboardType;
   final ValueChanged<String>? onChanged;
   final Widget? prefixIcon;
   final Color? backgroundColor;
   final double borderRadius;
   final Color borderColor;
-  final double textSize;
   final bool hasUnderlineBorder;
   final double contentPadding;
   final bool readOnly;
@@ -22,12 +23,13 @@ class DesktopTextField extends StatelessWidget {
     required this.controller,
     this.title = '',
     this.hint = '',
+    this.style,
+    this.hintStyle,
     this.keyboardType,
     this.onChanged,
     this.prefixIcon,
     this.backgroundColor,
     this.borderRadius = 0,
-    this.textSize = 16,
     this.hasUnderlineBorder = true,
     this.contentPadding = 0,
     this.readOnly = false,
@@ -55,11 +57,12 @@ class DesktopTextField extends StatelessWidget {
           controller: controller,
           keyboardType: keyboardType,
           readOnly: readOnly,
-          style: TextStyle(
-            fontSize: textSize,
-            fontWeight: FontWeight.normal,
-            color: appTheme.primaryTextColor,
-          ),
+          style: style ??
+              TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+                color: appTheme.primaryTextColor,
+              ),
           onChanged: onChanged,
           validator: validator,
           decoration: InputDecoration(
@@ -71,10 +74,14 @@ class DesktopTextField extends StatelessWidget {
               borderSide: BorderSide.none,
             ),
             hintText: hint,
-            hintStyle: TextStyle(
-              color: appTheme.secondaryTextColor,
-              fontSize: textSize,
-            ),
+            hintStyle: hintStyle ??
+                style?.copyWith(
+                  color: appTheme.secondaryTextColor,
+                ) ??
+                TextStyle(
+                  color: appTheme.secondaryTextColor,
+                  fontSize: 16,
+                ),
             filled: backgroundColor != null,
             fillColor: backgroundColor,
             enabledBorder: hasUnderlineBorder

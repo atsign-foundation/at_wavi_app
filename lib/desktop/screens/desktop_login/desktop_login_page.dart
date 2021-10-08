@@ -109,7 +109,11 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                         hint: Strings.desktop_enter_sign,
                         backgroundColor: appTheme.secondaryBackgroundColor,
                         borderRadius: 10,
-                        textSize: 24,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.normal,
+                          color: appTheme.primaryTextColor,
+                        ),
                         hasUnderlineBorder: false,
                         contentPadding: 26,
                         validator: (value) {

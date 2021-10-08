@@ -2,6 +2,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_follow/de
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_empty_widget.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_tabbar.dart';
 import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
@@ -14,7 +15,8 @@ class DesktopSearchAtSignPage extends StatefulWidget {
   const DesktopSearchAtSignPage({Key? key}) : super(key: key);
 
   @override
-  _DesktopSearchAtSignPageState createState() => _DesktopSearchAtSignPageState();
+  _DesktopSearchAtSignPageState createState() =>
+      _DesktopSearchAtSignPageState();
 }
 
 class _DesktopSearchAtSignPageState extends State<DesktopSearchAtSignPage> {
@@ -36,35 +38,48 @@ class _DesktopSearchAtSignPageState extends State<DesktopSearchAtSignPage> {
       },
       child: Container(
         color: appTheme.backgroundColor,
-        padding: EdgeInsets.all(20),
+        width: 380,
+        padding: EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 40,
-            ),
+            SizedBox(height: 68),
             DesktopTextField(
               controller: TextEditingController(
                 text: '',
               ),
               hint: Strings.desktop_search_sign,
-              backgroundColor: ColorConstants.LIGHT_GREY,
+              backgroundColor: appTheme.secondaryBackgroundColor,
               borderRadius: 10,
-              textSize: 12,
               hasUnderlineBorder: false,
-              contentPadding: 16,
+              contentPadding: 0,
               onChanged: (text) {
                 _model.searchUser(text);
               },
-              prefixIcon: Padding(
-                padding: EdgeInsets.all(15),
-                child: Text(
-                  Strings.desktop_prefix_sign,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: ColorConstants.blackShade2,
-                    fontFamily: 'Inter',
+              prefixIcon: Container(
+                width: 60,
+                margin: EdgeInsets.only(left: 10, bottom: 1),
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '@',
+                          style: TextStyle(
+                            color: appTheme.primaryColor,
+                            fontSize: 16,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'sign',
+                          style: TextStyle(
+                            color: appTheme.primaryTextColor,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

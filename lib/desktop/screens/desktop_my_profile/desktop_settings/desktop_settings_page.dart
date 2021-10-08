@@ -1,3 +1,4 @@
+import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'widgets/desktop_setting_switch_widget.dart';
@@ -13,9 +14,10 @@ class DesktopSettingsPage extends StatefulWidget {
 class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
   @override
   Widget build(BuildContext context) {
+    final appTheme = AppTheme.of(context);
     return Container(
       width: 380,
-      color: Colors.white,
+      color: appTheme.backgroundColor,
       child: Column(
         children: [
           SizedBox(height: 60),

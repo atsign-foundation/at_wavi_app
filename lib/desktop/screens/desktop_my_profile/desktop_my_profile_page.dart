@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'desktop_drawer/desktop_drawer_page.dart';
 import 'desktop_main_detail_page.dart';
+import 'desktop_search_atsign/desktop_search_atsign_page.dart';
 
 class DesktopMyProfilePage extends StatefulWidget {
   DesktopMyProfilePage({
@@ -32,50 +33,50 @@ class _DesktopMyProfilePageState extends State<DesktopMyProfilePage> {
       body: Scaffold(
         key: _globalKey,
         backgroundColor: ColorConstants.white,
-        endDrawer: Drawer(
-          child: DesktopDrawerPage(
-            type: drawerType,
-            isFollower: isFollower,
-          ),
-        ),
-        body: Builder(
-          builder: (context) => Container(
-            child: Row(
-              children: [
-                Container(
-                  width: 360,
-                  child: DesktopProfileInfoPage(
-                    atSign: '',
-                    //Todo
-                    // isMyProfile: true,
-                    // onClickFollow: (title) {
-                    //   drawerType = DrawerType.Follow;
-                    //   isFollower = title == Strings.desktop_followers;
-                    //   setState(() {});
-                    //   Scaffold.of(context).openEndDrawer();
-                    // },
-                  ),
-                ),
-                Container(
-                  width: 1,
-                  color: appTheme.separatorColor,
-                ),
-                Expanded(
-                  child: DesktopMainDetailPage(
-                    onSearchPressed: (){
-                      _globalKey.currentState?.openEndDrawer();
-                    },
-                    onSettingPressed: () {
-                      _parentScaffoldKey.currentState?.openEndDrawer();
-                      // drawerType = DrawerType.Search;
-                      // setState(() {});
-                      // Scaffold.of(context).openEndDrawer();
-                    },
-                  ),
-                ),
-              ],
+        endDrawer: DesktopSearchAtSignPage(),
+        drawer: DesktopDrawerPage(type: DrawerType.Follow),
+        body: Row(
+          children: [
+            Container(
+              width: 360,
+              child: DesktopProfileInfoPage(
+                atSign: '',
+                onFollowerPressed: (){
+                  print('on follower pressed');
+                  _globalKey.currentState?.openDrawer();
+                },
+                onFollowingPressed: (){
+                  print('on following pressed');
+                  _globalKey.currentState?.openDrawer();
+                },
+                //Todo
+                // isMyProfile: true,
+                // onClickFollow: (title) {
+                //   drawerType = DrawerType.Follow;
+                //   isFollower = title == Strings.desktop_followers;
+                //   setState(() {});
+                //   Scaffold.of(context).openEndDrawer();
+                // },
+              ),
             ),
-          ),
+            Container(
+              width: 1,
+              color: appTheme.separatorColor,
+            ),
+            Expanded(
+              child: DesktopMainDetailPage(
+                onSearchPressed: () {
+                  _globalKey.currentState?.openEndDrawer();
+                },
+                onSettingPressed: () {
+                  _parentScaffoldKey.currentState?.openEndDrawer();
+                  // drawerType = DrawerType.Search;
+                  // setState(() {});
+                  // Scaffold.of(context).openEndDrawer();
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

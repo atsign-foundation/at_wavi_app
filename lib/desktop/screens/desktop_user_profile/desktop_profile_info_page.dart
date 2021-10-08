@@ -7,10 +7,14 @@ import 'package:flutter/material.dart';
 
 class DesktopProfileInfoPage extends StatefulWidget {
   final String? atSign;
+  final VoidCallback? onFollowerPressed;
+  final VoidCallback? onFollowingPressed;
 
   DesktopProfileInfoPage({
     Key? key,
     required this.atSign,
+    this.onFollowerPressed,
+    this.onFollowingPressed,
   }) : super(key: key);
 
   @override
@@ -110,13 +114,19 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                 SizedBox(
                   height: 24,
                 ),
-                _buildInteractiveItem(
-                    Strings.desktop_followers, '120', appTheme),
+                GestureDetector(
+                  onTap: widget.onFollowerPressed,
+                  child: _buildInteractiveItem(
+                      Strings.desktop_followers, '120', appTheme),
+                ),
                 SizedBox(
                   height: 16,
                 ),
-                _buildInteractiveItem(
-                    Strings.desktop_following, '121', appTheme),
+                GestureDetector(
+                  onTap: widget.onFollowingPressed,
+                  child: _buildInteractiveItem(
+                      Strings.desktop_following, '121', appTheme),
+                ),
                 SizedBox(
                   height: 32,
                 ),
@@ -166,34 +176,28 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   }
 
   _buildInteractiveItem(String title, String subTitle, AppTheme appTheme) {
-    return GestureDetector(
-      onTap: () {
-        //Todo
-        // widget.onClickFollow(title);
-      },
-      child: Row(
-        children: [
-          SizedBox(width: 40),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 16,
-              color: appTheme.secondaryTextColor,
-              fontWeight: FontWeight.normal,
-            ),
+    return Row(
+      children: [
+        SizedBox(width: 40),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 16,
+            color: appTheme.secondaryTextColor,
+            fontWeight: FontWeight.normal,
           ),
-          Spacer(),
-          Text(
-            subTitle,
-            style: TextStyle(
-              fontSize: 18,
-              color: appTheme.primaryTextColor,
-              fontWeight: FontWeight.w600,
-            ),
+        ),
+        Spacer(),
+        Text(
+          subTitle,
+          style: TextStyle(
+            fontSize: 18,
+            color: appTheme.primaryTextColor,
+            fontWeight: FontWeight.w600,
           ),
-          SizedBox(width: 40),
-        ],
-      ),
+        ),
+        SizedBox(width: 40),
+      ],
     );
   }
 

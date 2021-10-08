@@ -43,7 +43,6 @@ class DesktopBasicItem extends StatelessWidget {
               ),
               readOnly: true,
               borderRadius: 10,
-              textSize: 14,
               hasUnderlineBorder: false,
               onChanged: (text) {
                 onValueChanged(text);

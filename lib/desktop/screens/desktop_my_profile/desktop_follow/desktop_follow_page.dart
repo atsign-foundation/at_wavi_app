@@ -40,6 +40,8 @@ class _DesktopFollowPageState extends State<DesktopFollowPage>
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
+      width: 380,
+      color: appTheme.backgroundColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
