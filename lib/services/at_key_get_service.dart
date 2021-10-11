@@ -38,6 +38,7 @@ class AtKeyGetService {
   Future<User?> getProfile({String? atsign}) async {
     bool _containsPrivateAccountKey = false;
     try {
+      resetUser();
       // _setUser(atsign: atsign);
       atsign = atsign ?? BackendService().atClientInstance.getCurrentAtSign();
       var scanKeys = await BackendService().getAtKeys();
@@ -275,6 +276,15 @@ class AtKeyGetService {
       default:
         break;
     }
+  }
+
+  resetUser() {
+    user.customFields[AtCategory.DETAILS.name] = [];
+    user.customFields[AtCategory.LOCATION.name] = [];
+    user.customFields[AtCategory.SOCIAL.name] = [];
+    user.customFields[AtCategory.GAMER.name] = [];
+    user.customFields[AtCategory.ADDITIONAL_DETAILS.name] = [];
+    user.customFields[AtCategory.FEATURED.name] = [];
   }
 }
 
