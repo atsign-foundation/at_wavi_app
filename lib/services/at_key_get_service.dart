@@ -47,7 +47,6 @@ class AtKeyGetService {
     bool _containsPrivateAccountKey = false;
     resetUser();
     try {
-      resetUser();
       // _setUser(atsign: atsign);
       atsign = atsign ?? BackendService().atClientInstance.getCurrentAtSign();
       var scanKeys = await BackendService().getAtKeys();
@@ -214,7 +213,7 @@ class AtKeyGetService {
     return _tempObject;
   }
 
-  dynamic set(property, value, {isPrivate, valueDescription}) {
+  dynamic set(String property, value, {isPrivate, valueDescription}) {
     // if (user == null) user = User();
 
     FieldsEnum field = valueOf(property);
@@ -223,8 +222,7 @@ class AtKeyGetService {
         private: isPrivate ?? false, valueDescription: valueDescription);
     switch (field) {
       case FieldsEnum.PRIVATEACCOUNT:
-        user.allPrivate = value;
-        print('value private account : ${user.allPrivate}');
+        user.allPrivate = value == 'true' ? true : false;
         break;
       case FieldsEnum.ATSIGN:
         user.atsign = value;
