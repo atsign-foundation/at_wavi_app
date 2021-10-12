@@ -22,7 +22,6 @@ class AtKeyGetService {
 
   init() {
     user = User(allPrivate: false, atsign: '');
-    user.allPrivate = false;
     user.atsign = BackendService().atClientInstance.getCurrentAtSign()!;
   }
 
@@ -38,10 +37,11 @@ class AtKeyGetService {
   Future<User?> getProfile({String? atsign}) async {
     bool _containsPrivateAccountKey = false;
     try {
+      resetUser();
       // _setUser(atsign: atsign);
       atsign = atsign ?? BackendService().atClientInstance.getCurrentAtSign();
       var scanKeys = await BackendService().getAtKeys();
-      user.allPrivate = true;
+      // user.allPrivate = true;
       for (var key in scanKeys) {
         await _performLookupAndSetUser(key);
         // if (!result) errorCallBack(false);
@@ -159,9 +159,9 @@ class AtKeyGetService {
       }
       user.customFields[category.toUpperCase()]!.add(basicData);
 
-      if (!basicData.isPrivate) {
-        user.allPrivate = false;
-      }
+      // if (!basicData.isPrivate) {
+      //   user.allPrivate = false;
+      // }
     }
   }
 
@@ -202,13 +202,17 @@ class AtKeyGetService {
   }
 
   dynamic set(property, value, {isPrivate, valueDescription}) {
-    if (user == null) user = User();
+    // if (user == null) user = User();
 
     FieldsEnum field = valueOf(property);
 
     var data = formData(property, value,
         private: isPrivate ?? false, valueDescription: valueDescription);
     switch (field) {
+      case FieldsEnum.PRIVATEACCOUNT:
+        user.allPrivate = value;
+        print('value private account : ${user.allPrivate}');
+        break;
       case FieldsEnum.ATSIGN:
         user.atsign = value;
         break;
@@ -275,6 +279,15 @@ class AtKeyGetService {
       default:
         break;
     }
+  }
+
+  resetUser() {
+    user.customFields[AtCategory.DETAILS.name] = [];
+    user.customFields[AtCategory.LOCATION.name] = [];
+    user.customFields[AtCategory.SOCIAL.name] = [];
+    user.customFields[AtCategory.GAMER.name] = [];
+    user.customFields[AtCategory.ADDITIONAL_DETAILS.name] = [];
+    user.customFields[AtCategory.FEATURED.name] = [];
   }
 }
 

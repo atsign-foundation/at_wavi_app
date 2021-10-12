@@ -6,8 +6,8 @@ import 'package:latlong2/latlong.dart';
 /// [diameter], [zoom], [latitude] & [longitude] are used by wavi.ng to store location values
 class OsmLocationModel {
   // LatLng? latLng;
-  double? zoom, diameter, radius, latitude, longitude;
-  String? location;
+  double? zoom, diameter, latitude, longitude;
+  String? location, radius;
   OsmLocationModel(this.location, this.radius, this.zoom, this.diameter,
       {this.latitude, this.longitude});
 
@@ -18,7 +18,7 @@ class OsmLocationModel {
   OsmLocationModel.fromJson(Map<String, dynamic> json)
       : location = json['location'],
         radius = json['radius'] != 'null' && json['radius'] != null
-            ? double.parse(json['radius'])
+            ? json['radius']
             : null,
         // latLng = json['latLng'],
         diameter = json['diameter'] != 'null' && json['diameter'] != null

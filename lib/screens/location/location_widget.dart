@@ -640,14 +640,14 @@ class LocationWidgetData {
     print('coordinates: ${coordinates.latitude} ${coordinates.longitude}');
     var _radius =
         _decodedData['radius'] != 'null' && _decodedData['radius'] != null
-            ? double.parse(_decodedData['radius'])
+            ? _decodedData['radius']
             : null;
     var _newOsmData = OsmLocationModel(
         _decodedData['location'], _radius, 16, 100,
         latitude: coordinates.latitude, longitude: coordinates.longitude);
 
     /// 16 and 100 are the default zoom and diameter
-    
+
     await AtKeySetService().update(
         BasicData(
           value: _newOsmData.toJson(),
