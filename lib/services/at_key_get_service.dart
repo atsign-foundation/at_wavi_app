@@ -25,6 +25,15 @@ class AtKeyGetService {
     user.atsign = BackendService().atClientInstance.getCurrentAtSign()!;
   }
 
+  resetUser() {
+    user.customFields[AtCategory.DETAILS.name] = [];
+    user.customFields[AtCategory.LOCATION.name] = [];
+    user.customFields[AtCategory.SOCIAL.name] = [];
+    user.customFields[AtCategory.GAMER.name] = [];
+    user.customFields[AtCategory.ADDITIONAL_DETAILS.name] = [];
+    user.customFields[AtCategory.FEATURED.name] = [];
+  }
+
 // TODO: for testing only
   deleteKeys() async {
     var scanKeys = await BackendService().getAtKeys();
@@ -36,8 +45,8 @@ class AtKeyGetService {
   ///fetches [atsign] profile.
   Future<User?> getProfile({String? atsign}) async {
     bool _containsPrivateAccountKey = false;
+    resetUser();
     try {
-      resetUser();
       // _setUser(atsign: atsign);
       atsign = atsign ?? BackendService().atClientInstance.getCurrentAtSign();
       var scanKeys = await BackendService().getAtKeys();
@@ -60,7 +69,7 @@ class AtKeyGetService {
       // _logger.severe('Fetching ${_sdkService.currentAtsign} throws $err');
       // errorCallBack(err);
       print('Error in getProfile $err');
-      return null;
+      return User(atsign: atsign);
     }
   }
 
@@ -82,41 +91,44 @@ class AtKeyGetService {
 
   ///Returns `true` on fetching value for [atKey].
   Future<bool> _performLookupAndSetUser(AtKey atKey) async {
-    var isSetUserField = false;
-    var isCustom;
-    if (atKey.key == null) {
+    try {
+      var isSetUserField = false;
+      var isCustom;
+      if (atKey.key == null) {
+        return false;
+      }
+
+      isCustom = atKey.key!.contains(AtText.CUSTOM);
+      if (atKey.key == FieldsEnum.IMAGE.name) {
+        atKey.metadata!.isBinary = true;
+      }
+
+      var successValue = await BackendService().atClientInstance.get(atKey);
+
+      if (atKey.key!.contains(MixedConstants.fieldOrderKey)) {
+        FieldOrderService().addFieldOrder(successValue);
+      }
+
+      if (atKey.key!.contains(MixedConstants.FOLLOWERS_KEY)) {
+        Provider.of<FollowService>(NavService.navKey.currentContext!,
+                listen: false)
+            .addFollowersData(successValue);
+      }
+
+      if (atKey.key!.contains(MixedConstants.FOLLOWING_KEY)) {
+        Provider.of<FollowService>(NavService.navKey.currentContext!,
+                listen: false)
+            .addFollowingData(successValue);
+      }
+
+      if (successValue.value != null && successValue.value != '') {
+        isSetUserField = _setUserField(atKey.key, successValue.value, isCustom,
+            isPublic: successValue.metadata?.isPublic);
+      }
+      return isSetUserField;
+    } catch (e) {
       return false;
     }
-
-    isCustom = atKey.key!.contains(AtText.CUSTOM);
-    if (atKey.key == FieldsEnum.IMAGE.name) {
-      atKey.metadata!.isBinary = true;
-    }
-
-    var successValue = await BackendService().atClientInstance.get(atKey);
-
-    if (atKey.key!.contains(MixedConstants.fieldOrderKey)) {
-      FieldOrderService().addFieldOrder(successValue);
-    }
-
-    if (atKey.key!.contains(MixedConstants.FOLLOWERS_KEY)) {
-      Provider.of<FollowService>(NavService.navKey.currentContext!,
-              listen: false)
-          .addFollowersData(successValue);
-    }
-
-    if (atKey.key!.contains(MixedConstants.FOLLOWING_KEY)) {
-      Provider.of<FollowService>(NavService.navKey.currentContext!,
-              listen: false)
-          .addFollowingData(successValue);
-    }
-
-    if (successValue.value != null) {
-      print('fetched value ${successValue.value} for key ${atKey.key}');
-      isSetUserField = _setUserField(atKey.key, successValue.value, isCustom,
-          isPublic: successValue.metadata?.isPublic);
-    }
-    return isSetUserField;
   }
 
   /// sets user field with [value].
@@ -201,7 +213,7 @@ class AtKeyGetService {
     return _tempObject;
   }
 
-  dynamic set(property, value, {isPrivate, valueDescription}) {
+  dynamic set(String property, value, {isPrivate, valueDescription}) {
     // if (user == null) user = User();
 
     FieldsEnum field = valueOf(property);
@@ -210,8 +222,7 @@ class AtKeyGetService {
         private: isPrivate ?? false, valueDescription: valueDescription);
     switch (field) {
       case FieldsEnum.PRIVATEACCOUNT:
-        user.allPrivate = value;
-        print('value private account : ${user.allPrivate}');
+        user.allPrivate = value == 'true' ? true : false;
         break;
       case FieldsEnum.ATSIGN:
         user.atsign = value;
@@ -279,15 +290,6 @@ class AtKeyGetService {
       default:
         break;
     }
-  }
-
-  resetUser() {
-    user.customFields[AtCategory.DETAILS.name] = [];
-    user.customFields[AtCategory.LOCATION.name] = [];
-    user.customFields[AtCategory.SOCIAL.name] = [];
-    user.customFields[AtCategory.GAMER.name] = [];
-    user.customFields[AtCategory.ADDITIONAL_DETAILS.name] = [];
-    user.customFields[AtCategory.FEATURED.name] = [];
   }
 }
 
