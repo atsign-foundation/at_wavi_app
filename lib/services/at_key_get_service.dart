@@ -22,7 +22,6 @@ class AtKeyGetService {
 
   init() {
     user = User(allPrivate: false, atsign: '');
-    user.allPrivate = false;
     user.atsign = BackendService().atClientInstance.getCurrentAtSign()!;
   }
 
@@ -42,7 +41,7 @@ class AtKeyGetService {
       // _setUser(atsign: atsign);
       atsign = atsign ?? BackendService().atClientInstance.getCurrentAtSign();
       var scanKeys = await BackendService().getAtKeys();
-      user.allPrivate = true;
+      // user.allPrivate = true;
       for (var key in scanKeys) {
         await _performLookupAndSetUser(key);
         // if (!result) errorCallBack(false);
@@ -160,9 +159,9 @@ class AtKeyGetService {
       }
       user.customFields[category.toUpperCase()]!.add(basicData);
 
-      if (!basicData.isPrivate) {
-        user.allPrivate = false;
-      }
+      // if (!basicData.isPrivate) {
+      //   user.allPrivate = false;
+      // }
     }
   }
 
@@ -203,13 +202,17 @@ class AtKeyGetService {
   }
 
   dynamic set(property, value, {isPrivate, valueDescription}) {
-    if (user == null) user = User();
+    // if (user == null) user = User();
 
     FieldsEnum field = valueOf(property);
 
     var data = formData(property, value,
         private: isPrivate ?? false, valueDescription: valueDescription);
     switch (field) {
+      case FieldsEnum.PRIVATEACCOUNT:
+        user.allPrivate = value;
+        print('value private account : ${user.allPrivate}');
+        break;
       case FieldsEnum.ATSIGN:
         user.atsign = value;
         break;
