@@ -22,6 +22,10 @@ class DesktopHtmlEditorPage extends StatelessWidget {
           maxLines: 10,
           keyboardType: TextInputType.multiline,
           controller: textController,
+          style: TextStyle(
+            color: appTheme.primaryTextColor,
+            fontSize: 16,
+          ),
           decoration: InputDecoration(
             isDense: true,
             contentPadding: EdgeInsets.all(10),
@@ -34,9 +38,10 @@ class DesktopHtmlEditorPage extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: appTheme.borderColor, width: 1),
             ),
+            hintText: 'Paste your HTML here!',
             hintStyle: TextStyle(
               color: appTheme.secondaryTextColor,
-              fontSize: 12,
+              fontSize: 16,
             ),
           ),
         ),

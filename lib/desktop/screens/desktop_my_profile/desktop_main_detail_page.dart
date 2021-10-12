@@ -1,6 +1,6 @@
 import 'package:at_wavi_app/desktop/screens/desktop_notification/desktop_notification_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_add_basic_detail/desktop_add_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_add_location/desktop_add_location_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_add_custom_field/desktop_profile_add_custom_field.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
@@ -408,7 +408,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
-        child: DesktopAddBasicDetailPage(),
+        child: DesktopProfileAddCustomField(),
       ),
     );
     if (result != null) {
@@ -461,7 +461,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
-        child: DesktopAddBasicDetailPage(
+        child: DesktopProfileAddCustomField(
           isOnlyAddImage: true,
         ),
       ),

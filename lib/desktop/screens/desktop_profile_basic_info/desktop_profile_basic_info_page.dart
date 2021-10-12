@@ -18,8 +18,8 @@ import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'desktop_add_basic_detail/desktop_add_basic_detail_page.dart';
 import 'desktop_add_location/desktop_add_location_page.dart';
+import 'desktop_profile_add_custom_field/desktop_profile_add_custom_field.dart';
 import 'desktop_profile_basic_info_model.dart';
 import 'desktop_edit_basic_detail/desktop_edit_basic_detail_page.dart';
 import 'desktop_reorder_basic_info/desktop_reorder_basic_info_page.dart';
@@ -331,7 +331,7 @@ class _DesktopProfileBasicInfoPageState
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
-        child: DesktopAddBasicDetailPage(),
+        child: DesktopProfileAddCustomField(),
       ),
     );
     if (result == 'saved') {

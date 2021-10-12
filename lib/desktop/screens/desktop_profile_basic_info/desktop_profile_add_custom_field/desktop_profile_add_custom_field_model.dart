@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/utils/utils.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_show_hide_radio_button.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -26,8 +27,9 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
 
   bool isOnlyAddMedia = false;
 
-  var titleTextController = TextEditingController(text: '');
-  var valueContentTextController = TextEditingController(text: '');
+  final titleTextController = TextEditingController(text: '');
+  final valueContentTextController = TextEditingController(text: '');
+  final showHideController = ShowHideController(isShow: true);
 
   DesktopAddBasicDetailModel({required this.userPreview}) {
     _basicData = BasicData();
@@ -58,6 +60,7 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
       return;
     }
     _basicData!.accountName = titleTextController.text;
+    _basicData!.isPrivate = showHideController.isShow == false;
     if (_fieldType != CustomContentType.Image) {
       _basicData!.value = valueContentTextController.text;
     }

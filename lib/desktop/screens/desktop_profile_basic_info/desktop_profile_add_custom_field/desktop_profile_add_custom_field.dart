@@ -14,25 +14,25 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'desktop_add_basic_detail_model.dart';
+import 'desktop_profile_add_custom_field_model.dart';
+import 'widgets/desktop_html_editor_page.dart';
 import 'widgets/desktop_html_preview_page.dart';
 
-class DesktopAddBasicDetailPage extends StatefulWidget {
-  bool isOnlyAddImage;
+class DesktopProfileAddCustomField extends StatefulWidget {
+  final bool isOnlyAddImage;
 
-  DesktopAddBasicDetailPage({
+  DesktopProfileAddCustomField({
     Key? key,
     this.isOnlyAddImage = false,
   }) : super(key: key);
 
   @override
-  _DesktopAddBasicDetailPageState createState() =>
-      _DesktopAddBasicDetailPageState();
+  _DesktopProfileAddCustomFieldState createState() =>
+      _DesktopProfileAddCustomFieldState();
 }
 
-class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
+class _DesktopProfileAddCustomFieldState extends State<DesktopProfileAddCustomField> {
   late DesktopAddBasicDetailModel _model;
-  final _showHideController = ShowHideController(isShow: true);
 
   final _numberContentTextController = TextEditingController();
   final _htmlContentTextController = TextEditingController();
@@ -90,7 +90,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
                 Container(height: 1, color: appTheme.separatorColor),
                 SizedBox(height: 16),
                 DesktopShowHideRadioButton(
-                  controller: _showHideController,
+                  controller: model.showHideController,
                 ),
                 SizedBox(height: 16),
                 DesktopButton(
@@ -149,7 +149,6 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
   }
 
   Widget _buildFieldInputWidget(DesktopAddBasicDetailModel model) {
-    final appTheme = AppTheme.of(context);
     return Consumer<DesktopAddBasicDetailModel>(
       builder: (_, model, child) {
         if (model.fieldType == CustomContentType.Text) {
@@ -167,13 +166,6 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
             controller: _numberContentTextController,
             hint: '',
           );
-          // return Container(
-          //   padding: EdgeInsets.symmetric(vertical: 10),
-          //   child: DesktopHtmlEditorPage(
-          //     textController: _htmlContentTextController,
-          //     onPreviewPressed: _openHtmlPreview,
-          //   ),
-          // );
         } else if (model.fieldType == CustomContentType.Image) {
           return Directionality(
             textDirection: TextDirection.ltr,
@@ -188,6 +180,8 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
                   iconData: Icons.add,
                   label: Strings.desktop_add_media,
                   onPressed: _onSelectMedia,
+                  isPrefixIcon: false,
+                  padding: EdgeInsets.zero,
                 ),
                 SizedBox(
                   height: 8,
@@ -202,6 +196,14 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
           return DesktopTextField(
             controller: model.valueContentTextController,
             hint: 'https://www.youtube.com',
+          );
+        } else if (model.fieldType == CustomContentType.Html) {
+          return Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: DesktopHtmlEditorPage(
+              textController: _htmlContentTextController,
+              onPreviewPressed: _openHtmlPreview,
+            ),
           );
         } else {
           return Container();
