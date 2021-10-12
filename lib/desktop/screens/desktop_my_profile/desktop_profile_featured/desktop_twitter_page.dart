@@ -36,7 +36,8 @@ class _DesktopTwitterPageState extends State<DesktopTwitterPage>
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return DesktopVisibilityDetectorWidget(
-      keyScreen: MixedConstants.TWITTER_KEY,
+      //Todo
+      keyScreen: 'MixedConstants.TWITTER_KEY',
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

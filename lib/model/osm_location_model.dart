@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:latlong2/latlong.dart';
 
 /// [location] & [radius] comes from previous Wavi apps model
+/// [diameter], [zoom], [latitude] & [longitude] are used by wavi.ng to store location values
 class OsmLocationModel {
   // LatLng? latLng;
   double? zoom, diameter, radius, latitude, longitude;

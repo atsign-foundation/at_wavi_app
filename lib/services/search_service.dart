@@ -26,7 +26,7 @@ class SearchService {
   int? following_count;
   List<String>? followers;
   List<String>? following;
-  late bool isPrivateAccount;
+  late bool isPrivateAccount = false;
   Map<String, List<String>> fieldOrders = {};
 
   List<String> keysToIgnore = [
@@ -47,11 +47,11 @@ class SearchService {
   updateThemeData(_data) {
     if ((_data ?? '').toLowerCase() == 'dark') {
       currentAtsignThemeData = Themes.darkTheme(
-          highlightColor: highlightColor ?? ColorConstants.peach);
+          highlightColor: highlightColor ?? ColorConstants.green);
       themeColor = ThemeColor.Dark;
     } else {
       currentAtsignThemeData = Themes.lightTheme(
-          highlightColor: highlightColor ?? ColorConstants.peach);
+          highlightColor: highlightColor ?? ColorConstants.green);
       themeColor = ThemeColor.Light;
     }
   }
@@ -59,7 +59,7 @@ class SearchService {
   updateHighlightColor(String _color) {
     highlightColor = (_color != null)
         ? ThemeProvider().convertToHighlightColor(_color)
-        : ColorConstants.peach;
+        : ColorConstants.green;
     if (themeColor != null) {
       currentAtsignThemeData = themeColor == ThemeColor.Dark
           ? Themes.darkTheme(highlightColor: highlightColor!)
@@ -74,7 +74,7 @@ class SearchService {
       following = [];
       fieldOrders = {};
       currentAtsignThemeData = Themes.lightTheme(
-          highlightColor: highlightColor ?? ColorConstants.peach);
+          highlightColor: highlightColor ?? ColorConstants.green);
 
       isPrivateAccount = false;
       user = User(allPrivate: false, atsign: atsign);

@@ -8,9 +8,9 @@ import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/view_models/base_model.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
-// import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -19,6 +19,8 @@ import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
+import 'package:at_client/src/service/sync_service.dart';
+import 'package:at_client/src/service/sync_service_impl.dart';
 
 class BackendService {
   static final BackendService _singleton = BackendService._internal();
@@ -29,7 +31,8 @@ class BackendService {
   }
 
   late AtClientService atClientServiceInstance;
-  late AtClientImpl atClientInstance;
+  late AtClient atClientInstance;
+  late SyncService syncService;
   String? currentAtSign;
   AtClientPreference? atClientPreference;
   Directory? downloadDirectory;
@@ -46,7 +49,8 @@ class BackendService {
       atClientPreference: atClientPrefernce,
       domain: MixedConstants.ROOT_DOMAIN,
       appAPIKey: MixedConstants.devAPIKey,
-      appColor: ColorConstants.peach,
+      appColor: ColorConstants.green,
+      rootEnvironment: RootEnvironment.Production,
       onboard: (atClientServiceMap, onboardedAtsign) async {
         LoadingDialog().show(text: '$onboardedAtsign', heading: 'Loading');
         await onSuccessOnboard(atClientServiceMap, onboardedAtsign);
@@ -62,18 +66,22 @@ class BackendService {
 
   onSuccessOnboard(Map<String?, AtClientService> atClientServiceMap,
       String? onboardedAtsign) async {
-    String? atSign =
-        atClientServiceMap[onboardedAtsign]!.atClient!.currentAtSign;
-    atClientInstance = atClientServiceMap[onboardedAtsign]!.atClient!;
+    String? atSign = onboardedAtsign;
+    atClientInstance =
+        atClientServiceMap[onboardedAtsign]!.atClientManager.atClient;
     atClientServiceMap = atClientServiceMap;
+    syncService = AtClientManager.getInstance().syncService;
     currentAtSign = atSign;
-    atClientServiceMap[atSign]!.makeAtSignPrimary(atSign!);
+    KeychainUtil.makeAtSignPrimary(atSign!);
+    atClientServiceInstance = atClientServiceMap[onboardedAtsign]!;
     atClientServiceInstance = atClientServiceMap[onboardedAtsign]!;
 
-    initializeContactsService(
-        atClientInstance, atClientInstance.currentAtSign!);
+    initializeContactsService(rootDomain: MixedConstants.ROOT_DOMAIN);
+    Provider.of<FollowService>(NavService.navKey.currentContext!, listen: false)
+        .resetData();
     Provider.of<FollowService>(NavService.navKey.currentContext!, listen: false)
         .init();
+    await sync();
     Provider.of<ThemeProvider>(NavService.navKey.currentContext!, listen: false)
         .resetThemeData();
     await Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
@@ -84,7 +92,6 @@ class BackendService {
     await Provider.of<UserProvider>(NavService.navKey.currentContext!,
             listen: false)
         .fetchUserData(BackendService().currentAtSign!);
-    await FieldOrderService().getFieldOrder();
   }
 
   Future<AtClientPreference> getAtClientPreference() async {
@@ -100,7 +107,6 @@ class BackendService {
       ..commitLogPath = downloadDirectory!.path
       ..downloadPath = downloadDirectory!.path
       ..namespace = MixedConstants.appNamespace
-      ..syncStrategy = SyncStrategy.ONDEMAND
       ..rootDomain = MixedConstants.ROOT_DOMAIN
       ..syncRegex = MixedConstants.regex
       ..outboundConnectionTimeout = MixedConstants.TIME_OUT
@@ -109,15 +115,27 @@ class BackendService {
   }
 
   sync() async {
-    var syncManager = atClientInstance.getSyncManager();
-    if (syncManager != null) {
-      await atClientInstance.getSyncManager()!.sync();
+    syncService = AtClientManager.getInstance().syncService;
+    syncService.sync(onDone: _onSuccessCallback);
+    syncService.setOnDone(_onSuccessCallback);
+  }
+
+  _onSuccessCallback(SyncResult syncStatus) async {
+    print(
+        'syncStatus type : $syncStatus, datachanged : ${syncStatus.dataChange}');
+    var userProvider = Provider.of<UserProvider>(
+        NavService.navKey.currentContext!,
+        listen: false);
+
+    if (syncStatus.dataChange &&
+        userProvider.status[userProvider.FETCH_USER] != Status.Loading) {
+      await userProvider.fetchUserData(BackendService().currentAtSign!);
     }
   }
 
   ///Fetches privatekey for [atsign] from device keychain.
   Future<String?> getPrivateKey(String atsign) async {
-    return await atClientServiceInstance.getPrivateKey(atsign);
+    return await KeychainUtil.getPrivateKey(atsign);
   }
 
   ///Fetches atsign from device keychain.
@@ -128,7 +146,7 @@ class BackendService {
 
     atClientServiceInstance = AtClientService();
 
-    return await atClientServiceInstance.getAtSign();
+    return await KeychainUtil.getAtSign();
   }
 
   ///Returns List<AtKey> for the current @sign.
@@ -138,7 +156,7 @@ class BackendService {
         await atClientInstance.getAtKeys(sharedBy: sharedBy, regex: regex);
     scanKeys.retainWhere((scanKey) =>
         !scanKey.metadata!.isCached &&
-        '@' + (scanKey.sharedBy ?? '') == atClientInstance.currentAtSign);
+        '@' + (scanKey.sharedBy ?? '') == atClientInstance.getCurrentAtSign());
     return scanKeys;
   }
 

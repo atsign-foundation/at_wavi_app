@@ -67,7 +67,7 @@ class _FollowingState extends State<Following>
                 centerWidget: Text(
                   widget.forSearchedAtsign
                       ? SearchService().user.atsign
-                      : BackendService().atClientInstance.currentAtSign!,
+                      : BackendService().atClientInstance.getCurrentAtSign()!,
                   style: TextStyles.boldText(widget.themeData.primaryColor,
                       size: 18),
                   softWrap: true,
@@ -80,7 +80,7 @@ class _FollowingState extends State<Following>
                 onTap: (index) async {},
                 labelColor: widget.themeData.primaryColor,
                 indicatorWeight: 5.toHeight,
-                indicatorColor: ColorConstants.peach,
+                indicatorColor: ColorConstants.green,
                 indicatorSize: TabBarIndicatorSize.label,
                 unselectedLabelColor:
                     widget.themeData.primaryColor.withOpacity(0.5),
@@ -226,6 +226,9 @@ class _FollowingState extends State<Following>
                         List<String?> _filteredList =
                             _provider.followers.list ?? [];
 
+                        print(
+                            '_filteredList in following : ${_provider.followers.list}');
+
                         if (widget.forSearchedAtsign) {
                           _filteredList = SearchService().followers ?? [];
                         }
@@ -284,7 +287,8 @@ class _FollowingState extends State<Following>
                                       await Provider.of<FollowService>(context,
                                               listen: false)
                                           .performFollowUnfollow(
-                                              _filteredList[index]!);
+                                              _filteredList[index]!,
+                                              forFollowersList: true);
                                     },
                                     child: (!widget.forSearchedAtsign &&
                                             _provider

@@ -232,7 +232,7 @@ class _DesktopAddBasicDetailPageState extends State<DesktopAddBasicDetailPage> {
       allowedExtensions: ['jpg', 'png', 'mp4', 'wmv'],
     );
     if (result?.files.single.path != null) {
-      File file = File(result!.files.single.path!);
+      File file = File(result!.files.single.path);
       await _model.didSelectMedia(file, result.files.single.extension!);
     } else {
       // User canceled the picker

@@ -36,7 +36,7 @@ class AtKeySetService {
     var result;
     key = key.trim().toLowerCase().replaceAll(' ', '');
     String? sharedWith = data.isPrivate
-        ? BackendService().atClientInstance.currentAtSign!
+        ? BackendService().atClientInstance.getCurrentAtSign()!
         : null;
     var value = data.value;
     if (value?.isEmpty && isCheck == null) {
@@ -127,7 +127,7 @@ class AtKeySetService {
       String accountname = _formatCustomTitle(data.accountName ?? '');
       String key = AtText.CUSTOM + '_' + accountname;
       String? sharedWith = data.isPrivate
-          ? BackendService().atClientInstance.currentAtSign
+          ? BackendService().atClientInstance.getCurrentAtSign()
           : null;
       String jsonValue = _encodeToJsonString(data, category);
       var metadata = Metadata()

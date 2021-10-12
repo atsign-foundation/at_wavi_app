@@ -429,9 +429,10 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
           case 'GAMER':
             await profileChannelsPage.addFieldToGame();
             break;
-          case MixedConstants.INSTAGRAM_KEY:
+            //Todo
+          case 'MixedConstants.INSTAGRAM_KEY':
             break;
-          case MixedConstants.TWITTER_KEY:
+          case 'MixedConstants.TWITTER_KEY':
             break;
         }
       }

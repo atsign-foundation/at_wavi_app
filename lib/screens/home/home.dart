@@ -77,19 +77,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     if ((widget.isPreview) &&
         (_currentUser.atsign !=
-            BackendService().atClientInstance.currentAtSign)) {
+            BackendService().atClientInstance.getCurrentAtSign())) {
       _isSearchScreen = true;
     }
 
     initPackages();
-
     _getThemeData();
-    // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
-    //   await Provider.of<FollowService>(NavService.navKey.currentContext!,
-    // listen: false)().getFollowers();
-    //   await Provider.of<FollowService>(NavService.navKey.currentContext!,
-    // listen: false)().getFollowing();
-    // });
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+      var followsProvider = Provider.of<FollowService>(
+          NavService.navKey.currentContext!,
+          listen: false);
+      // TODO: we have to optimize fetching contact details
+      // await followsProvider.fetchAtsignDetails(followsProvider.followers.list!);
+      // await followsProvider.fetchAtsignDetails(followsProvider.following.list!,
+      // isFollowing: true);
+      Provider.of<FollowService>(NavService.navKey.currentContext!,
+              listen: false)
+          .init();
+    });
     super.initState();
   }
 
@@ -165,25 +170,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     } else {
       return Scaffold(
         backgroundColor: _themeData!.scaffoldBackgroundColor,
-        bottomNavigationBar: widget.isPreview
-            ? null
-            : BottomNavigationBar(
-                backgroundColor: _themeData!.scaffoldBackgroundColor,
-                items: const <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.notifications),
-                    label: '',
-                  )
-                ],
-                currentIndex: _selectedIndex,
-                selectedItemColor: ColorConstants.orange,
-                onTap: _onItemTapped,
-                // elevation: 0,
-              ),
+        // TODO: commented notification screen because we don't show notification updates
+        // bottomNavigationBar: widget.isPreview
+        //     ? null
+        //     : BottomNavigationBar(
+        //         backgroundColor: _themeData!.scaffoldBackgroundColor,
+        //         items: const <BottomNavigationBarItem>[
+        //           BottomNavigationBarItem(
+        //             icon: Icon(Icons.person),
+        //             label: '',
+        //           ),
+        //           BottomNavigationBarItem(
+        //             icon: Icon(Icons.notifications),
+        //             label: '',
+        //           )
+        //         ],
+        //         currentIndex: _selectedIndex,
+        //         selectedItemColor: ColorConstants.orange,
+        //         onTap: _onItemTapped,
+        //         // elevation: 0,
+        //       ),
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.all(15.0.toWidth),
@@ -207,62 +213,70 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         : SizedBox(),
                     SizedBox(height: 30.toHeight),
                     // content
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: 116.toWidth,
-                          height: 116.toWidth,
-                          decoration: BoxDecoration(
-                            color: ColorConstants.white.withOpacity(0.8),
-                            borderRadius: BorderRadius.circular(60.toWidth),
-                          ),
-                          child: (_currentUser.image.value != null)
-                              ? CircleAvatar(
-                                  radius: 50.toFont,
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage:
-                                      Image.memory(_currentUser.image.value)
-                                          .image,
-                                )
-                              : Icon(
-                                  Icons.person,
-                                  size: 50.toFont,
-                                ),
-                        ),
-                        SizedBox(
-                          width: 10.toWidth,
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(_name,
-                                  style: TextStyle(
+                    Consumer<UserProvider>(
+                      builder: (context, _provider, _) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              width: 116.toWidth,
+                              height: 116.toWidth,
+                              decoration: BoxDecoration(
+                                color: ColorConstants.white.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(60.toWidth),
+                              ),
+                              child: (_currentUser.image.value != null)
+                                  ? CircleAvatar(
+                                      radius: 50.toFont,
+                                      backgroundColor: Colors.transparent,
+                                      backgroundImage:
+                                          Image.memory(_currentUser.image.value)
+                                              .image,
+                                    )
+                                  : Icon(
+                                      Icons.person,
+                                      size: 50.toFont,
+                                    ),
+                            ),
+                            SizedBox(
+                              width: 10.toWidth,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(_name,
+                                      style: TextStyle(
+                                          fontSize: 18.toFont,
+                                          color: _themeData!.primaryColor,
+                                          fontWeight: FontWeight.w600)),
+                                  SizedBox(height: 8.toHeight),
+                                  Text(
+                                    _currentUser.atsign,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: ColorConstants.orange,
                                       fontSize: 18.toFont,
-                                      color: _themeData!.primaryColor,
-                                      fontWeight: FontWeight.w600)),
-                              SizedBox(height: 8.toHeight),
-                              Text(
-                                _currentUser.atsign,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: ColorConstants.orange,
-                                  fontSize: 18.toFont,
-                                ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 18.5.toHeight),
+                                  Divider(
+                                    color: _themeData!.highlightColor,
+                                  ),
+                                  SizedBox(height: 18.5.toHeight),
+                                  Consumer<UserProvider>(
+                                      builder: (context, _provider, _) {
+                                    return followersFollowingRow();
+                                  })
+                                ],
                               ),
-                              SizedBox(height: 18.5.toHeight),
-                              Divider(
-                                color: _themeData!.highlightColor,
-                              ),
-                              SizedBox(height: 18.5.toHeight),
-                              followersFollowingRow(),
-                            ],
-                          ),
-                        )
-                      ],
+                            )
+                          ],
+                        );
+                      },
                     ),
+
                     SizedBox(height: 20.toHeight),
                     Row(
                       children: <Widget>[
@@ -426,7 +440,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                     _isSearchScreen && SearchService().isPrivateAccount
                         ? SizedBox()
-                        : homeContent()
+                        : Consumer<UserProvider>(
+                            builder: (context, _provider, _) {
+                            return homeContent();
+                          })
                   ],
                 ),
               ),
@@ -599,7 +616,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Text(
                     _isSearchScreen
                         ? (SearchService().following_count ?? '-').toString()
-                        : '${followsCount(_provider.following)}',
+                        : '${followsCount()}',
                     style: TextStyle(
                         fontSize: 18.toFont,
                         color: _isDark
@@ -637,7 +654,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Text(
                     _isSearchScreen
                         ? (SearchService().followers_count ?? '-').toString()
-                        : '${followsCount(_provider.followers)}',
+                        : '${followsCount(isFollowers: true)}',
                     style: TextStyle(
                         fontSize: 18.toFont,
                         color: _isDark
@@ -719,6 +736,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   _searchProfile() async {
+    if (searchedAtsign.isEmpty) {
+      return;
+    }
+
     bool _isSearchingSameAtsign = SearchService().user.atsign == searchedAtsign;
 
     if (loadingSearchedAtsign) {
@@ -802,9 +823,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  String followsCount(AtFollowsData atFollowsData) {
-    if (atFollowsData.getKey == null) {
+  String followsCount({bool isFollowers: false}) {
+    AtFollowsData atFollowsData;
+    var followsProvider = Provider.of<FollowService>(
+        NavService.navKey.currentContext!,
+        listen: false);
+    if (!followsProvider.isFollowersFetched && isFollowers) {
       return '--';
+    }
+
+    if (!followsProvider.isFollowingFetched && !isFollowers) {
+      return '--';
+    }
+
+    if (isFollowers) {
+      atFollowsData = followsProvider.followers;
+    } else {
+      atFollowsData = followsProvider.following;
     }
 
     int num = atFollowsData.list!.length;

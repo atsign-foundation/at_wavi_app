@@ -50,12 +50,19 @@ class CommonFunctions {
       {bool isPreview = false}) {
     var customLocationWidgets = <Widget>[];
 
-    User _currentUser = User.fromJson(json.decode(json.encode(User.toJson(
-        isPreview
-            ? Provider.of<UserPreview>(NavService.navKey.currentContext!,
-                    listen: false)
-                .user()
-            : UserProvider().user!))));
+    User _currentUser = User.fromJson(
+      json.decode(
+        json.encode(
+          User.toJson(isPreview
+              ? Provider.of<UserPreview>(NavService.navKey.currentContext!,
+                      listen: false)
+                  .user()
+              : Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                      listen: false)
+                  .user!),
+        ),
+      ),
+    );
 
     List.generate(_currentUser.customFields['LOCATION']?.length ?? 0, (_int) {
       if ((_currentUser.customFields['LOCATION']?[_int].accountName ?? '')
@@ -87,7 +94,9 @@ class CommonFunctions {
             ? Provider.of<UserPreview>(NavService.navKey.currentContext!,
                     listen: false)
                 .user()
-            : UserProvider().user!))));
+            : Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                    listen: false)
+                .user!))));
 
     if ((_currentUser.locationNickName.value != null) &&
         (_currentUser.location.value != null) &&
@@ -114,7 +123,9 @@ class CommonFunctions {
         ? Provider.of<UserPreview>(NavService.navKey.currentContext!,
                 listen: false)
             .user()
-        : UserProvider().user!);
+        : Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                listen: false)
+            .user!);
     List<String> fields = FieldNames().getFieldList(category);
 
     for (var field in userMap.entries) {
@@ -154,7 +165,11 @@ class CommonFunctions {
           .user()!
           .customFields[category.name];
     } else {
-      customFields = UserProvider().user!.customFields[category.name];
+      customFields = Provider.of<UserProvider>(
+              NavService.navKey.currentContext!,
+              listen: false)
+          .user!
+          .customFields[category.name];
     }
 
     if (customFields != null) {
@@ -187,7 +202,9 @@ class CommonFunctions {
         ? Provider.of<UserPreview>(NavService.navKey.currentContext!,
                 listen: false)
             .user()
-        : UserProvider().user!);
+        : Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                listen: false)
+            .user!);
 
     List<BasicData>? customFields = [];
     if (isPreview) {
@@ -196,7 +213,11 @@ class CommonFunctions {
           .user()!
           .customFields[category.name];
     } else {
-      customFields = UserProvider().user!.customFields[category.name];
+      customFields = Provider.of<UserProvider>(
+              NavService.navKey.currentContext!,
+              listen: false)
+          .user!
+          .customFields[category.name];
     }
 
     if (customFields == null) {
@@ -237,7 +258,7 @@ class CommonFunctions {
             SizedBox(
                 width: double.infinity,
                 child: CustomCard(
-                  title: basicData.accountName,
+                  title: getTitle(basicData.accountName!),
                   subtitle: basicData.value,
                   themeData: _themeData,
                 )),
@@ -266,7 +287,8 @@ class CommonFunctions {
   Widget checkForCustomContentType(BasicData basicData, ThemeData _themeData) {
     Widget fieldCard = SizedBox();
     if (basicData.type == CustomContentType.Text.name ||
-        basicData.type == CustomContentType.Number.name) {
+        basicData.type == CustomContentType.Number.name ||
+        basicData.type == CustomContentType.Html.name) {
       fieldCard = CustomCard(
         title: basicData.accountName!,
         subtitle: basicData.value,
@@ -338,14 +360,19 @@ class CommonFunctions {
             null) {
       return false;
     }
-    if (UserProvider().user == null) {
+    if (Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                listen: false)
+            .user ==
+        null) {
       return false;
     }
     var userMap = User.toJson(isPreview
         ? Provider.of<UserPreview>(NavService.navKey.currentContext!,
                 listen: false)
             .user()!
-        : UserProvider().user!);
+        : Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                listen: false)
+            .user!);
     var isPresent = false;
     List<String> fields = FieldNames().getFieldList(category);
 
@@ -369,7 +396,11 @@ class CommonFunctions {
             .user()!
             .customFields[category.name];
       } else {
-        customFields = UserProvider().user!.customFields[category.name];
+        customFields = Provider.of<UserProvider>(
+                NavService.navKey.currentContext!,
+                listen: false)
+            .user!
+            .customFields[category.name];
       }
 
       if (customFields != null) {
@@ -404,8 +435,16 @@ class CommonFunctions {
       }
     }
 
-    if (UserProvider().user != null &&
-        UserProvider().user!.twitter.value != null) {
+    if (Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                    listen: false)
+                .user !=
+            null &&
+        Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                    listen: false)
+                .user!
+                .twitter
+                .value !=
+            null) {
       return true;
     } else {
       return false;
@@ -430,8 +469,16 @@ class CommonFunctions {
       }
     }
 
-    if (UserProvider().user != null &&
-        UserProvider().user!.instagram.value != null) {
+    if (Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                    listen: false)
+                .user !=
+            null &&
+        Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                    listen: false)
+                .user!
+                .instagram
+                .value !=
+            null) {
       return true;
     } else {
       return false;
@@ -558,5 +605,14 @@ class CommonFunctions {
         ),
       ],
     );
+  }
+
+  getTitle(String value) {
+    var _valueOf = valueOf(value);
+    if (_valueOf is FieldsEnum) {
+      return _valueOf.hintText;
+    } else {
+      return value;
+    }
   }
 }

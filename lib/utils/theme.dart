@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Themes {
   static ThemeData lightTheme({
-    Color highlightColor = ColorConstants.peach,
+    Color highlightColor = ColorConstants.green,
     String? fontFamily,
   }) {
     return ThemeData(
@@ -18,7 +18,7 @@ class Themes {
   }
 
   static ThemeData darkTheme({
-    Color highlightColor = ColorConstants.peach,
+    Color highlightColor = ColorConstants.green,
     String? fontFamily,
   }) {
     return ThemeData(

@@ -7,6 +7,8 @@ class Images {
   static const termsAndConditionConditions = 'assets/images/terms.png';
   static const logout = 'assets/images/logout.png';
   static const faqs = 'assets/images/faqs.png';
+  static const splash_1 = 'assets/images/splash_1.png';
+  static const splash_2 = 'assets/images/splash_2.png';
 
   ///For desktop icons
   static const introBasicDetail = 'assets/images/intro_basic_detail.png';

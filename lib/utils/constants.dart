@@ -6,11 +6,11 @@ class MixedConstants {
   // static const String ROOT_DOMAIN = 'vip.ve.atsign.zone';
 
   // for staging server
-   static const String ROOT_DOMAIN = 'root.atsign.wtf';
+  // static const String ROOT_DOMAIN = 'root.atsign.wtf';
   // for production server
-  //static const String ROOT_DOMAIN = 'root.atsign.org';
+  static const String ROOT_DOMAIN = 'root.atsign.org';
 
-  static String devAPIKey = '477b-876u-bcez-c42z-6a3d';
+  static String devAPIKey = '560w-806a-zzev-z02i-6a3p';
 
   static const int ROOT_PORT = 64;
 
@@ -21,6 +21,8 @@ class MixedConstants {
   static const String PRIVACY_POLICY =
       "https://atsign.com/apps/atmosphere/atmosphere-privacy/";
 
+  static const String WAVI_API = 'https://wavi.ng/api/?atp=';
+
   // the time to await for file transfer acknowledgement in milliseconds
   static const int TIME_OUT = 60000;
 
@@ -30,23 +32,12 @@ class MixedConstants {
 
   static const String syncRegex = '.(wavi|persona)@';
 
-  static const String MAP_KEY = '';
+  static const String FOLLOWING_KEY = 'following_by_self';
+  static const String FOLLOWERS_KEY = 'followers_of_self';
+
+  static const String MAP_KEY = 'B3Wus46C2WZFhwZKQkEx';
   static const String API_KEY = '';
   static final String twitterBearerToken = '';
   static const int responseTimeLimit = 30;
   static const String fieldOrderKey = 'field_order_of_self';
-
-  static const String LIST_DETAIL_KEY = 'list_detail';
-  static const String LIST_CHANNEL_KEY = 'list_channel';
-  static const String LIST_FEATURE_KEY = 'list_feature';
-
-  static const String MEDIA_KEY = 'media';
-  static const String BASIC_DETAILS_KEY = 'basic_details';
-  static const String ADDITIONAL_DETAILS_KEY = 'additional_details';
-  static const String LOCATION_KEY = 'location';
-  static const String SOCIAL_KEY = 'social';
-  static const String GAME_KEY = 'game';
-  static const String INSTAGRAM_KEY = 'instagram';
-  static const String TWITTER_KEY = 'twitter';
-  static const String FACEBOOK_KEY = 'facebook';
 }

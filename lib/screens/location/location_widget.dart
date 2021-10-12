@@ -314,7 +314,13 @@ class _LocationWidgetState extends State<LocationWidget> {
                                         topRight: const Radius.circular(12.0),
                                       ),
                                     ),
-                                    child: SelectLocation(),
+                                    child: SelectLocation(
+                                      callbackFunction: (_finalData) {
+                                        print(
+                                            '_finalData $_finalData ${_finalData.latLng}');
+                                        LocationWidgetData().update(_finalData);
+                                      },
+                                    ),
                                   );
                                 }).then((value) => _mapKey = UniqueKey());
                           },
@@ -639,6 +645,9 @@ class LocationWidgetData {
     var _newOsmData = OsmLocationModel(
         _decodedData['location'], _radius, 16, 100,
         latitude: coordinates.latitude, longitude: coordinates.longitude);
+
+    /// 16 and 100 are the default zoom and diameter
+    
     await AtKeySetService().update(
         BasicData(
           value: _newOsmData.toJson(),

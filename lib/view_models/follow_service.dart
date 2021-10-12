@@ -1,3 +1,4 @@
+import 'package:at_commons/at_commons.dart';
 import 'package:at_contact/at_contact.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_follows_flutter/domain/at_follows_list.dart';
@@ -15,12 +16,23 @@ class FollowService extends BaseModel {
   final String FETCH_FOLLOWERS = 'fetch_followers';
   final String FETCH_FOLLOWING = 'fetch_followings';
 
+  bool isFollowersFetched = false;
+  bool isFollowingFetched = false;
+
   init() async {
-    await AtFollowServices()
-        .initializeFollowService(BackendService().atClientServiceInstance);
-    await getFollowers();
-    await getFollowing();
-    connectionProviderListener();
+    try {
+      await AtFollowServices()
+          .initializeFollowService(BackendService().atClientServiceInstance);
+      connectionProviderListener();
+    } catch (e) {
+      print('error in follows package init : ${e}');
+      connectionProviderListener();
+    }
+  }
+
+  resetData() {
+    followers = AtFollowsData();
+    following = AtFollowsData();
   }
 
 // listening for updates from at_follows_flutter package.
@@ -45,7 +57,9 @@ class FollowService extends BaseModel {
     if (followersList != null) {
       followers.list = followersList.list;
       followers.isPrivate = followersList.isPrivate;
-      followers.setKey = AtFollowServices().getFollowersList()!.getKey!;
+      if (AtFollowServices().getFollowersList()!.getKey != null) {
+        followers.setKey = AtFollowServices().getFollowersList()!.getKey!;
+      }
       followers.atsignListDetails = <AtsignDetails>[];
 
       followers.list!.forEach((element) {
@@ -53,8 +67,9 @@ class FollowService extends BaseModel {
             .add(AtsignDetails(atcontact: AtContact(atSign: element)));
       });
 
+      // TODO: optimize
       // fetching details of  atsign list
-      await fetchAtsignDetails(this.followers.list!);
+      // await fetchAtsignDetails(this.followers.list!);
     }
     setStatus(FETCH_FOLLOWERS, Status.Done);
   }
@@ -68,7 +83,9 @@ class FollowService extends BaseModel {
     if (followingList != null) {
       following.list = followingList.list;
       following.isPrivate = followingList.isPrivate;
-      following.setKey = AtFollowServices().getFollowingList()!.getKey!;
+      if (AtFollowServices().getFollowingList()!.getKey != null) {
+        following.setKey = AtFollowServices().getFollowingList()!.getKey!;
+      }
       following.atsignListDetails = [];
 
       following.list!.forEach((element) {
@@ -76,24 +93,25 @@ class FollowService extends BaseModel {
             .add(AtsignDetails(atcontact: AtContact(atSign: element)));
       });
 
+      // TODO: optimize
       // fetching details for  atsign list
-      await fetchAtsignDetails(this.following.list!, isFollowing: true);
+      // await fetchAtsignDetails(this.following.list!, isFollowing: true);
     }
     setStatus(FETCH_FOLLOWING, Status.Done);
   }
 
-  Future unfollow(String atsign) async {
+  ///[forFollowersList] is to identify whether we want to perform operation on followers list or following list.
+  Future unfollow(String atsign, {bool forFollowersList: false}) async {
     var _choice = await confirmationDialog(atsign);
     if (!_choice) {
       return;
     }
 
-    int index = getIndexOfAtsign(atsign);
+    int index = getIndexOfAtsign(atsign, forFollowersList: forFollowersList);
     // following.atsignListDetails[index].isUnfollowing = true;
     setUnfollowingLoading(index, true);
     notifyListeners();
     try {
-      // await Future.delayed(Duration(seconds: 2));
       // print('now unfollowing');
       var result = await AtFollowServices().unfollow(atsign);
       setUnfollowingLoading(index, false);
@@ -135,16 +153,18 @@ class FollowService extends BaseModel {
       {bool isFollowing = false}) async {
     var atsignDetails = <AtsignDetails>[];
 
-    await Future.forEach(atsignList, (String? atsign) async {
-      var atcontact = await getAtSignDetails(atsign!);
-      atsignDetails.add(AtsignDetails(atcontact: atcontact));
-    });
-
-    if (isFollowing) {
-      this.following.atsignListDetails = [...atsignDetails];
-    } else {
-      this.followers.atsignListDetails = [...atsignDetails];
+    for (int i = 0; i < atsignList.length; i++) {
+      var atcontact = await getAtSignDetails(atsignList[i]!);
+      if (isFollowing) {
+        this.following.atsignListDetails[i] =
+            AtsignDetails(atcontact: atcontact);
+      } else {
+        this.followers.atsignListDetails[i] =
+            AtsignDetails(atcontact: atcontact);
+      }
+      notifyListeners();
     }
+
     return atsignDetails;
   }
 
@@ -157,17 +177,16 @@ class FollowService extends BaseModel {
     return false;
   }
 
-  performFollowUnfollow(String atsign, {bool? isFollowingAtsign}) async {
+  ///[forFollowersList] is to identify whether we want to perform operation on followers list or following list.
+  performFollowUnfollow(String atsign, {bool forFollowersList: false}) async {
     try {
-      if (isFollowingAtsign == null) {
-        isFollowingAtsign = isFollowing(atsign);
-      }
+      bool isFollowingAtsign = isFollowing(atsign);
       if (isFollowingAtsign) {
-        await unfollow(atsign);
+        await unfollow(atsign, forFollowersList: forFollowersList);
       } else {
         await AtFollowServices().follow(atsign);
       }
-      await BackendService().sync();
+      BackendService().sync();
       await getFollowing();
     } catch (e) {
       print('Error in performFollowUnfollow $e');
@@ -195,5 +214,27 @@ class FollowService extends BaseModel {
     if (index > -1) {
       followers.atsignListDetails[index].isRmovingFromFollowers = loadingState;
     }
+  }
+
+  addFollowersData(AtValue atValue) async {
+    if (atValue.value == null) return;
+    List<String> followersList = atValue.value.split(',');
+    this.followers.list = followersList;
+    isFollowersFetched = true;
+    this.followers.list!.forEach((element) {
+      followers.atsignListDetails
+          .add(AtsignDetails(atcontact: AtContact(atSign: element)));
+    });
+  }
+
+  addFollowingData(AtValue atValue) async {
+    if (atValue.value == null) return;
+    List<String> followingList = atValue.value.split(',');
+    this.following.list = followingList;
+    isFollowingFetched = true;
+    this.following.list!.forEach((element) {
+      following.atsignListDetails
+          .add(AtsignDetails(atcontact: AtContact(atSign: element)));
+    });
   }
 }

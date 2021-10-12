@@ -9,10 +9,6 @@ import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 
 class UserProvider extends BaseModel {
-  UserProvider._();
-  static UserProvider _instance = UserProvider._();
-  factory UserProvider() => _instance;
-
   User? user;
   String FETCH_USER = 'fetch_user_data';
   final String UPDATE_USER = 'update_user';
@@ -37,6 +33,9 @@ class UserProvider extends BaseModel {
     try {
       var atKeys = await AtKeySetService().getAtkeys();
       await FieldOrderService().updateFieldsOrder();
+      if (user.twitter.value != this.user!.twitter.value) {
+        await TwitetrService().getTweets();
+      }
       await AtKeySetService().updateDefinedFields(user, true, atKeys);
       await AtKeySetService().updateCustomData(user, true, atKeys);
       await BackendService().sync();

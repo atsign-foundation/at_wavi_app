@@ -31,6 +31,17 @@ class FieldOrderService {
     _fieldOrders = {...data};
   }
 
+  addFieldOrder(AtValue atValue) {
+    if (atValue.value != null && atValue.value != '') {
+      Map<String, dynamic> fielsOrder = jsonDecode(atValue.value);
+      for (var field in fielsOrder.entries) {
+        _fieldOrders[field.key] = [
+          ...jsonDecode(fielsOrder[field.key]).cast<String>()
+        ];
+      }
+    }
+  }
+
   getFieldOrder() async {
     AtKey atKey = AtKey()
       ..key = MixedConstants.fieldOrderKey
@@ -96,10 +107,15 @@ class FieldOrderService {
 
   addNewField(AtCategory category, String field) {
     if (_previewFieldOrders[category.name] != null) {
-      _previewFieldOrders[category.name] = [
-        ..._previewFieldOrders[category.name]!,
-        field
-      ];
+      var index = _previewFieldOrders[category.name]!
+          .indexWhere((element) => element == field);
+
+      if (index == -1) {
+        _previewFieldOrders[category.name] = [
+          ..._previewFieldOrders[category.name]!,
+          field
+        ];
+      }
     } else {
       _previewFieldOrders[category.name] = [field];
     }

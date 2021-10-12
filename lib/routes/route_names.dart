@@ -15,4 +15,5 @@ class Routes {
   static const String EDIT_CATEGORY_FIELDS = 'edit_category_fields';
   static const String ADD_CUSTOM_FIELD = 'add_custom_fleid';
   static const String REORDER_FIELDS = 'reorder_fields';
+  static const String WEB_VIEW = 'web_view';
 }

@@ -12,7 +12,9 @@ import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:provider/provider.dart';
+import 'package:html_editor_enhanced/utils/options.dart';
 
 class AddCustomField extends StatefulWidget {
   // ValueChanged<BasicData> onSave;
@@ -33,6 +35,7 @@ class AddCustomField extends StatefulWidget {
 
 class _AddCustomFieldState extends State<AddCustomField> {
   ThemeData? _themeData;
+  HtmlEditorController controller = HtmlEditorController();
 
   BasicData basicData =
       BasicData(isPrivate: false, type: CustomContentType.Text.name);
@@ -60,6 +63,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
 
       _fieldType = customContentNameToType(widget.basicData!.type);
     }
+
     super.initState();
   }
 
@@ -162,78 +166,110 @@ class _AddCustomFieldState extends State<AddCustomField> {
                               size: 16),
                         ),
                       ),
-                      TextFormField(
-                        autovalidateMode: _fieldType == CustomContentType.Image
-                            ? null
-                            : basicData.valueDescription != ''
-                                ? AutovalidateMode.disabled
-                                : AutovalidateMode.onUserInteraction,
-                        validator: (value) {
-                          if (_fieldType == CustomContentType.Image) {
-                            return null;
-                          }
-                          if (value == null || value == '') {
-                            return 'Please provide value';
-                          }
-                          if (_fieldType == CustomContentType.Link &&
-                              !UserPreview().isFormDataValid(
-                                  value, CustomContentType.Link)) {
-                            return 'Please provide valid link';
-                          }
-                          if (_fieldType == CustomContentType.Youtube &&
-                              !UserPreview().isFormDataValid(
-                                  value, CustomContentType.Youtube)) {
-                            return 'Please provide youtube link';
-                          }
-                          return null;
-                        },
-                        initialValue: basicData.valueDescription,
-                        onChanged: (String value) {
-                          basicData.valueDescription = value;
-                          _formKey.currentState!.validate();
-                        },
-                        decoration: InputDecoration(
-                            fillColor: _themeData!.scaffoldBackgroundColor,
-                            filled: true,
-                            errorStyle: TextStyle(fontSize: 15),
-                            border: InputBorder.none,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            )),
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.done,
+                      SizedBox(
+                        height: _fieldType == CustomContentType.Html
+                            ? 7.toHeight
+                            : 0,
                       ),
-                      Divider(thickness: 1, height: 1),
-                      !isImageSelected
-                          ? Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('Add Media'),
-                                  GestureDetector(
-                                    onTap: _selectImage,
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          'Add',
-                                          style: TextStyles.lightText(
-                                              _themeData!.primaryColor),
-                                        ),
-                                        SizedBox(width: 7),
-                                        Icon(
-                                          Icons.add,
-                                          // size: 20,
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
+                      _fieldType == CustomContentType.Html
+                          ? HtmlEditor(
+                              controller: controller, //required
+                              htmlEditorOptions: HtmlEditorOptions(
+                                hint: "Your text here...",
+                                initialText: basicData.valueDescription,
+                                shouldEnsureVisible: true,
                               ),
+                              otherOptions: OtherOptions(
+                                height: 300,
+                              ),
+                              callbacks: Callbacks(
+                                  onBeforeCommand: (String? currentHtml) {},
+                                  onChangeContent: (String? changed) {
+                                    // print('content changed to $changed');
+                                    basicData.valueDescription = changed;
+                                  }),
                             )
-                          : SizedBox(),
+                          : TextFormField(
+                              autovalidateMode:
+                                  _fieldType == CustomContentType.Image
+                                      ? null
+                                      : basicData.valueDescription != ''
+                                          ? AutovalidateMode.disabled
+                                          : AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (_fieldType == CustomContentType.Image) {
+                                  return null;
+                                }
+                                if (value == null || value == '') {
+                                  return 'Please provide value';
+                                }
+                                if (_fieldType == CustomContentType.Link &&
+                                    !UserPreview().isFormDataValid(
+                                        value, CustomContentType.Link)) {
+                                  return 'Please provide valid link';
+                                }
+                                if (_fieldType == CustomContentType.Youtube &&
+                                    !UserPreview().isFormDataValid(
+                                        value, CustomContentType.Youtube)) {
+                                  return 'Please provide youtube link';
+                                }
+                                return null;
+                              },
+                              initialValue: basicData.valueDescription,
+                              onChanged: (String value) {
+                                basicData.valueDescription = value;
+                                _formKey.currentState!.validate();
+                              },
+                              decoration: InputDecoration(
+                                  fillColor:
+                                      _themeData!.scaffoldBackgroundColor,
+                                  filled: true,
+                                  errorStyle: TextStyle(fontSize: 15),
+                                  border: InputBorder.none,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  )),
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                            ),
+                      Divider(thickness: 1, height: 1),
+                      _fieldType == CustomContentType.Html
+                          ? SizedBox()
+                          : (!isImageSelected
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Add Media',
+                                        style: TextStyles.lightText(
+                                            _themeData!.primaryColor,
+                                            size: 14),
+                                      ),
+                                      GestureDetector(
+                                        onTap: _selectImage,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              'Add',
+                                              style: TextStyles.lightText(
+                                                  _themeData!.primaryColor),
+                                            ),
+                                            SizedBox(width: 7),
+                                            Icon(
+                                              Icons.add,
+                                              // size: 20,
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              : SizedBox()),
                       Divider(thickness: 1, height: 1),
                       SizedBox(height: 10),
                       isImageSelected

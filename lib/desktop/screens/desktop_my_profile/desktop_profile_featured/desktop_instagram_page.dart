@@ -31,7 +31,8 @@ class _DesktopInstagramPageState extends State<DesktopInstagramPage>
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return DesktopVisibilityDetectorWidget(
-      keyScreen: MixedConstants.INSTAGRAM_KEY,
+      //Todo
+      keyScreen: "MixedConstants.INSTAGRAM_KEY",
       child: Container(
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

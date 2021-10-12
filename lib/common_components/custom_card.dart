@@ -1,3 +1,5 @@
+import 'package:at_wavi_app/routes/route_names.dart';
+import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
@@ -39,17 +41,26 @@ class CustomCard extends StatelessWidget {
                 : SizedBox(),
             SizedBox(height: 6),
             subtitle != null
-                ? HtmlWidget(
-                    subtitle!,
-                    textStyle: TextStyle(
-                      color: isUrl
-                          ? ColorConstants.orange
-                          : _isDark
-                              ? themeData.primaryColor
-                              : themeData.highlightColor,
-                      fontSize: 18.toFont,
+                ? GestureDetector(
+                    onTap: () {
+                      if (!isUrl) {
+                        return;
+                      }
+                      SetupRoutes.push(context, Routes.WEB_VIEW,
+                          arguments: {'title': title, 'url': subtitle});
+                    },
+                    child: HtmlWidget(
+                      subtitle!,
+                      textStyle: TextStyle(
+                        color: isUrl
+                            ? ColorConstants.orange
+                            : _isDark
+                                ? themeData.primaryColor
+                                : themeData.highlightColor,
+                        fontSize: 16.toFont,
+                      ),
+                      webView: true,
                     ),
-                    webView: true,
                   )
                 : SizedBox(),
           ],

@@ -28,13 +28,13 @@ class _EditPersonaState extends State<EditPersona>
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   late ThemeColor _themeColor;
   List<Color> _colors = [
-    ColorConstants.peach,
+    ColorConstants.green,
     ColorConstants.purple,
     ColorConstants.blue,
     ColorConstants.solidPink,
     ColorConstants.fadedBrown,
-    ColorConstants.solidOrange,
-    ColorConstants.solidLightGreen,
+    ColorConstants.solidRed,
+    ColorConstants.solidPeach,
     ColorConstants.solidYellow,
   ];
 
@@ -113,7 +113,7 @@ class _EditPersonaState extends State<EditPersona>
                       onTap: (index) async {},
                       labelColor: _themeData!.primaryColor,
                       indicatorWeight: 5.toHeight,
-                      indicatorColor: ColorConstants.peach,
+                      indicatorColor: ColorConstants.green,
                       indicatorSize: TabBarIndicatorSize.label,
                       unselectedLabelColor:
                           _themeData!.primaryColor.withOpacity(0.5),
@@ -379,7 +379,7 @@ class _EditPersonaState extends State<EditPersona>
       width: 112.toWidth,
       height: 45.toHeight,
       decoration: BoxDecoration(
-        color: ColorConstants.peach,
+        color: ColorConstants.green,
         borderRadius: BorderRadius.circular(20),
       ),
     );

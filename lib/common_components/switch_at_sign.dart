@@ -40,7 +40,7 @@ class _AtSignBottomSheetState extends State<AtSignBottomSheet> {
               child: Container(
                 height: 120.toHeight,
                 width: SizeConfig().screenWidth,
-                color: Colors.white,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 child: Row(
                   children: [
                     Expanded(
@@ -54,6 +54,7 @@ class _AtSignBottomSheetState extends State<AtSignBottomSheet> {
                           onTap: isLoading
                               ? () {}
                               : () async {
+                                  setState(() {});
                                   await backendService
                                       .onboard(widget.atSignList[index]);
                                 },
@@ -82,7 +83,9 @@ class _AtSignBottomSheetState extends State<AtSignBottomSheet> {
                                   ),
                                 ),
                                 Text(widget.atSignList[index],
-                                    style: TextStyle(fontSize: 15.toFont))
+                                    style: TextStyle(
+                                        fontSize: 15.toFont,
+                                        color: Theme.of(context).primaryColor))
                               ],
                             ),
                           ),
@@ -98,6 +101,7 @@ class _AtSignBottomSheetState extends State<AtSignBottomSheet> {
                           isLoading = true;
                           Navigator.pop(context);
                         });
+                        setState(() {});
                         await backendService.onboard('');
 
                         setState(() {
