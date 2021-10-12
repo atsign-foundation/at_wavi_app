@@ -31,7 +31,7 @@ class _DesktopNotificationInfoPopUpState
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      width: 220,
+      width: 400,
       color: appTheme.backgroundColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,

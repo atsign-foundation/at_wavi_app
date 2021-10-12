@@ -4,12 +4,14 @@ import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/enums.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:at_wavi_app/desktop/widgets/images/desktop_circle_avatar.dart';
 
 class DesktopNotificationItem extends StatelessWidget {
-  Color backgroundColor;
-  NotificationItemType type;
-  BuildContext mainContext;
+  final Color backgroundColor;
+  final NotificationItemType type;
+  final BuildContext mainContext;
 
   DesktopNotificationItem({
     required this.backgroundColor,
@@ -22,22 +24,21 @@ class DesktopNotificationItem extends StatelessWidget {
     final appTheme = AppTheme.of(context);
     return Container(
       color: backgroundColor,
+      width: 400,
       padding: EdgeInsets.only(left: 8, top: 8, bottom: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
             width: 4,
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(90.0),
-            child: Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: appTheme.borderColor,
-                borderRadius: BorderRadius.all(Radius.circular(90)),
-              ),
+          Container(
+            padding: EdgeInsets.only(top: 4),
+            child: DesktopCircleAvatar(
+              url:
+                  'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde',
+              size: 48,
             ),
           ),
           SizedBox(
@@ -51,10 +52,10 @@ class DesktopNotificationItem extends StatelessWidget {
                 Text(
                   '@lauren changed her profile picture',
                   style: TextStyle(
-                    color: ColorConstants.blackShade2,
-                    fontSize: 10,
-                    fontFamily: 'Inter',
+                    color: appTheme.primaryTextColor,
+                    fontSize: 16,
                   ),
+                  maxLines: 2,
                 ),
                 SizedBox(
                   height: 4,
@@ -63,9 +64,9 @@ class DesktopNotificationItem extends StatelessWidget {
                   '15 mins ago',
                   style: TextStyle(
                     color: appTheme.secondaryTextColor,
-                    fontSize: 11,
-                    fontFamily: 'Inter',
+                    fontSize: 14,
                   ),
+                  maxLines: 1,
                 ),
                 SizedBox(
                   height: 8,
@@ -85,7 +86,10 @@ class DesktopNotificationItem extends StatelessWidget {
                           );
                         },
                         child: Container(
-                          color: appTheme.primaryLighterColor,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFFFBE21),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           padding: EdgeInsets.only(left: 8, top: 8, bottom: 8),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -93,17 +97,10 @@ class DesktopNotificationItem extends StatelessWidget {
                               SizedBox(
                                 width: 4,
                               ),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(90.0),
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    color: appTheme.borderColor,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(90)),
-                                  ),
-                                ),
+                              DesktopCircleAvatar(
+                                url:
+                                    'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde',
+                                size: 40,
                               ),
                               SizedBox(
                                 width: 12,
@@ -116,10 +113,9 @@ class DesktopNotificationItem extends StatelessWidget {
                                     Text(
                                       'Lauren London',
                                       style: TextStyle(
-                                        color: appTheme.primaryTextColor,
-                                        fontSize: 10,
-                                        fontFamily: 'Inter',
-                                      ),
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(
                                       height: 4,
@@ -127,9 +123,8 @@ class DesktopNotificationItem extends StatelessWidget {
                                     Text(
                                       '@lauren',
                                       style: TextStyle(
-                                        color: appTheme.secondaryTextColor,
-                                        fontSize: 11,
-                                        fontFamily: 'Inter',
+                                        color: Colors.black,
+                                        fontSize: 16,
                                       ),
                                     )
                                   ],

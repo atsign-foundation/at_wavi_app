@@ -3,9 +3,10 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:at_wavi_app/desktop/widgets/images/desktop_circle_avatar.dart';
 
 class DesktopNewRequestItem extends StatelessWidget {
-  Color backgroundColor;
+  final Color backgroundColor;
 
   DesktopNewRequestItem({
     required this.backgroundColor,
@@ -23,16 +24,9 @@ class DesktopNewRequestItem extends StatelessWidget {
           SizedBox(
             width: 4,
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(90.0),
-            child: Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: appTheme.borderColor,
-                borderRadius: BorderRadius.all(Radius.circular(90)),
-              ),
-            ),
+          DesktopCircleAvatar(
+            url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde',
+            size: 48,
           ),
           SizedBox(
             width: 12,
@@ -47,18 +41,16 @@ class DesktopNewRequestItem extends StatelessWidget {
                   style: TextStyle(
                     color: ColorConstants.blackShade2,
                     fontSize: 10,
-                    fontFamily: 'Inter',
                   ),
                 ),
                 SizedBox(
                   height: 4,
                 ),
                 Text(
-                  '15 mins ago',
+                  '15 min ago',
                   style: TextStyle(
                     color: appTheme.secondaryTextColor,
                     fontSize: 11,
-                    fontFamily: 'Inter',
                   ),
                 )
               ],
