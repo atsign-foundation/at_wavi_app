@@ -1,13 +1,13 @@
 import 'package:at_wavi_app/desktop/screens/desktop_notification/desktop_notification_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_add_location/desktop_add_location_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_add_custom_field/desktop_profile_add_custom_field.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_tutorial/desktop_tutorial_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
-import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,10 +34,6 @@ class DesktopMainDetailPage extends StatefulWidget {
 
 class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
     with SingleTickerProviderStateMixin {
-  GlobalKey _searchKey = GlobalKey();
-  GlobalKey _notificationKey = GlobalKey();
-  GlobalKey _menuKey = GlobalKey();
-  GlobalKey _editKey = GlobalKey();
   late PageController _pageController;
 
   late DesktopMainDetailModel _model;
@@ -120,6 +116,12 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
           key: Strings.desktop_current_tab, value: AtCategory.DETAILS_TAB.name);
     });
     super.initState();
+    _showTutorial();
+  }
+
+  void _showTutorial() async {
+    await Future.delayed(Duration(seconds: 1));
+    _showTutorialDialog();
   }
 
   @override
@@ -155,30 +157,6 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
                       },
                       tab: _tabController,
                     ),
-                    // DesktopMainTabBar(
-                    //   onSelected: (index) async {
-                    //     switch (index) {
-                    //       case 0:
-                    //         await saveStringToSharedPreferences(
-                    //             key: Strings.desktop_current_tab,
-                    //             value: AtCategory.DETAILS_TAB.name);
-                    //         break;
-                    //       case 1:
-                    //         await saveStringToSharedPreferences(
-                    //             key: Strings.desktop_current_tab,
-                    //             value: AtCategory.CHANNELS.name);
-                    //         break;
-                    //       case 2:
-                    //         await saveStringToSharedPreferences(
-                    //             key: Strings.desktop_current_tab,
-                    //             value: AtCategory.FEATURED.name);
-                    //         break;
-                    //     }
-                    //     _pageController.jumpToPage(
-                    //       index ?? 0
-                    //     );
-                    //   },
-                    // ),
                     Expanded(
                       flex: 1,
                       child: Row(
@@ -193,40 +171,6 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
                               widget.onSearchPressed?.call();
                             },
                           ),
-                          // Container(
-                          //   height: 32,
-                          //   width: 32,
-                          //   child: RawMaterialButton(
-                          //     shape: new CircleBorder(),
-                          //     elevation: 0.0,
-                          //     fillColor: appTheme.borderColor,
-                          //     child: Icon(
-                          //       Icons.search,
-                          //       size: 16,
-                          //       color: ColorConstants.blackShade2,
-                          //     ),
-                          //     onPressed: () {
-                          //       widget.onClickSearch();
-                          //     },
-                          //   ),
-                          // ),
-                          // DesktopShowCaseWidget(
-                          //   globalKey: _searchKey,
-                          //   container: DesktopSearchInfoPopUp(
-                          //     atSign: '',
-                          //     icon: 'assets/images/info1.png',
-                          //     description: Strings.desktop_search_user,
-                          //     onNext: () {
-                          //       ShowCaseWidget.of(context)!.dismiss();
-                          //       ShowCaseWidget.of(context)!
-                          //           .startShowCase([_notificationKey]);
-                          //     },
-                          //     onCancel: () {
-                          //       ShowCaseWidget.of(context)!.dismiss();
-                          //     },
-                          //   ),
-                          //   iconData: Icons.search,
-                          // ),
                           SizedBox(
                             width: 24,
                           ),
@@ -250,14 +194,6 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
                               ),
                             ],
                           ),
-                          // DesktopShowCaseWidget(
-                          //   globalKey: _notificationKey,
-                          //   container: DesktopNotificationPage(
-                          //     atSign: '',
-                          //     mainContext: context,
-                          //   ),
-                          //   iconData: Icons.notifications,
-                          // ),
                           SizedBox(
                             width: 24,
                           ),
@@ -269,38 +205,6 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
                               widget.onSettingPressed?.call();
                             },
                           ),
-                          // Container(
-                          //   height: 32,
-                          //   width: 32,
-                          //   child: RawMaterialButton(
-                          //     shape: new CircleBorder(),
-                          //     elevation: 0.0,
-                          //     fillColor: appTheme.borderColor,
-                          //     child: Icon(
-                          //       Icons.more_vert,
-                          //       size: 16,
-                          //       color: ColorConstants.blackShade2,
-                          //     ),
-                          //     onPressed: () {},
-                          //   ),
-                          // ),
-                          // DesktopShowCaseWidget(
-                          //   globalKey: _menuKey,
-                          //   container: DesktopSearchInfoPopUp(
-                          //     atSign: '',
-                          //     icon: 'assets/images/info3.png',
-                          //     description: Strings.desktop_find_more_privacy,
-                          //     onNext: () {
-                          //       ShowCaseWidget.of(context)!.dismiss();
-                          //       ShowCaseWidget.of(context)!
-                          //           .startShowCase([_editKey]);
-                          //     },
-                          //     onCancel: () {
-                          //       ShowCaseWidget.of(context)!.dismiss();
-                          //     },
-                          //   ),
-                          //   iconData: Icons.more_vert,
-                          // ),
                         ],
                       ),
                     ),
@@ -343,38 +247,6 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
                             ),
                           ),
                         ),
-                        // DesktopShowCaseWidget(
-                        //   globalKey: _editKey,
-                        //   overlayColor: Colors.transparent,
-                        //   overlayOpacity: 0,
-                        //   container: DesktopEditMainPopUp(
-                        //     clickReorder: () {
-                        //       ShowCaseWidget.of(context)!.dismiss();
-                        //       _clickReOrder();
-                        //     },
-                        //     clickAddCustomContent: () {
-                        //       ShowCaseWidget.of(context)!.dismiss();
-                        //       _clickAddCustomContent();
-                        //     },
-                        //     clickDelete: () {
-                        //       ShowCaseWidget.of(context)!.dismiss();
-                        //       _clickDelete();
-                        //     },
-                        //   ),
-
-                        //   DesktopSearchInfoPopUp(
-                        //     atSign: '',
-                        //     icon: 'assets/images/info4.png',
-                        //     description: Strings.desktop_edit_feature,
-                        //     onNext: () {
-                        //       ShowCaseWidget.of(context)!.dismiss();
-                        //     },
-                        //     onCancel: () {
-                        //       ShowCaseWidget.of(context)!.dismiss();
-                        //     },
-                        //   ),
-                        // iconData: Icons.edit,
-                        // childSize: 24,
                       ),
                     ],
                   ),
@@ -429,7 +301,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
           case 'GAMER':
             await profileChannelsPage.addFieldToGame();
             break;
-            //Todo
+          //Todo
           case 'MixedConstants.INSTAGRAM_KEY':
             break;
           case 'MixedConstants.TWITTER_KEY':
@@ -514,5 +386,12 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
           break;
       }
     });
+  }
+
+  void _showTutorialDialog() async {
+    await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => DesktopTutorialPage(),
+    );
   }
 }

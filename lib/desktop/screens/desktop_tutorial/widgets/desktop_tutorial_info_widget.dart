@@ -2,14 +2,14 @@ import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:flutter/material.dart';
 
-class DesktopSearchInfoPopUp extends StatefulWidget {
-  String atSign;
-  String icon;
-  String description;
+class DesktopTutorialInfoWidget extends StatefulWidget {
+  final String atSign;
+  final String icon;
+  final String description;
   final Function onNext;
   final Function onCancel;
 
-  DesktopSearchInfoPopUp({
+  DesktopTutorialInfoWidget({
     Key? key,
     required this.atSign,
     required this.icon,
@@ -19,10 +19,11 @@ class DesktopSearchInfoPopUp extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DesktopSearchInfoPopUpState createState() => _DesktopSearchInfoPopUpState();
+  _DesktopTutorialInfoWidgetState createState() =>
+      _DesktopTutorialInfoWidgetState();
 }
 
-class _DesktopSearchInfoPopUpState extends State<DesktopSearchInfoPopUp> {
+class _DesktopTutorialInfoWidgetState extends State<DesktopTutorialInfoWidget> {
   @override
   void initState() {
     super.initState();
@@ -32,37 +33,52 @@ class _DesktopSearchInfoPopUpState extends State<DesktopSearchInfoPopUp> {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      width: 220,
-      color: appTheme.backgroundColor,
+      width: 280,
+      decoration: BoxDecoration(
+        color: appTheme.backgroundColor,
+        borderRadius: BorderRadius.circular(4),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            color: appTheme.primaryLighterColor,
-            padding: EdgeInsets.only(bottom: 12),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            height: 120,
+            decoration: BoxDecoration(
+              color: appTheme.primaryColor.withOpacity(0.2),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(4),
+                topRight: Radius.circular(4),
+              ),
+            ),
+            child: Stack(
               children: [
-                SizedBox(
-                  width: 36,
-                ),
                 Container(
-                  margin: EdgeInsets.only(top: 16),
-                  child: Image.asset(
-                    widget.icon,
-                    fit: BoxFit.fitHeight,
-                    height: 72,
+                  child: Center(
+                    child: Image.asset(
+                      widget.icon,
+                      fit: BoxFit.fitHeight,
+                      height: 72,
+                    ),
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    widget.onCancel();
-                  },
-                  icon: Icon(
-                    Icons.cancel,
-                    size: 24,
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      widget.onCancel();
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Icon(
+                        Icons.cancel,
+                        size: 24,
+                        color: appTheme.isDark
+                            ? Colors.white.withOpacity(0.4)
+                            : Colors.black.withOpacity(0.4),
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -78,8 +94,8 @@ class _DesktopSearchInfoPopUpState extends State<DesktopSearchInfoPopUp> {
                   widget.description,
                   style: TextStyle(
                     color: appTheme.primaryTextColor,
-                    fontSize: 13,
-                    fontFamily: 'Inter',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 SizedBox(
@@ -100,7 +116,7 @@ class _DesktopSearchInfoPopUpState extends State<DesktopSearchInfoPopUp> {
                         style: TextStyle(
                           color: appTheme.primaryColor,
                           fontSize: 12,
-                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
