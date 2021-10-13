@@ -14,11 +14,21 @@ class ColorConstants {
   static const purple = Color(0xFF58419C);
   static const green = Color(0xFF6EBCB7); // default color
   static const blue = Color(0xFF3FC0F3);
-  static const solidPink = Color(0xFFFEB8D5);
+  static const solidPink = Color(0xFFFF4081);
   static const fadedBrown = Color(0xFFA77D60);
   static const solidRed = Color(0xFFEF5743);
-  static const solidPeach = Color(0xFFF2A384);
-  static const solidYellow = Color(0xFFFFBE21);
+  static const solidPeach = Color(0xFFC47E61);
+  static const solidYellow = Color(0xFFCC981A);
+
+  /// color palette for dark mode
+  static const darkThemePurple = Color(0xFFBB86FC);
+  static const darkThemeGreen = Color(0xFF6EBCB7); // default color
+  static const darkThemeBlue = Color(0xFF3FC0F3);
+  static const darkThemeSolidPink = Color(0xFFFEB8D5);
+  static const darkThemeFadedBrown = Color(0xFFA77D60);
+  static const darkThemeSolidRed = Color(0xFFEF5743);
+  static const darkThemeSolidPeach = Color(0xFFF2A384);
+  static const darkThemeSolidYellow = Color(0xFFFFBE21);
 
   /// Purple Shades
   static const purpleShade1 = Color(0xFFF5F4F9);

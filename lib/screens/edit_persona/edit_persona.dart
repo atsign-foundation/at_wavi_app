@@ -28,14 +28,14 @@ class _EditPersonaState extends State<EditPersona>
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   late ThemeColor _themeColor;
   List<Color> _colors = [
-    ColorConstants.green,
     ColorConstants.purple,
+    ColorConstants.green,
     ColorConstants.blue,
-    ColorConstants.solidPink,
+    ColorConstants.darkThemeSolidPink,
     ColorConstants.fadedBrown,
     ColorConstants.solidRed,
-    ColorConstants.solidPeach,
-    ColorConstants.solidYellow,
+    ColorConstants.darkThemeSolidPeach,
+    ColorConstants.darkThemeSolidYellow,
   ];
 
   ThemeData? _themeData;
@@ -64,6 +64,9 @@ class _EditPersonaState extends State<EditPersona>
   _getThemeData() async {
     _themeData =
         await Provider.of<ThemeProvider>(context, listen: false).getTheme();
+    _theme = _themeData!.brightness == Brightness.dark
+        ? ThemeColor.Dark
+        : ThemeColor.Light;
 
     if (mounted) {
       setState(() {});
@@ -210,11 +213,7 @@ class _EditPersonaState extends State<EditPersona>
                                             roundedCorner: 10),
                                         (_updateHighlightColor
                                                 ? (_color == _highlightColor)
-                                                : (_color ==
-                                                    Provider.of<ThemeProvider>(
-                                                            context,
-                                                            listen: false)
-                                                        .highlightColor))
+                                                : isColorSelected(_color))
                                             ? Positioned(
                                                 child: _circularDoneIcon(
                                                     isDark: true,
@@ -239,6 +238,54 @@ class _EditPersonaState extends State<EditPersona>
             )),
       ),
     );
+  }
+
+  bool isColorSelected(Color _color) {
+    var highlightColor =
+        Provider.of<ThemeProvider>(context, listen: false).highlightColor;
+
+    if ([ColorConstants.purple, ColorConstants.darkThemePurple]
+                .indexOf(_color) >
+            -1 &&
+        _color == highlightColor) {
+      return true;
+    } else if ([ColorConstants.green, ColorConstants.darkThemeGreen]
+                .indexOf(highlightColor!) !=
+            -1 &&
+        _color == highlightColor) {
+      return true;
+    } else if ([ColorConstants.blue, ColorConstants.darkThemeBlue]
+                .indexOf(highlightColor) !=
+            -1 &&
+        _color == highlightColor) {
+      return true;
+    } else if ([ColorConstants.solidPink, ColorConstants.darkThemeSolidPink]
+                .indexOf(highlightColor) !=
+            -1 &&
+        _color == highlightColor) {
+      return true;
+    } else if ([ColorConstants.fadedBrown, ColorConstants.darkThemeFadedBrown]
+                .indexOf(highlightColor) !=
+            -1 &&
+        _color == highlightColor) {
+      return true;
+    } else if ([ColorConstants.solidRed, ColorConstants.darkThemeSolidRed]
+                .indexOf(highlightColor) !=
+            -1 &&
+        _color == highlightColor) {
+      return true;
+    } else if ([ColorConstants.solidPeach, ColorConstants.darkThemeSolidPeach]
+                .indexOf(highlightColor) !=
+            -1 &&
+        _color == highlightColor) {
+      return true;
+    } else if ([ColorConstants.solidYellow, ColorConstants.darkThemeSolidYellow]
+                .indexOf(highlightColor) !=
+            -1 &&
+        _color == highlightColor) {
+      return true;
+    } else
+      return false;
   }
 
   Widget _bottomSheet() {
@@ -412,16 +459,23 @@ class _EditPersonaState extends State<EditPersona>
       _modifiedHighlightColor = _highlightColor;
     }
 
+    // converting highlight color according to light/dark theme
+    _modifiedHighlightColor = _theme == ThemeColor.Dark
+        ? Provider.of<ThemeProvider>(context, listen: false)
+            .convertHighlightColorForDarktheme(_modifiedHighlightColor!)
+        : Provider.of<ThemeProvider>(context, listen: false)
+            .convertHighlightColorForLighttheme(_modifiedHighlightColor!);
+
     if (_updateTheme) {
       _modifiedTheme = _theme == ThemeColor.Dark
-          ? Themes.darkTheme(highlightColor: _modifiedHighlightColor!)
-          : Themes.lightTheme(highlightColor: _modifiedHighlightColor!);
+          ? Themes.darkTheme(highlightColor: _modifiedHighlightColor)
+          : Themes.lightTheme(highlightColor: _modifiedHighlightColor);
     } else {
       _modifiedTheme =
           Provider.of<ThemeProvider>(context, listen: false).themeColor ==
                   ThemeColor.Dark
-              ? Themes.darkTheme(highlightColor: _modifiedHighlightColor!)
-              : Themes.lightTheme(highlightColor: _modifiedHighlightColor!);
+              ? Themes.darkTheme(highlightColor: _modifiedHighlightColor)
+              : Themes.lightTheme(highlightColor: _modifiedHighlightColor);
     }
 
     await SetupRoutes.push(context, Routes.HOME, arguments: {
@@ -450,31 +504,6 @@ class _EditPersonaState extends State<EditPersona>
   }
 
   _publishButtonCall() async {
-    if (_updateHighlightColor) {
-      await providerCallback<ThemeProvider>(
-        context,
-        task: (provider) async {
-          await provider.setTheme(highlightColor: _highlightColor);
-        },
-        onError: (provider) {
-          ScaffoldMessenger.of(scaffoldKey.currentContext!)
-              .showSnackBar(SnackBar(
-            backgroundColor: ColorConstants.RED,
-            content: Text(
-              'Publishing theme color failed. Try again!',
-              style: CustomTextStyles.customTextStyle(
-                ColorConstants.white,
-              ),
-            ),
-          ));
-        },
-        showDialog: false,
-        text: 'Publishing color',
-        taskName: (provider) => provider.SET_THEME,
-        onSuccess: (provider) async {},
-      );
-    }
-
     if (_updateTheme) {
       await providerCallback<ThemeProvider>(
         context,
@@ -495,6 +524,31 @@ class _EditPersonaState extends State<EditPersona>
         },
         showDialog: false,
         text: 'Publishing theme',
+        taskName: (provider) => provider.SET_THEME,
+        onSuccess: (provider) async {},
+      );
+    }
+
+    if (_updateHighlightColor) {
+      await providerCallback<ThemeProvider>(
+        context,
+        task: (provider) async {
+          await provider.setTheme(highlightColor: _highlightColor);
+        },
+        onError: (provider) {
+          ScaffoldMessenger.of(scaffoldKey.currentContext!)
+              .showSnackBar(SnackBar(
+            backgroundColor: ColorConstants.RED,
+            content: Text(
+              'Publishing theme color failed. Try again!',
+              style: CustomTextStyles.customTextStyle(
+                ColorConstants.white,
+              ),
+            ),
+          ));
+        },
+        showDialog: false,
+        text: 'Publishing color',
         taskName: (provider) => provider.SET_THEME,
         onSuccess: (provider) async {},
       );

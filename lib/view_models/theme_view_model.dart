@@ -74,6 +74,11 @@ class ThemeProvider extends BaseModel {
     setStatus(SET_THEME, Status.Loading);
 
     if (highlightColor != null) {
+      // added color check for light/dark theme
+      highlightColor = this.themeColor == ThemeColor.Dark
+          ? convertHighlightColorForDarktheme(highlightColor)
+          : convertHighlightColorForLighttheme(highlightColor);
+
       var _res =
           await ThemeService().updateProfile(highlightColor: highlightColor);
       if (_res) {
@@ -102,9 +107,68 @@ class ThemeProvider extends BaseModel {
     }
   }
 
-  convertToHighlightColor(String _color) {
-    switch (_color.toUpperCase()) {
+  Color convertHighlightColorForDarktheme(Color color) {
+    String colorStr = color.toString().toLowerCase().substring(10, 16);
+
+    switch (colorStr.toUpperCase()) {
       case '58419C':
+        return ColorConstants.darkThemePurple;
+      case '6EBCB7':
+        return ColorConstants.darkThemeGreen;
+      case '3FC0F3':
+        return ColorConstants.darkThemeBlue;
+      case 'FF4081':
+        return ColorConstants.darkThemeSolidPink;
+      case 'A77D60':
+        return ColorConstants.darkThemeFadedBrown;
+      case 'EF5743':
+        return ColorConstants.darkThemeSolidRed;
+      case 'C47E61':
+        return ColorConstants.darkThemeSolidPeach;
+      case 'CC981A':
+        return ColorConstants.darkThemeSolidYellow;
+      case 'BB86FC':
+        return ColorConstants.darkThemePurple;
+      case '6EBCB7':
+        return ColorConstants.darkThemeGreen;
+      case '3FC0F3':
+        return ColorConstants.darkThemeBlue;
+      case 'FEB8D5':
+        return ColorConstants.darkThemeSolidPink;
+      case 'A77D60':
+        return ColorConstants.darkThemeFadedBrown;
+      case 'EF5743':
+        return ColorConstants.darkThemeSolidRed;
+      case 'F2A384':
+        return ColorConstants.darkThemeSolidPeach;
+      case 'FFBE21':
+        return ColorConstants.darkThemeSolidYellow;
+      default:
+        return ColorConstants.darkThemeGreen;
+    }
+  }
+
+  Color convertHighlightColorForLighttheme(Color color) {
+    String colorStr = color.toString().toLowerCase().substring(10, 16);
+
+    switch (colorStr.toUpperCase()) {
+      case '58419C':
+        return ColorConstants.purple;
+      case '6EBCB7':
+        return ColorConstants.green;
+      case '3FC0F3':
+        return ColorConstants.blue;
+      case 'FF4081':
+        return ColorConstants.solidPink;
+      case 'A77D60':
+        return ColorConstants.fadedBrown;
+      case 'EF5743':
+        return ColorConstants.solidRed;
+      case 'C47E61':
+        return ColorConstants.solidPeach;
+      case 'CC981A':
+        return ColorConstants.solidYellow;
+      case 'BB86FC':
         return ColorConstants.purple;
       case '6EBCB7':
         return ColorConstants.green;
@@ -120,6 +184,36 @@ class ThemeProvider extends BaseModel {
         return ColorConstants.solidPeach;
       case 'FFBE21':
         return ColorConstants.solidYellow;
+      default:
+        return ColorConstants.darkThemeGreen;
+    }
+  }
+
+  convertToHighlightColor(String _color) {
+    switch (_color.toUpperCase()) {
+      case '58419C':
+        return ColorConstants.purple;
+      case '6EBCB7':
+        return ColorConstants.green;
+      case '3FC0F3':
+        return ColorConstants.blue;
+      case 'FF4081':
+        return ColorConstants.solidPink;
+      case 'A77D60':
+        return ColorConstants.fadedBrown;
+      case 'EF5743':
+        return ColorConstants.solidRed;
+      case 'C47E61':
+        return ColorConstants.solidPeach;
+      case 'CC981A':
+        return ColorConstants.solidYellow;
+      case 'FEB8D5':
+        return ColorConstants.darkThemeSolidPink;
+      case 'F2A384':
+        return ColorConstants.darkThemeSolidPeach;
+      case 'FFBE21':
+        return ColorConstants.darkThemeSolidYellow;
+
       default:
         return ColorConstants.green;
     }
