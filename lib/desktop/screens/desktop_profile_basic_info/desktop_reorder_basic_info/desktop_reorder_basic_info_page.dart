@@ -91,20 +91,24 @@ class _DesktopReorderBasicDetailPageState
   Widget _buildContentWidget() {
     return Consumer<DesktopReorderBasicDetailModel>(
       builder: (_, model, child) {
+        List<Widget> itemWidgets = [];
+        for (int i = 0; i < model.fields.length; i++) {
+          itemWidgets.add(DesktopReorderableItemWidget(
+            key: Key(model.fields[i]),
+            index: i,
+            title: getTitle(model.fields[i]),
+            margin: EdgeInsets.symmetric(vertical: 4),
+          ));
+        }
         return ConstrainedBox(
           constraints: new BoxConstraints(
             maxHeight: 360.0,
           ),
           child: ReorderableListView(
             onReorder: _model.reorder,
-            children: model.fields.map((e) {
-              return DesktopReorderableItemWidget(
-                key: Key(e),
-                title: getTitle(e),
-                margin: EdgeInsets.symmetric(vertical: 4),
-              );
-            }).toList(),
+            children: itemWidgets,
             shrinkWrap: true,
+            buildDefaultDragHandles: false,
             physics: ClampingScrollPhysics(),
           ),
           // shrinkWrap: true,

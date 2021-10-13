@@ -50,13 +50,13 @@ class ColorConstants {
   static const Color desktopSecondaryBackgroundLight = Color(0xFFF0F1F3);
   static const Color desktopSecondaryBackgroundDark = Color(0x10F5F5F5);
   static const Color desktopPrimaryTextLight = Color(0xFF0D1F44);
-  static const Color desktopPrimaryTextDark = Colors.white;
+  static const Color desktopPrimaryTextDark = Color(0xFFDBDBDB);
   static const Color desktopSecondaryTextLight = Color(0xFF98A0B1);
-  static const Color desktopSecondaryTextDark = Color(0xFF98A0B1);
+  static const Color desktopSecondaryTextDark = Color(0xB2FFFFFF);
   static const Color desktopSeparatorLight = Color(0xFFEDEDED);
   static const Color desktopSeparatorDark = Color(0xFF333030);
   static const Color desktopBorderLight = Color(0xFFE4E4E4);
-  static const Color desktopBorderDark = Color(0xFFE4E4E4);
+  static const Color desktopBorderDark = Color(0xFF1F1E1E);
   static const Color desktopSecondary = Color(0xFF0D1F44);
   static const List<Color> desktopPrimaryColors = [
     Color(0xFF00B7B8),
