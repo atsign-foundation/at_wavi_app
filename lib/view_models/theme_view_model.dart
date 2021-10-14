@@ -129,16 +129,8 @@ class ThemeProvider extends BaseModel {
         return ColorConstants.darkThemeSolidYellow;
       case 'BB86FC':
         return ColorConstants.darkThemePurple;
-      case '6EBCB7':
-        return ColorConstants.darkThemeGreen;
-      case '3FC0F3':
-        return ColorConstants.darkThemeBlue;
       case 'FEB8D5':
         return ColorConstants.darkThemeSolidPink;
-      case 'A77D60':
-        return ColorConstants.darkThemeFadedBrown;
-      case 'EF5743':
-        return ColorConstants.darkThemeSolidRed;
       case 'F2A384':
         return ColorConstants.darkThemeSolidPeach;
       case 'FFBE21':
@@ -170,16 +162,8 @@ class ThemeProvider extends BaseModel {
         return ColorConstants.solidYellow;
       case 'BB86FC':
         return ColorConstants.purple;
-      case '6EBCB7':
-        return ColorConstants.green;
-      case '3FC0F3':
-        return ColorConstants.blue;
       case 'FEB8D5':
         return ColorConstants.solidPink;
-      case 'A77D60':
-        return ColorConstants.fadedBrown;
-      case 'EF5743':
-        return ColorConstants.solidRed;
       case 'F2A384':
         return ColorConstants.solidPeach;
       case 'FFBE21':

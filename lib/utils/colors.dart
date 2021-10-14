@@ -30,6 +30,10 @@ class ColorConstants {
   static const darkThemeSolidPeach = Color(0xFFF2A384);
   static const darkThemeSolidYellow = Color(0xFFFFBE21);
 
+  /// button color
+  static const lightThemeDarkGreen = Color(0xFF579591);
+  static const lightThemeDarkBlue = Color(0xFF4E8DF1);
+
   /// Purple Shades
   static const purpleShade1 = Color(0xFFF5F4F9);
   static const purpleShade2 = Color(0xFF58419C);

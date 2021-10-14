@@ -257,7 +257,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   Text(_name,
                                       style: TextStyle(
                                           fontSize: 18.toFont,
-                                          color: _themeData!.primaryColor,
+                                          color: _themeData!.highlightColor,
                                           fontWeight: FontWeight.w600)),
                                   SizedBox(height: 8.toHeight),
                                   Text(
@@ -690,7 +690,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Container(
       decoration: BoxDecoration(
         color: _currentTab == tab
-            ? _themeData!.highlightColor
+            ? _themeData!.primaryColorDark
             : _themeData!.scaffoldBackgroundColor,
         border: _currentTab == tab
             ? Border.all(

@@ -23,7 +23,7 @@ class _CustomMediaCardState extends State<CustomMediaCard> {
   late YoutubePlayerController _controller;
 
   void setThemeData(BuildContext context) {
-    _isDark = widget.themeData.scaffoldBackgroundColor == ColorConstants.white;
+    _isDark = widget.themeData.scaffoldBackgroundColor == ColorConstants.black;
   }
 
   @override
@@ -57,7 +57,7 @@ class _CustomMediaCardState extends State<CustomMediaCard> {
   Widget build(BuildContext context) {
     setThemeData(context);
     return Container(
-      color: widget.themeData.highlightColor.withOpacity(0.1),
+      color: widget.themeData.backgroundColor,
       child: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
@@ -66,7 +66,9 @@ class _CustomMediaCardState extends State<CustomMediaCard> {
             Text(
               '${widget.basicData.accountName![0].toUpperCase()}${widget.basicData.accountName!.substring(1)}',
               style: TextStyles.lightText(
-                  widget.themeData.primaryColor.withOpacity(0.5),
+                  _isDark
+                      ? widget.themeData.primaryColor.withOpacity(0.5)
+                      : widget.themeData.highlightColor.withOpacity(0.7),
                   size: 16),
             ),
             SizedBox(height: 6),
@@ -89,7 +91,6 @@ class _CustomMediaCardState extends State<CustomMediaCard> {
                 ? Image.memory(
                     customImage as Uint8List,
                     width: double.infinity,
-                    height: 200,
                     fit: BoxFit.fill,
                   )
                 : SizedBox(),

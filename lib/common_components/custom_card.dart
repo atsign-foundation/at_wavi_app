@@ -25,7 +25,7 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     setThemeData(context);
     return Container(
-      color: themeData.highlightColor.withOpacity(0.1),
+      color: themeData.backgroundColor,
       child: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
@@ -35,7 +35,9 @@ class CustomCard extends StatelessWidget {
                 ? Text(
                     '${title![0].toUpperCase()}${title!.substring(1)}',
                     style: TextStyles.lightText(
-                        themeData.primaryColor.withOpacity(0.5),
+                        _isDark
+                            ? themeData.primaryColor.withOpacity(0.5)
+                            : themeData.highlightColor.withOpacity(0.7),
                         size: 16),
                   )
                 : SizedBox(),
