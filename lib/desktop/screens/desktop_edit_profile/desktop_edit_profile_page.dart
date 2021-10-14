@@ -123,6 +123,7 @@ class _DesktopEditProfilePageState extends State<DesktopEditProfilePage> {
   }
 
   Widget buildContentPage() {
+    final appTheme = AppTheme.of(context);
     return Container(
       child: PageView(
         controller: _pageController,
@@ -130,7 +131,7 @@ class _DesktopEditProfilePageState extends State<DesktopEditProfilePage> {
         children: DesktopSideMenu.values.map((e) {
           switch (e) {
             case DesktopSideMenu.profile:
-              return Container(color: Colors.red);
+              return Container(color: appTheme.backgroundColor);
             case DesktopSideMenu.media:
               return DesktopMediaPage();
             case DesktopSideMenu.basicDetails:
