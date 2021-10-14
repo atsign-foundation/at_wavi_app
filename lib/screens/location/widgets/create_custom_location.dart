@@ -273,7 +273,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                                     builder: (ctx) => Container(
                                         child: createMarker(
                                             diameterOfCircle:
-                                                _osmLocationModel!.diameter!)),
+                                                _osmLocationModel!.radius!)),
                                   )
                                 ])
                               ],
@@ -298,7 +298,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                                           'latLng': _osmLocationModel!.latLng!,
                                           'zoom': _osmLocationModel!.zoom!,
                                           'diameterOfCircle':
-                                              _osmLocationModel!.diameter!,
+                                              _osmLocationModel!.radius!,
                                         });
                                   },
                                   icon: Icon(Icons.fullscreen)),

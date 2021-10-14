@@ -370,7 +370,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                                                 child: createMarker(
                                                     diameterOfCircle:
                                                         _osmLocationModel
-                                                            .diameter!)),
+                                                            .radius!)),
                                           )
                                         ])
                                       ],
@@ -397,8 +397,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                                                   'zoom':
                                                       _osmLocationModel.zoom!,
                                                   'diameterOfCircle':
-                                                      _osmLocationModel
-                                                          .diameter!,
+                                                      _osmLocationModel.radius!,
                                                 });
                                           },
                                           icon: Icon(Icons.fullscreen)),
@@ -634,25 +633,26 @@ class LocationWidgetData {
   }
 
   createOsmDataFromGoogleData(_decodedData) async {
-    List<Address> addressList =
-        await Geocoder.local.findAddressesFromQuery(_decodedData['location']);
-    Coordinates coordinates = addressList[0].coordinates;
-    print('coordinates: ${coordinates.latitude} ${coordinates.longitude}');
-    var _radius =
-        _decodedData['radius'] != 'null' && _decodedData['radius'] != null
-            ? _decodedData['radius']
-            : null;
-    var _newOsmData = OsmLocationModel(
-        _decodedData['location'], _radius, 16, 100,
-        latitude: coordinates.latitude, longitude: coordinates.longitude);
+    // List<Address> addressList =
+    //     await Geocoder.local.findAddressesFromQuery(_decodedData['location']);
+    // Coordinates coordinates = addressList[0].coordinates;
+    // print('coordinates: ${coordinates.latitude} ${coordinates.longitude}');
+    // var _radius =
+    //     _decodedData['radius'] != 'null' && _decodedData['radius'] != null
+    //         ? _decodedData['radius']
+    //         : null;
+    // var _newOsmData = OsmLocationModel(_decodedData['location'], _radius, 16,
+    //     // 100,
+    //     latitude: coordinates.latitude,
+    //     longitude: coordinates.longitude);
 
-    /// 16 and 100 are the default zoom and diameter
+    // /// 16 and 100 are the default zoom and diameter
 
-    await AtKeySetService().update(
-        BasicData(
-          value: _newOsmData.toJson(),
-        ),
-        FieldsEnum.LOCATION.name);
-    update(_newOsmData);
+    // await AtKeySetService().update(
+    //     BasicData(
+    //       value: _newOsmData.toJson(),
+    //     ),
+    //     FieldsEnum.LOCATION.name);
+    // update(_newOsmData);
   }
 }
