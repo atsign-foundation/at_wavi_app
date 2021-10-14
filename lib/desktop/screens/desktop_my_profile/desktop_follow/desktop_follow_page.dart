@@ -41,7 +41,7 @@ class _DesktopFollowPageState extends State<DesktopFollowPage>
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      width: 380,
+      width: 360,
       color: appTheme.backgroundColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -50,12 +50,15 @@ class _DesktopFollowPageState extends State<DesktopFollowPage>
           SizedBox(
             height: 40,
           ),
-          DesktopTabBar(
-            controller: _tabController,
-            tabTitles: [
-              Strings.desktop_followers,
-              Strings.desktop_following,
-            ],
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            child: DesktopTabBar(
+              controller: _tabController,
+              tabTitles: [
+                Strings.desktop_followers,
+                Strings.desktop_following,
+              ],
+            ),
           ),
           Expanded(
             child: TabBarView(

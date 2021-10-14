@@ -2,6 +2,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_notification/desktop_new_req
 import 'package:at_wavi_app/desktop/screens/desktop_notification/desktop_notification_list_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_tabbar.dart';
 import 'package:flutter/material.dart';
 
 class DesktopNotificationPage extends StatefulWidget {
@@ -65,44 +66,15 @@ class _DesktopNotificationPageState extends State<DesktopNotificationPage>
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TabBar(
-                        indicatorColor: appTheme.primaryColor,
-                        isScrollable: true,
-                        indicatorSize: TabBarIndicatorSize.label,
-                        indicatorWeight: 3,
-                        unselectedLabelStyle: TextStyle(
-                          fontSize: 13,
-                          color: appTheme.borderColor,
-                          fontFamily: 'Inter',
+                      Container(
+                        child: DesktopTabBar(
+                          controller: _tabController,
+                          tabTitles: [
+                            Strings.desktop_notifications,
+                            Strings.desktop_new_request,
+                          ],
                         ),
-                        labelStyle: TextStyle(
-                          fontSize: 13,
-                          color: appTheme.primaryTextColor,
-                          fontFamily: 'Inter',
-                        ),
-                        controller: _tabController,
-                        tabs: [
-                          Tab(
-                            child: Text(
-                              Strings.desktop_notifications,
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: appTheme.primaryTextColor,
-                                fontFamily: 'Inter',
-                              ),
-                            ),
-                          ),
-                          Tab(
-                            child: Text(
-                              Strings.desktop_new_request,
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: appTheme.primaryTextColor,
-                                fontFamily: 'Inter',
-                              ),
-                            ),
-                          ),
-                        ],
+                        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                       ),
                       Expanded(
                         child: TabBarView(

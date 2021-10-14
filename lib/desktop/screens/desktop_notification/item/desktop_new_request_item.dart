@@ -18,9 +18,6 @@ class DesktopNewRequestItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(
-            width: 4,
-          ),
           DesktopCircleAvatar(
             url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde',
             size: 48,
@@ -76,9 +73,6 @@ class DesktopNewRequestItem extends StatelessWidget {
             backgroundColor: appTheme.primaryColor,
             title: Strings.desktop_confirm,
             onPressed: () async {},
-          ),
-          SizedBox(
-            width: 8,
           ),
         ],
       ),

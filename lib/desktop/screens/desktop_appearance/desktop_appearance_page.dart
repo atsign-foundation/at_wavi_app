@@ -57,9 +57,6 @@ class _DesktopAppearancePageState extends State<DesktopAppearancePage>
       width: 200,
       margin: EdgeInsets.only(left: 80),
       child: DesktopTabBar(
-        indicatorColor: appTheme.primaryColor,
-        unselectedLabelColor: appTheme.secondaryTextColor,
-        labelColor: appTheme.primaryTextColor,
         tabTitles: [
           'Themes',
           'Colors',

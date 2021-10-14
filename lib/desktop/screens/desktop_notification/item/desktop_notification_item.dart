@@ -19,14 +19,11 @@ class DesktopNotificationItem extends StatelessWidget {
     final appTheme = AppTheme.of(context);
     return Container(
       width: 400,
-      padding: EdgeInsets.only(left: 8, top: 8, bottom: 8),
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 4,
-          ),
           Container(
             padding: EdgeInsets.only(top: 4),
             child: DesktopCircleAvatar(
@@ -43,6 +40,7 @@ class DesktopNotificationItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 4),
                 Text(
                   '@lauren changed her profile picture',
                   style: TextStyle(
@@ -51,9 +49,7 @@ class DesktopNotificationItem extends StatelessWidget {
                   ),
                   maxLines: 2,
                 ),
-                SizedBox(
-                  height: 4,
-                ),
+                SizedBox(height: 8),
                 Text(
                   '15 mins ago',
                   style: TextStyle(
@@ -131,9 +127,6 @@ class DesktopNotificationItem extends StatelessWidget {
                     : Container(),
               ],
             ),
-          ),
-          SizedBox(
-            width: 28,
           ),
         ],
       ),
