@@ -6,17 +6,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:at_wavi_app/desktop/widgets/images/desktop_circle_avatar.dart';
 
 class DesktopNewRequestItem extends StatelessWidget {
-  final Color backgroundColor;
 
-  DesktopNewRequestItem({
-    required this.backgroundColor,
-  });
+  DesktopNewRequestItem();
 
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      color: backgroundColor,
+      color: appTheme.backgroundColor,
       padding: EdgeInsets.only(left: 8, top: 8, bottom: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

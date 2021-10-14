@@ -28,6 +28,7 @@ class AppTheme {
 
   final Color separatorColor;
   final Color borderColor;
+  final Color shadowColor;
 
   bool get isDark => brightness == Brightness.dark;
 
@@ -42,6 +43,7 @@ class AppTheme {
     required this.secondaryTextColor,
     required this.separatorColor,
     required this.borderColor,
+    required this.shadowColor,
   });
 
   factory AppTheme.from({
@@ -54,6 +56,7 @@ class AppTheme {
     Color? secondaryTextColor,
     Color? separatorColor,
     Color? borderColor,
+    Color? shadowColor,
   }) {
     return AppTheme(
       brightness: brightness,
@@ -83,6 +86,10 @@ class AppTheme {
           (brightness == Brightness.dark
               ? ColorConstants.desktopBorderDark
               : ColorConstants.desktopBorderLight),
+      shadowColor: shadowColor ??
+          (brightness == Brightness.dark
+              ? ColorConstants.desktopShadowDark
+              : ColorConstants.desktopShadowLight),
     );
   }
 

@@ -174,25 +174,11 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
                           SizedBox(
                             width: 24,
                           ),
-                          PopupMenuButton<String>(
-                            padding: EdgeInsets.all(0),
-                            child: DesktopIconButton(
-                              iconData: Icons.notifications,
-                              iconColor: appTheme.primaryTextColor,
-                              backgroundColor:
-                                  appTheme.secondaryBackgroundColor,
-                              // onPressed: (){},
-                            ),
-                            itemBuilder: (BuildContext context) => [
-                              PopupMenuItem<String>(
-                                value: 'notification',
-                                padding: EdgeInsets.all(0),
-                                child: DesktopNotificationPage(
-                                  atSign: '',
-                                  mainContext: context,
-                                ),
-                              ),
-                            ],
+                          DesktopIconButton(
+                            iconData: Icons.notifications,
+                            iconColor: appTheme.primaryTextColor,
+                            backgroundColor: appTheme.secondaryBackgroundColor,
+                            onPressed: _showNotificationPopup,
                           ),
                           SizedBox(
                             width: 24,
@@ -392,6 +378,14 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
     await showDialog<String>(
       context: context,
       builder: (BuildContext context) => DesktopTutorialPage(),
+    );
+  }
+
+  void _showNotificationPopup() async {
+    await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => DesktopNotificationPage(),
+      barrierColor: Colors.transparent
     );
   }
 }

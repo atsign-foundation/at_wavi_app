@@ -27,36 +27,36 @@ class DialogUtils {
   }
 }
 
-Future<dynamic> showNotificationsDialog(
-  BuildContext context, {
-  required String atSign,
-}) async {
-  return showDialog<dynamic>(
-    context: context,
-    barrierDismissible: true,
-    barrierColor: Colors.transparent,
-    builder: (BuildContext context) {
-      return Center(
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-                //    border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(5),
-                color: Colors.white),
-            padding: EdgeInsets.all(4.0),
-            child: DesktopNotificationPage(
-              mainContext: context,
-              atSign: atSign,
-            ),
-          ),
-        ),
-      );
-    },
-  );
-}
+// Future<dynamic> showNotificationsDialog(
+//   BuildContext context, {
+//   required String atSign,
+// }) async {
+//   return showDialog<dynamic>(
+//     context: context,
+//     barrierDismissible: true,
+//     barrierColor: Colors.transparent,
+//     builder: (BuildContext context) {
+//       return Center(
+//         child: Card(
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(5.0),
+//           ),
+//           child: Container(
+//             decoration: BoxDecoration(
+//                 //    border: Border.all(color: Colors.grey),
+//                 borderRadius: BorderRadius.circular(5),
+//                 color: Colors.white),
+//             padding: EdgeInsets.all(4.0),
+//             child: DesktopNotificationPage(
+//               mainContext: context,
+//               atSign: atSign,
+//             ),
+//           ),
+//         ),
+//       );
+//     },
+//   );
+// }
 
 Future showReOderTabsPopUp(
     BuildContext context, Function(List<String>) updateFields) async {

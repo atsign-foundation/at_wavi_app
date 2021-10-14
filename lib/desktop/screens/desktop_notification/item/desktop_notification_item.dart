@@ -2,20 +2,15 @@ import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/desktop/routes/desktop_routes.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/enums.dart';
-import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:at_wavi_app/desktop/widgets/images/desktop_circle_avatar.dart';
 
 class DesktopNotificationItem extends StatelessWidget {
-  final Color backgroundColor;
   final NotificationItemType type;
-  final BuildContext mainContext;
 
   DesktopNotificationItem({
-    required this.backgroundColor,
-    required this.mainContext,
     this.type = NotificationItemType.Normal,
   });
 
@@ -23,7 +18,6 @@ class DesktopNotificationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      color: backgroundColor,
       width: 400,
       padding: EdgeInsets.only(left: 8, top: 8, bottom: 8),
       child: Row(
@@ -74,9 +68,6 @@ class DesktopNotificationItem extends StatelessWidget {
                 type != NotificationItemType.Normal
                     ? GestureDetector(
                         onTap: () async {
-                          ShowCaseWidget.of(mainContext)!.dismiss();
-                          await Future.delayed(
-                              const Duration(milliseconds: 500));
                           DesktopSetupRoutes.push(
                             context,
                             DesktopRoutes.DESKTOP_USER_PROFILE,

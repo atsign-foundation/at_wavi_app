@@ -25,9 +25,7 @@ class _DesktopNewRequestPageState extends State<DesktopNewRequestPage> {
         );
       },
       itemBuilder: (context, i) {
-        return DesktopNewRequestItem(
-          backgroundColor: ColorConstants.white,
-        );
+        return DesktopNewRequestItem();
       },
     );
   }

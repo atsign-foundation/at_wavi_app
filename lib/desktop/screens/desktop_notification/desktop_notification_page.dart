@@ -5,13 +5,8 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:flutter/material.dart';
 
 class DesktopNotificationPage extends StatefulWidget {
-  String atSign;
-  BuildContext mainContext;
-
   DesktopNotificationPage({
     Key? key,
-    required this.atSign,
-    required this.mainContext,
   }) : super(key: key);
 
   @override
@@ -32,60 +27,95 @@ class _DesktopNotificationPageState extends State<DesktopNotificationPage>
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
-    return Container(
-      width: 400,
-      height: 320,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Stack(
         children: [
-          TabBar(
-            indicatorColor: appTheme.primaryColor,
-            isScrollable: true,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorWeight: 3,
-            unselectedLabelStyle: TextStyle(
-              fontSize: 13,
-              color: appTheme.borderColor,
-              fontFamily: 'Inter',
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
             ),
-            labelStyle: TextStyle(
-              fontSize: 13,
-              color: appTheme.primaryTextColor,
-              fontFamily: 'Inter',
-            ),
-            controller: _tabController,
-            tabs: [
-              Tab(
-                child: Text(
-                  Strings.desktop_notifications,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: appTheme.primaryTextColor,
-                    fontFamily: 'Inter',
-                  ),
-                ),
-              ),
-              Tab(
-                child: Text(
-                  Strings.desktop_new_request,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: appTheme.primaryTextColor,
-                    fontFamily: 'Inter',
-                  ),
-                ),
-              ),
-            ],
           ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
+          Positioned(
+            right: 112,
+            top: 112,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                DesktopNotificationListPage(
-                  mainContext: widget.mainContext,
+                Container(
+                  width: 400,
+                  height: 400,
+                  decoration: BoxDecoration(
+                    color: appTheme.backgroundColor,
+                    borderRadius: BorderRadius.circular(4),
+                    boxShadow: [
+                      BoxShadow(
+                        color: appTheme.borderColor,
+                        offset: Offset(2, 2),
+                        blurRadius: 6,
+                      )
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TabBar(
+                        indicatorColor: appTheme.primaryColor,
+                        isScrollable: true,
+                        indicatorSize: TabBarIndicatorSize.label,
+                        indicatorWeight: 3,
+                        unselectedLabelStyle: TextStyle(
+                          fontSize: 13,
+                          color: appTheme.borderColor,
+                          fontFamily: 'Inter',
+                        ),
+                        labelStyle: TextStyle(
+                          fontSize: 13,
+                          color: appTheme.primaryTextColor,
+                          fontFamily: 'Inter',
+                        ),
+                        controller: _tabController,
+                        tabs: [
+                          Tab(
+                            child: Text(
+                              Strings.desktop_notifications,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: appTheme.primaryTextColor,
+                                fontFamily: 'Inter',
+                              ),
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              Strings.desktop_new_request,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: appTheme.primaryTextColor,
+                                fontFamily: 'Inter',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: [
+                            DesktopNotificationListPage(),
+                            DesktopNewRequestPage(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                DesktopNewRequestPage(),
               ],
             ),
           ),
