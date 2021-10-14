@@ -100,45 +100,14 @@ class _DesktopProfileChannelsPageState extends State<DesktopProfileChannelsPage>
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TabBar(
-                        indicator: UnderlineTabIndicator(
-                          borderSide: BorderSide(
-                            width: 3,
-                            color: appTheme.primaryColor,
-                          ),
-                          insets: EdgeInsets.only(
-                            left: 0,
-                            right: 12,
-                            bottom: 4,
-                          ),
+                      Container(
+                        padding:
+                        EdgeInsets.symmetric(vertical: 16, horizontal: 80),
+                        child: DesktopTabBar(
+                          controller: _tabController,
+                          tabTitles: model.fields,
+                          spacer: 40,
                         ),
-                        isScrollable: true,
-                        indicatorSize: TabBarIndicatorSize.label,
-                        unselectedLabelStyle: TextStyle(
-                          fontSize: 13,
-                          color: appTheme.borderColor,
-                          fontFamily: 'Inter',
-                        ),
-                        labelStyle: TextStyle(
-                          fontSize: 13,
-                          color: appTheme.primaryTextColor,
-                          fontFamily: 'Inter',
-                        ),
-                        controller: _tabController,
-                        tabs: model.fields
-                            .map(
-                              (e) => Tab(
-                                child: Text(
-                                  e,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: appTheme.primaryTextColor,
-                                    fontFamily: 'Inter',
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
                       ),
                       Expanded(
                         child: TabBarView(
@@ -161,9 +130,15 @@ class _DesktopProfileChannelsPageState extends State<DesktopProfileChannelsPage>
   Widget getWidget(String field) {
     switch (field) {
       case 'Social':
-        return desktopSocialAccountPage;
+        return DesktopProfileBasicInfoPage(
+          atCategory: AtCategory.SOCIAL,
+          hideMenu: true,
+        );
       case 'Game':
-        return desktopGameAccountPage;
+        return DesktopProfileBasicInfoPage(
+          atCategory: AtCategory.GAMER,
+          hideMenu: true,
+        );
       default:
         return Container();
     }

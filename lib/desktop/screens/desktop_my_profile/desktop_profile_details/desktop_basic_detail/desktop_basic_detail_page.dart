@@ -1,3 +1,5 @@
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/widgets/desktop_basic_info_widget.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/widgets/desktop_location_item_widget.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
@@ -17,7 +19,7 @@ import '../../desktop_location_item.dart';
 import '../../desktop_media_item.dart';
 import 'desktop_basic_detail_model.dart';
 
-class DesktopBasicDetailPage extends StatefulWidget {
+  class DesktopBasicDetailPage extends StatefulWidget {
   late AtCategory atCategory;
 
   DesktopBasicDetailPage({
@@ -81,7 +83,7 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                         horizontal: 16,
                       ),
                       decoration: BoxDecoration(
-                        color: ColorConstants.LIGHT_GREY,
+                        color: appTheme.secondaryBackgroundColor,
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       child: Consumer<DesktopBasicDetailModel>(
@@ -95,22 +97,26 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                                 return DesktopMediaItem(
                                   data: model.fields[index],
                                 );
-                              } else if (model.fields[index].value
-                                  is OsmLocationModel) {
-                                var latLng = LatLng(
-                                    model.fields[index].value.latitude,
-                                    model.fields[index].value.longitude);
-                                return DesktopLocationItem(
-                                  data: model.fields[index],
-                                  latLng: latLng,
+                              } else if (model.fields[index].type == CustomContentType.Location.name) {
+                                // var latLng = LatLng(
+                                //     model.fields[index].value.latitude,
+                                //     model.fields[index].value.longitude);
+                                // return DesktopLocationItem(
+                                //   data: model.fields[index],
+                                //   latLng: latLng,
+                                // );
+                                return DesktopLocationItemWidget(
+                                  title: model.fields[index].accountName ?? '',
+                                  location: model.fields[index].value as String?,
                                 );
                               } else {
-                                return DesktopBasicItem(
-                                  data: model.fields[index],
-                                  onValueChanged: (text) {
-                                    _model.updateValues(index, text);
-                                  },
-                                );
+                                return DesktopBasicInfoWidget(data: model.fields[index]);
+                                // return DesktopBasicItem(
+                                //   data: model.fields[index],
+                                //   onValueChanged: (text) {
+                                //     _model.updateValues(index, text);
+                                //   },
+                                // );
                               }
                             },
                             separatorBuilder:

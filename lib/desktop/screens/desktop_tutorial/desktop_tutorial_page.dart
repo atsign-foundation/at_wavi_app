@@ -66,7 +66,7 @@ class _DesktopTutorialPageState extends State<DesktopTutorialPage> {
             children: [
               Positioned(
                 top: 30,
-                right: 150,
+                right: 166,
                 child: Visibility(
                   visible: _tutorialCase == TutorialCase.search,
                   child: DesktopTutorialPopup(
@@ -93,7 +93,7 @@ class _DesktopTutorialPageState extends State<DesktopTutorialPage> {
               ),
               Positioned(
                 top: 30,
-                right: 88,
+                right: 102,
                 child: Visibility(
                   visible: _tutorialCase == TutorialCase.notification,
                   child: DesktopTutorialPopup(
@@ -120,7 +120,7 @@ class _DesktopTutorialPageState extends State<DesktopTutorialPage> {
               ),
               Positioned(
                 top: 30,
-                right: 24,
+                right: 40,
                 child: Visibility(
                   visible: _tutorialCase == TutorialCase.menu,
                   child: DesktopTutorialPopup(
@@ -146,8 +146,8 @@ class _DesktopTutorialPageState extends State<DesktopTutorialPage> {
                 ),
               ),
               Positioned(
-                top: 100,
-                right: 20,
+                top: 124,
+                right: 36,
                 child: Visibility(
                   visible: _tutorialCase == TutorialCase.edit,
                   child: DesktopTutorialPopup(
@@ -155,6 +155,7 @@ class _DesktopTutorialPageState extends State<DesktopTutorialPage> {
                       iconData: Icons.edit,
                       iconColor: appTheme.primaryTextColor,
                       backgroundColor: appTheme.secondaryBackgroundColor,
+                      size: 36,
                     ),
                     child: DesktopTutorialInfoWidget(
                       atSign: '',

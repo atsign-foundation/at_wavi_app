@@ -133,113 +133,108 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
         _model = DesktopMainDetailModel(userPreview: userPreview);
         return _model;
       },
-      child: ShowCaseWidget(
-        onStart: (index, key) {},
-        onComplete: (index, key) {},
-        builder: Builder(
-          builder: (context) => Container(
-            color: appTheme.backgroundColor,
-            padding: EdgeInsets.symmetric(
-              horizontal: 64,
-              vertical: 40,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(child: Container(), flex: 1),
-                    DesktopProfileTabBar(
-                      onTap: (index) {
-                        _pageController.jumpToPage(index);
-                      },
-                      tab: _tabController,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          DesktopIconButton(
-                            iconData: Icons.search,
-                            iconColor: appTheme.primaryTextColor,
-                            backgroundColor: appTheme.secondaryBackgroundColor,
-                            onPressed: () {
-                              widget.onSearchPressed?.call();
-                            },
-                          ),
-                          SizedBox(
-                            width: 24,
-                          ),
-                          DesktopIconButton(
-                            iconData: Icons.notifications,
-                            iconColor: appTheme.primaryTextColor,
-                            backgroundColor: appTheme.secondaryBackgroundColor,
-                            onPressed: _showNotificationPopup,
-                          ),
-                          SizedBox(
-                            width: 24,
-                          ),
-                          DesktopIconButton(
-                            iconData: Icons.more_vert,
-                            iconColor: appTheme.primaryTextColor,
-                            backgroundColor: appTheme.secondaryBackgroundColor,
-                            onPressed: () {
-                              widget.onSettingPressed?.call();
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                Expanded(
-                  child: Stack(
-                    children: [
-                      PageView(
-                        physics: NeverScrollableScrollPhysics(),
-                        onPageChanged: (int page) {},
-                        controller: _pageController,
-                        children: [
-                          profileDetailsPage,
-                          profileChannelsPage,
-                          profileFeaturedPage,
-                        ],
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: GestureDetector(
-                          onTapDown: (details) =>
-                              showPopUpMenuAtTap(context, details),
-                          child: Container(
-                            height: 32,
-                            width: 32,
-                            decoration: BoxDecoration(
-                              //  borderRadius: BorderRadius.circular(90),
-                              color: appTheme.borderColor,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              Icons.edit,
-                              size: 16,
-                              color: ColorConstants.blackShade2,
-                            ),
-                          ),
+      child: Container(
+        color: appTheme.backgroundColor,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(height: 40),
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 80,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(child: Container(), flex: 1),
+                  DesktopProfileTabBar(
+                    onTap: (index) {
+                      _pageController.jumpToPage(index);
+                    },
+                    tab: _tabController,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        DesktopIconButton(
+                          iconData: Icons.search,
+                          iconColor: appTheme.primaryTextColor,
+                          backgroundColor: appTheme.secondaryBackgroundColor,
+                          onPressed: () {
+                            widget.onSearchPressed?.call();
+                          },
                         ),
-                      ),
+                        SizedBox(
+                          width: 24,
+                        ),
+                        DesktopIconButton(
+                          iconData: Icons.notifications,
+                          iconColor: appTheme.primaryTextColor,
+                          backgroundColor: appTheme.secondaryBackgroundColor,
+                          onPressed: _showNotificationPopup,
+                        ),
+                        SizedBox(
+                          width: 24,
+                        ),
+                        DesktopIconButton(
+                          iconData: Icons.more_vert,
+                          iconColor: appTheme.primaryTextColor,
+                          backgroundColor: appTheme.secondaryBackgroundColor,
+                          onPressed: () {
+                            widget.onSettingPressed?.call();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Expanded(
+              child: Stack(
+                children: [
+                  PageView(
+                    physics: NeverScrollableScrollPhysics(),
+                    onPageChanged: (int page) {},
+                    controller: _pageController,
+                    children: [
+                      profileDetailsPage,
+                      profileChannelsPage,
+                      profileFeaturedPage,
                     ],
                   ),
-                ),
-              ],
+                  Positioned(
+                    top: 10,
+                    right: 80,
+                    child: GestureDetector(
+                      onTapDown: (details) =>
+                          showPopUpMenuAtTap(context, details),
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        decoration: BoxDecoration(
+                          color: appTheme.secondaryBackgroundColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.edit_rounded,
+                          size: 16,
+                          color: appTheme.primaryTextColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -383,9 +378,8 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
 
   void _showNotificationPopup() async {
     await showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => DesktopNotificationPage(),
-      barrierColor: Colors.transparent
-    );
+        context: context,
+        builder: (BuildContext context) => DesktopNotificationPage(),
+        barrierColor: Colors.transparent);
   }
 }

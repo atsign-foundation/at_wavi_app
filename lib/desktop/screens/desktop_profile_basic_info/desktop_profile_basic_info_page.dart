@@ -30,10 +30,12 @@ import 'widgets/desktop_media_item_widget.dart';
 
 class DesktopProfileBasicInfoPage extends StatefulWidget {
   final AtCategory atCategory;
+  final bool hideMenu;
 
   const DesktopProfileBasicInfoPage({
     Key? key,
     required this.atCategory,
+    this.hideMenu = false,
   }) : super(key: key);
 
   @override
@@ -111,48 +113,52 @@ class _DesktopProfileBasicInfoPageState
       {BasicData? locationData}) {
     final appTheme = AppTheme.of(context);
     return Container(
-      margin: EdgeInsets.only(top: 70, left: 80, right: 80),
+      margin: EdgeInsets.only(left: 80, right: 80),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            child: Row(
-              children: [
-                Text(
-                  widget.atCategory.label,
-                  style: TextStyle(
-                    color: appTheme.primaryTextColor,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
+          if (widget.hideMenu == false) SizedBox(height: 60),
+          if (widget.hideMenu == false)
+            Container(
+              child: Row(
+                children: [
+                  Text(
+                    widget.atCategory.label,
+                    style: TextStyle(
+                      color: appTheme.primaryTextColor,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                Spacer(),
-                if (widget.atCategory != AtCategory.LOCATION)
-                  DesktopIconLabelButton(
-                    iconData: Icons.add_circle_outline_sharp,
-                    label: 'Custom Content',
-                    onPressed: _showAddCustomContent,
+                  Spacer(),
+                  if (widget.atCategory != AtCategory.LOCATION)
+                    DesktopIconLabelButton(
+                      iconData: Icons.add_circle_outline_sharp,
+                      label: 'Custom Content',
+                      onPressed: _showAddCustomContent,
+                    ),
+                  if (widget.atCategory == AtCategory.LOCATION)
+                    DesktopIconLabelButton(
+                      iconData: Icons.add_circle_outline_sharp,
+                      label: 'Add location',
+                      onPressed: _showAddLocation,
+                    ),
+                  DesktopIconButton(
+                    iconData: Icons.edit_rounded,
+                    onPressed: _showAddDetailPopup,
                   ),
-                if (widget.atCategory == AtCategory.LOCATION)
-                  DesktopIconLabelButton(
-                    iconData: Icons.add_circle_outline_sharp,
-                    label: 'Add location',
-                    onPressed: _showAddLocation,
+                  SizedBox(width: 10),
+                  DesktopPreviewButton(
+                    onPressed: _showAddDetailPopup,
                   ),
-                DesktopIconButton(
-                  iconData: Icons.edit_rounded,
-                  onPressed: _showAddDetailPopup,
-                ),
-                SizedBox(width: 10),
-                DesktopPreviewButton(
-                  onPressed: _showAddDetailPopup,
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 60),
+          if (widget.hideMenu == false) SizedBox(height: 60),
           Expanded(
-            child: _buildFieldsWidget(data, locationData: locationData),
+            child: Container(
+              child: _buildFieldsWidget(data, locationData: locationData),
+            ),
           ),
           Container(
             margin: EdgeInsets.only(bottom: 64, top: 20),
@@ -229,11 +235,13 @@ class _DesktopProfileBasicInfoPageState
         );
       },
       separatorBuilder: (context, index) {
-        return Divider(
-          color: appTheme.separatorColor,
-          indent: 27,
-          endIndent: 27,
-          height: 1,
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          color: appTheme.secondaryBackgroundColor,
+          child: Container(
+            color: appTheme.separatorColor,
+            height: 2,
+          ),
         );
       },
       itemCount: data.length,
@@ -300,11 +308,13 @@ class _DesktopProfileBasicInfoPageState
             ),
           );
         }
-        return Divider(
-          color: appTheme.separatorColor,
-          indent: 27,
-          endIndent: 27,
-          height: 1,
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          color: appTheme.secondaryBackgroundColor,
+          child: Container(
+            color: appTheme.separatorColor,
+            height: 2,
+          ),
         );
       },
       itemCount: data.length + 1,

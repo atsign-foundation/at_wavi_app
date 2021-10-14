@@ -1,6 +1,7 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/desktop/utils/utils.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_tabbar.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
@@ -87,55 +88,27 @@ class _DesktopProfileFeaturedPageState extends State<DesktopProfileFeaturedPage>
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TabBar(
-                        indicator: UnderlineTabIndicator(
-                          borderSide: BorderSide(
-                            width: 3,
-                            color: appTheme.primaryColor,
-                          ),
-                          insets: EdgeInsets.only(
-                            left: 0,
-                            right: 12,
-                            bottom: 4,
-                          ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 80),
+                        child: DesktopTabBar(
+                          controller: _tabController,
+                          tabTitles:
+                              model.fields.map((e) => getTitle(e)).toList(),
+                          spacer: 40,
                         ),
-                        //    indicatorColor: appTheme.primaryColor,
-                        isScrollable: true,
-                        indicatorSize: TabBarIndicatorSize.label,
-                        unselectedLabelStyle: TextStyle(
-                          fontSize: 13,
-                          color: appTheme.borderColor,
-                          fontFamily: 'Inter',
-                        ),
-                        labelStyle: TextStyle(
-                          fontSize: 13,
-                          color: appTheme.primaryTextColor,
-                          fontFamily: 'Inter',
-                        ),
-                        controller: _tabController,
-                        tabs: model.fields
-                            .map(
-                              (e) => Tab(
-                                child: Text(
-                                  getTitle(e),
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: appTheme.primaryTextColor,
-                                    fontFamily: 'Inter',
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
                       ),
                       Expanded(
-                        child: TabBarView(
-                          controller: _tabController,
-                          children: model.fields
-                              .map(
-                                (e) => getWidget(e),
-                              )
-                              .toList(),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 80),
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: model.fields
+                                .map(
+                                  (e) => getWidget(e),
+                                )
+                                .toList(),
+                          ),
                         ),
                       ),
                     ],

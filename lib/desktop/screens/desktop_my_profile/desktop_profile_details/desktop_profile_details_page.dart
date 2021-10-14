@@ -1,5 +1,7 @@
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_basic_info_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_tabbar.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
@@ -118,46 +120,14 @@ class _DesktopProfileDetailsPageState extends State<DesktopProfileDetailsPage>
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TabBar(
-                        indicator: UnderlineTabIndicator(
-                          borderSide: BorderSide(
-                            width: 3,
-                            color: appTheme.primaryColor,
-                          ),
-                          insets: EdgeInsets.only(
-                            left: 0,
-                            right: 12,
-                            bottom: 4,
-                          ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 80),
+                        child: DesktopTabBar(
+                          controller: _tabController,
+                          tabTitles: model.fields,
+                          spacer: 40,
                         ),
-                        //    indicatorColor: appTheme.primaryColor,
-                        isScrollable: true,
-                        indicatorSize: TabBarIndicatorSize.label,
-                        unselectedLabelStyle: TextStyle(
-                          fontSize: 13,
-                          color: appTheme.primaryTextColor,
-                          fontFamily: 'Inter',
-                        ),
-                        labelStyle: TextStyle(
-                          fontSize: 13,
-                          color: appTheme.primaryTextColor,
-                          fontFamily: 'Inter',
-                        ),
-                        controller: _tabController,
-                        tabs: model.fields
-                            .map(
-                              (e) => Tab(
-                                child: Text(
-                                  e,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: appTheme.primaryTextColor,
-                                    fontFamily: 'Inter',
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
                       ),
                       Expanded(
                         child: TabBarView(
@@ -188,11 +158,20 @@ class _DesktopProfileDetailsPageState extends State<DesktopProfileDetailsPage>
       case 'Media':
         return desktopMediaPage;
       case 'Basic Details':
-        return desktopBasicDetailPage;
+        return DesktopProfileBasicInfoPage(
+          atCategory: AtCategory.DETAILS,
+          hideMenu: true,
+        );
       case 'Additional Details':
-        return desktopAdditionalDetailPage;
+        return DesktopProfileBasicInfoPage(
+          atCategory: AtCategory.ADDITIONAL_DETAILS,
+          hideMenu: true,
+        );
       case 'Location':
-        return desktopLocationPage;
+        return DesktopProfileBasicInfoPage(
+          atCategory: AtCategory.LOCATION,
+          hideMenu: true,
+        );
       default:
         return Container();
     }

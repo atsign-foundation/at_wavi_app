@@ -45,7 +45,7 @@ class _DesktopTwitterPageState extends State<DesktopTwitterPage>
             margin: EdgeInsets.symmetric(vertical: 8),
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: ColorConstants.LIGHT_GREY,
+              color: appTheme.secondaryBackgroundColor,
               borderRadius: BorderRadius.circular(5.0),
             ),
             child: ListView.separated(
@@ -60,9 +60,9 @@ class _DesktopTwitterPageState extends State<DesktopTwitterPage>
                       Text(
                         twitterPosts[index],
                         style: TextStyle(
-                            fontSize: 12,
-                            color: ColorConstants.blackShade2,
-                            fontFamily: 'Inter'),
+                          fontSize: 16,
+                          color: appTheme.primaryTextColor,
+                        ),
                       ),
                       SizedBox(
                         height: 6,
@@ -70,9 +70,9 @@ class _DesktopTwitterPageState extends State<DesktopTwitterPage>
                       Text(
                         '15 mins ago',
                         style: TextStyle(
-                            fontSize: 10,
-                            color: appTheme.secondaryTextColor,
-                            fontFamily: 'Inter'),
+                          fontSize: 14,
+                          color: appTheme.secondaryTextColor,
+                        ),
                       ),
                     ],
                   ),
