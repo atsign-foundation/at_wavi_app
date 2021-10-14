@@ -213,6 +213,8 @@ class ThemeProvider extends BaseModel {
         return ColorConstants.darkThemeSolidPeach;
       case 'FFBE21':
         return ColorConstants.darkThemeSolidYellow;
+      case 'BB86FC':
+        return ColorConstants.darkThemePurple;
 
       default:
         return ColorConstants.green;

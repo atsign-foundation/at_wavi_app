@@ -64,6 +64,8 @@ class _EditPersonaState extends State<EditPersona>
   _getThemeData() async {
     _themeData =
         await Provider.of<ThemeProvider>(context, listen: false).getTheme();
+    _highlightColor =
+        Provider.of<ThemeProvider>(context, listen: false).highlightColor!;
     _theme = _themeData!.brightness == Brightness.dark
         ? ThemeColor.Dark
         : ThemeColor.Light;
@@ -247,7 +249,9 @@ class _EditPersonaState extends State<EditPersona>
     if ([ColorConstants.purple, ColorConstants.darkThemePurple]
                 .indexOf(_color) >
             -1 &&
-        _color == highlightColor) {
+        [ColorConstants.purple, ColorConstants.darkThemePurple]
+                .indexOf(highlightColor!) >
+            -1) {
       return true;
     } else if ([ColorConstants.green, ColorConstants.darkThemeGreen]
                 .indexOf(highlightColor!) !=
@@ -262,7 +266,9 @@ class _EditPersonaState extends State<EditPersona>
     } else if ([ColorConstants.solidPink, ColorConstants.darkThemeSolidPink]
                 .indexOf(highlightColor) !=
             -1 &&
-        _color == highlightColor) {
+        [ColorConstants.solidPink, ColorConstants.darkThemeSolidPink]
+                .indexOf(_color) !=
+            -1) {
       return true;
     } else if ([ColorConstants.fadedBrown, ColorConstants.darkThemeFadedBrown]
                 .indexOf(highlightColor) !=
@@ -277,12 +283,16 @@ class _EditPersonaState extends State<EditPersona>
     } else if ([ColorConstants.solidPeach, ColorConstants.darkThemeSolidPeach]
                 .indexOf(highlightColor) !=
             -1 &&
-        _color == highlightColor) {
+        [ColorConstants.solidPeach, ColorConstants.darkThemeSolidPeach]
+                .indexOf(_color) !=
+            -1) {
       return true;
     } else if ([ColorConstants.solidYellow, ColorConstants.darkThemeSolidYellow]
                 .indexOf(highlightColor) !=
             -1 &&
-        _color == highlightColor) {
+        [ColorConstants.solidYellow, ColorConstants.darkThemeSolidYellow]
+                .indexOf(_color) !=
+            -1) {
       return true;
     } else
       return false;
@@ -529,7 +539,23 @@ class _EditPersonaState extends State<EditPersona>
       );
     }
 
-    if (_updateHighlightColor) {
+    bool highlightColorChanged = false;
+
+    // checking if highlight color needs to be updated.
+    if (!_updateHighlightColor) {
+      var highlightColor =
+          Provider.of<ThemeProvider>(context, listen: false).highlightColor;
+      var tempHighlightColor = _theme == ThemeColor.Dark
+          ? Provider.of<ThemeProvider>(context, listen: false)
+              .convertHighlightColorForDarktheme(highlightColor!)
+          : Provider.of<ThemeProvider>(context, listen: false)
+              .convertHighlightColorForLighttheme(highlightColor!);
+      if (tempHighlightColor != highlightColor) {
+        highlightColorChanged = true;
+      }
+    }
+
+    if (_updateHighlightColor || highlightColorChanged) {
       await providerCallback<ThemeProvider>(
         context,
         task: (provider) async {
