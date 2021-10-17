@@ -75,6 +75,8 @@ class SearchService {
       fieldOrders = {};
       currentAtsignThemeData = Themes.lightTheme(
           highlightColor: highlightColor ?? ColorConstants.green);
+      themeColor = null;
+      highlightColor = null;
 
       isPrivateAccount = false;
       user = User(allPrivate: false, atsign: atsign);

@@ -65,12 +65,13 @@ class ChangePrivacyService {
           user.customFields.values.expand((element) => element).toList();
       for (var field in customFields) {
         field.isPrivate = private;
+        print('For $field update $private');
       }
-      for (var field in user.customFields.entries) {
-        for (var _key in field.value) {
-          print('For $field update ${_key.isPrivate}');
-        }
-      }
+      // for (var field in user.customFields.entries) {
+      //   for (var _key in field.value) {
+      //     print('For $field update ${_key.isPrivate}');
+      //   }
+      // }
 
       await storeInSecondary(true);
       // update PRIVATEACCOUNT key
@@ -94,13 +95,18 @@ class ChangePrivacyService {
     }
   }
 
-  dynamic setPrivacy(property, value) async {
+  dynamic setPrivacy(property, bool value) async {
     BasicData field = this.get(property);
-    if (user.allPrivate != null && user.allPrivate == true)
-      field.isPrivate = true;
-    else
-      field.isPrivate =
-          field.value != '' && field.value != null ? value : false;
+    // if (user.allPrivate != null && user.allPrivate == true)
+    //   field.isPrivate = true;
+    // else
+    // field.isPrivate =
+    //     field.value != '' && field.value != null ? value : false;
+
+    if (field.value != '' && field.value != null) {
+      field.isPrivate = value;
+    }
+
     if (field.value == null) {
       return;
     }

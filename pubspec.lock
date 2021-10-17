@@ -109,12 +109,10 @@ packages:
   at_onboarding_flutter:
     dependency: "direct main"
     description:
-      path: at_onboarding_flutter
-      ref: trunk
-      resolved-ref: "30eca2d6a2ae7ea86c22353b536e3efdc7b00fc9"
-      url: "https://github.com/atsign-foundation/at_widgets.git"
-    source: git
-    version: "3.0.3"
+      name: at_onboarding_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.4"
   at_persistence_secondary_server:
     dependency: transitive
     description:

@@ -31,7 +31,7 @@ class DesktopAddLocationModel extends ChangeNotifier {
 
     _osmLocationModel = OsmLocationModel(
       "Ha Noi",
-      10,
+      '10',
       14,
       10,
       latitude: 21.028511,

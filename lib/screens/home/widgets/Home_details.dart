@@ -16,7 +16,7 @@ class HomeDetails extends StatefulWidget {
 }
 
 class _HomeDetailsState extends State<HomeDetails> {
-  late bool _isDark;
+  late bool _isDark = false;
   ThemeData? _themeData;
 
   @override
@@ -59,8 +59,11 @@ class _HomeDetailsState extends State<HomeDetails> {
                     isPreview: widget.isPreview)
                 ? Text(
                     'Basic Details',
-                    style:
-                        TextStyles.boldText(_themeData!.primaryColor, size: 18),
+                    style: TextStyles.boldText(
+                        _isDark
+                            ? _themeData!.primaryColor
+                            : _themeData!.highlightColor,
+                        size: 18),
                   )
                 : SizedBox(),
             SizedBox(height: 15.toHeight),
@@ -79,8 +82,11 @@ class _HomeDetailsState extends State<HomeDetails> {
                     AtCategory.ADDITIONAL_DETAILS,
                     isPreview: widget.isPreview)
                 ? Text('Additional Details',
-                    style:
-                        TextStyles.boldText(_themeData!.primaryColor, size: 18))
+                    style: TextStyles.boldText(
+                        _isDark
+                            ? _themeData!.primaryColor
+                            : _themeData!.highlightColor,
+                        size: 18))
                 : SizedBox(),
             SizedBox(height: 15.toHeight),
             Column(
@@ -97,8 +103,11 @@ class _HomeDetailsState extends State<HomeDetails> {
             CommonFunctions().isFieldsPresentForCategory(AtCategory.LOCATION,
                     isPreview: widget.isPreview)
                 ? Text('Location',
-                    style:
-                        TextStyles.boldText(_themeData!.primaryColor, size: 18))
+                    style: TextStyles.boldText(
+                        _isDark
+                            ? _themeData!.primaryColor
+                            : _themeData!.highlightColor,
+                        size: 18))
                 : SizedBox(),
             SizedBox(height: 15.toHeight),
             Column(

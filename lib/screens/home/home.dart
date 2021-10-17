@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:at_client_mobile/at_client_mobile.dart';
+import 'package:at_commons/at_commons.dart';
 import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/empty_widget.dart';
 import 'package:at_wavi_app/common_components/header.dart';
@@ -71,8 +73,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     if (widget.isPreview) {
       _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
-    } else {
+    } else if (Provider.of<UserProvider>(context, listen: false).user != null) {
       _currentUser = Provider.of<UserProvider>(context, listen: false).user!;
+    } else {
+      _currentUser = User(
+          atsign: AtClientManager.getInstance().atClient.getCurrentAtSign());
     }
 
     if ((widget.isPreview) &&
@@ -99,10 +104,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   getCurrentUserName() {
-    if (widget.isPreview) {
+    if (widget.isPreview &&
+        Provider.of<UserPreview>(context, listen: false).user() != null) {
       _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
-    } else {
+    } else if (Provider.of<UserProvider>(context, listen: false).user != null) {
       _currentUser = Provider.of<UserProvider>(context, listen: false).user!;
+    } else {
+      _currentUser = User(
+          atsign: AtClientManager.getInstance().atClient.getCurrentAtSign());
     }
 
     _name = _currentUser.firstname.value ?? '';
@@ -248,7 +257,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   Text(_name,
                                       style: TextStyle(
                                           fontSize: 18.toFont,
-                                          color: _themeData!.primaryColor,
+                                          color: _themeData!.highlightColor,
                                           fontWeight: FontWeight.w600)),
                                   SizedBox(height: 8.toHeight),
                                   Text(
@@ -681,7 +690,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Container(
       decoration: BoxDecoration(
         color: _currentTab == tab
-            ? _themeData!.highlightColor
+            ? _themeData!.primaryColorDark
             : _themeData!.scaffoldBackgroundColor,
         border: _currentTab == tab
             ? Border.all(
