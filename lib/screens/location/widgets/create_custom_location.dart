@@ -349,7 +349,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
       if (widget.basicData != null) {
         if (widget.basicData!.accountName != _data.accountName) {
           Provider.of<UserPreview>(context, listen: false)
-              .deleteCustomField(AtCategory.LOCATION, widget.basicData!);
+              .deletCustomField(AtCategory.LOCATION, widget.basicData!);
           // Provider.of<UserPreview>(context, listen: false)
           //     .sortCustomLocationFields();
         }
