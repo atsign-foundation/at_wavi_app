@@ -12,15 +12,14 @@ import 'package:provider/provider.dart';
 
 class FieldOrderService {
   FieldOrderService._();
-
   static FieldOrderService _instance = FieldOrderService._();
-
   factory FieldOrderService() => _instance;
 
   Map<String, List<String>> _fieldOrders = {};
   Map<String, List<String>> _previewFieldOrders = {};
 
   Map<String, List<String>> get previewOrders => _previewFieldOrders;
+
   Map<String, List<String>> get fieldOrders => _fieldOrders;
 
   set setPreviewOrder(Map<String, List<String>> data) {
