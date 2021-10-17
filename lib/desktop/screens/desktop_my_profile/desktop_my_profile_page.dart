@@ -2,7 +2,6 @@ import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_follow/de
 import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_settings/desktop_settings_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_profile_info_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
-import 'package:at_wavi_app/desktop/utils/enums.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'desktop_main_detail_page.dart';
@@ -20,7 +19,6 @@ class DesktopMyProfilePage extends StatefulWidget {
 class _DesktopMyProfilePageState extends State<DesktopMyProfilePage> {
   final _globalKey = GlobalKey<ScaffoldState>();
   final _parentScaffoldKey = GlobalKey<ScaffoldState>();
-  DrawerType drawerType = DrawerType.Search;
   bool isFollower = true;
 
   @override
