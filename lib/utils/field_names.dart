@@ -133,7 +133,8 @@ class FieldNames {
     if (customFields != null) {
       for (var field in customFields) {
         if (field.accountName != null && field.accountName != '') {
-          sortedFields.add(field.accountName!);
+          var i = sortedFields.indexWhere((el) => el == field.accountName!);
+          if (i == -1) sortedFields.add(field.accountName!);
         }
       }
     }
