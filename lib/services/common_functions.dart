@@ -379,6 +379,10 @@ class CommonFunctions {
           field.value != null &&
           field.value.value != null &&
           field.value.value != '') {
+        if (field.key == FieldsEnum.FIRSTNAME.name ||
+            field.key == FieldsEnum.LASTNAME.name) {
+          continue;
+        }
         return true;
       }
     }
