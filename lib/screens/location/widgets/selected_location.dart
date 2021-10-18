@@ -203,8 +203,8 @@ class _SelectedLocationState extends State<SelectedLocation> {
                             inactiveColor: ColorConstants.LIGHT_GREY,
                             value: diameterOfCircle,
                             min: 100,
-                            max: 400,
-                            divisions: 4,
+                            max: 300,
+                            divisions: 2,
                             label: 'Adjust radius',
                             onChanged: (double newValue) {
                               setState(() {
@@ -294,9 +294,26 @@ class _SelectedLocationState extends State<SelectedLocation> {
           }
 
           if (_text == 'Confirm') {
-            var _finalData = OsmLocationModel(
-                null, null, zoom, diameterOfCircle,
-                latitude: center.latitude, longitude: center.longitude);
+            //// Diameter will go to radius as 2, 5, 10 for 100, 200, 300
+            double _radius;
+            switch (diameterOfCircle.toInt()) {
+              case 100:
+                _radius = 2;
+                break;
+              case 200:
+                _radius = 5;
+                break;
+              case 300:
+                _radius = 10;
+                break;
+              default:
+                _radius = 2;
+            }
+            var _finalData = OsmLocationModel(null, _radius, zoom,
+                //  diameterOfCircle,
+                latitude: center.latitude,
+                longitude: center.longitude,
+                diameter: 100); // default value, for backward compatibility
 
             if (widget.callbackFunction != null) {
               widget.callbackFunction!(_finalData);
