@@ -36,9 +36,7 @@ class CommonFunctions {
   }
 
   bool isOsmDataPresent(Map _locationData) {
-    if ((_locationData['diameter'] != null) &&
-        (_locationData['zoom'] != null) &&
-        (_locationData['latitude'] != null) &&
+    if ((_locationData['latitude'] != null) &&
         (_locationData['longitude'] != null)) {
       return true;
     }
@@ -98,13 +96,12 @@ class CommonFunctions {
                     listen: false)
                 .user!))));
 
-    if ((_currentUser.locationNickName.value != null) &&
-        (_currentUser.location.value != null) &&
+    if ((_currentUser.location.value != null) &&
         (isOsmDataPresent(json.decode(_currentUser.location.value)))) {
       locationWidgets.add(
         buildMap(
           OsmLocationModel.fromJson(json.decode(_currentUser.location.value)),
-          _currentUser.locationNickName.value,
+          _currentUser.locationNickName.value ?? '',
           _themeData,
         ),
       );
@@ -570,7 +567,7 @@ class CommonFunctions {
                         point: _osmLocationModel.latLng!,
                         builder: (ctx) => Container(
                             child: createMarker(
-                                diameterOfCircle: _osmLocationModel.diameter!)),
+                                diameterOfCircle: _osmLocationModel.radius!)),
                       )
                     ])
                   ],
@@ -594,7 +591,7 @@ class CommonFunctions {
                               'title': _locationNickname,
                               'latLng': _osmLocationModel.latLng!,
                               'zoom': _osmLocationModel.zoom!,
-                              'diameterOfCircle': _osmLocationModel.diameter!,
+                              'diameterOfCircle': _osmLocationModel.radius!,
                             });
                       },
                       icon: Icon(Icons.fullscreen)),
