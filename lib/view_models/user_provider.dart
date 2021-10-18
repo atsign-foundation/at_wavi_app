@@ -16,7 +16,7 @@ class UserProvider extends BaseModel {
   fetchUserData(String atsign) async {
     setStatus(FETCH_USER, Status.Loading);
     user = await AtKeyGetService().getProfile(atsign: atsign);
-    if (user!.atsign != null || user!.atsign == '') {
+    if (user!.atsign == '') {
       user!.atsign = atsign;
     }
 

@@ -19,7 +19,7 @@ class HomeFeatured extends StatefulWidget {
 }
 
 class _HomeFeaturedState extends State<HomeFeatured> {
-  late bool _isDark;
+  late bool _isDark = false;
   ThemeData? _themeData;
 
   @override
@@ -59,8 +59,11 @@ class _HomeFeaturedState extends State<HomeFeatured> {
               children: [
                 Text(
                   'Instagram',
-                  style:
-                      TextStyles.boldText(_themeData!.primaryColor, size: 18),
+                  style: TextStyles.boldText(
+                      _isDark
+                          ? _themeData!.primaryColor
+                          : _themeData!.highlightColor,
+                      size: 18),
                 )
               ],
             ),
@@ -100,8 +103,11 @@ class _HomeFeaturedState extends State<HomeFeatured> {
               children: [
                 Text(
                   'Twitter',
-                  style:
-                      TextStyles.boldText(_themeData!.primaryColor, size: 18),
+                  style: TextStyles.boldText(
+                      _isDark
+                          ? _themeData!.primaryColor
+                          : _themeData!.highlightColor,
+                      size: 18),
                 ),
                 widget.twitterUsername != null
                     ? InkWell(

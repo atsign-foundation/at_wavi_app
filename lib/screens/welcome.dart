@@ -109,6 +109,7 @@ class _WelcomeState extends State<Welcome> {
                 SizedBox(height: 10.toHeight),
                 // Image.asset(Images.welcomeScreenBanner),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
                       Images.splash_1,
