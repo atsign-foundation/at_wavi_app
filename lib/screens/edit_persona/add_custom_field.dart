@@ -115,6 +115,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
             Expanded(
               child: Form(
                 key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   child: Column(
@@ -131,9 +132,6 @@ class _AddCustomFieldState extends State<AddCustomField> {
                         ),
                       ),
                       TextFormField(
-                        autovalidateMode: basicData.accountName != ''
-                            ? AutovalidateMode.disabled
-                            : AutovalidateMode.onUserInteraction,
                         validator: (value) {
                           if (value == null || value == '') {
                             return 'Please provide value';
