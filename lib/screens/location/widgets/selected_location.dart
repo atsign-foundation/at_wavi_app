@@ -312,7 +312,8 @@ class _SelectedLocationState extends State<SelectedLocation> {
             var _finalData = OsmLocationModel(null, _radius, zoom,
                 //  diameterOfCircle,
                 latitude: center.latitude,
-                longitude: center.longitude);
+                longitude: center.longitude,
+                diameter: 100); // default value, for backward compatibility
 
             if (widget.callbackFunction != null) {
               widget.callbackFunction!(_finalData);
