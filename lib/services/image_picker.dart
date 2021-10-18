@@ -17,7 +17,7 @@ class ImagePicker {
     if (result != null) {
       for (var pickedFile in result.files) {
         var path = pickedFile.path;
-        var file = File(path!);
+        var file = File(path);
         var compressedFile = await FlutterImageCompress.compressWithFile(
           file.absolute.path,
           minWidth: 400,
