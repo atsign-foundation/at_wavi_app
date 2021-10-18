@@ -7,6 +7,23 @@ Widget createMarker({
   double heightOfMarker = 50,
   double widthOfMarker = 40,
 }) {
+  if (diameterOfCircle < 100) {
+    switch (diameterOfCircle.toInt()) {
+      case 2:
+        diameterOfCircle = 100;
+        break;
+      case 5:
+        diameterOfCircle = 200;
+        break;
+      case 10:
+        diameterOfCircle = 300;
+        break;
+      default:
+        diameterOfCircle = 100;
+        break;
+    }
+  }
+
   /// bottomOfCircle = (((bottom of icon + (size of icon/2))*2 - height of circle)) / 2
   double bottomOfCircle =
       ((((heightOfMarker / 2) + (widthOfMarker / 2)) * 2 - diameterOfCircle)) /
