@@ -76,7 +76,6 @@ class AtKeySetService {
 
   ///Returns `true` if tempObject's value for [key] is equal to [value].
   bool _checkCriteria(dynamic key, var value) {
-    key = key.replaceAll(' ', '');
     return AtKeyGetService().objectReference().containsKey(key)
         ? AtKeyGetService().objectReference()[key] == value
         : false;
@@ -124,6 +123,14 @@ class AtKeySetService {
       {bool? isCheck = true, var scanKeys, String? previousKey}) async {
     var result;
     for (var data in value) {
+      String oldkey = _formatOldCustomTitle(data.accountName);
+      for (int i = 0; i < scanKeys.length; i++) {
+        if (scanKeys[i].key.contains(oldkey) &&
+            data.accountName!.contains(" ")) {
+          await BackendService().atClientInstance.delete(scanKeys[i]);
+        }
+      }
+
       String accountname = _formatCustomTitle(data.accountName ?? '');
       String key = AtText.CUSTOM + '_' + accountname;
       String? sharedWith = data.isPrivate
@@ -137,7 +144,7 @@ class AtKeySetService {
       var atKey = AtKey()
         ..key = key.contains(AtText.IS_DELETED)
             ? key.replaceAll(AtText.IS_DELETED, '')
-            : key.replaceAll(' ', '')
+            : key
         ..sharedWith = sharedWith
         ..metadata = metadata;
 
@@ -297,7 +304,16 @@ class AtKeySetService {
 
   ///Replaces sepcial characters with '_'.
   String _formatCustomTitle(String data) {
-    return data.trim().toLowerCase().replaceAll(RegExp(r'(:|@|;|\?|!|,)'), '_');
+    return data
+        .trim()
+        .toLowerCase()
+        .replaceAll(RegExp(r'(:|@|;|\?|!|,| )'), '_');
+  }
+
+  String _formatOldCustomTitle(String? data) {
+    return data!.contains(" ")
+        ? data.trim().toLowerCase().replaceAll(RegExp(r'(:|@|;|\?|!|,| )'), '')
+        : data;
   }
 
   Future<bool> updateDefinedFields(
