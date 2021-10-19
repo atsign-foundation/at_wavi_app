@@ -82,6 +82,10 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
     return Scaffold(
       bottomSheet: InkWell(
         onTap: () {
+          if (_data.accountName != null) {
+            _data.accountName = _data.accountName!.trim();
+          }
+
           if (_data.value != null) {
             _updateLocation(_osmLocationModel!);
           } else {
