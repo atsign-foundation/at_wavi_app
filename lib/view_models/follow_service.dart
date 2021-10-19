@@ -217,7 +217,7 @@ class FollowService extends BaseModel {
   }
 
   addFollowersData(AtValue atValue) async {
-    if (atValue.value == null) return;
+    if (atValue.value == null || atValue.value == 'null') return;
     List<String> followersList = atValue.value.split(',');
     this.followers.list = followersList;
     isFollowersFetched = true;
@@ -228,7 +228,7 @@ class FollowService extends BaseModel {
   }
 
   addFollowingData(AtValue atValue) async {
-    if (atValue.value == null) return;
+    if (atValue.value == null || atValue.value == 'null') return;
     List<String> followingList = atValue.value.split(',');
     this.following.list = followingList;
     isFollowingFetched = true;
