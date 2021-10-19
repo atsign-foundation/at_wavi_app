@@ -146,6 +146,13 @@ class _LocationWidgetState extends State<LocationWidget> {
               .value = '';
         }
 
+        if (_locationNickname.isEmpty) {
+          Provider.of<UserPreview>(context, listen: false)
+              .user()!
+              .location
+              .value = null;
+        }
+
         Navigator.of(context).pop();
         return true;
       },

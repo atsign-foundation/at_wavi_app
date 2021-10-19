@@ -213,9 +213,9 @@ class _AddCustomFieldState extends State<AddCustomField> {
                                 }
                                 return null;
                               },
-                              initialValue: basicData.valueDescription,
+                              initialValue: basicData.valueDescription ?? '',
                               onChanged: (String value) {
-                                basicData.valueDescription = value;
+                                basicData.valueDescription = value.trim();
                                 _formKey.currentState!.validate();
                               },
                               decoration: InputDecoration(
@@ -301,7 +301,9 @@ class _AddCustomFieldState extends State<AddCustomField> {
                                                 borderRadius:
                                                     BorderRadius.circular(15)),
                                             child: Icon(Icons.highlight_remove,
-                                                size: 30, color: Colors.white),
+                                                size: 30,
+                                                color: _themeData!
+                                                    .scaffoldBackgroundColor),
                                           ),
                                         ),
                                       ),
@@ -480,6 +482,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
+    basicData.accountName = basicData.accountName!.trim();
 
     // when new field is being added, checking if title name is already taken or not
     if (!widget.isEdit) {

@@ -317,6 +317,14 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
   }
 
   _updateLocation(OsmLocationModel _osmData) async {
+    if ((_osmData.latitude == null) ||
+        (_osmData.latitude == 'null') ||
+        (_osmData.longitude == null) ||
+        (_osmData.longitude == 'null')) {
+      _showToast('Enter Location', isError: true);
+      return;
+    }
+
     // when field is being added, checking if title name is already taken or not
     if (widget.basicData == null) {
       if (Provider.of<UserPreview>(context, listen: false)
