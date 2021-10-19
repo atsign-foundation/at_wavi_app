@@ -128,9 +128,10 @@ class _LocationWidgetState extends State<LocationWidget> {
       return CircularProgressIndicator();
     }
 
-    _locationString = (_data != null && (_data!.value != null))
-        ? jsonDecode(_data!.value)['location']
-        : '';
+    _locationString =
+        (_data != null && (_data!.value != null) && (_data!.value != ''))
+            ? jsonDecode(_data!.value)['location']
+            : '';
 
     return WillPopScope(
       onWillPop: () async {
@@ -150,7 +151,7 @@ class _LocationWidgetState extends State<LocationWidget> {
           Provider.of<UserPreview>(context, listen: false)
               .user()!
               .location
-              .value = null;
+              .value = '';
         }
 
         Navigator.of(context).pop();
