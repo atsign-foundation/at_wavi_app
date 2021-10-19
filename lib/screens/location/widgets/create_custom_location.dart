@@ -82,6 +82,10 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
     return Scaffold(
       bottomSheet: InkWell(
         onTap: () {
+          if ((_data.accountName == null) || (_data.accountName == '')) {
+            return _showToast('Enter Location tag', isError: true);
+          }
+
           if (_data.accountName != null) {
             _data.accountName = _data.accountName!.trim();
           }
@@ -89,9 +93,6 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
           if (_data.value != null) {
             _updateLocation(_osmLocationModel!);
           } else {
-            if (_data.accountName != null) {
-              return _showToast('Enter Location tag', isError: true);
-            }
             _showToast('Enter Location', isError: true);
           }
         },
@@ -174,7 +175,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                   expands: false,
                   maxLines: 1,
                   value: (str) => setState(() {
-                    _data.accountName = str;
+                    _data.accountName = str.trim();
                   }),
                 ),
               ),
