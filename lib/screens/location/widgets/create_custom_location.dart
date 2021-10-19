@@ -86,6 +86,10 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
             return _showToast('Enter Location tag', isError: true);
           }
 
+          if (_data.accountName != null) {
+            _data.accountName = _data.accountName!.trim();
+          }
+
           if (_data.value != null) {
             _updateLocation(_osmLocationModel!);
           } else {

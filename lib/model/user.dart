@@ -204,7 +204,7 @@ class BasicData {
           value: json['value'],
           isPrivate: json['isPrivate'] == 'false' ? false : true,
           accountName: json['accountName'],
-          valueDescription: json['valueDescription'],
+          valueDescription: json['valueDescription'] ?? null,
           type: json['type']);
     } else {
       return BasicData();
@@ -213,11 +213,11 @@ class BasicData {
 
   toJson() {
     return json.encode({
-      'value': value.toString(),
+      'value': value?.toString(),
       // 'location': 'NH 18, Chas, Bokaro, 827013, Jharkhand, India',
       'isPrivate': isPrivate.toString(),
       'accountName': accountName.toString(),
-      'valueDescription': valueDescription.toString(),
+      'valueDescription': valueDescription?.toString(),
       'type': type.toString(),
     });
   }

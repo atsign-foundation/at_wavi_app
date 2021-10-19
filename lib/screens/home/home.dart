@@ -257,7 +257,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   Text(_name,
                                       style: TextStyle(
                                           fontSize: 18.toFont,
-                                          color: _themeData!.highlightColor,
+                                          color: _isDark
+                                              ? _themeData!.primaryColor
+                                              : _themeData!.highlightColor,
                                           fontWeight: FontWeight.w600)),
                                   SizedBox(height: 8.toHeight),
                                   Text(
