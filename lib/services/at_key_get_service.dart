@@ -26,6 +26,7 @@ class AtKeyGetService {
   }
 
   resetUser() {
+    init();
     user.customFields[AtCategory.DETAILS.name] = [];
     user.customFields[AtCategory.LOCATION.name] = [];
     user.customFields[AtCategory.SOCIAL.name] = [];
