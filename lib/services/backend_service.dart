@@ -95,7 +95,7 @@ class BackendService {
   }
 
   Future<AtClientPreference> getAtClientPreference() async {
-    if (Platform.isIOS) {
+    if (Platform.isIOS || Platform.isMacOS) {
       downloadDirectory =
           await path_provider.getApplicationDocumentsDirectory();
     } else {

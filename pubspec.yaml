@@ -30,8 +30,6 @@ dependencies:
   hive_flutter: ^1.0.0
   google_fonts: ^2.1.0
   at_common_flutter: ^2.0.2
-  at_onboarding_flutter: ^3.0.3
-  at_client_mobile: ^3.0.3
   at_client: ^3.0.3
   at_contact: ^3.0.1
   at_lookup: ^3.0.3
@@ -69,7 +67,32 @@ dependencies:
 
 dependency_overrides:
   flutter_colorpicker: ^0.6.0 #because html_editor_enhanced uses 0.4.0, which gives flutter event errors
-  file_picker: ^4.0.0
+  file_picker: ^4.0.0 #override for desktop version
+  at_contacts_flutter: #override for desktop version
+    git:
+      url: https://github.com/atsign-foundation/at_widgets.git
+      path: at_contacts_flutter
+      ref: desktop/development
+  at_onboarding_flutter: #override for desktop version
+    git:
+      url: https://github.com/atsign-foundation/at_widgets.git
+      path: at_onboarding_flutter
+      ref: desktop/development
+  at_client_mobile: #override for desktop version
+    git:
+      url: https://github.com/atsign-foundation/at_client_sdk.git
+      path: at_client_mobile
+      ref: desktop-compatible
+  at_client: #override for desktop version
+    git:
+      url: https://github.com/atsign-foundation/at_client_sdk.git
+      path: at_client
+      ref: desktop-compatible
+  at_common_flutter: #override for desktop version
+    git:
+      url: https://github.com/atsign-foundation/at_widgets.git
+      path: at_common_flutter
+      ref: desktop/development
 
 dev_dependencies:
   flutter_test:

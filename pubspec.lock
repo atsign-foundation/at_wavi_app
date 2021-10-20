@@ -46,23 +46,29 @@ packages:
   at_client:
     dependency: "direct main"
     description:
-      name: at_client
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: at_client
+      ref: desktop-compatible
+      resolved-ref: "4e6f0cfae1315b404cfa27f2fb82b0a11361655e"
+      url: "https://github.com/atsign-foundation/at_client_sdk.git"
+    source: git
     version: "3.0.3"
   at_client_mobile:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
-      name: at_client_mobile
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: at_client_mobile
+      ref: desktop-compatible
+      resolved-ref: "4e6f0cfae1315b404cfa27f2fb82b0a11361655e"
+      url: "https://github.com/atsign-foundation/at_client_sdk.git"
+    source: git
     version: "3.0.3"
   at_common_flutter:
     dependency: "direct main"
     description:
-      name: at_common_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: at_common_flutter
+      ref: "desktop/development"
+      resolved-ref: "428203b7c745226ea5815338be543756606a76c2"
+      url: "https://github.com/atsign-foundation/at_widgets.git"
+    source: git
     version: "2.0.2"
   at_commons:
     dependency: "direct main"
@@ -81,9 +87,11 @@ packages:
   at_contacts_flutter:
     dependency: "direct main"
     description:
-      name: at_contacts_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: at_contacts_flutter
+      ref: "desktop/development"
+      resolved-ref: "428203b7c745226ea5815338be543756606a76c2"
+      url: "https://github.com/atsign-foundation/at_widgets.git"
+    source: git
     version: "3.0.0"
   at_follows_flutter:
     dependency: "direct main"
@@ -107,12 +115,14 @@ packages:
     source: hosted
     version: "3.0.3"
   at_onboarding_flutter:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
-      name: at_onboarding_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.4"
+      path: at_onboarding_flutter
+      ref: "desktop/development"
+      resolved-ref: "428203b7c745226ea5815338be543756606a76c2"
+      url: "https://github.com/atsign-foundation/at_widgets.git"
+    source: git
+    version: "3.0.2"
   at_persistence_secondary_server:
     dependency: transitive
     description:
@@ -162,6 +172,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.0"
+  biometric_storage:
+    dependency: transitive
+    description:
+      name: biometric_storage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -239,6 +256,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.2"
+  cross_file:
+    dependency: transitive
+    description:
+      name: cross_file
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.1+5"
   crypto:
     dependency: transitive
     description:
@@ -330,6 +354,34 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.2"
+  file_selector:
+    dependency: transitive
+    description:
+      name: file_selector
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.8.2+1"
+  file_selector_macos:
+    dependency: transitive
+    description:
+      name: file_selector_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4+1"
+  file_selector_platform_interface:
+    dependency: transitive
+    description:
+      name: file_selector_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
+  file_selector_web:
+    dependency: transitive
+    description:
+      name: file_selector_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.8.1+2"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -398,13 +450,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-  flutter_keychain:
-    dependency: transitive
-    description:
-      name: flutter_keychain
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
   flutter_local_notifications:
     dependency: transitive
     description:
@@ -667,6 +712,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.8.0"
+  lints:
+    dependency: transitive
+    description:
+      name: lints
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   lists:
     dependency: transitive
     description:
@@ -799,14 +851,14 @@ packages:
       name: permission_handler
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "8.1.4+2"
+    version: "8.2.5"
   permission_handler_platform_interface:
     dependency: transitive
     description:
       name: permission_handler_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.6.1"
+    version: "3.7.0"
   petitparser:
     dependency: transitive
     description:
@@ -848,7 +900,7 @@ packages:
       name: pointycastle
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.3.1"
+    version: "3.3.4"
   positioned_tap_detector_2:
     dependency: transitive
     description:

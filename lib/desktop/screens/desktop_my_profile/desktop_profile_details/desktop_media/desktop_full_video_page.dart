@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/utils/colors.dart';
-import 'package:dart_vlc/dart_vlc.dart';
+// import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 //import 'package:video_player/video_player.dart';
 
@@ -21,7 +21,7 @@ class DesktopFullVideoPage extends StatefulWidget {
 
 class _DesktopFullVideoPageState extends State<DesktopFullVideoPage> {
   // late VideoPlayerController _controller;
-  late Player _player;
+  // late Player _player;
 
   @override
   void initState() {
@@ -29,11 +29,11 @@ class _DesktopFullVideoPageState extends State<DesktopFullVideoPage> {
     //   ..initialize().then((_) {
     //     setState(() {});
     //   });
-    _player = Player(id: Random().nextInt(1000));
-    _player.open(
-      Media.file(File(widget.path)),
-      autoStart: true, // default
-    );
+    // _player = Player(id: Random().nextInt(1000));
+    // _player.open(
+    //   Media.file(File(widget.path)),
+    //   autoStart: true, // default
+    // );
     super.initState();
   }
 
@@ -47,11 +47,11 @@ class _DesktopFullVideoPageState extends State<DesktopFullVideoPage> {
           height: 600,
           color: Colors.transparent,
           child: Center(
-            child: Video(
-              player: _player,
-              height: 600,
-              width: 600,
-            ),
+            // child: Video(
+            //   player: _player,
+            //   height: 600,
+            //   width: 600,
+            // ),
           ),
         ),
         Positioned(
@@ -74,7 +74,7 @@ class _DesktopFullVideoPageState extends State<DesktopFullVideoPage> {
 
   @override
   void dispose() {
-    _player.dispose();
+    // _player.dispose();
     super.dispose();
   }
 }
