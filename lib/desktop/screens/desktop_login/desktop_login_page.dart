@@ -32,17 +32,18 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
       text: '',
     );
     super.initState();
+    _model = DesktopLoginModel();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      final appTheme = AppTheme.of(context);
+      _model.checkToOnboard(onBoardingColor: appTheme.primaryColor);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
-    return ChangeNotifierProvider(
-      create: (BuildContext c) {
-        _model = DesktopLoginModel();
-        _model.checkToOnboard();
-        return _model;
-      },
+    return ChangeNotifierProvider<DesktopLoginModel>(
+      create: (BuildContext c) => _model,
       child: Scaffold(
         backgroundColor: appTheme.backgroundColor,
         body: _buildBodyWidget(),
@@ -192,7 +193,8 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
 
   void _showPassCodeDialog() async {
     final user = atSignTextEditingController.text;
-    BackendService().onboard('');
+    final appTheme = AppTheme.of(context);
+    _model.openOnboard(onBoardingColor: appTheme.primaryColor);
     return;
     if (_formKey.currentState?.validate() == false) {
       return;
