@@ -35,7 +35,7 @@ packages:
       name: at_backupkey_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "3.0.0"
   at_base2e15:
     dependency: "direct main"
     description:
@@ -43,27 +43,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  at_chat_flutter:
-    dependency: transitive
-    description:
-      name: at_chat_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.2"
   at_client:
     dependency: "direct main"
     description:
       name: at_client
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "3.0.3"
   at_client_mobile:
     dependency: "direct main"
     description:
       name: at_client_mobile
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "3.0.3"
   at_common_flutter:
     dependency: "direct main"
     description:
@@ -77,56 +70,56 @@ packages:
       name: at_commons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
+    version: "3.0.0"
   at_contact:
     dependency: "direct main"
     description:
       name: at_contact
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "3.0.1"
   at_contacts_flutter:
     dependency: "direct main"
     description:
       name: at_contacts_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "3.0.0"
   at_follows_flutter:
     dependency: "direct main"
     description:
       name: at_follows_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "3.0.0"
   at_location_flutter:
     dependency: "direct main"
     description:
       name: at_location_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "3.0.0"
   at_lookup:
     dependency: "direct main"
     description:
       name: at_lookup
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "3.0.3"
   at_onboarding_flutter:
     dependency: "direct main"
     description:
       name: at_onboarding_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.3"
+    version: "3.0.4"
   at_persistence_secondary_server:
     dependency: transitive
     description:
       name: at_persistence_secondary_server
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.6"
+    version: "3.0.0"
   at_persistence_spec:
     dependency: transitive
     description:
@@ -140,7 +133,7 @@ packages:
       name: at_server_status
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   at_utf7:
     dependency: transitive
     description:
@@ -154,7 +147,7 @@ packages:
       name: at_utils
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "3.0.0"
   audio_session:
     dependency: transitive
     description:
@@ -162,6 +155,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.6"
+  audio_video_progress_bar:
+    dependency: transitive
+    description:
+      name: audio_video_progress_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -267,6 +267,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  dart_vlc:
+    dependency: "direct main"
+    description:
+      name: dart_vlc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.8"
+  dart_vlc_ffi:
+    dependency: transitive
+    description:
+      name: dart_vlc_ffi
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.5"
+  desktop_window:
+    dependency: "direct main"
+    description:
+      name: desktop_window
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   easy_debounce:
     dependency: "direct main"
     description:
@@ -384,6 +405,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  flutter_local_notifications:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.0+4"
+  flutter_local_notifications_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -583,6 +618,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  internet_connection_checker:
+    dependency: transitive
+    description:
+      name: internet_connection_checker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1+3"
   intl:
     dependency: transitive
     description:
@@ -863,6 +905,55 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.4"
+  shared_preferences:
+    dependency: "direct main"
+    description:
+      name: shared_preferences
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.8"
+  shared_preferences_linux:
+    dependency: transitive
+    description:
+      name: shared_preferences_linux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
+  shared_preferences_macos:
+    dependency: transitive
+    description:
+      name: shared_preferences_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
+  shared_preferences_platform_interface:
+    dependency: transitive
+    description:
+      name: shared_preferences_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  shared_preferences_web:
+    dependency: transitive
+    description:
+      name: shared_preferences_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
+  shared_preferences_windows:
+    dependency: transitive
+    description:
+      name: shared_preferences_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
+  showcaseview:
+    dependency: "direct main"
+    description:
+      name: showcaseview
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -938,6 +1029,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.2"
+  timezone:
+    dependency: transitive
+    description:
+      name: timezone
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0"
   transparent_image:
     dependency: transitive
     description:
@@ -967,12 +1065,12 @@ packages:
     source: hosted
     version: "0.3.1"
   url_launcher:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.9"
+    version: "6.0.12"
   url_launcher_linux:
     dependency: transitive
     description:
@@ -1029,6 +1127,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  video_compress:
+    dependency: "direct main"
+    description:
+      name: video_compress
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.0"
   video_player:
     dependency: transitive
     description:
@@ -1051,7 +1156,7 @@ packages:
     source: hosted
     version: "2.0.2"
   visibility_detector:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: visibility_detector
       url: "https://pub.dartlang.org"
@@ -1142,5 +1247,5 @@ packages:
     source: hosted
     version: "8.0.0"
 sdks:
-  dart: ">=2.13.0 <3.0.0"
-  flutter: ">=2.2.0"
+  dart: ">=2.14.0 <3.0.0"
+  flutter: ">=2.5.0"

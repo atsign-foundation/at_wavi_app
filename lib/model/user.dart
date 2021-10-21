@@ -176,13 +176,17 @@ class BasicData {
   Icon? icon;
   String? accountName, valueDescription;
   var type;
-  BasicData(
-      {this.value,
-      this.isPrivate = false,
-      this.icon,
-      this.accountName,
-      this.type,
-      this.valueDescription});
+  String? extension;
+
+  BasicData({
+    this.value,
+    this.isPrivate = false,
+    this.icon,
+    this.accountName,
+    this.type,
+    this.valueDescription,
+    this.extension,
+  });
 
   factory BasicData.fromJson(Map<String, dynamic> json) {
     if (json['value'] != null &&
@@ -201,11 +205,13 @@ class BasicData {
         json['value'] = null;
       }
       return BasicData(
-          value: json['value'],
-          isPrivate: json['isPrivate'] == 'false' ? false : true,
-          accountName: json['accountName'],
-          valueDescription: json['valueDescription'],
-          type: json['type']);
+        value: json['value'],
+        isPrivate: json['isPrivate'] == 'false' ? false : true,
+        accountName: json['accountName'],
+        valueDescription: json['valueDescription'],
+        type: json['type'],
+        extension: json['extension'],
+      );
     } else {
       return BasicData();
     }
@@ -219,6 +225,7 @@ class BasicData {
       'accountName': accountName.toString(),
       'valueDescription': valueDescription.toString(),
       'type': type.toString(),
+      'extension': extension.toString(),
     });
   }
 

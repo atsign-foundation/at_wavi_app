@@ -50,11 +50,39 @@ class ColorConstants {
       color.withOpacity(opacity);
 
   /// grey shades
-  static const Color LIGHT_GREY = Color(0xFFBEC0C8);
+  static const Color LIGHT_GREY = Color(0xFFF0F1F3);
   static const Color DARK_GREY = Color(0xFF6D6D79);
   static const Color MILD_GREY = Color(0xFFE4E4E4);
 
   static const Color RED = Color(0xFFe34040);
+
+  /// Colors for desktop
+  static const Color desktopPrimaryDefault = Color(0xFF00B7B8);
+  static const Color desktopBackgroundLight = Colors.white;
+  static const Color desktopBackgroundDark = Color(0xFF121212);
+  static const Color desktopSecondaryBackgroundLight = Color(0xFFF0F1F3);
+  static const Color desktopSecondaryBackgroundDark = Color(0x10F5F5F5);
+  static const Color desktopPrimaryTextLight = Color(0xFF0D1F44);
+  static const Color desktopPrimaryTextDark = Color(0xFFF0F1F3);
+  static const Color desktopSecondaryTextLight = Color(0xFF98A0B1);
+  static const Color desktopSecondaryTextDark = Color(0xB2FFFFFF);
+  static const Color desktopSeparatorLight = Color(0xFFEDEDED);
+  static const Color desktopSeparatorDark = Color(0xFF333030);
+  static const Color desktopBorderLight = Color(0xFFE4E4E4);
+  static const Color desktopBorderDark = Color(0xFF1F1E1E);
+  static const Color desktopShadowLight = Color(0x1F000000);
+  static const Color desktopShadowDark = Color(0x1FFFFFFF);
+  static const Color desktopSecondary = Color(0xFF0D1F44);
+  static const List<Color> desktopPrimaryColors = [
+    Color(0xFF00B7B8),
+    Color(0xFF58419C),
+    Color(0xFF3FC0F3),
+    Color(0xFFFEB8D5),
+    Color(0xFFA77D60),
+    Color(0xFFEF5743),
+    Color(0xFFF2A384),
+    Color(0xFFFFBE21),
+  ];
 }
 
 class ContactInitialsColors {

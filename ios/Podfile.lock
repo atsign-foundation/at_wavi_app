@@ -74,7 +74,9 @@ PODS:
   - FMDB/standard (2.7.5)
   - geocoder (0.0.1):
     - Flutter
-  - geolocator_apple (1.0.0):
+  - geolocator_apple (1.2.0):
+    - Flutter
+  - just_audio (0.0.1):
     - Flutter
   - just_audio (0.0.1):
     - Flutter
@@ -105,12 +107,16 @@ PODS:
     - SDWebImage/Core (~> 5.10)
   - share (0.0.1):
     - Flutter
+  - shared_preferences (0.0.1):
+    - Flutter
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
   - SwiftyGif (5.4.0)
   - Toast (4.0.0)
   - url_launcher (0.0.1):
+    - Flutter
+  - video_compress (0.3.0):
     - Flutter
   - video_player (0.0.1):
     - Flutter
@@ -142,8 +148,10 @@ DEPENDENCIES:
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - receive_sharing_intent (from `.symlinks/plugins/receive_sharing_intent/ios`)
   - share (from `.symlinks/plugins/share/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+  - video_compress (from `.symlinks/plugins/video_compress/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
@@ -206,10 +214,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/receive_sharing_intent/ios"
   share:
     :path: ".symlinks/plugins/share/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
+  video_compress:
+    :path: ".symlinks/plugins/video_compress/ios"
   video_player:
     :path: ".symlinks/plugins/video_player/ios"
   wakelock:
@@ -237,7 +249,7 @@ SPEC CHECKSUMS:
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geocoder: 3cfab70531a0b367e917bafe82df4c30f6d4c45a
-  geolocator_apple: 60a1c3f5930c090d2f5164ba8bf25f4f89121e3c
+  geolocator_apple: b741765c55dc21950e3e106e8b3584e55cf81ce5
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
   libwebp: e90b9c01d99205d03b6bb8f2c8c415e5a4ef66f0
   Mantle: 4c0ed6ce47c96eccc4dc3bb071deb3def0e2c3be
@@ -248,14 +260,16 @@ SPEC CHECKSUMS:
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
+  video_compress: fce97e4fb1dfd88175aa07d2ffc8a2f297f87fbe
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   webview_flutter: 3603125dfd3bcbc9d8d418c3f80aeecf331c068b
 
 PODFILE CHECKSUM: a75497545d4391e2d394c3668e20cfb1c2bbd4aa
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
