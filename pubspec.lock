@@ -165,13 +165,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.6"
-  audio_video_progress_bar:
-    dependency: transitive
-    description:
-      name: audio_video_progress_bar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.9.0"
   biometric_storage:
     dependency: transitive
     description:
@@ -291,20 +284,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
-  dart_vlc:
-    dependency: "direct main"
-    description:
-      name: dart_vlc
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.8"
-  dart_vlc_ffi:
-    dependency: transitive
-    description:
-      name: dart_vlc_ffi
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.5"
   desktop_window:
     dependency: "direct main"
     description:
