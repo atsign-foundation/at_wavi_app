@@ -1,8 +1,8 @@
 import 'dart:typed_data';
+import 'package:at_location_flutter/utils/constants/colors.dart';
 import 'package:file_picker/file_picker.dart';
-import 'dart:io';
-
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class ImagePicker {
   ImagePicker._();
@@ -16,10 +16,28 @@ class ImagePicker {
         .pickFiles(type: FileType.image, allowMultiple: false);
     if (result != null) {
       for (var pickedFile in result.files) {
-        var path = pickedFile.path;
-        var file = File(path);
+        // var path = pickedFile.path;
+        // var file = File(path);
+
+        var _cropped = await ImageCropper.cropImage(
+            sourcePath: pickedFile.path,
+            aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+            compressQuality: 100,
+            maxHeight: 700,
+            maxWidth: 700,
+            compressFormat: ImageCompressFormat.jpg,
+            androidUiSettings: AndroidUiSettings(
+                toolbarColor: AllColors().WHITE,
+                toolbarTitle: 'Cropper',
+                statusBarColor: AllColors().DARK_GREY,
+                backgroundColor: AllColors().WHITE));
+
+        if (_cropped == null) {
+          return null;
+        }
+
         var compressedFile = await FlutterImageCompress.compressWithFile(
-          file.absolute.path,
+          _cropped.path,
           minWidth: 400,
           minHeight: 200,
         );
