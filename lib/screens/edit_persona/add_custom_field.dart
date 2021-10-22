@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:at_common_flutter/at_common_flutter.dart';
 import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/screens/edit_persona/html_editor_screen.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/image_picker.dart';
@@ -43,6 +44,8 @@ class _AddCustomFieldState extends State<AddCustomField> {
   var contentDropDown = CustomContentType.values;
   CustomContentType _fieldType = CustomContentType.Text;
   final _formKey = GlobalKey<FormState>();
+
+  Key _htmlEditorKey = UniqueKey(); // to re-render the html editor
 
   @override
   void initState() {
@@ -170,22 +173,45 @@ class _AddCustomFieldState extends State<AddCustomField> {
                             : 0,
                       ),
                       _fieldType == CustomContentType.Html
-                          ? HtmlEditor(
-                              controller: controller, //required
-                              htmlEditorOptions: HtmlEditorOptions(
-                                hint: "Your text here...",
-                                initialText: basicData.valueDescription,
-                                shouldEnsureVisible: true,
+                          ? InkWell(
+                              onTap: () async {
+                                var value = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HtmlEditorScreen(
+                                            initialText:
+                                                basicData.valueDescription,
+                                          )),
+                                );
+                                setState(() {
+                                  _htmlEditorKey =
+                                      UniqueKey(); // to re-render the html editor
+                                  basicData.valueDescription = value;
+                                });
+                              },
+                              child: AbsorbPointer(
+                                child: HtmlEditor(
+                                  key: _htmlEditorKey,
+                                  controller: controller, //required
+                                  htmlToolbarOptions: HtmlToolbarOptions(
+                                      // toolbarType: ToolbarType.nativeGrid,
+                                      ),
+                                  htmlEditorOptions: HtmlEditorOptions(
+                                    hint: "Your text here...",
+                                    initialText: basicData.valueDescription,
+                                    shouldEnsureVisible: true,
+                                  ),
+                                  otherOptions: OtherOptions(
+                                    height: 200,
+                                  ),
+                                  callbacks: Callbacks(
+                                      onBeforeCommand: (String? currentHtml) {},
+                                      onChangeContent: (String? changed) {
+                                        // print('content changed to $changed');
+                                        basicData.valueDescription = changed;
+                                      }),
+                                ),
                               ),
-                              otherOptions: OtherOptions(
-                                height: 300,
-                              ),
-                              callbacks: Callbacks(
-                                  onBeforeCommand: (String? currentHtml) {},
-                                  onChangeContent: (String? changed) {
-                                    // print('content changed to $changed');
-                                    basicData.valueDescription = changed;
-                                  }),
                             )
                           : TextFormField(
                               autovalidateMode:
