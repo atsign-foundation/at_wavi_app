@@ -120,8 +120,11 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
   }
 
   void _showTutorial() async {
-    await Future.delayed(Duration(seconds: 1));
-    _showTutorialDialog();
+    final isFirstTimeOpen = await SharedPreferencesUtils.isFirstTimeOpen();
+    if (isFirstTimeOpen) {
+      _showTutorialDialog();
+    }
+    await SharedPreferencesUtils.setFirstTimeOpen(isFirstTime: false);
   }
 
   @override

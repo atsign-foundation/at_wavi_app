@@ -1,9 +1,14 @@
+import 'package:at_client/at_client.dart';
 import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
+import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/images.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DesktopProfileInfoPage extends StatefulWidget {
   final String? atSign;
@@ -23,6 +28,21 @@ class DesktopProfileInfoPage extends StatefulWidget {
 
 class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   bool isMyProfile = true;
+  late User _currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    if (!isMyProfile) {
+      _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
+    } else if (Provider.of<UserProvider>(context, listen: false).user != null) {
+      _currentUser = Provider.of<UserProvider>(context, listen: false).user!;
+    } else {
+      _currentUser = User(
+        atsign: AtClientManager.getInstance().atClient.getCurrentAtSign(),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +113,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                   height: 8,
                 ),
                 Text(
-                  'Lauren London',
+                  _currentUser.firstname.value.toString() ?? '',
                   style: TextStyle(
                     fontSize: 24,
                     color: appTheme.primaryTextColor,
@@ -104,7 +124,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                   height: 12,
                 ),
                 Text(
-                  '@laurenlondon',
+                  _currentUser.atsign ?? '',
                   style: TextStyle(
                     fontSize: 18,
                     color: appTheme.primaryColor,
