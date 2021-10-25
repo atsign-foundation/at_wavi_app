@@ -50,6 +50,7 @@ dependencies:
   validators: ^3.0.0
   at_follows_flutter: ^3.0.0
   latlong2: ^0.8.0
+  image_cropper: ^1.4.1
   at_location_flutter: ^3.0.0
 
   html_editor_enhanced: ^2.3.0
