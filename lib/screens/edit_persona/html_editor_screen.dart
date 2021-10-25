@@ -21,24 +21,24 @@ class _HtmlEditorScreenState extends State<HtmlEditorScreen> {
         Navigator.pop(context, _value);
         return true;
       },
-      child: SafeArea(
-        child: Scaffold(
-          bottomSheet: InkWell(
-            onTap: () {
-              Navigator.pop(context, _value);
-            },
-            child: Container(
-                alignment: Alignment.center,
-                height: 70.toHeight,
-                width: SizeConfig().screenWidth,
-                color: ColorConstants.black,
-                child: Text(
-                  'Done',
-                  style: CustomTextStyles.customTextStyle(ColorConstants.white,
-                      size: 18),
-                )),
-          ),
-          body: HtmlEditor(
+      child: Scaffold(
+        bottomSheet: InkWell(
+          onTap: () {
+            Navigator.pop(context, _value);
+          },
+          child: Container(
+              alignment: Alignment.center,
+              height: 70.toHeight,
+              width: SizeConfig().screenWidth,
+              color: ColorConstants.black,
+              child: Text(
+                'Done',
+                style: CustomTextStyles.customTextStyle(ColorConstants.white,
+                    size: 18),
+              )),
+        ),
+        body: SafeArea(
+          child: HtmlEditor(
             controller: HtmlEditorController(),
             htmlToolbarOptions: HtmlToolbarOptions(
               toolbarType: ToolbarType.nativeGrid,
