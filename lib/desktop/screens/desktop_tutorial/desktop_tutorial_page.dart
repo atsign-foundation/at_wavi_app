@@ -78,7 +78,7 @@ class _DesktopTutorialPageState extends State<DesktopTutorialPage> {
                     child: DesktopTutorialInfoWidget(
                       atSign: '',
                       icon: 'assets/images/info3.png',
-                      description: Strings.desktop_find_more_privacy,
+                      description: Strings.desktop_search_user,
                       onNext: () {
                         setState(() {
                           _tutorialCase = TutorialCase.notification;
@@ -105,7 +105,7 @@ class _DesktopTutorialPageState extends State<DesktopTutorialPage> {
                     child: DesktopTutorialInfoWidget(
                       atSign: '',
                       icon: 'assets/images/info3.png',
-                      description: Strings.desktop_find_more_privacy,
+                      description: Strings.desktop_see_update,
                       onNext: () {
                         setState(() {
                           _tutorialCase = TutorialCase.menu;
@@ -129,7 +129,8 @@ class _DesktopTutorialPageState extends State<DesktopTutorialPage> {
                       iconColor: appTheme.primaryTextColor,
                       backgroundColor: appTheme.secondaryBackgroundColor,
                     ),
-                    child: DesktopTutorialInfoWidget(
+                    child: 
+                    DesktopTutorialInfoWidget(
                       atSign: '',
                       icon: 'assets/images/info3.png',
                       description: Strings.desktop_find_more_privacy,
@@ -144,6 +145,7 @@ class _DesktopTutorialPageState extends State<DesktopTutorialPage> {
                     ),
                   ),
                 ),
+                
               ),
               Positioned(
                 top: 124,
@@ -160,7 +162,7 @@ class _DesktopTutorialPageState extends State<DesktopTutorialPage> {
                     child: DesktopTutorialInfoWidget(
                       atSign: '',
                       icon: 'assets/images/info3.png',
-                      description: Strings.desktop_find_more_privacy,
+                      description: Strings.desktop_edit_feature,
                       onNext: () {
                         Navigator.of(context).pop();
                       },

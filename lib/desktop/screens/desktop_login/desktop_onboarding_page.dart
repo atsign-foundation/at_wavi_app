@@ -231,6 +231,7 @@ class _DesktopOnBoardingPageState extends State<DesktopOnBoardingPage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            
             SizedBox(
               height: 8,
             ),

@@ -17,11 +17,11 @@ class AddLink extends StatefulWidget {
 class _AddLinkState extends State<AddLink> {
   late String _linkValue;
   List<String> _sections = [
-    'Basic Details',
-    'Additional Details',
+    'Contact',
+    'About',
     'Location',
-    'Social Channel',
-    'Game Channel',
+    'Social',
+    'Gaming',
     'Featured Content'
   ];
 
@@ -29,15 +29,15 @@ class _AddLinkState extends State<AddLink> {
 
   AtCategory _getCategory() {
     switch (_selectedValue) {
-      case 'Basic Details':
+      case 'Contact':
         return AtCategory.DETAILS;
-      case 'Additional Details':
+      case 'About':
         return AtCategory.ADDITIONAL_DETAILS;
       case 'Location':
         return AtCategory.LOCATION;
-      case 'Social Channel':
+      case 'Social':
         return AtCategory.SOCIAL;
-      case 'Game Channel':
+      case 'Gaming':
         return AtCategory.GAMER;
       case 'Featured Content':
         return AtCategory.FEATURED;

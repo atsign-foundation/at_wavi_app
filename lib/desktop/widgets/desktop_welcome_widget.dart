@@ -3,7 +3,8 @@ import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/material.dart';
 
 class DesktopWelcomeWidget extends StatelessWidget {
-  const DesktopWelcomeWidget({Key? key}) : super(key: key);
+  final String? titlePage;
+  const DesktopWelcomeWidget({Key? key, this.titlePage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class DesktopWelcomeWidget extends StatelessWidget {
                   color: appTheme.primaryTextColor,
                 ),
               ),
+              //note
               SizedBox(width: 16),
               Container(
                 padding: EdgeInsets.only(bottom: 7),
@@ -39,7 +41,8 @@ class DesktopWelcomeWidget extends StatelessWidget {
           ),
           SizedBox(height: 8),
           Text(
-            'Please fill-in the necessary details to start using.',
+
+            titlePage ??'Please fill-in the necessary details to start using.',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,

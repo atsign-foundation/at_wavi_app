@@ -23,7 +23,7 @@ class DesktopEmptyCategoryWidget extends StatelessWidget {
       ),
       title: atCategory.title,
       description: atCategory.description,
-      buttonTitle: 'Add Details',
+      buttonTitle: atCategory.titleButton,
       onButtonPressed: onAddDetailsPressed,
     );
   }
@@ -46,19 +46,51 @@ extension AtCategoryExt on AtCategory {
         return Images.introBasicDetail;
     }
   }
+    String get titleButton {
+    switch (this) {
+      case AtCategory.DETAILS:
+        return 'Add Contact Details';
+      case AtCategory.ADDITIONAL_DETAILS:
+        return 'Add About Info';
+      case AtCategory.LOCATION:
+        return 'Add your Location details';
+      case AtCategory.SOCIAL:
+        return 'Add Social';
+      case AtCategory.GAMER:
+        return 'Add Gaming';
+      default:
+        return '';
+    }
+  }
 
   String get title {
     switch (this) {
       case AtCategory.DETAILS:
-        return 'Add your Basic details';
+        return 'Start with your contact details';
       case AtCategory.ADDITIONAL_DETAILS:
-        return 'Add your Additional details';
+        return 'Add your about info';
       case AtCategory.LOCATION:
         return 'Add your Location details';
       case AtCategory.SOCIAL:
         return 'Add your Social Channel';
       case AtCategory.GAMER:
-        return 'Add your Game channels';
+        return 'Add your gaming info';
+      default:
+        return '';
+    }
+  }
+    String get titlePage {
+    switch (this) {
+      case AtCategory.DETAILS:
+        return ' Let’s create your @wavi';
+      case AtCategory.ADDITIONAL_DETAILS:
+        return 'Let’s add to your @wavi';
+      case AtCategory.LOCATION:
+        return 'Add your Location details';
+      case AtCategory.SOCIAL:
+        return 'Let’s add to your @wavi';
+      case AtCategory.GAMER:
+        return 'Let’s add to your @wavi';
       default:
         return '';
     }
@@ -67,15 +99,15 @@ extension AtCategoryExt on AtCategory {
   String get description {
     switch (this) {
       case AtCategory.DETAILS:
-        return 'Add basic details to start sharing your profile with others.';
+        return 'Remember, this information will be public, unless you select “Hide.”';
       case AtCategory.ADDITIONAL_DETAILS:
-        return 'Add additional details to start sharing your profile with others.';
+        return 'Add more about you to your @wavi.';
       case AtCategory.LOCATION:
         return 'Add location details to start sharing your profile with others.';
       case AtCategory.SOCIAL:
-        return 'Add Social details to start sharing your profile with others.';
+        return 'Display your social links on your @wavi.';
       case AtCategory.GAMER:
-        return 'Add Game channels to start sharing your profile with others.';
+        return 'Display your gaming links on your @wavi.';
       default:
         return '';
     }

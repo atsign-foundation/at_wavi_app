@@ -156,7 +156,7 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
               ],
             ),
           ),
-          SizedBox(),
+         // SizedBox(),
           _buildFooterWidget(),
         ],
       ),
@@ -169,15 +169,15 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          Strings.desktop_wavi,
-          style: TextStyle(
-            fontSize: 16,
-            color: appTheme.primaryTextColor,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        SizedBox(height: 4),
+        // Text(
+        //   Strings.desktop_wavi,
+        //   style: TextStyle(
+        //     fontSize: 16,
+        //     color: appTheme.primaryTextColor,
+        //     fontWeight: FontWeight.w400,
+        //   ),
+        // ),
+        // SizedBox(height: 4),
         Text(
           Strings.desktop_company_copyrights,
           style: TextStyle(

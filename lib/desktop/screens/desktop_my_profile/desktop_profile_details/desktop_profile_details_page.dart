@@ -157,12 +157,12 @@ class _DesktopProfileDetailsPageState extends State<DesktopProfileDetailsPage>
     switch (field) {
       case 'Media':
         return desktopMediaPage;
-      case 'Basic Details':
+      case 'Contact':
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.DETAILS,
           hideMenu: true,
         );
-      case 'Additional Details':
+      case 'About':
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.ADDITIONAL_DETAILS,
           hideMenu: true,
