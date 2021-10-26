@@ -23,11 +23,11 @@ class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
           SizedBox(height: 60),
           DesktopSettingSwitchWidget(
             prefixIcon: Icons.lock_rounded,
-            title: "Private Account",
+            title: "Make all information private",
           ),
           DesktopSettingSwitchWidget(
             prefixIcon: Icons.remove_red_eye_rounded,
-            title: "Searchable Account",
+            title: "Exclude your @wavi from search results",
           ),
           DesktopSettingWidget(
             prefixIcon: Icons.south_west_rounded,
