@@ -58,7 +58,7 @@ class _HomeDetailsState extends State<HomeDetails> {
             CommonFunctions().isFieldsPresentForCategory(AtCategory.DETAILS,
                     isPreview: widget.isPreview)
                 ? Text(
-                    'Basic Details',
+                    'Contact',
                     style: TextStyles.boldText(
                         _isDark
                             ? _themeData!.primaryColor
@@ -81,7 +81,7 @@ class _HomeDetailsState extends State<HomeDetails> {
             CommonFunctions().isFieldsPresentForCategory(
                     AtCategory.ADDITIONAL_DETAILS,
                     isPreview: widget.isPreview)
-                ? Text('Additional Details',
+                ? Text('About',
                     style: TextStyles.boldText(
                         _isDark
                             ? _themeData!.primaryColor

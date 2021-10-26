@@ -12,7 +12,7 @@ class FieldNames {
   static FieldNames _instance = FieldNames._();
   factory FieldNames() => _instance;
 
-  static const _detailsTabs = ['Media', 'Basic Details', 'Additional Details', 'Location'];
+  static const _detailsTabs = ['Media', 'Contact', 'About', 'Location'];
   static const _channelsTabs = ['Social', 'Game'];
   static const _featuredTabs = ['Twitter', 'Instagram'];
 

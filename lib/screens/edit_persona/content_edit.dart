@@ -35,7 +35,7 @@ class _CotentEditState extends State<CotentEdit> {
       'route': Routes.EDIT_CATEGORY_FIELDS,
     },
     {
-      'heading': 'Additional Details',
+      'heading': 'Additional Detai',
       'category': AtCategory.ADDITIONAL_DETAILS,
       'route': Routes.EDIT_CATEGORY_FIELDS,
     },
