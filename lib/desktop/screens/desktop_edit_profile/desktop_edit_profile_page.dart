@@ -145,8 +145,8 @@ class _DesktopEditProfilePageState extends State<DesktopEditProfilePage> {
               return DesktopProfileBasicInfoPage(atCategory: AtCategory.SOCIAL);
             case DesktopSideMenu.gameChannel:
               return DesktopProfileBasicInfoPage(atCategory: AtCategory.GAMER);
-            case DesktopSideMenu.featuredChannel:
-              return DesktopProfileBasicInfoPage(atCategory: AtCategory.FEATURED);
+            // case DesktopSideMenu.featuredChannel:
+            //   return DesktopProfileBasicInfoPage(atCategory: AtCategory.FEATURED);
             case DesktopSideMenu.appearance:
               return DesktopAppearancePage();
             default:

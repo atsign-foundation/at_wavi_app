@@ -6,7 +6,7 @@ enum DesktopSideMenu {
   location,
   socialChannel,
   gameChannel,
-  featuredChannel,
+  //featuredChannel,
   appearance,
 }
 
@@ -18,17 +18,17 @@ extension DesktopSideMenuExt on DesktopSideMenu {
       case DesktopSideMenu.media:
         return 'Media';
       case DesktopSideMenu.basicDetails:
-        return 'Basic Details';
+        return 'Contact';
       case DesktopSideMenu.additionalDetails:
-        return 'Additional Details';
+        return 'About';
       case DesktopSideMenu.location:
         return 'Location';
       case DesktopSideMenu.socialChannel:
-        return 'Social Channel';
+        return 'Social';
       case DesktopSideMenu.gameChannel:
-        return 'Game Channel';
-      case DesktopSideMenu.featuredChannel:
-        return 'Featured Channel';
+        return 'Gaming';
+      // case DesktopSideMenu.featuredChannel:
+      //   return 'Featured Channel';
       case DesktopSideMenu.appearance:
         return 'Appearance';
       default:

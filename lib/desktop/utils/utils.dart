@@ -50,7 +50,7 @@ String getTitle(String title) {
     case 'email':
       return 'Email';
     case 'pronoun':
-      return 'Preferred Pronoun';
+      return 'Preferred Pronouns';
     case 'about':
       return 'About';
     case 'twitter':

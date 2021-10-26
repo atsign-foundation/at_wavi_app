@@ -92,7 +92,9 @@ class _DesktopProfileBasicInfoPageState
     return Column(
       children: [
         SizedBox(height: 64),
-        DesktopWelcomeWidget(),
+        DesktopWelcomeWidget(
+titlePage: widget.atCategory.titlePage,
+        ),
         Expanded(
           child: Container(
             child: Center(
