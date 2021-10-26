@@ -58,7 +58,7 @@ class Strings {
   static const String desktop_follow_user = 'Follow the user to know their details';
   static const String desktop_edit_feature = 'Edit, reorder, or add new content.';
   static const String desktop_find_more_privacy = 'Settings for privacy, search, and more.';
-  static const String desktop_search_user = 'Search For the User Profile\nFast & Easy';
+  static const String desktop_search_user = 'Quickly find people and businesses on @wavi.';
 
   static const String desktop_all_links_in_one = 'Say Hello with @wavi';
   static const String desktop_create_persona = 'Create your very own, free personal microsite.';
