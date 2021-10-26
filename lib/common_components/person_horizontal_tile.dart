@@ -30,7 +30,6 @@ class CustomPersonHorizontalTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     return Container(
       child: Row(
         children: <Widget>[

@@ -1,6 +1,6 @@
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:at_wavi_app/services/size_config.dart';
+import 'package:at_common_flutter/services/size_config.dart';
 
 class ContactInitial extends StatelessWidget {
   final double? size;

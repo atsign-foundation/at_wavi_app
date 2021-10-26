@@ -5,7 +5,7 @@ import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:at_wavi_app/services/size_config.dart';
+import 'package:at_common_flutter/services/size_config.dart';
 import 'package:provider/provider.dart';
 
 class HomeChannels extends StatefulWidget {

@@ -50,8 +50,10 @@ class AtKeyGetService {
       // _setUser(atsign: atsign);
       atsign = atsign ?? BackendService().atClientInstance.getCurrentAtSign();
       var scanKeys = await BackendService().getAtKeys();
+      print('scanKeys : ${scanKeys}');
       // user.allPrivate = true;
       for (var key in scanKeys) {
+        print('key : ${key}');
         await _performLookupAndSetUser(key);
         // if (!result) errorCallBack(false);
 

@@ -3,7 +3,7 @@ import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:at_wavi_app/services/size_config.dart';
+import 'package:at_common_flutter/services/size_config.dart';
 
 class HomeEmptyDetails extends StatefulWidget {
   @override

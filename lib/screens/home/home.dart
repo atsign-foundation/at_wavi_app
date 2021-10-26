@@ -25,7 +25,7 @@ import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/search_service.dart';
-import 'package:at_wavi_app/services/size_config.dart';
+import 'package:at_common_flutter/services/size_config.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -173,7 +173,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     getCurrentUserName();
 
-    SizeConfig().init(context);
     if (_themeData == null) {
       return CircularProgressIndicator();
     } else {

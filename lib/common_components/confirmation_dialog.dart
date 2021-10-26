@@ -1,6 +1,6 @@
 // import 'package:at_common_flutter/at_common_flutter.dart' as CommonFlutter;
 import 'package:at_wavi_app/services/nav_service.dart';
-import 'package:at_wavi_app/services/size_config.dart';
+import 'package:at_common_flutter/services/size_config.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 // import 'package:at_wavi_app/services/size_config.dart' as SizeConfig;
 import 'package:flutter/material.dart';

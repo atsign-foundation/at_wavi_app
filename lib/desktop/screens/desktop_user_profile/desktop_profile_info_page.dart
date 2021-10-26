@@ -1,14 +1,18 @@
 import 'package:at_client/at_client.dart';
+import 'package:at_wavi_app/common_components/switch_at_sign.dart';
 import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/backend_service.dart';
+import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:at_client_mobile/at_client_mobile.dart';
 
 class DesktopProfileInfoPage extends StatefulWidget {
   final String? atSign;
@@ -42,6 +46,8 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
         atsign: AtClientManager.getInstance().atClient.getCurrentAtSign(),
       );
     }
+
+    print('_currentUser : ${_currentUser.atsign}');
   }
 
   @override
@@ -113,7 +119,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                   height: 8,
                 ),
                 Text(
-                  _currentUser.firstname.value.toString() ?? '',
+                  _currentUser.firstname.value ?? '',
                   style: TextStyle(
                     fontSize: 24,
                     color: appTheme.primaryTextColor,

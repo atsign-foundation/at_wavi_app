@@ -1,6 +1,8 @@
+import 'package:at_wavi_app/common_components/switch_at_sign.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:flutter/material.dart';
-
+import 'package:at_client_mobile/at_client_mobile.dart';
 import 'widgets/desktop_setting_switch_widget.dart';
 import 'widgets/desktop_setting_widget.dart';
 
@@ -45,9 +47,22 @@ class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
             prefixIcon: Icons.forum,
             title: "FAQs",
           ),
-          DesktopSettingWidget(
-            prefixIcon: Icons.logout,
-            title: "Switch @sign",
+          InkWell(
+            onTap: () async {
+              var atSignList = await KeychainUtil.getAtsignList();
+
+              await showModalBottomSheet(
+                context: NavService.navKey.currentContext!,
+                backgroundColor: Colors.transparent,
+                builder: (context) => AtSignBottomSheet(
+                  atSignList: atSignList ?? [],
+                ),
+              );
+            },
+            child: DesktopSettingWidget(
+              prefixIcon: Icons.logout,
+              title: "Switch @sign",
+            ),
           ),
         ],
       ),

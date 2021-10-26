@@ -42,7 +42,6 @@ class _FollowingState extends State<Following>
   @override
   Widget build(BuildContext context) {
     print('forSearchedAtsign ${widget.forSearchedAtsign}');
-    // SizeConfig().init(context);
     return Scaffold(
       backgroundColor: widget.themeData.scaffoldBackgroundColor,
       body: SafeArea(

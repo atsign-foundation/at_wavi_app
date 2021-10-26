@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_common_flutter/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ class DesktopLoginLandingPage extends StatefulWidget {
 class _DesktopLoginLandingPageState extends State<DesktopLoginLandingPage> {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     final appTheme = AppTheme.of(context);
     return Scaffold(
       backgroundColor: appTheme.backgroundColor,

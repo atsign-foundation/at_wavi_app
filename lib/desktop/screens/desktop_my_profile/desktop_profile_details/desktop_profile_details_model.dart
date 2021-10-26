@@ -15,11 +15,10 @@ class DesktopProfileDetailsModel extends ChangeNotifier {
   }
 
   void fetchBasicData() {
+    print('fetchBasicData()');
     _fields.clear();
     var fields = <String>[];
-    fields = [
-      ...FieldNames().getFieldList(AtCategory.DETAILS_TAB, isPreview: true)
-    ];
+    fields = [...FieldNames().getFieldList(AtCategory.DETAILS_TAB)];
     updateField(fields);
     notifyListeners();
   }

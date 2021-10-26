@@ -32,30 +32,28 @@ class DesktopProfileFeaturedModel extends ChangeNotifier {
         userPreview.user()?.customFields[AtCategory.SOCIAL.name] ?? [];
 
     var fields = <String>[];
-    fields = [
-      ...FieldNames().getFieldList(AtCategory.SOCIAL, isPreview: true)
-    ];
+    fields = [...FieldNames().getFieldList(AtCategory.SOCIAL)];
 
-    for (int i = 0; i < fields.length; i++) {
-      BasicData basicData = BasicData();
-      bool isCustomField = false;
+    // for (int i = 0; i < fields.length; i++) {
+    //   BasicData basicData = BasicData();
+    //   bool isCustomField = false;
 
-      if (userMap.containsKey(fields[i])) {
-        basicData = userMap[fields[i]];
-        if (basicData.accountName == null) basicData.accountName = fields[i];
-        if (basicData.value == null) basicData.value = '';
-      } else {
-        var index =
-        customFields.indexWhere((el) => el.accountName == fields[i]);
-        if (index != -1) {
-          basicData = customFields[index];
-          isCustomField = true;
-        }
-      }
-      if(basicData.value != null && basicData.value.isNotEmpty){
-        _fields.add(basicData.accountName!);
-      }
-    }
+    //   if (userMap.containsKey(fields[i])) {
+    //     basicData = userMap[fields[i]];
+    //     if (basicData.accountName == null) basicData.accountName = fields[i];
+    //     if (basicData.value == null) basicData.value = '';
+    //   } else {
+    //     var index =
+    //         customFields.indexWhere((el) => el.accountName == fields[i]);
+    //     if (index != -1) {
+    //       basicData = customFields[index];
+    //       isCustomField = true;
+    //     }
+    //   }
+    //   if (basicData.value != null && basicData.value.isNotEmpty) {
+    //     _fields.add(basicData.accountName!);
+    //   }
+    // }
     notifyListeners();
   }
 
