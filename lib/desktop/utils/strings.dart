@@ -33,8 +33,8 @@ class Strings {
   static const String desktop_add_media = 'Add Media';
 
   static const String desktop_media = 'Media';
-  static const String desktop_basic_details = 'Basic Details';
-  static const String desktop_additional_details = 'Additional Details';
+  static const String desktop_basic_details = 'Contact';
+  static const String desktop_additional_details = 'About';
   static const String desktop_location = 'Location';
 
   static const String desktop_social_accounts = 'Social Accounts';

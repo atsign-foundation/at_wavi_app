@@ -30,12 +30,12 @@ class _CotentEditState extends State<CotentEdit> {
       'route': '',
     },
     {
-      'heading': 'Basic Details',
+      'heading': 'Contact',
       'category': AtCategory.DETAILS,
       'route': Routes.EDIT_CATEGORY_FIELDS,
     },
     {
-      'heading': 'Additional Detai',
+      'heading': 'About',
       'category': AtCategory.ADDITIONAL_DETAILS,
       'route': Routes.EDIT_CATEGORY_FIELDS,
     },
@@ -45,12 +45,12 @@ class _CotentEditState extends State<CotentEdit> {
       'route': Routes.LOCATION_WIDGET,
     },
     {
-      'heading': 'Social Channels',
+      'heading': 'Social',
       'category': AtCategory.SOCIAL,
       'route': Routes.EDIT_CATEGORY_FIELDS,
     },
     {
-      'heading': 'Game Channels',
+      'heading': 'Gaming',
       'category': AtCategory.GAMER,
       'route': Routes.EDIT_CATEGORY_FIELDS,
     },
