@@ -18,7 +18,7 @@ class DesktopProfileDetailsModel extends ChangeNotifier {
     _fields.clear();
     var fields = <String>[];
     fields = [
-      ...FieldNames().getFieldList(AtCategory.DETAILS_TAB, isPreview: true)
+      ...FieldNames().getFieldList(AtCategory.DETAILS_TAB, isPreview: false)
     ];
     updateField(fields);
     notifyListeners();

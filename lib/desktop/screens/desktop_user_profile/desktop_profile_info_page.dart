@@ -112,23 +112,24 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                 SizedBox(
                   height: 8,
                 ),
-                Text(
-                  _displayingName(
-                    firstName: _currentUser.firstname.value,
-                    lastName: _currentUser.lastname.value,
-                  ),
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: appTheme.primaryTextColor,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 2,
-                ),
+                // Text(
+                //   _displayingName(
+                //     firstName: _currentUser.firstname.value,
+                //     lastName: _currentUser.lastname.value,
+                //   ),
+                //   style: TextStyle(
+                //     fontSize: 24,
+                //     color: appTheme.primaryTextColor,
+                //     fontWeight: FontWeight.w600,
+                //   ),
+                //   maxLines: 2,
+                // ),
+                _buildNameWidget(),
                 SizedBox(
                   height: 12,
                 ),
                 Text(
-                  _currentUser.atsign ?? '',
+                  _currentUser.atsign,
                   style: TextStyle(
                     fontSize: 18,
                     color: appTheme.primaryColor,
@@ -199,6 +200,43 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
     );
   }
 
+  Widget _buildNameWidget() {
+    final appTheme = AppTheme.of(context);
+    String name = '';
+    if (!isMyProfile) {
+      name = context.select<UserPreview, String>(
+        // Here, we are only interested whether [item] is inside the cart.
+        (userPreview) {
+          return _displayingName(
+            firstName: userPreview.user()?.firstname.value,
+            lastName: userPreview.user()?.lastname.value,
+          );
+        },
+      );
+      // _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
+    } else if (Provider.of<UserProvider>(context, listen: false).user != null) {
+      name = context.select<UserProvider, String>(
+        // Here, we are only interested whether [item] is inside the cart.
+        (userPreview) {
+          return _displayingName(
+            firstName: userPreview.user?.firstname.value,
+            lastName: userPreview.user?.lastname.value,
+          );
+        },
+      );
+      // _currentUser = Provider.of<UserProvider>(context, listen: false).user!;
+    }
+    return Text(
+      name,
+      style: TextStyle(
+        fontSize: 24,
+        color: appTheme.primaryTextColor,
+        fontWeight: FontWeight.w600,
+      ),
+      maxLines: 2,
+    );
+  }
+
   _buildInteractiveItem(String title, String subTitle, AppTheme appTheme) {
     return Row(
       children: [
@@ -239,6 +277,8 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   }
 
   void _openEditProfile() {
+    final user = context.read<UserProvider>().user;
+    Provider.of<UserPreview>(context, listen: false).setUser = user;
     Navigator.pushNamed(context, DesktopRoutes.DESKTOP_EDIT_PROFILE);
   }
 }
