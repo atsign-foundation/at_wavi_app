@@ -113,12 +113,16 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                   height: 8,
                 ),
                 Text(
-                  _currentUser.firstname.value.toString() ?? '',
+                  _displayingName(
+                    firstName: _currentUser.firstname.value,
+                    lastName: _currentUser.lastname.value,
+                  ),
                   style: TextStyle(
                     fontSize: 24,
                     color: appTheme.primaryTextColor,
                     fontWeight: FontWeight.w600,
                   ),
+                  maxLines: 2,
                 ),
                 SizedBox(
                   height: 12,
@@ -219,6 +223,19 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
         SizedBox(width: 40),
       ],
     );
+  }
+
+  String _displayingName({dynamic firstName, dynamic lastName}) {
+    String _name = '';
+    _name = _currentUser.firstname.value ?? '';
+    if (_currentUser.lastname.value != null) {
+      _name = '$_name ${_currentUser.lastname.value}';
+    }
+
+    if (_name.isEmpty) {
+      _name = _currentUser.atsign.replaceFirst('@', '');
+    }
+    return _name;
   }
 
   void _openEditProfile() {
