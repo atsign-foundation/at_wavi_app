@@ -16,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:provider/provider.dart';
 import 'package:html_editor_enhanced/utils/options.dart';
+import 'package:at_wavi_app/common_components/custom_input_field.dart'
+    as customInputField;
 
 class AddCustomField extends StatefulWidget {
   // ValueChanged<BasicData> onSave;
@@ -160,11 +162,41 @@ class _AddCustomFieldState extends State<AddCustomField> {
                       SizedBox(height: 30),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
-                          'Body',
-                          style: TextStyles.lightText(
-                              _themeData!.primaryColor.withOpacity(0.5),
-                              size: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Body',
+                              style: TextStyles.lightText(
+                                  _themeData!.primaryColor.withOpacity(0.5),
+                                  size: 16),
+                            ),
+                            _fieldType == CustomContentType.Html
+                                ? Row(
+                                    children: [
+                                      Tooltip(
+                                        message:
+                                            'Use this to paste html content',
+                                        child: ElevatedButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    _themeData!
+                                                        .scaffoldBackgroundColor),
+                                          ),
+                                          onPressed: _pasteHtml,
+                                          child: Text(
+                                            'Paste html',
+                                            style: TextStyles.lightText(
+                                                _themeData!.primaryColor,
+                                                size: 16),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : SizedBox(),
+                          ],
                         ),
                       ),
                       SizedBox(
@@ -497,6 +529,91 @@ class _AddCustomFieldState extends State<AddCustomField> {
       _fieldType = CustomContentType.Image;
       setState(() {});
     }
+  }
+
+  _pasteHtml() async {
+    String? _value;
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.fromLTRB(10, 20, 5, 10),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
+                  child: Text('Html',
+                      style: TextStyles.lightText(
+                          Theme.of(context).primaryColor.withOpacity(0.5),
+                          size: 16)),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 16.toWidth, vertical: 12.toHeight),
+                  child: customInputField.CustomInputField(
+                    width: double.infinity,
+                    hintText: 'Paste html here',
+                    hintTextColor:
+                        Theme.of(context).primaryColor.withOpacity(0.5),
+                    bgColor: Colors.transparent,
+                    textColor: Theme.of(context).primaryColor,
+                    height: 250,
+                    maxLines: 2,
+                    expands: true,
+                    value: (str) => _value = str,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              _themeData!.scaffoldBackgroundColor),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'Cancel',
+                          style: TextStyles.lightText(_themeData!.primaryColor,
+                              size: 16),
+                        ),
+                      ),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              _themeData!.primaryColor),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _htmlEditorKey =
+                                UniqueKey(); // to re-render the html editor
+                            basicData.valueDescription = _value;
+                          });
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'Done',
+                          style: TextStyles.lightText(
+                              _themeData!.scaffoldBackgroundColor,
+                              size: 16),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   _onSave() {
