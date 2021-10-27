@@ -184,7 +184,11 @@ class _AddCustomFieldState extends State<AddCustomField> {
                                                     _themeData!
                                                         .scaffoldBackgroundColor),
                                           ),
-                                          onPressed: _pasteHtml,
+                                          onPressed: () {
+                                            _pasteHtml(
+                                                basicData.valueDescription ??
+                                                    '');
+                                          },
                                           child: Text(
                                             'Paste html',
                                             style: TextStyles.lightText(
@@ -531,87 +535,111 @@ class _AddCustomFieldState extends State<AddCustomField> {
     }
   }
 
-  _pasteHtml() async {
+  _pasteHtml(String _initialText) async {
     String? _value;
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.fromLTRB(10, 20, 5, 10),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
-                  child: Text('Html',
-                      style: TextStyles.lightText(
+        return StatefulBuilder(builder: (_context, _setDialogState) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.fromLTRB(10, 20, 5, 10),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Html',
+                            style: TextStyles.lightText(
+                                Theme.of(context).primaryColor,
+                                size: 16)),
+                        InkWell(
+                          onTap: () {
+                            _setDialogState(() {
+                              _initialText = '';
+                            });
+                          },
+                          child: Text(
+                            "Clear",
+                            style: CustomTextStyles.customTextStyle(
+                              ColorConstants.red,
+                              size: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 16.toWidth, vertical: 12.toHeight),
+                    child: customInputField.CustomInputField(
+                      width: double.infinity,
+                      hintText: 'Paste html here',
+                      hintTextColor:
                           Theme.of(context).primaryColor.withOpacity(0.5),
-                          size: 16)),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 16.toWidth, vertical: 12.toHeight),
-                  child: customInputField.CustomInputField(
-                    width: double.infinity,
-                    hintText: 'Paste html here',
-                    hintTextColor:
-                        Theme.of(context).primaryColor.withOpacity(0.5),
-                    bgColor: Colors.transparent,
-                    textColor: Theme.of(context).primaryColor,
-                    height: 250,
-                    maxLines: 2,
-                    expands: true,
-                    value: (str) => _value = str,
+                      bgColor: Colors.transparent,
+                      textColor: Theme.of(context).primaryColor,
+                      initialValue: _initialText,
+                      baseOffset: _initialText.length,
+                      height: 250,
+                      maxLines: 2,
+                      expands: true,
+                      value: (str) => _value = str,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              _themeData!.scaffoldBackgroundColor),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                _themeData!.scaffoldBackgroundColor),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            'Cancel',
+                            style: TextStyles.lightText(
+                                _themeData!.primaryColor,
+                                size: 16),
+                          ),
                         ),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(
-                          'Cancel',
-                          style: TextStyles.lightText(_themeData!.primaryColor,
-                              size: 16),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                _themeData!.primaryColor),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _htmlEditorKey =
+                                  UniqueKey(); // to re-render the html editor
+                              basicData.valueDescription = _value;
+                            });
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            'Done',
+                            style: TextStyles.lightText(
+                                _themeData!.scaffoldBackgroundColor,
+                                size: 16),
+                          ),
                         ),
-                      ),
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              _themeData!.primaryColor),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _htmlEditorKey =
-                                UniqueKey(); // to re-render the html editor
-                            basicData.valueDescription = _value;
-                          });
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(
-                          'Done',
-                          style: TextStyles.lightText(
-                              _themeData!.scaffoldBackgroundColor,
-                              size: 16),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
+          );
+        });
       },
     );
   }
