@@ -181,8 +181,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
                                           style: ButtonStyle(
                                             backgroundColor:
                                                 MaterialStateProperty.all(
-                                                    _themeData!
-                                                        .scaffoldBackgroundColor),
+                                                    _themeData!.primaryColor),
                                           ),
                                           onPressed: () {
                                             _pasteHtml(
@@ -192,7 +191,8 @@ class _AddCustomFieldState extends State<AddCustomField> {
                                           child: Text(
                                             'Paste html',
                                             style: TextStyles.lightText(
-                                                _themeData!.primaryColor,
+                                                _themeData!
+                                                    .scaffoldBackgroundColor,
                                                 size: 16),
                                           ),
                                         ),
