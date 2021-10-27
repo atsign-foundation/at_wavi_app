@@ -175,7 +175,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                   expands: false,
                   maxLines: 1,
                   value: (str) => setState(() {
-                    _data.accountName = str.trim();
+                    _data.accountName = str;
                   }),
                 ),
               ),
