@@ -22,7 +22,8 @@ enum FieldsEnum {
   PS4,
   XBOX,
   STEAM,
-  DISCORD
+  DISCORD,
+  HTMLTOASTVIEW,
 }
 
 extension FieldsEnumValues on FieldsEnum {
@@ -67,6 +68,8 @@ extension FieldsEnumValues on FieldsEnum {
       case FieldsEnum.STEAM:
         return 'STEAM (PC)';
       case FieldsEnum.DISCORD:
+        return 'DISCORD';
+      case FieldsEnum.HTMLTOASTVIEW:
         return 'DISCORD';
       default:
         return '';

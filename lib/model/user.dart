@@ -28,6 +28,7 @@ class User {
   BasicData xbox;
   BasicData steam;
   BasicData discord;
+  BasicData htmlToastView;
   Map<String, List<BasicData>> customFields;
 
   User(
@@ -53,6 +54,7 @@ class User {
       xbox,
       steam,
       discord,
+      htmlToastView,
       customFields})
       : this.allPrivate = allPrivate,
         this.atsign = atsign,
@@ -76,6 +78,7 @@ class User {
         this.xbox = xbox ?? BasicData(),
         this.steam = steam ?? BasicData(),
         this.discord = discord ?? BasicData(),
+        this.htmlToastView = htmlToastView ?? BasicData(),
         this.customFields = customFields ?? {};
 
   static Map<dynamic, dynamic> toJson(User? user) {
@@ -102,6 +105,7 @@ class User {
       FieldsEnum.XBOX.name: user?.xbox,
       FieldsEnum.STEAM.name: user?.steam,
       FieldsEnum.DISCORD.name: user?.discord,
+      FieldsEnum.HTMLTOASTVIEW.name: user?.htmlToastView,
       'customFields': user?.customFields
     };
   }
@@ -159,6 +163,8 @@ class User {
         steam: BasicData.fromJson(json.decode(userMap[FieldsEnum.STEAM.name])),
         discord:
             BasicData.fromJson(json.decode(userMap[FieldsEnum.DISCORD.name])),
+        htmlToastView: BasicData.fromJson(
+            json.decode(userMap[FieldsEnum.HTMLTOASTVIEW.name])),
         customFields: customFields,
       );
     } catch (e) {

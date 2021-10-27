@@ -288,6 +288,9 @@ class AtKeyGetService {
       case FieldsEnum.DISCORD:
         user.discord = data;
         break;
+      case FieldsEnum.HTMLTOASTVIEW:
+        user.htmlToastView = data;
+        break;
       default:
         break;
     }
