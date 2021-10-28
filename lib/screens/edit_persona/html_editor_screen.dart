@@ -140,6 +140,13 @@ class _HtmlEditorScreenState extends State<HtmlEditorScreen> {
                                   );
                                   ScaffoldMessenger.of(context)
                                       .clearSnackBars();
+
+                                  _showHtmlToast = false;
+                                  Provider.of<UserProvider>(context,
+                                          listen: false)
+                                      .user
+                                      ?.htmlToastView
+                                      .value = 'false';
                                 },
                                 child: Text(
                                   "Don't show again",
