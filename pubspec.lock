@@ -48,7 +48,7 @@ packages:
     description:
       path: at_client
       ref: desktop-compatible
-      resolved-ref: "4e6f0cfae1315b404cfa27f2fb82b0a11361655e"
+      resolved-ref: "144cad50df8a948b12a80a3d8d3f907c257fc679"
       url: "https://github.com/atsign-foundation/at_client_sdk.git"
     source: git
     version: "3.0.3"
@@ -57,7 +57,7 @@ packages:
     description:
       path: at_client_mobile
       ref: desktop-compatible
-      resolved-ref: "4e6f0cfae1315b404cfa27f2fb82b0a11361655e"
+      resolved-ref: "144cad50df8a948b12a80a3d8d3f907c257fc679"
       url: "https://github.com/atsign-foundation/at_client_sdk.git"
     source: git
     version: "3.0.3"

@@ -33,7 +33,7 @@ class DesktopProfileFeaturedModel extends ChangeNotifier {
 
     var fields = <String>[];
     fields = [
-      ...FieldNames().getFieldList(AtCategory.SOCIAL, isPreview: true)
+      ...FieldNames().getFieldList(AtCategory.SOCIAL, isPreview: false)
     ];
 
     for (int i = 0; i < fields.length; i++) {
