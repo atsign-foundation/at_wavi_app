@@ -204,8 +204,39 @@ class FieldNames {
 
     // saving the new reorder list.
     if (isPreview) {
+      checkForDeletedFieldsFromWavi(fieldOrder, category);
       FieldOrderService().updateField(category, fieldOrder);
     }
     return fieldOrder;
+  }
+
+  checkForDeletedFieldsFromWavi(List<String> fields, AtCategory category) {
+    List<String> fieldsToDelete = [];
+    var userPreview = Provider.of<UserPreview>(
+        NavService.navKey.currentContext!,
+        listen: false);
+    Map<dynamic, dynamic> userMap = User.toJson(userPreview.user());
+    List<BasicData>? customFields =
+        userPreview.user()!.customFields[category.name];
+
+    for (int index = 0; index < fields.length; index++) {
+      BasicData basicData = BasicData();
+
+      if (userMap.containsKey(fields[index])) {
+        basicData = userMap[fields[index]];
+      } else {
+        var i =
+            customFields!.indexWhere((el) => el.accountName == fields[index]);
+        if (i != -1) basicData = customFields[i];
+      }
+
+      if (basicData.accountName == null && basicData.value == null) {
+        fieldsToDelete.add(fields[index]);
+      }
+    }
+
+    fieldsToDelete.forEach((field) {
+      fields.removeWhere((el) => el == field);
+    });
   }
 }

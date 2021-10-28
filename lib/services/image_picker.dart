@@ -20,7 +20,7 @@ class ImagePicker {
         // var file = File(path);
 
         var _cropped = await ImageCropper.cropImage(
-            sourcePath: pickedFile.path,
+            sourcePath: pickedFile.path!,
             aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
             compressQuality: 100,
             maxHeight: 700,

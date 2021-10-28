@@ -24,6 +24,8 @@ class ReorderFields extends StatefulWidget {
 class _ReorderFieldsState extends State<ReorderFields> {
   var fields = <String>[];
   ThemeData? _themeData;
+  late Map<dynamic, dynamic> userMap;
+  List<BasicData>? customFields;
 
   @override
   void initState() {
@@ -31,7 +33,16 @@ class _ReorderFieldsState extends State<ReorderFields> {
     if (FieldOrderService().previewOrders[widget.category.name] != null) {
       fields = [...FieldOrderService().previewOrders[widget.category.name]!];
     }
+    _getUserData();
     super.initState();
+  }
+
+  _getUserData() {
+    userMap =
+        User.toJson(Provider.of<UserPreview>(context, listen: false).user());
+    customFields = Provider.of<UserPreview>(context, listen: false)
+        .user()!
+        .customFields[widget.category.name];
   }
 
   _getThemeData() async {
@@ -126,36 +137,34 @@ class _ReorderFieldsState extends State<ReorderFields> {
     var reorderList = <ListTile>[];
 
     for (int index = 0; index < fields.length; index++) {
-      reorderList.add(ListTile(
-        contentPadding: EdgeInsets.all(0),
-        key: Key('$index'),
-        title: reorderTitle(fields[index]),
-      ));
+      BasicData basicData = BasicData();
+
+      if (userMap.containsKey(fields[index])) {
+        basicData = userMap[fields[index]];
+      } else {
+        var i =
+            customFields!.indexWhere((el) => el.accountName == fields[index]);
+        if (i != -1) basicData = customFields![i];
+      }
+
+      if (basicData.value == null) {
+        basicData.value = '';
+      }
+      if (basicData.accountName != null &&
+          basicData.value != null &&
+          !basicData.accountName!.contains(AtText.IS_DELETED)) {
+        reorderList.add(ListTile(
+          contentPadding: EdgeInsets.all(0),
+          key: Key('$index'),
+          title: reorderTitle(fields[index], basicData),
+        ));
+      }
     }
     return reorderList;
   }
 
-  Widget reorderTitle(String field) {
+  Widget reorderTitle(String field, BasicData basicData) {
     var tile = SizedBox();
-    BasicData basicData = BasicData();
-
-    var userMap =
-        User.toJson(Provider.of<UserPreview>(context, listen: false).user());
-    List<BasicData>? customFields =
-        Provider.of<UserPreview>(context, listen: false)
-            .user()!
-            .customFields[widget.category.name];
-
-    if (userMap.containsKey(field)) {
-      basicData = userMap[field];
-    } else {
-      var index = customFields!.indexWhere((el) => el.accountName == field);
-      if (index != -1) basicData = customFields[index];
-    }
-
-    if (basicData.value == null) {
-      basicData.value = '';
-    }
 
     if (basicData.accountName != null &&
         basicData.value != null &&
