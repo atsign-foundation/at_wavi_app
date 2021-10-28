@@ -1,6 +1,7 @@
 import 'package:at_common_flutter/services/size_config.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
-import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/desktop/utils/logger.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:flutter/material.dart';
 
 import 'desktop_onboarding_page.dart';
@@ -18,6 +19,11 @@ class _DesktopLoginLandingPageState extends State<DesktopLoginLandingPage> {
   @override
   void initState() {
     super.initState();
+    setup();
+  }
+
+  void setup() async {
+    logger.d((await path_provider.getApplicationDocumentsDirectory()).path);
   }
 
   @override

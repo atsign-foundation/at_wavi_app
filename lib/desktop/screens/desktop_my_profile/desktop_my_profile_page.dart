@@ -46,6 +46,7 @@ class _DesktopMyProfilePageState extends State<DesktopMyProfilePage> {
                   print('on following pressed');
                   _globalKey.currentState?.openDrawer();
                 },
+                isPreview: false,
                 //Todo
                 // isMyProfile: true,
                 // onClickFollow: (title) {

@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/widgets/buttons/desktop_private_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_show_hide_radio_button.dart';
 import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
@@ -26,20 +27,22 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
   late DesktopEditBasicDetailModel _model;
 
   @override
+  void initState() {
+    super.initState();
+    final userPreview = Provider.of<UserPreview>(context, listen: false);
+    _model = DesktopEditBasicDetailModel(
+      userPreview: userPreview,
+      atCategory: widget.atCategory,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
-    return ChangeNotifierProvider(
-      create: (BuildContext c) {
-        final userPreview = Provider.of<UserPreview>(context);
-        _model = DesktopEditBasicDetailModel(
-          userPreview: userPreview,
-          atCategory: widget.atCategory,
-        );
-        return _model;
-      },
+    return ChangeNotifierProvider.value(
+      value: _model,
       child: Container(
         width: 434,
-        padding: EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: appTheme.backgroundColor,
           borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -48,26 +51,44 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              widget.atCategory.label,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: appTheme.primaryTextColor,
+            SizedBox(height: 24),
+            Container(
+              padding: EdgeInsets.only(left: 24),
+              child: Text(
+                widget.atCategory.label,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: appTheme.primaryTextColor,
+                ),
               ),
             ),
             SizedBox(height: 16),
             _buildContentWidget(),
             SizedBox(height: 16),
-            DesktopShowHideRadioButton(
-              controller: _showHideController,
+            Container(
+              padding: EdgeInsets.only(left: 24),
+              child: DesktopShowHideRadioButton(
+                controller: _showHideController,
+                onChanged: (isPublic) {
+                  if (isPublic) {
+                    _model.saveAllFieldPublic();
+                  } else {
+                    _model.saveAllFieldPrivate();
+                  }
+                },
+              ),
             ),
             SizedBox(height: 16),
-            DesktopButton(
-              title: 'Done',
-              width: double.infinity,
-              onPressed: _onSaveData,
-            )
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: DesktopButton(
+                title: 'Done',
+                width: double.infinity,
+                onPressed: _onSaveData,
+              ),
+            ),
+            SizedBox(height: 24),
           ],
         ),
       ),
@@ -87,9 +108,25 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
               physics: ClampingScrollPhysics(),
               itemBuilder: (c, index) {
                 final data = model.basicData[index];
-                return DesktopTextField(
-                  controller: data.controller ?? TextEditingController(),
-                  title: data.data.accountName ?? '',
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    SizedBox(width: 24),
+                    Expanded(
+                      child: DesktopTextField(
+                        controller: data.controller ?? TextEditingController(),
+                        title: data.data.accountName ?? '',
+                      ),
+                    ),
+                    Container(
+                      width: 48,
+                      height: 48,
+                      child: DesktopPublicButton(
+                        controller: data.publicController,
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                  ],
                 );
               },
               separatorBuilder: (context, index) {

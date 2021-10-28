@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:at_wavi_app/common_components/provider_callback.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_my_profile_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_user_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
@@ -93,7 +94,7 @@ class _DesktopProfileBasicInfoPageState
       children: [
         SizedBox(height: 64),
         DesktopWelcomeWidget(
-titlePage: widget.atCategory.titlePage,
+          titlePage: widget.atCategory.titlePage,
         ),
         Expanded(
           child: Container(
@@ -151,7 +152,7 @@ titlePage: widget.atCategory.titlePage,
                   ),
                   SizedBox(width: 10),
                   DesktopPreviewButton(
-                    onPressed: _showAddDetailPopup,
+                    onPressed: _showUserPreview,
                   ),
                 ],
               ),
@@ -336,6 +337,14 @@ titlePage: widget.atCategory.titlePage,
     if (result == 'saved') {
       _model.fetchBasicData();
     }
+  }
+
+  void _showUserPreview() async {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => DesktopUserProfilePage(),
+      ),
+    );
   }
 
   void _showAddCustomContent() async {

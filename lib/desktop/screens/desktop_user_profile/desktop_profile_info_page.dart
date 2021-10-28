@@ -18,10 +18,12 @@ class DesktopProfileInfoPage extends StatefulWidget {
   final String? atSign;
   final VoidCallback? onFollowerPressed;
   final VoidCallback? onFollowingPressed;
+  final bool isPreview;
 
   DesktopProfileInfoPage({
     Key? key,
     required this.atSign,
+    required this.isPreview,
     this.onFollowerPressed,
     this.onFollowingPressed,
   }) : super(key: key);
@@ -37,6 +39,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   @override
   void initState() {
     super.initState();
+    isMyProfile = !widget.isPreview;
     if (!isMyProfile) {
       _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
     } else if (Provider.of<UserProvider>(context, listen: false).user != null) {
