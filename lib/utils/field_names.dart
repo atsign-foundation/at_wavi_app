@@ -88,6 +88,20 @@ class FieldNames {
     return _gameFieldsEnum;
   }
 
+  getPredefinedFieldList(AtCategory category) {
+    if (category == AtCategory.DETAILS) {
+      return [..._basicDetails];
+    } else if (category == AtCategory.ADDITIONAL_DETAILS) {
+      return [..._additionalDetails];
+    } else if (category == AtCategory.SOCIAL) {
+      return [..._socialAccounts];
+    } else if (category == AtCategory.GAMER) {
+      return [..._gameFields];
+    } else if (category == AtCategory.LOCATION) {
+      return [..._locationFields];
+    }
+  }
+
   List<String> getFieldList(AtCategory category, {bool isPreview = false}) {
     var fields = <String>[];
 
@@ -211,6 +225,7 @@ class FieldNames {
   }
 
   checkForDeletedFieldsFromWavi(List<String> fields, AtCategory category) {
+    List<String> predefinedCategoryFields = getPredefinedFieldList(category);
     List<String> fieldsToDelete = [];
     var userPreview = Provider.of<UserPreview>(
         NavService.navKey.currentContext!,
@@ -230,7 +245,9 @@ class FieldNames {
         if (i != -1) basicData = customFields[i];
       }
 
-      if (basicData.accountName == null && basicData.value == null) {
+      if (basicData.accountName == null &&
+          basicData.value == null &&
+          predefinedCategoryFields.indexOf(fields[index]) == -1) {
         fieldsToDelete.add(fields[index]);
       }
     }
