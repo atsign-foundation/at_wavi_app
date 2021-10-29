@@ -58,7 +58,7 @@ class _HtmlEditorScreenState extends State<HtmlEditorScreen> {
             },
             icon: Icon(Icons.keyboard_arrow_left),
           ),
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: Text('HTML'),
         ),
         bottomSheet: InkWell(
