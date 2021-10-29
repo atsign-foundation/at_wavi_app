@@ -4,6 +4,7 @@ import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
@@ -135,10 +136,18 @@ class _ReorderFieldsState extends State<ReorderFields> {
 
   List<Widget> getRowTitle() {
     var reorderList = <ListTile>[];
+    List<String> predefinedLocationFields =
+        FieldNames().getPredefinedFieldList(AtCategory.LOCATION);
 
     for (int index = 0; index < fields.length; index++) {
-      BasicData basicData = BasicData();
+      if (widget.category == AtCategory.LOCATION) {
+        // skipping location predefined fields
+        if (predefinedLocationFields.indexOf(fields[index]) != -1) {
+          continue;
+        }
+      }
 
+      BasicData basicData = BasicData();
       if (userMap.containsKey(fields[index])) {
         basicData = userMap[fields[index]];
       } else {
@@ -196,18 +205,22 @@ class _ReorderFieldsState extends State<ReorderFields> {
                 ),
               ),
               SizedBox(height: 15),
-              Padding(
-                padding: EdgeInsets.only(left: 10),
-                child: basicData.type == CustomContentType.Image.name
-                    ? Image.memory(basicData.value)
-                    : Text(
-                        basicData.value!,
-                        style: TextStyles.lightText(_themeData!.primaryColor,
-                            size: 18),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-              ),
+              // not showing location field values
+              widget.category == AtCategory.LOCATION
+                  ? SizedBox()
+                  : Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: basicData.type == CustomContentType.Image.name
+                          ? Image.memory(basicData.value)
+                          : Text(
+                              basicData.value!,
+                              style: TextStyles.lightText(
+                                  _themeData!.primaryColor,
+                                  size: 18),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                    ),
               Divider()
             ],
           ),
