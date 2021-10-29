@@ -75,6 +75,9 @@ class _LocationWidgetState extends State<LocationWidget> {
   }
 
   getFieldOrder() {
+    if (FieldOrderService().previewOrders[AtCategory.LOCATION.name] == null) {
+      FieldOrderService().initCategoryFields(AtCategory.LOCATION);
+    }
     fieldOrder = [
       ...FieldNames().getFieldList(AtCategory.LOCATION, isPreview: true)
     ];
@@ -509,7 +512,11 @@ class _LocationWidgetState extends State<LocationWidget> {
                                               context,
                                               listen: false)
                                           .user()!
-                                          .customFields['LOCATION']?[index]
+                                          .customFields['LOCATION']?[index],
+                                      'onSave': () {
+                                        getFieldOrder();
+                                        setState(() {});
+                                      }
                                     });
                                 setState(() {});
                               },
@@ -522,10 +529,10 @@ class _LocationWidgetState extends State<LocationWidget> {
                                     color: _themeData!.scaffoldBackgroundColor,
                                     icon: Icons.delete,
                                     onTap: () {
-                                      _deleteKey(Provider.of<UserProvider>(
+                                      _deleteKey(Provider.of<UserPreview>(
                                               context,
                                               listen: false)
-                                          .user!
+                                          .user()!
                                           .customFields['LOCATION']![index]);
                                     },
                                   ),
@@ -596,7 +603,13 @@ class _LocationWidgetState extends State<LocationWidget> {
                           text: 'Add more location',
                           onTap: () async {
                             await SetupRoutes.push(
-                                context, Routes.CREATE_CUSTOM_LOCATION);
+                                context, Routes.CREATE_CUSTOM_LOCATION,
+                                arguments: {
+                                  'onSave': () {
+                                    getFieldOrder();
+                                    setState(() {});
+                                  },
+                                });
                             setState(() {});
                           },
                         ),
