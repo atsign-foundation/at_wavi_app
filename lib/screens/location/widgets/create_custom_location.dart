@@ -3,14 +3,12 @@ import 'package:at_location_flutter/at_location_flutter.dart';
 import 'package:at_location_flutter/utils/constants/constants.dart';
 import 'package:at_wavi_app/common_components/create_marker.dart';
 import 'package:at_wavi_app/common_components/custom_input_field.dart';
-import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
 import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/location/widgets/select_location.dart';
-import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/compare_basicdata.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
@@ -19,12 +17,13 @@ import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'package:provider/provider.dart';
 
 class CreateCustomLocation extends StatefulWidget {
   final BasicData? basicData;
-  const CreateCustomLocation({Key? key, this.basicData}) : super(key: key);
+  final Function? onSave;
+  const CreateCustomLocation({Key? key, this.basicData, this.onSave})
+      : super(key: key);
 
   @override
   _CreateCustomLocationState createState() => _CreateCustomLocationState();
@@ -92,6 +91,8 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
 
           if (_data.value != null) {
             _updateLocation(_osmLocationModel!);
+            FieldOrderService()
+                .addNewField(AtCategory.LOCATION, _data.accountName!);
           } else {
             _showToast('Enter Location', isError: true);
           }
@@ -368,7 +369,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
         }
       }
     }
-
+    widget.onSave?.call();
     // LoadingDialog().hide();
     Navigator.of(context).pop();
   }

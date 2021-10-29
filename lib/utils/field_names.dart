@@ -88,6 +88,20 @@ class FieldNames {
     return _gameFieldsEnum;
   }
 
+  getPredefinedFieldList(AtCategory category) {
+    if (category == AtCategory.DETAILS) {
+      return [..._basicDetails];
+    } else if (category == AtCategory.ADDITIONAL_DETAILS) {
+      return [..._additionalDetails];
+    } else if (category == AtCategory.SOCIAL) {
+      return [..._socialAccounts];
+    } else if (category == AtCategory.GAMER) {
+      return [..._gameFields];
+    } else if (category == AtCategory.LOCATION) {
+      return [..._locationFields];
+    }
+  }
+
   List<String> getFieldList(AtCategory category, {bool isPreview = false}) {
     var fields = <String>[];
 
@@ -204,8 +218,42 @@ class FieldNames {
 
     // saving the new reorder list.
     if (isPreview) {
+      checkForDeletedFieldsFromWavi(fieldOrder, category);
       FieldOrderService().updateField(category, fieldOrder);
     }
     return fieldOrder;
+  }
+
+  checkForDeletedFieldsFromWavi(List<String> fields, AtCategory category) {
+    List<String> predefinedCategoryFields = getPredefinedFieldList(category);
+    List<String> fieldsToDelete = [];
+    var userPreview = Provider.of<UserPreview>(
+        NavService.navKey.currentContext!,
+        listen: false);
+    Map<dynamic, dynamic> userMap = User.toJson(userPreview.user());
+    List<BasicData>? customFields =
+        userPreview.user()!.customFields[category.name];
+
+    for (int index = 0; index < fields.length; index++) {
+      BasicData basicData = BasicData();
+
+      if (userMap.containsKey(fields[index])) {
+        basicData = userMap[fields[index]];
+      } else {
+        var i =
+            customFields!.indexWhere((el) => el.accountName == fields[index]);
+        if (i != -1) basicData = customFields[i];
+      }
+
+      if (basicData.accountName == null &&
+          basicData.value == null &&
+          predefinedCategoryFields.indexOf(fields[index]) == -1) {
+        fieldsToDelete.add(fields[index]);
+      }
+    }
+
+    fieldsToDelete.forEach((field) {
+      fields.removeWhere((el) => el == field);
+    });
   }
 }

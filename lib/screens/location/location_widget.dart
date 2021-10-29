@@ -13,9 +13,10 @@ import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/location/widgets/select_location.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
-import 'package:at_wavi_app/services/compare_basicdata.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
@@ -24,7 +25,6 @@ import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:geocoder/geocoder.dart';
 import 'package:provider/provider.dart';
 
 class LocationWidget extends StatefulWidget {
@@ -41,10 +41,17 @@ class _LocationWidgetState extends State<LocationWidget> {
   late bool _isPrivate;
   String _locationString = '', _locationNickname = '';
   late Key _mapKey; // in order to update map when needed
+  List<String> fieldOrder = [];
 
   @override
   initState() {
     _getThemeData();
+    if (FieldOrderService().previewOrders[AtCategory.LOCATION.name] == null) {
+      FieldOrderService().initCategoryFields(AtCategory.LOCATION);
+    }
+
+    getFieldOrder();
+
     _mapKey = UniqueKey();
     _isPrivate = false;
 
@@ -65,6 +72,15 @@ class _LocationWidgetState extends State<LocationWidget> {
             .location
             .value);
     super.initState();
+  }
+
+  getFieldOrder() {
+    if (FieldOrderService().previewOrders[AtCategory.LOCATION.name] == null) {
+      FieldOrderService().initCategoryFields(AtCategory.LOCATION);
+    }
+    fieldOrder = [
+      ...FieldNames().getFieldList(AtCategory.LOCATION, isPreview: true)
+    ];
   }
 
   _getThemeData() async {
@@ -222,11 +238,34 @@ class _LocationWidgetState extends State<LocationWidget> {
                             },
                             height: 200.toHeight);
                       },
-                      child: Padding(
-                          padding: EdgeInsets.only(right: 15),
-                          child: _isPrivate
-                              ? Icon(Icons.lock)
-                              : Icon(Icons.public)),
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              SetupRoutes.push(
+                                context,
+                                Routes.REORDER_FIELDS,
+                                arguments: {
+                                  'category': AtCategory.LOCATION,
+                                  'onSave': () {
+                                    getFieldOrder();
+                                    setState(() {});
+                                  }
+                                },
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 10),
+                              child: Icon(Icons.reorder),
+                            ),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(right: 15),
+                              child: _isPrivate
+                                  ? Icon(Icons.lock)
+                                  : Icon(Icons.public)),
+                        ],
+                      ),
                     )
                   ]),
               body: SizedBox(
@@ -440,22 +479,30 @@ class _LocationWidgetState extends State<LocationWidget> {
                         child: ListView.separated(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount:
-                              Provider.of<UserPreview>(context, listen: false)
-                                      .user()!
-                                      .customFields['LOCATION']
-                                      ?.length ??
-                                  0,
+                          itemCount: fieldOrder.length,
                           itemBuilder: (_context, _int) {
-                            if ((Provider.of<UserPreview>(context,
-                                            listen: false)
-                                        .user()!
-                                        .customFields['LOCATION']?[_int]
-                                        .accountName ??
-                                    '')
-                                .contains('_deleted')) {
+                            var customFields =
+                                Provider.of<UserPreview>(context, listen: false)
+                                    .user()!
+                                    .customFields[AtCategory.LOCATION.name];
+
+                            if (customFields == null) {
+                              customFields = [];
+                            }
+
+                            var index = customFields.indexWhere((element) =>
+                                element.accountName == fieldOrder[_int]);
+
+                            if (index == -1) {
                               return SizedBox();
                             }
+
+                            if (customFields[index]
+                                .accountName!
+                                .contains(AtText.IS_DELETED)) {
+                              return SizedBox();
+                            }
+
                             return InkWell(
                               onTap: () async {
                                 await SetupRoutes.push(
@@ -465,7 +512,11 @@ class _LocationWidgetState extends State<LocationWidget> {
                                               context,
                                               listen: false)
                                           .user()!
-                                          .customFields['LOCATION']?[_int]
+                                          .customFields['LOCATION']?[index],
+                                      'onSave': () {
+                                        getFieldOrder();
+                                        setState(() {});
+                                      }
                                     });
                                 setState(() {});
                               },
@@ -478,11 +529,11 @@ class _LocationWidgetState extends State<LocationWidget> {
                                     color: _themeData!.scaffoldBackgroundColor,
                                     icon: Icons.delete,
                                     onTap: () {
-                                      _deleteKey(Provider.of<UserProvider>(
+                                      _deleteKey(Provider.of<UserPreview>(
                                               context,
                                               listen: false)
-                                          .user!
-                                          .customFields['LOCATION']![_int]);
+                                          .user()!
+                                          .customFields['LOCATION']![index]);
                                     },
                                   ),
                                 ],
@@ -497,7 +548,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                                               (Provider.of<UserPreview>(context)
                                                       .user()!
                                                       .customFields['LOCATION']
-                                                          ?[_int]
+                                                          ?[index]
                                                       .accountName ??
                                                   ''),
                                           style: TextStyles.lightText(
@@ -506,7 +557,8 @@ class _LocationWidgetState extends State<LocationWidget> {
                                     ),
                                     Provider.of<UserPreview>(context)
                                                 .user()!
-                                                .customFields['LOCATION']?[_int]
+                                                .customFields['LOCATION']
+                                                    ?[index]
                                                 .isPrivate ??
                                             false
                                         ? Icon(Icons.lock)
@@ -517,15 +569,27 @@ class _LocationWidgetState extends State<LocationWidget> {
                             );
                           },
                           separatorBuilder: (_context, _int) {
-                            if ((Provider.of<UserPreview>(context,
-                                            listen: false)
-                                        .user()!
-                                        .customFields['LOCATION']?[_int]
-                                        .accountName ??
-                                    '')
-                                .contains('_deleted')) {
+                            var customFields =
+                                Provider.of<UserPreview>(context, listen: false)
+                                    .user()!
+                                    .customFields[AtCategory.LOCATION.name];
+                            if (customFields == null) {
+                              customFields = [];
+                            }
+
+                            var index = customFields.indexWhere((element) =>
+                                element.accountName == fieldOrder[_int]);
+
+                            if (index == -1) {
                               return SizedBox();
                             }
+
+                            if (customFields[index]
+                                .accountName!
+                                .contains(AtText.IS_DELETED)) {
+                              return SizedBox();
+                            }
+
                             return Divider();
                           },
                         ),
@@ -539,7 +603,13 @@ class _LocationWidgetState extends State<LocationWidget> {
                           text: 'Add more location',
                           onTap: () async {
                             await SetupRoutes.push(
-                                context, Routes.CREATE_CUSTOM_LOCATION);
+                                context, Routes.CREATE_CUSTOM_LOCATION,
+                                arguments: {
+                                  'onSave': () {
+                                    getFieldOrder();
+                                    setState(() {});
+                                  },
+                                });
                             setState(() {});
                           },
                         ),

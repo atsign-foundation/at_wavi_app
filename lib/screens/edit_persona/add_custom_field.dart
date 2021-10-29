@@ -43,7 +43,14 @@ class _AddCustomFieldState extends State<AddCustomField> {
   BasicData basicData =
       BasicData(isPrivate: false, type: CustomContentType.Text.name);
   bool isImageSelected = false;
-  var contentDropDown = CustomContentType.values;
+  var contentDropDown = [
+    CustomContentType.Text,
+    CustomContentType.Link,
+    CustomContentType.Number,
+    CustomContentType.Image,
+    CustomContentType.Youtube,
+    CustomContentType.Html
+  ];
   CustomContentType _fieldType = CustomContentType.Text;
   final _formKey = GlobalKey<FormState>();
 

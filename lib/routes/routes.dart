@@ -102,7 +102,8 @@ class SetupRoutes {
             (ModalRoute.of(context)!.settings.arguments != null)) {
           Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
               as Map<String, dynamic>;
-          return CreateCustomLocation(basicData: args['basicData']);
+          return CreateCustomLocation(
+              basicData: args['basicData'], onSave: args['onSave']);
         }
 
         return CreateCustomLocation();
