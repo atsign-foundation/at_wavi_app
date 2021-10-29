@@ -34,6 +34,12 @@ class _ReorderFieldsState extends State<ReorderFields> {
     if (FieldOrderService().previewOrders[widget.category.name] != null) {
       fields = [...FieldOrderService().previewOrders[widget.category.name]!];
     }
+    // removing pre defined fields for location category.
+    if (widget.category == AtCategory.LOCATION) {
+      FieldNames().locationFields.forEach((el) {
+        fields.removeWhere((element) => element == el);
+      });
+    }
     _getUserData();
     super.initState();
   }
