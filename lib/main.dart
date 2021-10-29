@@ -20,8 +20,8 @@ void main() {
   runZoned<Future<void>>(() async {
     print(await path_provider.getApplicationDocumentsDirectory());
     if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-      await DesktopWindow.setWindowSize(Size(1366, 768));
-      await DesktopWindow.setMinWindowSize(Size(1200, 700));
+      await DesktopWindow.setWindowSize(Size(1024, 576));
+      await DesktopWindow.setMinWindowSize(Size(1024, 576));
       // DartVLC.initialize();
     }
     // ignore: unawaited_futures
