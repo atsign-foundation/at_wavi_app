@@ -1,13 +1,14 @@
 import 'package:at_client/at_client.dart';
 import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_logo.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/search_service.dart';
-import 'package:at_wavi_app/utils/images.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
@@ -57,152 +58,130 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
     return Container(
       color: appTheme.primaryLighterColor,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          isMyProfile
-              ? Container(
-                  padding: EdgeInsets.only(top: 60),
-                  child: Center(
-                    child: Image.asset(
-                      appTheme.isDark ? Images.logoLight : Images.logoDark,
-                      width: 90,
-                      height: 34,
-                    ),
-                  ),
-                )
-              : GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(24),
-                    child: Text(
-                      Strings.desktop_back,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: appTheme.primaryColor,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'Inter',
-                      ),
-                    ),
-                  ),
-                ),
+          _buildHeader(),
+          SizedBox(height: DesktopDimens.paddingLarge),
           Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                  (_currentUser.image.value != null) ?
-                 Container(
-                    width: 160,
-                  height: 160,
-                   child: ClipRRect(
-                      borderRadius:
-                      BorderRadius.circular(80.0),
-                      child: Image.memory(
-                        _currentUser.image.value,
-                        fit: BoxFit.cover,
-                      ),
+            child: SingleChildScrollView(
+              padding:
+                  EdgeInsets.symmetric(horizontal: DesktopDimens.paddingNormal),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  (_currentUser.image.value != null)
+                      ? Container(
+                          width: 120,
+                          height: 120,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(80.0),
+                            child: Image.memory(
+                              _currentUser.image.value,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          width: 120,
+                          height: 120,
+                          child: Icon(
+                            Icons.account_circle,
+                            size: 120,
+                          ),
+                        ),
+                  SizedBox(height: DesktopDimens.paddingNormal),
+                  _buildNameWidget(),
+                  SizedBox(height: DesktopDimens.paddingSmall),
+                  Text(
+                    _currentUser.atsign,
+                    style: appTheme.textTheme.subtitle1?.copyWith(
+                      color: appTheme.primaryColor,
                     ),
-                 ):
-                Container(
-                  width: 160,
-                  height: 160,
-                  child: Icon(
-                    Icons.account_circle,
-                    size: 160,
                   ),
-                 
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                // Text(
-                //   _displayingName(
-                //     firstName: _currentUser.firstname.value,
-                //     lastName: _currentUser.lastname.value,
-                //   ),
-                //   style: TextStyle(
-                //     fontSize: 24,
-                //     color: appTheme.primaryTextColor,
-                //     fontWeight: FontWeight.w600,
-                //   ),
-                //   maxLines: 2,
-                // ),
-                _buildNameWidget(),
-                SizedBox(
-                  height: 12,
-                ),
-                Text(
-                  _currentUser.atsign,
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: appTheme.primaryColor,
-                    fontWeight: FontWeight.normal,
+                  SizedBox(height: DesktopDimens.paddingLarge),
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: widget.onFollowerPressed,
+                    child: _buildInteractiveItem(
+                        Strings.desktop_followers,
+                        (SearchService().followers_count != null)
+                            ? SearchService().followers_count.toString()
+                            : '${followsCount(isFollowers: true)}',
+                        appTheme),
                   ),
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                GestureDetector(
-                  onTap: widget.onFollowerPressed,
-                  child: _buildInteractiveItem(
-                      Strings.desktop_followers, (SearchService().followers_count!= null)?SearchService().followers_count.toString():'${followsCount(isFollowers: true)}', appTheme),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                GestureDetector(
-                  onTap: widget.onFollowingPressed,
-                  child: _buildInteractiveItem(
-                      Strings.desktop_following, (SearchService().following_count!= null)?SearchService().following_count.toString():'${followsCount()}', appTheme),
-                ),
-                SizedBox(
-                  height: 32,
-                ),
-                isMyProfile
-                    ? Column(
-                        children: [
-                          DesktopButton(
-                            width: 280,
-                            height: 46,
-                            backgroundColor: Colors.transparent,
-                            titleColor: appTheme.primaryColor,
-                            borderColor: appTheme.primaryColor,
-                            title: Strings.desktop_edit_profile,
-                            onPressed: _openEditProfile,
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          DesktopButton(
-                            width: 280,
-                            height: 46,
-                            title: Strings.desktop_share_profile,
-                            backgroundColor: appTheme.primaryColor,
-                            onPressed: () async {},
-                          ),
-                        ],
-                      )
-                    : DesktopButton(
-                        width: 280,
-                        height: 46,
-                        backgroundColor: appTheme.primaryColor,
-                        title: Strings.desktop_follow,
-                        onPressed: () async {},
-                      ),
-                SizedBox(
-                  height: 24,
-                ),
-              ],
+                  SizedBox(height: DesktopDimens.paddingSmall),
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: widget.onFollowingPressed,
+                    child: _buildInteractiveItem(
+                        Strings.desktop_following,
+                        (SearchService().following_count != null)
+                            ? SearchService().following_count.toString()
+                            : '${followsCount()}',
+                        appTheme),
+                  ),
+                  SizedBox(height: DesktopDimens.paddingLarge),
+                  isMyProfile
+                      ? Column(
+                          children: [
+                            DesktopButton(
+                              width: double.infinity,
+                              height: DesktopDimens.buttonHeight,
+                              backgroundColor: Colors.transparent,
+                              titleColor: appTheme.primaryColor,
+                              borderColor: appTheme.primaryColor,
+                              title: Strings.desktop_edit_profile,
+                              onPressed: _openEditProfile,
+                            ),
+                            SizedBox(height: DesktopDimens.paddingNormal),
+                            DesktopButton(
+                              width: double.infinity,
+                              height: DesktopDimens.buttonHeight,
+                              title: Strings.desktop_share_profile,
+                              backgroundColor: appTheme.primaryColor,
+                              onPressed: () async {},
+                            ),
+                          ],
+                        )
+                      : DesktopButton(
+                          width: double.infinity,
+                          height: DesktopDimens.buttonHeight,
+                          backgroundColor: appTheme.primaryColor,
+                          title: Strings.desktop_follow,
+                          onPressed: () async {},
+                        ),
+                ],
+              ),
             ),
-          ),
-          Container(
-            height: 96,
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildHeader() {
+    final appTheme = AppTheme.of(context);
+    return isMyProfile
+        ? Container(
+            padding: EdgeInsets.only(top: DesktopDimens.paddingNormal),
+            child: Center(child: DesktopLogo()),
+          )
+        : GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Container(
+              padding: EdgeInsets.all(24),
+              child: Text(
+                Strings.desktop_back,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: appTheme.primaryColor,
+                  fontWeight: FontWeight.normal,
+                  fontFamily: 'Inter',
+                ),
+              ),
+            ),
+          );
   }
 
   Widget _buildNameWidget() {
@@ -233,9 +212,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
     }
     return Text(
       name,
-      style: TextStyle(
-        fontSize: 24,
-        color: appTheme.primaryTextColor,
+      style: appTheme.textTheme.headline6?.copyWith(
         fontWeight: FontWeight.w600,
       ),
       maxLines: 2,
@@ -245,11 +222,9 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   _buildInteractiveItem(String title, String subTitle, AppTheme appTheme) {
     return Row(
       children: [
-        SizedBox(width: 40),
         Text(
           title,
-          style: TextStyle(
-            fontSize: 16,
+          style: appTheme.textTheme.subtitle2?.copyWith(
             color: appTheme.secondaryTextColor,
             fontWeight: FontWeight.normal,
           ),
@@ -257,13 +232,11 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
         Spacer(),
         Text(
           subTitle,
-          style: TextStyle(
-            fontSize: 18,
+          style: appTheme.textTheme.subtitle1?.copyWith(
             color: appTheme.primaryTextColor,
             fontWeight: FontWeight.w600,
           ),
         ),
-        SizedBox(width: 40),
       ],
     );
   }
@@ -286,7 +259,8 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
     Provider.of<UserPreview>(context, listen: false).setUser = user;
     Navigator.pushNamed(context, DesktopRoutes.DESKTOP_EDIT_PROFILE);
   }
-    String followsCount({bool isFollowers: false}) {
+
+  String followsCount({bool isFollowers: false}) {
     AtFollowsData atFollowsData;
     var followsProvider = Provider.of<FollowService>(
         NavService.navKey.currentContext!,

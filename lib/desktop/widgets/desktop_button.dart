@@ -20,7 +20,7 @@ class DesktopButton extends StatelessWidget {
     this.backgroundColor,
     this.borderColor,
     this.borderRadius = 5,
-    this.textSize = 16,
+    this.textSize = 14,
     this.width = 184,
     this.height = 56,
     this.onPressed,

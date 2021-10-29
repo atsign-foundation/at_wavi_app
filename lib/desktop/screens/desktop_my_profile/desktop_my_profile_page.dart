@@ -2,6 +2,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_follow/de
 import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_settings/desktop_settings_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_profile_info_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'desktop_main_detail_page.dart';
@@ -35,7 +36,7 @@ class _DesktopMyProfilePageState extends State<DesktopMyProfilePage> {
         body: Row(
           children: [
             Container(
-              width: 360,
+              width: DesktopDimens.sideMenuWidth,
               child: DesktopProfileInfoPage(
                 atSign: '',
                 onFollowerPressed: () {
