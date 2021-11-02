@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 
 class User {
   bool allPrivate;
@@ -108,6 +109,71 @@ class User {
       FieldsEnum.HTMLTOASTVIEW.name: user?.htmlToastView,
       'customFields': user?.customFields
     };
+  }
+
+  /// return [true] if [user1], [user2] have same data
+  static bool isEqual(User user1, User user2) {
+    var u1 = User.toJson(user1);
+    var u2 = User.toJson(user2);
+
+    var _result = true;
+
+    // to remove empty customfields, for eg sometimes, we have empty 'IMAGE: []' in userPreview data
+    CustomContentType.values.forEach((_value) {
+      if (u1['customFields'][_value.name.toUpperCase()] == null ||
+          (u1['customFields'][_value.name.toUpperCase()]).length == 0) {
+        (u1['customFields'] as Map).remove(_value.name.toUpperCase());
+      }
+
+      if (u2['customFields'][_value.name.toUpperCase()] == null ||
+          (u2['customFields'][_value.name.toUpperCase()]).length == 0) {
+        (u2['customFields'] as Map).remove(_value.name.toUpperCase());
+      }
+    });
+
+    u1.forEach((key, value) {
+      if (_result) {
+        if (key == FieldsEnum.IMAGE.name) {
+          Function eq = const ListEquality().equals;
+          if (!eq(u1[key].value, u2[key].value)) {
+            _result = false;
+          }
+        }
+
+        if (key != FieldsEnum.IMAGE.name) {
+          if (key == 'customFields') {
+            if (u1[key].length != u2[key].length) {
+              _result = false;
+            } else {
+              var _key1 = u1[key];
+              var _key2 = u2[key];
+
+              if (_key1.toString() != _key2.toString()) {
+                _result = false;
+              }
+            }
+          } else {
+            if ((u1[key] is BasicData) &&
+                (u2[key] is BasicData) &&
+                (u2[key].value != u1[key].value)) {
+              _result = false;
+
+              /// sometimes, values dont match because we have null in some and empty string
+              if ((u1[key].value == null ||
+                      u1[key].value == '' ||
+                      u1[key].value == 'null') &&
+                  (u2[key].value == null ||
+                      u2[key].value == '' ||
+                      u2[key].value == 'null')) {
+                _result = true;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    return _result;
   }
 
   static fromJson(Map<dynamic, dynamic> userMap) {
