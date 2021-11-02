@@ -687,6 +687,13 @@ class _AddCustomFieldState extends State<AddCustomField> {
       basicData.value = basicData.valueDescription;
       basicData.valueDescription = null;
     }
+
+    /// validation needed for html body
+    if (basicData.value == null || basicData.value == '') {
+      CommonFunctions().showSnackBar('Form data not valid');
+      return;
+    }
+
     var index;
     // calculating index of current data
     if (widget.isEdit) {
