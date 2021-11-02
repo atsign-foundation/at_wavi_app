@@ -15,6 +15,29 @@ class SearchService {
   SearchService._();
   static SearchService _instance = SearchService._();
   factory SearchService() => _instance;
+
+  Map<String, SearchInstance> _searchData = {};
+
+  Future<SearchInstance?> getAtsignDetails(String atsign) async {
+    if (_searchData[atsign] != null) {
+      return _searchData[atsign]!;
+    }
+
+    SearchInstance _atsignDetails = SearchInstance();
+    var _user = await _atsignDetails.getAtsignDetails(atsign);
+    if (_user == null) {
+      return null;
+    }
+    _searchData[atsign] = _atsignDetails;
+    return _atsignDetails;
+  }
+
+  SearchInstance? getAlreadySearchedAtsignDetails(String atsign) {
+    return _searchData[atsign];
+  }
+}
+
+class SearchInstance {
   final String url = 'https://wavi.ng/api/?atp=';
 
   User user = User(allPrivate: false, atsign: '');
@@ -44,7 +67,7 @@ class SearchService {
   String new_following_key = 'following_by_self.at_follows.wavi';
   String field_order_key = MixedConstants.fieldOrderKey;
 
-  updateThemeData(_data) {
+  _updateThemeData(_data) {
     if ((_data ?? '').toLowerCase() == 'dark') {
       currentAtsignThemeData = Themes.darkTheme(
           highlightColor: highlightColor ?? ColorConstants.green);
@@ -56,7 +79,7 @@ class SearchService {
     }
   }
 
-  updateHighlightColor(String _color) {
+  _updateHighlightColor(String _color) {
     highlightColor = (_color != null)
         ? ThemeProvider().convertToHighlightColor(_color)
         : ColorConstants.green;
@@ -118,20 +141,20 @@ class SearchService {
           }
 
           if (field.key.contains(themeKey)) {
-            updateThemeData(_keyValuePair[field.key]);
+            _updateThemeData(_keyValuePair[field.key]);
             continue;
           }
 
           if (field.key.contains(themeColorKey)) {
-            updateHighlightColor(_keyValuePair[field.key]);
+            _updateHighlightColor(_keyValuePair[field.key]);
             continue;
           }
 
           if (!keysToIgnore.contains(field.key)) {
             if (field.key.contains('custom_')) {
-              setCustomField(_keyValuePair[field.key], false);
+              _setCustomField(_keyValuePair[field.key], false);
             } else {
-              setDefinedFields(field.key, _keyValuePair[field.key]);
+              _setDefinedFields(field.key, _keyValuePair[field.key]);
             }
           }
         }
@@ -147,7 +170,7 @@ class SearchService {
     }
   }
 
-  void setCustomField(String response, isPrivate) {
+  void _setCustomField(String response, isPrivate) {
     var json = jsonDecode(response);
     if (json != 'null' && json != null) {
       String category = json[CustomFieldConstants.category];
@@ -175,7 +198,7 @@ class SearchService {
     }
   }
 
-  dynamic setDefinedFields(property, value) {
+  dynamic _setDefinedFields(property, value) {
     property = property.toString().replaceAll('.wavi', '');
     // print('property $property');
     var field = valueOf(property);

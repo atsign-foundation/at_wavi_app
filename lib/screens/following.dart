@@ -2,25 +2,36 @@ import 'dart:typed_data';
 
 import 'package:at_common_flutter/at_common_flutter.dart';
 import 'package:at_wavi_app/common_components/header.dart';
+import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
+import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/routes/route_names.dart';
+import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
+import 'package:at_wavi_app/services/common_functions.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/search_service.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Pass [searchedAtsign] if [forSearchedAtsign] is true
 class Following extends StatefulWidget {
   final bool forSearchedAtsign;
   final int tabIndex;
   final ThemeData themeData;
-  Following(
-      {required this.themeData,
-      this.forSearchedAtsign = false,
-      this.tabIndex = 0});
+  final String? searchedAtsign;
+  Following({
+    required this.themeData,
+    this.forSearchedAtsign = false,
+    this.tabIndex = 0,
+    this.searchedAtsign,
+  });
 
   @override
   _FollowingState createState() => _FollowingState();
@@ -66,7 +77,7 @@ class _FollowingState extends State<Following>
                 ),
                 centerWidget: Text(
                   widget.forSearchedAtsign
-                      ? SearchService().user.atsign
+                      ? widget.searchedAtsign!
                       : BackendService().atClientInstance.getCurrentAtSign()!,
                   style: TextStyles.boldText(widget.themeData.primaryColor,
                       size: 18),
@@ -135,7 +146,11 @@ class _FollowingState extends State<Following>
                             _provider.following.list ?? [];
 
                         if (widget.forSearchedAtsign) {
-                          _filteredList = SearchService().following ?? [];
+                          _filteredList = SearchService()
+                                  .getAlreadySearchedAtsignDetails(
+                                      widget.searchedAtsign!)!
+                                  .following ??
+                              [];
                         }
 
                         return Wrap(
@@ -184,35 +199,40 @@ class _FollowingState extends State<Following>
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 8.0),
-                              child: CustomPersonHorizontalTile(
-                                textColor: widget.themeData.primaryColor,
-                                title: name != null ? name : null,
-                                subTitle: _filteredList[index],
-                                trailingWidget: InkWell(
-                                  onTap: () async {
-                                    await Provider.of<FollowService>(context,
-                                            listen: false)
-                                        .performFollowUnfollow(
-                                            _filteredList[index]!);
-                                  },
-                                  child: (!widget.forSearchedAtsign &&
-                                          _provider
-                                              .following
-                                              .atsignListDetails[index]
-                                              .isUnfollowing)
-                                      ? CircularProgressIndicator()
-                                      : Text(
-                                          _isFollowingThisAtsign
-                                              ? 'Unfollow'
-                                              : 'Follow',
-                                          style: TextStyles.lightText(
-                                              _isFollowingThisAtsign
-                                                  ? ColorConstants.orange
-                                                  : ColorConstants.greyText,
-                                              size: 16),
-                                        ),
+                              child: InkWell(
+                                onTap: () {
+                                  _searchProfile(_filteredList[index]!);
+                                },
+                                child: CustomPersonHorizontalTile(
+                                  textColor: widget.themeData.primaryColor,
+                                  title: name != null ? name : null,
+                                  subTitle: _filteredList[index],
+                                  trailingWidget: InkWell(
+                                    onTap: () async {
+                                      await Provider.of<FollowService>(context,
+                                              listen: false)
+                                          .performFollowUnfollow(
+                                              _filteredList[index]!);
+                                    },
+                                    child: (!widget.forSearchedAtsign &&
+                                            _provider
+                                                .following
+                                                .atsignListDetails[index]
+                                                .isUnfollowing)
+                                        ? CircularProgressIndicator()
+                                        : Text(
+                                            _isFollowingThisAtsign
+                                                ? 'Unfollow'
+                                                : 'Follow',
+                                            style: TextStyles.lightText(
+                                                _isFollowingThisAtsign
+                                                    ? ColorConstants.orange
+                                                    : ColorConstants.greyText,
+                                                size: 16),
+                                          ),
+                                  ),
+                                  image: image,
                                 ),
-                                image: image,
                               ),
                             );
                           }),
@@ -230,7 +250,11 @@ class _FollowingState extends State<Following>
                             '_filteredList in following : ${_provider.followers.list}');
 
                         if (widget.forSearchedAtsign) {
-                          _filteredList = SearchService().followers ?? [];
+                          _filteredList = SearchService()
+                                  .getAlreadySearchedAtsignDetails(
+                                      widget.searchedAtsign!)!
+                                  .followers ??
+                              [];
                         }
 
                         return Wrap(
@@ -321,5 +345,68 @@ class _FollowingState extends State<Following>
         ),
       ),
     );
+  }
+
+  _searchProfile(String searchedAtsign) async {
+    LoadingDialog().show(text: 'Fetching $searchedAtsign');
+
+    var _searchedAtsignData =
+        SearchService().getAlreadySearchedAtsignDetails(searchedAtsign);
+
+    late bool _isPresent;
+    if (_searchedAtsignData != null) {
+      _isPresent = true;
+    } else {
+      _isPresent = await CommonFunctions().checkAtsign(searchedAtsign);
+    }
+
+    if (_isPresent) {
+      SearchInstance? _searchService =
+          await SearchService().getAtsignDetails(searchedAtsign);
+      User? _res = _searchService?.user;
+
+      LoadingDialog().hide();
+
+      if (_searchService == null) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: ColorConstants.RED,
+          content: Text(
+            'Something went wrong',
+            style: CustomTextStyles.customTextStyle(
+              ColorConstants.white,
+            ),
+          ),
+        ));
+
+        return;
+      }
+
+      var _previousUser =
+          Provider.of<UserPreview>(context, listen: false).user();
+      var _previousFieldOrder = FieldOrderService().previewOrders;
+
+      Provider.of<UserPreview>(context, listen: false).setUser = _res;
+      FieldOrderService().setPreviewOrder = _searchService.fieldOrders;
+
+      await SetupRoutes.push(context, Routes.HOME, arguments: {
+        'themeData': _searchService.currentAtsignThemeData,
+        'isPreview': true,
+      });
+
+      /// Again sets the previous data
+      Provider.of<UserPreview>(context, listen: false).setUser = _previousUser;
+      FieldOrderService().setPreviewOrder = _previousFieldOrder;
+    } else {
+      LoadingDialog().hide();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: ColorConstants.RED,
+        content: Text(
+          '$searchedAtsign not found',
+          style: CustomTextStyles.customTextStyle(
+            ColorConstants.white,
+          ),
+        ),
+      ));
+    }
   }
 }

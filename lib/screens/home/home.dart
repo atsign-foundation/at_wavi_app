@@ -384,11 +384,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                     SizedBox(height: 25.toHeight),
 
-                    _isSearchScreen && SearchService().isPrivateAccount
+                    _isSearchScreen &&
+                            SearchService()
+                                .getAlreadySearchedAtsignDetails(
+                                    _currentUser.atsign)!
+                                .isPrivateAccount
                         ? HomePrivateAccount(_themeData!)
                         : SizedBox(),
 
-                    _isSearchScreen && SearchService().isPrivateAccount
+                    _isSearchScreen &&
+                            SearchService()
+                                .getAlreadySearchedAtsignDetails(
+                                    _currentUser.atsign)!
+                                .isPrivateAccount
                         ? SizedBox()
                         : Container(
                             height: 70.toHeight,
@@ -434,12 +442,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             ),
                           ),
                     SizedBox(
-                      height:
-                          _isSearchScreen && SearchService().isPrivateAccount
-                              ? 0
-                              : 20.toHeight,
+                      height: _isSearchScreen &&
+                              SearchService()
+                                  .getAlreadySearchedAtsignDetails(
+                                      _currentUser.atsign)!
+                                  .isPrivateAccount
+                          ? 0
+                          : 20.toHeight,
                     ),
-                    _isSearchScreen && SearchService().isPrivateAccount
+                    _isSearchScreen &&
+                            SearchService()
+                                .getAlreadySearchedAtsignDetails(
+                                    _currentUser.atsign)!
+                                .isPrivateAccount
                         ? SizedBox()
                         : Consumer<UserProvider>(
                             builder: (context, _provider, _) {
@@ -607,6 +622,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Routes.FOLLOWING_SCREEN,
                   arguments: {
                     'forSearchedAtsign': _isSearchScreen,
+                    'searchedAtsign':
+                        _isSearchScreen ? _currentUser.atsign : null,
                     'themeData': _themeData,
                   },
                 );
@@ -616,7 +633,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 children: [
                   Text(
                     _isSearchScreen
-                        ? (SearchService().following_count ?? '-').toString()
+                        ? (SearchService()
+                                    .getAlreadySearchedAtsignDetails(
+                                        _currentUser.atsign)!
+                                    .following_count ??
+                                '-')
+                            .toString()
                         : '${followsCount()}',
                     style: TextStyle(
                         fontSize: 18.toFont,
@@ -644,6 +666,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Routes.FOLLOWING_SCREEN,
                   arguments: {
                     'forSearchedAtsign': _isSearchScreen,
+                    'searchedAtsign':
+                        _isSearchScreen ? _currentUser.atsign : null,
                     'tabIndex': 1,
                     'themeData': _themeData,
                   },
@@ -654,7 +678,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 children: [
                   Text(
                     _isSearchScreen
-                        ? (SearchService().followers_count ?? '-').toString()
+                        ? (SearchService()
+                                    .getAlreadySearchedAtsignDetails(
+                                        _currentUser.atsign)!
+                                    .followers_count ??
+                                '-')
+                            .toString()
                         : '${followsCount(isFollowers: true)}',
                     style: TextStyle(
                         fontSize: 18.toFont,
@@ -741,8 +770,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       return;
     }
 
-    bool _isSearchingSameAtsign = SearchService().user.atsign == searchedAtsign;
-
     if (loadingSearchedAtsign) {
       return;
     }
@@ -750,19 +777,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       loadingSearchedAtsign = true;
     });
 
-    bool _isPresent = _isSearchingSameAtsign;
-    if (!_isSearchingSameAtsign) {
+    var _searchedAtsignData =
+        SearchService().getAlreadySearchedAtsignDetails(searchedAtsign);
+
+    late bool _isPresent;
+    if (_searchedAtsignData != null) {
+      _isPresent = true;
+    } else {
       _isPresent = await CommonFunctions().checkAtsign(searchedAtsign);
     }
 
     if (_isPresent) {
-      User? _res = SearchService().user;
+      SearchInstance? _searchService =
+          await SearchService().getAtsignDetails(searchedAtsign);
+      User? _res = _searchService?.user;
 
-      if (!_isSearchingSameAtsign) {
-        _res = await SearchService().getAtsignDetails(searchedAtsign);
-      }
-
-      if (_res == null) {
+      if (_searchService == null) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: ColorConstants.RED,
           content: Text(
@@ -785,10 +815,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       //         listen: false)
       //     .setSearchedUser(_res);
       Provider.of<UserPreview>(context, listen: false).setUser = _res;
-      FieldOrderService().setPreviewOrder = SearchService().fieldOrders;
+      FieldOrderService().setPreviewOrder = _searchService.fieldOrders;
 
       await SetupRoutes.push(context, Routes.HOME, arguments: {
-        'themeData': SearchService().currentAtsignThemeData,
+        'themeData': _searchService.currentAtsignThemeData,
         'isPreview': true,
       });
     } else {
