@@ -12,4 +12,6 @@ class DesktopDimens {
   static const double sideMenuWidth = 270;
 
   static const double buttonHeight = 40;
+  static const double dividerHeight = 1;
+  static const double dialogWidth = 436;
 }

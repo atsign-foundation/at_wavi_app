@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:flutter/material.dart';
 
 class DesktopPublicController extends ValueNotifier<bool> {
@@ -18,11 +19,43 @@ class DesktopPublicButton extends StatelessWidget {
     return PopupMenuButton(
       itemBuilder: (context) => [
         PopupMenuItem(
-          child: Text("Public"),
+          child: SizedBox(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.public_rounded,
+                  size: 18,
+                  color: appTheme.primaryTextColor,
+                ),
+                SizedBox(width: DesktopDimens.paddingSmall),
+                Text(
+                  "Public",
+                  style: appTheme.textTheme.bodyText1,
+                ),
+              ],
+            ),
+          ),
           value: 1,
         ),
         PopupMenuItem(
-          child: Text("Private"),
+          child: SizedBox(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.lock_outline_rounded,
+                  size: 18,
+                  color: appTheme.primaryTextColor,
+                ),
+                SizedBox(width: DesktopDimens.paddingSmall),
+                Text(
+                  "Private",
+                  style: appTheme.textTheme.bodyText1,
+                ),
+              ],
+            ),
+          ),
           value: 2,
         )
       ],
@@ -30,10 +63,19 @@ class DesktopPublicButton extends StatelessWidget {
       child: ValueListenableBuilder(
         valueListenable: controller,
         builder: (BuildContext context, bool value, Widget? child) {
-          return Icon(
-            value ? Icons.public_rounded : Icons.lock_outline_rounded,
-            size: 20,
-            color: appTheme.secondaryTextColor,
+          return Row(
+            children: [
+              Icon(
+                value ? Icons.public_rounded : Icons.lock_outline_rounded,
+                size: 20,
+                color: appTheme.secondaryTextColor,
+              ),
+              Icon(
+                Icons.arrow_drop_down_outlined,
+                size: 32,
+                color: appTheme.secondaryTextColor,
+              ),
+            ],
           );
         },
       ),

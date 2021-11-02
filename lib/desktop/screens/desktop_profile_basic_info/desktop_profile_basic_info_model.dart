@@ -93,4 +93,8 @@ class DesktopBasicDetailModel extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  void deleteData(BasicData basicData) {
+    UserPreview().deletCustomField(atCategory, basicData);
+  }
 }

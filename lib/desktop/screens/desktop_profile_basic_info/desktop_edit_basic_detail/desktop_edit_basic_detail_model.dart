@@ -68,10 +68,12 @@ class DesktopEditBasicDetailModel extends ChangeNotifier {
     for (var data in _basicData) {
       final newBasicData = data.data;
       newBasicData.value = data.controller?.text.trim();
-      newBasicData.isPrivate = !(data.publicController?.value ?? true);
+      newBasicData.isPrivate = !(data.publicController.value);
       await updateDefinedFields(context, newBasicData);
     }
-    Navigator.of(context).pop('saved');
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop('saved');
+    }
   }
 
   void saveAllFieldPublic() {

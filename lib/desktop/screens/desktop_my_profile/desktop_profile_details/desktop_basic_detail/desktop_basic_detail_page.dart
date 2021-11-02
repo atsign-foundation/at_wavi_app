@@ -110,7 +110,10 @@ class _DesktopBasicDetailPageState extends State<DesktopBasicDetailPage>
                                   location: model.fields[index].value as String?,
                                 );
                               } else {
-                                return DesktopBasicInfoWidget(data: model.fields[index]);
+                                return DesktopBasicInfoWidget(
+                                  data: model.fields[index],
+                                  isCustomField: false,
+                                );
                                 // return DesktopBasicItem(
                                 //   data: model.fields[index],
                                 //   onValueChanged: (text) {

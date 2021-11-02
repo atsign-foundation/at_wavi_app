@@ -2,7 +2,9 @@ import 'package:at_wavi_app/desktop/screens/desktop_appearance/desktop_appearanc
 import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_profile_details/desktop_media/desktop_media_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_basic_info_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_logo.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/material.dart';
@@ -69,20 +71,16 @@ class _DesktopEditProfilePageState extends State<DesktopEditProfilePage> {
     return Consumer<DesktopEditProfileModel>(
       builder: (context, provider, child) {
         return Container(
-          width: 360,
+          width: DesktopDimens.sideMenuWidth,
           margin: EdgeInsets.only(right: 1),
           child: Column(
             children: [
               Container(
-                height: 150,
+                height: 120,
                 child: Stack(
                   children: [
                     Center(
-                      child: Image.asset(
-                        appTheme.isDark ? Images.logoLight : Images.logoDark,
-                        width: 89,
-                        height: 33,
-                      ),
+                      child: DesktopLogo(),
                     ),
                     Positioned(
                       top: 10,

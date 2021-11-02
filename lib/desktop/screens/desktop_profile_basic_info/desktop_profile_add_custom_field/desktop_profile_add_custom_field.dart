@@ -2,12 +2,14 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_show_hide_radio_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_video_thumbnail_widget.dart';
 import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
+import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:file_picker/file_picker.dart';
@@ -19,11 +21,15 @@ import 'widgets/desktop_html_editor_page.dart';
 import 'widgets/desktop_html_preview_page.dart';
 
 class DesktopProfileAddCustomField extends StatefulWidget {
+  final AtCategory atCategory;
+  final BasicData? data;
   final bool isOnlyAddImage;
 
   DesktopProfileAddCustomField({
     Key? key,
     this.isOnlyAddImage = false,
+    required this.atCategory,
+    this.data,
   }) : super(key: key);
 
   @override
@@ -31,20 +37,30 @@ class DesktopProfileAddCustomField extends StatefulWidget {
       _DesktopProfileAddCustomFieldState();
 }
 
-class _DesktopProfileAddCustomFieldState extends State<DesktopProfileAddCustomField> {
+class _DesktopProfileAddCustomFieldState
+    extends State<DesktopProfileAddCustomField> {
   late DesktopAddBasicDetailModel _model;
 
-  final _numberContentTextController = TextEditingController();
-  final _htmlContentTextController = TextEditingController();
-
   late var contentDropDown;
+
+  bool _isUpdate = false;
 
   @override
   void initState() {
     contentDropDown = widget.isOnlyAddImage
         ? [CustomContentType.Image]
-        : CustomContentType.values;
+        : [
+            CustomContentType.Text,
+            CustomContentType.Link,
+            CustomContentType.Number,
+            CustomContentType.Image,
+            CustomContentType.Youtube,
+          ];
     super.initState();
+    _isUpdate = widget.data != null;
+    if (widget.data != null) {
+
+    }
   }
 
   @override
@@ -53,15 +69,22 @@ class _DesktopProfileAddCustomFieldState extends State<DesktopProfileAddCustomFi
     return ChangeNotifierProvider(
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
-        _model = DesktopAddBasicDetailModel(userPreview: userPreview);
+        _model = DesktopAddBasicDetailModel(
+          userPreview: userPreview,
+          atCategory: widget.atCategory,
+          originBasicData: widget.data,
+        );
+        _model.valueContentTextController.text = widget.data?.value;
+        _model.titleTextController.text = widget.data?.accountName ?? '';
+        _model.changeField(customContentNameToType(widget.data?.type));
         _model.setIsOnlyAddMedia(widget.isOnlyAddImage);
         return _model;
       },
       child: Consumer<DesktopAddBasicDetailModel>(
         builder: (_, model, child) {
           return Container(
-            width: 434,
-            padding: EdgeInsets.all(24),
+            width: DesktopDimens.dialogWidth,
+            padding: EdgeInsets.all(DesktopDimens.paddingNormal),
             decoration: BoxDecoration(
               color: appTheme.backgroundColor,
               borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -80,7 +103,7 @@ class _DesktopProfileAddCustomFieldState extends State<DesktopProfileAddCustomFi
                     color: appTheme.primaryTextColor,
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: DesktopDimens.paddingNormal),
                 DesktopTextField(
                   title: Strings.desktop_title,
                   controller: model.titleTextController,
@@ -88,11 +111,11 @@ class _DesktopProfileAddCustomFieldState extends State<DesktopProfileAddCustomFi
                 _buildTypeSelectionWidget(model),
                 _buildFieldInputWidget(model),
                 Container(height: 1, color: appTheme.separatorColor),
-                SizedBox(height: 16),
+                SizedBox(height: DesktopDimens.paddingNormal),
                 DesktopShowHideRadioButton(
                   controller: model.showHideController,
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: DesktopDimens.paddingNormal),
                 DesktopButton(
                   title: Strings.desktop_done,
                   width: double.infinity,
@@ -163,19 +186,16 @@ class _DesktopProfileAddCustomFieldState extends State<DesktopProfileAddCustomFi
           );
         } else if (_model.fieldType == CustomContentType.Number) {
           return DesktopTextField(
-            controller: _numberContentTextController,
+            controller: model.valueContentTextController,
             hint: '',
           );
         } else if (model.fieldType == CustomContentType.Image) {
           return Directionality(
             textDirection: TextDirection.ltr,
-            child: Column(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 8,
-                ),
                 DesktopIconLabelButton(
                   iconData: Icons.add,
                   label: Strings.desktop_add_media,
@@ -184,7 +204,7 @@ class _DesktopProfileAddCustomFieldState extends State<DesktopProfileAddCustomFi
                   padding: EdgeInsets.zero,
                 ),
                 SizedBox(
-                  height: 8,
+                  width: DesktopDimens.paddingSmall,
                 ),
                 if (model.basicData!.extension != null)
                   _buildMediaWidget(model.uInt8list!, model.basicData!.value!,
@@ -199,9 +219,9 @@ class _DesktopProfileAddCustomFieldState extends State<DesktopProfileAddCustomFi
           );
         } else if (model.fieldType == CustomContentType.Html) {
           return Container(
-            padding: EdgeInsets.symmetric(vertical: 10),
+            padding: EdgeInsets.symmetric(vertical: DesktopDimens.paddingSmall),
             child: DesktopHtmlEditorPage(
-              textController: _htmlContentTextController,
+              textController: _model.valueContentTextController,
               onPreviewPressed: _openHtmlPreview,
             ),
           );
@@ -216,7 +236,7 @@ class _DesktopProfileAddCustomFieldState extends State<DesktopProfileAddCustomFi
     if (extension == 'jpg' || extension == 'png') {
       return ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: 200.0,
+          maxHeight: 120.0,
         ),
         child: Image.memory(uInt8list),
       );
@@ -242,11 +262,18 @@ class _DesktopProfileAddCustomFieldState extends State<DesktopProfileAddCustomFi
   }
 
   void _onSaveData() {
-    _model.saveData(context);
+    if (_isUpdate) {
+      _model.updateCustomField(context);
+    } else {
+      _model.addCustomField(context);
+    }
   }
 
   void _openHtmlPreview() {
-    final html = _htmlContentTextController.text.trim();
+    final html = _model.valueContentTextController.text.trim();
+    if (html.isEmpty) {
+      return;
+    }
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(

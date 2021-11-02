@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:flutter/material.dart';
 
 class DesktopIconLabelButton extends StatelessWidget {
@@ -20,26 +21,30 @@ class DesktopIconLabelButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
-    return Directionality(
-      textDirection: isPrefixIcon ? TextDirection.ltr : TextDirection.rtl,
-      child: ElevatedButton.icon(
-        onPressed: onPressed,
-        icon: Icon(
-          iconData,
-          color: appTheme.primaryColor,
-        ),
-        label: Text(
-          label,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
+    return Container(
+      height: DesktopDimens.buttonHeight,
+      child: Directionality(
+        textDirection: isPrefixIcon ? TextDirection.ltr : TextDirection.rtl,
+        child: ElevatedButton.icon(
+          onPressed: onPressed,
+          icon: Icon(
+            iconData,
             color: appTheme.primaryColor,
           ),
-        ),
-        style: ButtonStyle(
-          padding: padding == null ? null : MaterialStateProperty.all(padding),
-          backgroundColor: MaterialStateProperty.all(Colors.transparent),
-          elevation: MaterialStateProperty.all(0),
+          label: Text(
+            label,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: appTheme.primaryColor,
+            ),
+          ),
+          style: ButtonStyle(
+            padding:
+                padding == null ? null : MaterialStateProperty.all(padding),
+            backgroundColor: MaterialStateProperty.all(Colors.transparent),
+            elevation: MaterialStateProperty.all(0),
+          ),
         ),
       ),
     );

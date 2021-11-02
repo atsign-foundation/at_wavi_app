@@ -3,6 +3,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_a
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_add_custom_field/desktop_profile_add_custom_field.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_tutorial/desktop_tutorial_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
@@ -142,10 +143,10 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(height: 40),
+            SizedBox(height: DesktopDimens.paddingLarge),
             Container(
               padding: EdgeInsets.symmetric(
-                horizontal: 80,
+                horizontal: DesktopDimens.paddingLarge,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -171,18 +172,14 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
                             widget.onSearchPressed?.call();
                           },
                         ),
-                        SizedBox(
-                          width: 24,
-                        ),
+                        SizedBox(width: DesktopDimens.paddingSmall),
                         DesktopIconButton(
                           iconData: Icons.notifications,
                           iconColor: appTheme.primaryTextColor,
                           backgroundColor: appTheme.secondaryBackgroundColor,
                           onPressed: _showNotificationPopup,
                         ),
-                        SizedBox(
-                          width: 24,
-                        ),
+                        SizedBox(width: DesktopDimens.paddingSmall),
                         DesktopIconButton(
                           iconData: Icons.more_vert,
                           iconColor: appTheme.primaryTextColor,
@@ -198,7 +195,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
               ),
             ),
             SizedBox(
-              height: 40,
+              height: DesktopDimens.paddingNormal,
             ),
             Expanded(
               child: Stack(
@@ -215,7 +212,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
                   ),
                   Positioned(
                     top: 10,
-                    right: 80,
+                    right: DesktopDimens.paddingLarge,
                     child: GestureDetector(
                       onTapDown: (details) =>
                           showPopUpMenuAtTap(context, details),
@@ -264,7 +261,9 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
-        child: DesktopProfileAddCustomField(),
+        child: DesktopProfileAddCustomField(
+          atCategory: AtCategory.CHANNELS, //todo: remove hard code
+        ),
       ),
     );
     if (result != null) {
@@ -319,6 +318,7 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
         backgroundColor: Colors.transparent,
         child: DesktopProfileAddCustomField(
           isOnlyAddImage: true,
+          atCategory: AtCategory.IMAGE,
         ),
       ),
     );

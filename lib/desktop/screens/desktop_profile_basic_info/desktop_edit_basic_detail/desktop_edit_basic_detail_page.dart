@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_private_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_show_hide_radio_button.dart';
@@ -42,7 +43,7 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
     return ChangeNotifierProvider.value(
       value: _model,
       child: Container(
-        width: 434,
+        width: DesktopDimens.dialogWidth,
         decoration: BoxDecoration(
           color: appTheme.backgroundColor,
           borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -51,23 +52,22 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 24),
+            SizedBox(height: DesktopDimens.paddingNormal),
             Container(
-              padding: EdgeInsets.only(left: 24),
+              padding: EdgeInsets.only(left: DesktopDimens.paddingNormal),
               child: Text(
                 widget.atCategory.label,
-                style: TextStyle(
-                  fontSize: 16,
+                style: appTheme.textTheme.bodyText1?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: appTheme.primaryTextColor,
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            SizedBox(height: DesktopDimens.paddingNormal),
             _buildContentWidget(),
-            SizedBox(height: 16),
+            SizedBox(height: DesktopDimens.paddingNormal),
             Container(
-              padding: EdgeInsets.only(left: 24),
+              padding: EdgeInsets.only(left: DesktopDimens.paddingNormal),
               child: DesktopShowHideRadioButton(
                 controller: _showHideController,
                 onChanged: (isPublic) {
@@ -79,16 +79,17 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
                 },
               ),
             ),
-            SizedBox(height: 16),
+            SizedBox(height: DesktopDimens.paddingNormal),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+              padding:
+                  EdgeInsets.symmetric(horizontal: DesktopDimens.paddingNormal),
               child: DesktopButton(
                 title: 'Done',
                 width: double.infinity,
                 onPressed: _onSaveData,
               ),
             ),
-            SizedBox(height: 24),
+            SizedBox(height: DesktopDimens.paddingNormal),
           ],
         ),
       ),
@@ -100,7 +101,7 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
       builder: (_, model, child) {
         return ConstrainedBox(
           constraints: new BoxConstraints(
-            maxHeight: 360.0,
+            maxHeight: 270.0,
           ),
           child: Scrollbar(
             child: ListView.separated(
@@ -111,7 +112,7 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    SizedBox(width: 24),
+                    SizedBox(width: DesktopDimens.paddingNormal),
                     Expanded(
                       child: DesktopTextField(
                         controller: data.controller ?? TextEditingController(),
@@ -119,18 +120,17 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
                       ),
                     ),
                     Container(
-                      width: 48,
-                      height: 48,
+                      height: DesktopDimens.buttonHeight,
                       child: DesktopPublicButton(
                         controller: data.publicController,
                       ),
                     ),
-                    SizedBox(width: 8),
+                    SizedBox(width: DesktopDimens.paddingSmall),
                   ],
                 );
               },
               separatorBuilder: (context, index) {
-                return SizedBox(height: 16);
+                return SizedBox(height: DesktopDimens.paddingNormal);
               },
               itemCount: model.basicData.length,
             ),

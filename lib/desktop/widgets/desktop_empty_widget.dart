@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/material.dart';
 
@@ -25,30 +26,28 @@ class DesktopEmptyWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         image,
-        SizedBox(height: 16),
+        SizedBox(height: DesktopDimens.paddingNormal),
         Text(
           title,
-          style: TextStyle(
-            fontSize: 18,
+          style: appTheme.textTheme.subtitle1?.copyWith(
             fontWeight: FontWeight.bold,
             color: appTheme.primaryTextColor,
           ),
         ),
-        SizedBox(height: 16),
+        SizedBox(height: DesktopDimens.paddingSmall),
         Text(
           description,
-          style: TextStyle(
-            fontSize: 16,
+          style: appTheme.textTheme.subtitle2?.copyWith(
             color: appTheme.secondaryTextColor,
+            fontWeight: FontWeight.normal,
           ),
         ),
-        SizedBox(height: 32),
+        SizedBox(height: DesktopDimens.paddingNormal),
         ElevatedButton(
           onPressed: onButtonPressed,
           child: Text(
             buttonTitle,
-            style: TextStyle(
-              fontSize: 18,
+            style: appTheme.textTheme.button?.copyWith(
               color: appTheme.primaryColor,
             ),
           ),

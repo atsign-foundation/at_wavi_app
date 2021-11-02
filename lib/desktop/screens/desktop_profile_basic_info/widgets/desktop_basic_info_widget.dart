@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -7,15 +8,20 @@ import 'package:url_launcher/url_launcher.dart';
 
 class DesktopBasicInfoWidget extends StatelessWidget {
   final BasicData data;
+  final bool isCustomField;
+  final VoidCallback? onEditPressed;
+  final VoidCallback? onDeletePressed;
 
   const DesktopBasicInfoWidget({
     Key? key,
     required this.data,
+    required this.isCustomField,
+    this.onEditPressed,
+    this.onDeletePressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = AppTheme.of(context);
     if (data.type == CustomContentType.Youtube.name) {
       return _youtubeContent(context);
     } else if (data.type == CustomContentType.Image.name) {
@@ -29,28 +35,31 @@ class DesktopBasicInfoWidget extends StatelessWidget {
     final appTheme = AppTheme.of(context);
     return Container(
       constraints: BoxConstraints(
-        minHeight: 70,
+        minHeight: 52,
       ),
       child: Row(
         children: [
-          SizedBox(width: 27),
+          SizedBox(width: DesktopDimens.paddingNormal),
           Container(
-            width: 200,
+            width: 150,
             child: Text(
               getTitle(data.accountName ?? ''),
-              style:
-                  TextStyle(color: appTheme.secondaryTextColor, fontSize: 16),
+              style: appTheme.textTheme.bodyText2?.copyWith(
+                color: appTheme.secondaryTextColor,
+              ),
             ),
           ),
           Expanded(
             child: Container(
               child: Text(
                 data.value ?? '',
-                style:
-                    TextStyle(color: appTheme.primaryTextColor, fontSize: 16),
+                style: appTheme.textTheme.bodyText2?.copyWith(
+                  color: appTheme.primaryTextColor,
+                ),
               ),
             ),
           ),
+          _buildMenuWidget(context),
         ],
       ),
     );
@@ -60,17 +69,18 @@ class DesktopBasicInfoWidget extends StatelessWidget {
     final appTheme = AppTheme.of(context);
     return Container(
       constraints: BoxConstraints(
-        minHeight: 70,
+        minHeight: 52,
       ),
       child: Row(
         children: [
-          SizedBox(width: 27),
+          SizedBox(width: DesktopDimens.paddingNormal),
           Container(
-            width: 200,
+            width: 150,
             child: Text(
               getTitle(data.accountName ?? ''),
-              style:
-                  TextStyle(color: appTheme.secondaryTextColor, fontSize: 16),
+              style: appTheme.textTheme.bodyText2?.copyWith(
+                color: appTheme.secondaryTextColor,
+              ),
             ),
           ),
           Expanded(
@@ -83,14 +93,14 @@ class DesktopBasicInfoWidget extends StatelessWidget {
               child: Container(
                 child: Text(
                   data.value ?? '',
-                  style: TextStyle(
+                  style: appTheme.textTheme.bodyText2?.copyWith(
                     color: Colors.blue,
-                    fontSize: 16,
                   ),
                 ),
               ),
             ),
           ),
+          _buildMenuWidget(context),
         ],
       ),
     );
@@ -124,8 +134,54 @@ class DesktopBasicInfoWidget extends StatelessWidget {
               ),
             ),
           ),
+          _buildMenuWidget(context),
         ],
       ),
+    );
+  }
+
+  Widget _buildMenuWidget(BuildContext context) {
+    if (!isCustomField) {
+      return Container();
+    }
+    final appTheme = AppTheme.of(context);
+    return PopupMenuButton(
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          child: SizedBox(
+            child: Text(
+              "Edit",
+              style: appTheme.textTheme.bodyText1,
+            ),
+          ),
+          value: 0,
+        ),
+        PopupMenuItem(
+          child: SizedBox(
+            child: Text(
+              "Delete",
+              style: appTheme.textTheme.bodyText1,
+            ),
+          ),
+          value: 1,
+        ),
+      ],
+      tooltip: null,
+      child: SizedBox(
+        width: 48,
+        height: 52,
+        child: Icon(
+          Icons.more_vert_rounded,
+          color: appTheme.secondaryTextColor,
+        ),
+      ),
+      onSelected: (index) {
+        if (index == 0) {
+          onEditPressed?.call();
+        } else if (index == 1) {
+          onDeletePressed?.call();
+        }
+      },
     );
   }
 }

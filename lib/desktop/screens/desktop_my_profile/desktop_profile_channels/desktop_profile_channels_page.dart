@@ -133,11 +133,13 @@ class _DesktopProfileChannelsPageState extends State<DesktopProfileChannelsPage>
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.SOCIAL,
           hideMenu: true,
+          showWelcome: false,
         );
       case 'Game':
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.GAMER,
           hideMenu: true,
+          showWelcome: false,
         );
       default:
         return Container();

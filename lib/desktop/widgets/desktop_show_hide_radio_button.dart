@@ -29,9 +29,7 @@ class DesktopShowHideRadioButton extends StatelessWidget {
           children: [
             Text(
               'View',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
+              style: appTheme.textTheme.bodyText2?.copyWith(
                 color: appTheme.secondaryTextColor,
               ),
             ),
@@ -51,8 +49,7 @@ class DesktopShowHideRadioButton extends StatelessWidget {
                 ),
                 Text(
                   'Show',
-                  style: TextStyle(
-                    fontSize: 16,
+                  style: appTheme.textTheme.bodyText2?.copyWith(
                     fontWeight: FontWeight.w500,
                     color: appTheme.primaryTextColor,
                   ),
@@ -71,8 +68,7 @@ class DesktopShowHideRadioButton extends StatelessWidget {
                 ),
                 Text(
                   'Hide',
-                  style: TextStyle(
-                    fontSize: 16,
+                  style: appTheme.textTheme.bodyText2?.copyWith(
                     fontWeight: FontWeight.w500,
                     color: appTheme.primaryTextColor,
                   ),

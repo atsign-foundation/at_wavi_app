@@ -4,6 +4,7 @@ import 'package:at_wavi_app/common_components/provider_callback.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_my_profile_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_user_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart';
@@ -11,8 +12,6 @@ import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_welcome_widget.dart';
 import 'package:at_wavi_app/model/basic_data_model.dart';
 import 'package:at_wavi_app/model/user.dart';
-import 'package:at_wavi_app/routes/route_names.dart';
-import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
@@ -32,11 +31,13 @@ import 'widgets/desktop_media_item_widget.dart';
 class DesktopProfileBasicInfoPage extends StatefulWidget {
   final AtCategory atCategory;
   final bool hideMenu;
+  final bool showWelcome;
 
   const DesktopProfileBasicInfoPage({
     Key? key,
     required this.atCategory,
     this.hideMenu = false,
+    this.showWelcome = true,
   }) : super(key: key);
 
   @override
@@ -91,11 +92,15 @@ class _DesktopProfileBasicInfoPageState
 
   Widget _buildEmptyWidget() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        SizedBox(height: 64),
-        DesktopWelcomeWidget(
-          titlePage: widget.atCategory.titlePage,
-        ),
+        if (widget.showWelcome)
+          Container(
+            padding: EdgeInsets.only(top: DesktopDimens.paddingLarge),
+            child: DesktopWelcomeWidget(
+              titlePage: widget.atCategory.titlePage,
+            ),
+          ),
         Expanded(
           child: Container(
             child: Center(
@@ -116,11 +121,12 @@ class _DesktopProfileBasicInfoPageState
       {BasicData? locationData}) {
     final appTheme = AppTheme.of(context);
     return Container(
-      margin: EdgeInsets.only(left: 80, right: 80),
+      margin: EdgeInsets.symmetric(horizontal: DesktopDimens.paddingExtraLarge),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (widget.hideMenu == false) SizedBox(height: 60),
+          if (widget.hideMenu == false)
+            SizedBox(height: DesktopDimens.paddingLarge),
           if (widget.hideMenu == false)
             Container(
               child: Row(
@@ -157,37 +163,30 @@ class _DesktopProfileBasicInfoPageState
                 ],
               ),
             ),
-          if (widget.hideMenu == false) SizedBox(height: 60),
+          if (widget.hideMenu == false)
+            SizedBox(height: DesktopDimens.paddingLarge),
           Expanded(
             child: Container(
               child: _buildFieldsWidget(data, locationData: locationData),
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(bottom: 64, top: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                if (widget.atCategory != AtCategory.LOCATION)
-                  DesktopWhiteButton(
-                    title: 'Reorder',
-                    onPressed: _showReorderDetailPopup,
-                  ),
-                SizedBox(width: 12),
-                DesktopButton(
-                  title: 'Save & Next',
-                  onPressed: _handleSaveAndNext,
-                  // onPressed: () {
-                  //   Navigator.pushReplacement(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => DesktopMyProfilePage()),
-                  //   );
-                  // },
+          SizedBox(height: DesktopDimens.paddingNormal),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              if (widget.atCategory != AtCategory.LOCATION)
+                DesktopWhiteButton(
+                  title: 'Reorder',
+                  onPressed: _showReorderDetailPopup,
                 ),
-              ],
-            ),
+              SizedBox(width: 12),
+              DesktopButton(
+                title: 'Save & Next',
+                onPressed: _handleSaveAndNext,
+              ),
+            ],
           ),
+          SizedBox(height: DesktopDimens.paddingLarge),
         ],
       ),
     );
@@ -226,6 +225,13 @@ class _DesktopProfileBasicInfoPageState
           ),
           child: DesktopBasicInfoWidget(
             data: item.data,
+            isCustomField: item.isCustomField,
+            onDeletePressed: () {
+              _model.deleteData(item.data);
+            },
+            onEditPressed: () {
+              _showEditCustomContent(item.data);
+            },
           ),
           // child: item.data.extension != null
           //     ? DesktopMediaItemWidget(
@@ -239,11 +245,12 @@ class _DesktopProfileBasicInfoPageState
       },
       separatorBuilder: (context, index) {
         return Container(
-          padding: EdgeInsets.symmetric(horizontal: 24),
+          padding:
+              EdgeInsets.symmetric(horizontal: DesktopDimens.paddingNormal),
           color: appTheme.secondaryBackgroundColor,
           child: Container(
             color: appTheme.separatorColor,
-            height: 2,
+            height: DesktopDimens.dividerHeight,
           ),
         );
       },
@@ -352,7 +359,25 @@ class _DesktopProfileBasicInfoPageState
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
-        child: DesktopProfileAddCustomField(),
+        child: DesktopProfileAddCustomField(
+          atCategory: widget.atCategory,
+        ),
+      ),
+    );
+    if (result == 'saved') {
+      _model.fetchBasicData();
+    }
+  }
+
+  void _showEditCustomContent(BasicData data) async {
+    final result = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: DesktopProfileAddCustomField(
+          atCategory: widget.atCategory,
+          data: data,
+        ),
       ),
     );
     if (result == 'saved') {

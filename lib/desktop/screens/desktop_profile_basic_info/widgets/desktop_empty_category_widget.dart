@@ -18,8 +18,8 @@ class DesktopEmptyCategoryWidget extends StatelessWidget {
     return DesktopEmptyWidget(
       image: Image.asset(
         atCategory.imageData,
-        width: 220,
-        height: 215,
+        width: 180,
+        height: 180,
       ),
       title: atCategory.title,
       description: atCategory.description,

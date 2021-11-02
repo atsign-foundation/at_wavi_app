@@ -1,5 +1,6 @@
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_basic_info_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_tabbar.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -121,12 +122,14 @@ class _DesktopProfileDetailsPageState extends State<DesktopProfileDetailsPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 16, horizontal: 80),
+                        padding: EdgeInsets.symmetric(
+                          vertical: DesktopDimens.paddingNormal,
+                          horizontal: DesktopDimens.paddingExtraLarge,
+                        ),
                         child: DesktopTabBar(
                           controller: _tabController,
                           tabTitles: model.fields,
-                          spacer: 40,
+                          spacer: DesktopDimens.paddingLarge,
                         ),
                       ),
                       Expanded(
@@ -161,16 +164,19 @@ class _DesktopProfileDetailsPageState extends State<DesktopProfileDetailsPage>
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.DETAILS,
           hideMenu: true,
+          showWelcome: false,
         );
       case 'About':
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.ADDITIONAL_DETAILS,
           hideMenu: true,
+          showWelcome: false,
         );
       case 'Location':
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.LOCATION,
           hideMenu: true,
+          showWelcome: false,
         );
       default:
         return Container();

@@ -47,9 +47,7 @@ class DesktopTextField extends StatelessWidget {
         if (title.isNotEmpty)
           Text(
             title,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.normal,
+            style: appTheme.textTheme.bodyText2?.copyWith(
               color: appTheme.secondaryTextColor,
             ),
           ),
@@ -58,9 +56,7 @@ class DesktopTextField extends StatelessWidget {
           keyboardType: keyboardType,
           readOnly: readOnly,
           style: style ??
-              TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
+              appTheme.textTheme.bodyText2?.copyWith(
                 color: appTheme.primaryTextColor,
               ),
           onChanged: onChanged,
@@ -78,9 +74,8 @@ class DesktopTextField extends StatelessWidget {
                 style?.copyWith(
                   color: appTheme.secondaryTextColor,
                 ) ??
-                TextStyle(
+                appTheme.textTheme.bodyText2?.copyWith(
                   color: appTheme.secondaryTextColor,
-                  fontSize: 16,
                 ),
             filled: backgroundColor != null,
             fillColor: backgroundColor,
