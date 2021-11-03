@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:at_client_mobile/at_client_mobile.dart';
+import 'package:at_follows_flutter/at_follows_flutter.dart';
+import 'package:at_follows_flutter/screens/qrscan.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
 import 'package:at_wavi_app/common_components/switch_at_sign.dart';
@@ -79,19 +81,25 @@ class _OptionsState extends State<Options> {
           SizedBox(height: 15.toHeight),
           Divider(height: 1),
           SizedBox(height: 15.toHeight),
-          Row(
-            children: <Widget>[
-              Icon(Icons.qr_code_scanner, size: 25),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Text(
-                    'My QR Code',
-                    style: TextStyles.lightText(_themeData!.primaryColor),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => QrScan()));
+            },
+            child: Row(
+              children: <Widget>[
+                Icon(Icons.qr_code_scanner, size: 25),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      'Scan QR Code',
+                      style: TextStyles.lightText(_themeData!.primaryColor),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           SizedBox(height: 15.toHeight),
           Divider(height: 1),
