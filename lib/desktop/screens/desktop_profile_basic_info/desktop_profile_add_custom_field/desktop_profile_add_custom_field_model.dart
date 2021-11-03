@@ -14,17 +14,17 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
   final UserPreview userPreview;
   final AtCategory atCategory;
 
-  CustomContentType _fieldType = CustomContentType.Text;
+  late CustomContentType _fieldType;
 
   CustomContentType get fieldType => _fieldType;
 
-  BasicData? _basicData;
+  // BasicData? _basicData;
+  //
+  // BasicData? get basicData => _basicData;
+  //
+  Uint8List? _selectedMedia;
 
-  BasicData? get basicData => _basicData;
-
-  Uint8List? _uInt8list;
-
-  Uint8List? get uInt8list => _uInt8list;
+  Uint8List? get selectedMedia => _selectedMedia;
 
   bool isOnlyAddMedia = false;
 
@@ -39,39 +39,46 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
     required this.atCategory,
     this.originBasicData,
   }) {
-    _basicData = BasicData();
+    titleTextController.text = originBasicData?.accountName ?? '';
+    _fieldType = customContentNameToType(originBasicData?.type);
+    if (originBasicData?.value is String) {
+      valueContentTextController.text = originBasicData?.value;
+    } else if (originBasicData?.value is Uint8List) {
+      _selectedMedia = originBasicData?.value;
+    }
+    notifyListeners();
   }
 
-  void setIsOnlyAddMedia(bool isOnlyAddMedia) {
-    this.isOnlyAddMedia = isOnlyAddMedia;
-    _fieldType =
-        this.isOnlyAddMedia ? CustomContentType.Image : CustomContentType.Text;
-  }
+  // void setIsOnlyAddMedia(bool isOnlyAddMedia) {
+  //   this.isOnlyAddMedia = isOnlyAddMedia;
+  //   _fieldType =
+  //       this.isOnlyAddMedia ? CustomContentType.Image : CustomContentType.Text;
+  // }
 
   void changeField(CustomContentType fieldType) {
     _fieldType = fieldType;
     notifyListeners();
   }
 
-  Future didSelectMedia(File selectedMedia, String extension) async {
-    final mediaData = await selectedMedia.readAsBytes();
-    _basicData!.value = selectedMedia.path;
-    _basicData!.extension = extension;
-    _uInt8list = mediaData;
+  Future didSelectMedia(File selectedMedia) async {
+    _selectedMedia = await selectedMedia.readAsBytes();
     notifyListeners();
   }
 
   Future addCustomField(BuildContext context) async {
-    if (_fieldType == CustomContentType.Image && _basicData!.value == null) {
+    final _basicData = BasicData();
+    if (_fieldType == CustomContentType.Image && selectedMedia == null) {
       CommonFunctions().showSnackBar(Strings.desktop_please_add_image);
       return;
     }
-    _basicData!.accountName = titleTextController.text;
-    _basicData!.isPrivate = showHideController.isShow == false;
+    _basicData.accountName = titleTextController.text;
+    _basicData.isPrivate = showHideController.isShow == false;
     if (_fieldType != CustomContentType.Image) {
-      _basicData!.value = valueContentTextController.text;
+      _basicData.value = valueContentTextController.text;
+    } else {
+      _basicData.value = selectedMedia;
     }
-    _basicData!.type = fieldType.name;
+    _basicData.type = fieldType.name;
     // await updateDefinedFields(
     //   context,
     //   _basicData!,
@@ -80,26 +87,29 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
 
     List<BasicData>? customFields =
         userPreview.user()!.customFields[atCategory.name];
-    customFields!.add(_basicData!);
+    customFields!.add(_basicData);
 
     userPreview.user()?.customFields[atCategory.name] = customFields;
 
-    FieldOrderService().addNewField(atCategory, _basicData!.accountName!);
+    FieldOrderService().addNewField(atCategory, _basicData.accountName!);
 
     Navigator.of(context).pop('saved');
   }
 
   Future updateCustomField(BuildContext context) async {
-    if (_fieldType == CustomContentType.Image && _basicData!.value == null) {
+    final _basicData = BasicData();
+    if (_fieldType == CustomContentType.Image && _selectedMedia == null) {
       CommonFunctions().showSnackBar(Strings.desktop_please_add_image);
       return;
     }
-    _basicData!.accountName = titleTextController.text;
-    _basicData!.isPrivate = showHideController.isShow == false;
+    _basicData.accountName = titleTextController.text;
+    _basicData.isPrivate = showHideController.isShow == false;
     if (_fieldType != CustomContentType.Image) {
-      _basicData!.value = valueContentTextController.text;
+      _basicData.value = valueContentTextController.text;
+    } else {
+      _basicData.value = selectedMedia;
     }
-    _basicData!.type = fieldType.name;
+    _basicData.type = fieldType.name;
 
     List<BasicData>? customFields =
         userPreview.user()!.customFields[atCategory.name];
@@ -108,7 +118,7 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
             (element) => element.accountName == originBasicData?.accountName) ??
         -1;
     if (index >= 0) {
-      customFields![index] = _basicData!;
+      customFields![index] = _basicData;
     }
 
     userPreview.user()?.customFields[atCategory.name] = customFields!;

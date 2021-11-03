@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/utils.dart';
@@ -114,23 +116,34 @@ class DesktopBasicInfoWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          SizedBox(width: 27),
+          SizedBox(width: DesktopDimens.paddingNormal),
           Container(
-            width: 200,
+            width: 150,
             child: Text(
               getTitle(data.accountName ?? ''),
               style:
                   TextStyle(color: appTheme.secondaryTextColor, fontSize: 16),
             ),
           ),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              width: 200,
-              height: 200,
-              child: Image.memory(
-                data.value,
-                fit: BoxFit.cover,
+          Expanded(
+            child: GestureDetector(
+              onTap: () {},
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: DesktopDimens.paddingSmall),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  constraints: BoxConstraints(
+                    maxWidth: 200,
+                    maxHeight: 200,
+                  ),
+                  child: (data.value is Uint8List)
+                      ? Image.memory(
+                          data.value,
+                          fit: BoxFit.contain,
+                        )
+                      : Container(),
+                ),
               ),
             ),
           ),

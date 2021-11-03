@@ -12,7 +12,9 @@ class BasicDataModel {
     required this.data,
     required this.isCustomField,
   }) {
-    controller = TextEditingController(text: data.value);
+    if (data.value is String) {
+      controller = TextEditingController(text: data.value);
+    }
     publicController = DesktopPublicController(isPublic: !data.isPrivate);
   }
 }

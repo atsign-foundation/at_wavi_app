@@ -7,7 +7,6 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_show_hide_radio_button.dart';
-import 'package:at_wavi_app/desktop/widgets/desktop_video_thumbnail_widget.dart';
 import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -58,9 +57,7 @@ class _DesktopProfileAddCustomFieldState
           ];
     super.initState();
     _isUpdate = widget.data != null;
-    if (widget.data != null) {
-
-    }
+    if (widget.data != null) {}
   }
 
   @override
@@ -74,10 +71,7 @@ class _DesktopProfileAddCustomFieldState
           atCategory: widget.atCategory,
           originBasicData: widget.data,
         );
-        _model.valueContentTextController.text = widget.data?.value;
-        _model.titleTextController.text = widget.data?.accountName ?? '';
-        _model.changeField(customContentNameToType(widget.data?.type));
-        _model.setIsOnlyAddMedia(widget.isOnlyAddImage);
+        // _model.setIsOnlyAddMedia(widget.isOnlyAddImage);
         return _model;
       },
       child: Consumer<DesktopAddBasicDetailModel>(
@@ -131,43 +125,47 @@ class _DesktopProfileAddCustomFieldState
 
   Widget _buildTypeSelectionWidget(DesktopAddBasicDetailModel model) {
     final appTheme = AppTheme.of(context);
-    return DropdownButtonFormField<CustomContentType>(
-      dropdownColor: appTheme.backgroundColor,
-      autovalidateMode: AutovalidateMode.disabled,
-      hint: Text(Strings.desktop_select_type),
-      decoration: InputDecoration(
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: appTheme.separatorColor),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: appTheme.primaryColor),
-        ),
-      ),
-      value: model.fieldType,
-      icon: Icon(Icons.keyboard_arrow_down),
-      style: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        color: appTheme.primaryTextColor,
-      ),
-      validator: (value) {
-        if (value == null) {
-          return Strings.desktop_please_select_type;
-        }
-        return null;
-      },
-      onChanged: (newValue) {
-        if (newValue != null) {
-          _model.changeField(newValue);
-        }
-      },
-      items: contentDropDown
-          .map<DropdownMenuItem<CustomContentType>>((CustomContentType value) {
-        return DropdownMenuItem<CustomContentType>(
-          value: value,
-          child: Text(value.label),
+    return Consumer<DesktopAddBasicDetailModel>(
+      builder: (_, model, child) {
+        return DropdownButtonFormField<CustomContentType>(
+          dropdownColor: appTheme.backgroundColor,
+          autovalidateMode: AutovalidateMode.disabled,
+          hint: Text(Strings.desktop_select_type),
+          decoration: InputDecoration(
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: appTheme.separatorColor),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: appTheme.primaryColor),
+            ),
+          ),
+          value: model.fieldType,
+          icon: Icon(Icons.keyboard_arrow_down),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: appTheme.primaryTextColor,
+          ),
+          validator: (value) {
+            if (value == null) {
+              return Strings.desktop_please_select_type;
+            }
+            return null;
+          },
+          onChanged: (newValue) {
+            if (newValue != null) {
+              _model.changeField(newValue);
+            }
+          },
+          items: contentDropDown.map<DropdownMenuItem<CustomContentType>>(
+              (CustomContentType value) {
+            return DropdownMenuItem<CustomContentType>(
+              value: value,
+              child: Text(value.label),
+            );
+          }).toList(),
         );
-      }).toList(),
+      },
     );
   }
 
@@ -206,9 +204,8 @@ class _DesktopProfileAddCustomFieldState
                 SizedBox(
                   width: DesktopDimens.paddingSmall,
                 ),
-                if (model.basicData!.extension != null)
-                  _buildMediaWidget(model.uInt8list!, model.basicData!.value!,
-                      model.basicData!.extension),
+                if (model.selectedMedia != null)
+                  _buildMediaWidget(model.selectedMedia),
               ],
             ),
           );
@@ -232,30 +229,37 @@ class _DesktopProfileAddCustomFieldState
     );
   }
 
-  _buildMediaWidget(Uint8List uInt8list, String path, String? extension) {
-    if (extension == 'jpg' || extension == 'png') {
-      return ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: 120.0,
-        ),
-        child: Image.memory(uInt8list),
-      );
-    } else {
-      return DesktopVideoThumbnailWidget(
-        path: path,
-        extension: extension ?? '',
-      );
+  _buildMediaWidget(Uint8List? uInt8list) {
+    final appTheme = AppTheme.of(context);
+    // if (extension == 'jpg' || extension == 'png') {
+    if (uInt8list == null) {
+      return Container();
     }
+    return Container(
+      constraints: BoxConstraints(
+        maxHeight: 120.0,
+      ),
+      margin: EdgeInsets.all(DesktopDimens.paddingSmall),
+      child: Image.memory(uInt8list),
+      decoration: BoxDecoration(
+        border: Border.all(color: appTheme.secondaryTextColor, width: 1)
+      ),
+    );
+    // } else {
+    //   return DesktopVideoThumbnailWidget(
+    //     path: path,
+    //     extension: extension ?? '',
+    //   );
+    // }
   }
 
   void _onSelectMedia() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'png', 'mp4', 'wmv'],
+      type: FileType.image,
     );
     if (result?.files.single.path != null) {
       File file = File(result!.files.single.path);
-      await _model.didSelectMedia(file, result.files.single.extension!);
+      await _model.didSelectMedia(file);
     } else {
       // User canceled the picker
     }
