@@ -366,10 +366,11 @@ class CommonFunctions {
             null) {
       return false;
     }
-    if (Provider.of<UserProvider>(NavService.navKey.currentContext!,
-                listen: false)
-            .user ==
-        null) {
+    if (!isPreview &&
+        Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                    listen: false)
+                .user ==
+            null) {
       return false;
     }
     var userMap = User.toJson(isPreview
@@ -380,7 +381,8 @@ class CommonFunctions {
                 listen: false)
             .user!);
     var isPresent = false;
-    List<String> fields = FieldNames().getFieldList(category);
+    List<String> fields =
+        FieldNames().getFieldList(category, isPreview: isPreview);
 
     for (var field in userMap.entries) {
       if (field.key != null &&
