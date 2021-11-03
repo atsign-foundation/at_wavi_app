@@ -22,12 +22,12 @@ class FieldNames {
     'youtube',
     'tumblr',
     'medium',
-    'Tiktok',
-    'Snapchat',
-    'Pinterest',
-    'Github'
+    'tiktok',
+    'snapchat',
+    'pinterest',
+    'github'
   ];
-  static const _gameFields = ['ps4', 'xbox', 'steam', 'discord', 'Twitch'];
+  static const _gameFields = ['ps4', 'xbox', 'steam', 'discord', 'twitch'];
   static const _locationFields = [
     'locationnickname',
     'location',
