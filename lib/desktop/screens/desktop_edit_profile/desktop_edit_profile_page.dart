@@ -1,12 +1,12 @@
 import 'package:at_wavi_app/desktop/screens/desktop_appearance/desktop_appearance_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_profile_details/desktop_media/desktop_media_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_basic_info_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_edit_profile/desktop_profile_picture/desktop_profile_picture_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_logo.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
-import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -87,7 +87,7 @@ class _DesktopEditProfilePageState extends State<DesktopEditProfilePage> {
                       left: 10,
                       child: DesktopIconButton(
                         iconData: Icons.close_rounded,
-                        onPressed: (){
+                        onPressed: () {
                           Navigator.pop(context);
                         },
                       ),
@@ -129,16 +129,19 @@ class _DesktopEditProfilePageState extends State<DesktopEditProfilePage> {
         children: DesktopSideMenu.values.map((e) {
           switch (e) {
             case DesktopSideMenu.profile:
-              return Container(color: appTheme.backgroundColor);
-            case DesktopSideMenu.media:
+              // chua co
+              return DesktopProfilePicturePage();
+            case DesktopSideMenu.media: 
               return DesktopMediaPage();
             case DesktopSideMenu.basicDetails:
-              return DesktopProfileBasicInfoPage(atCategory: AtCategory.DETAILS);
+              return DesktopProfileBasicInfoPage(
+                  atCategory: AtCategory.DETAILS);
             case DesktopSideMenu.additionalDetails:
               return DesktopProfileBasicInfoPage(
                   atCategory: AtCategory.ADDITIONAL_DETAILS);
             case DesktopSideMenu.location:
-              return DesktopProfileBasicInfoPage(atCategory: AtCategory.LOCATION);
+              return DesktopProfileBasicInfoPage(
+                  atCategory: AtCategory.LOCATION);
             case DesktopSideMenu.socialChannel:
               return DesktopProfileBasicInfoPage(atCategory: AtCategory.SOCIAL);
             case DesktopSideMenu.gameChannel:
