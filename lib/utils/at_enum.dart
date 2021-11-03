@@ -19,10 +19,15 @@ enum FieldsEnum {
   YOUTUBE,
   MEDIUM,
   TUMBLR,
+  TIKTOK,
+  SNAPCHAT,
+  PINTEREST,
+  GITHUB,
   PS4,
   XBOX,
   STEAM,
   DISCORD,
+  TWITCH,
   HTMLTOASTVIEW,
 }
 
@@ -71,6 +76,16 @@ extension FieldsEnumValues on FieldsEnum {
         return 'DISCORD';
       case FieldsEnum.HTMLTOASTVIEW:
         return 'DISCORD';
+      case FieldsEnum.TIKTOK:
+        return 'TIKTOK';
+      case FieldsEnum.SNAPCHAT:
+        return 'SNAPCHAT';
+      case FieldsEnum.PINTEREST:
+        return 'PINTEREST';
+      case FieldsEnum.GITHUB:
+        return 'GITHUB';
+      case FieldsEnum.TWITCH:
+        return 'TWITCH';
       default:
         return '';
     }
@@ -141,6 +156,17 @@ extension FieldsEnumValues on FieldsEnum {
 
       case FieldsEnum.DISCORD:
         return 'Discord';
+
+      case FieldsEnum.TIKTOK:
+        return 'Tiktok';
+      case FieldsEnum.SNAPCHAT:
+        return 'Snapchat';
+      case FieldsEnum.PINTEREST:
+        return 'Pinterest';
+      case FieldsEnum.GITHUB:
+        return 'Github';
+      case FieldsEnum.TWITCH:
+        return 'Twitch';
 
       default:
         return '';

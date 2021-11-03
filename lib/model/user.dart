@@ -24,11 +24,16 @@ class User {
   BasicData instagram;
   BasicData youtube;
   BasicData tumbler;
+  BasicData tiktok;
+  BasicData snapchat;
+  BasicData pinterest;
+  BasicData github;
   BasicData medium;
   BasicData ps4;
   BasicData xbox;
   BasicData steam;
   BasicData discord;
+  BasicData twitch;
   BasicData htmlToastView;
   Map<String, List<BasicData>> customFields;
 
@@ -51,10 +56,15 @@ class User {
       youtube,
       tumbler,
       medium,
+      tiktok,
+      snapchat,
+      pinterest,
+      github,
       ps4,
       xbox,
       steam,
       discord,
+      twitch,
       htmlToastView,
       customFields})
       : this.allPrivate = allPrivate,
@@ -75,10 +85,15 @@ class User {
         this.youtube = youtube ?? BasicData(),
         this.tumbler = tumbler ?? BasicData(),
         this.medium = medium ?? BasicData(),
+        this.tiktok = medium ?? BasicData(),
+        this.github = medium ?? BasicData(),
+        this.snapchat = medium ?? BasicData(),
+        this.pinterest = medium ?? BasicData(),
         this.ps4 = ps4 ?? BasicData(),
         this.xbox = xbox ?? BasicData(),
         this.steam = steam ?? BasicData(),
         this.discord = discord ?? BasicData(),
+        this.twitch = medium ?? BasicData(),
         this.htmlToastView = htmlToastView ?? BasicData(),
         this.customFields = customFields ?? {};
 
