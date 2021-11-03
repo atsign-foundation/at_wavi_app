@@ -302,36 +302,43 @@ class _FollowingState extends State<Following>
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 8.0),
-                              child: CustomPersonHorizontalTile(
-                                  textColor: widget.themeData.primaryColor,
-                                  title: name != null ? name : null,
-                                  subTitle: _filteredList[index],
-                                  trailingWidget: InkWell(
-                                    onTap: () async {
-                                      await Provider.of<FollowService>(context,
-                                              listen: false)
-                                          .performFollowUnfollow(
-                                              _filteredList[index]!,
-                                              forFollowersList: true);
-                                    },
-                                    child: (!widget.forSearchedAtsign &&
-                                            _provider
-                                                .followers
-                                                .atsignListDetails[index]
-                                                .isRmovingFromFollowers)
-                                        ? CircularProgressIndicator()
-                                        : Text(
-                                            (_isFollowingThisAtsign
-                                                ? 'Unfollow'
-                                                : 'Follow'),
-                                            style: TextStyles.lightText(
-                                                (_isFollowingThisAtsign
-                                                    ? ColorConstants.orange
-                                                    : ColorConstants.greyText),
-                                                size: 16),
-                                          ),
-                                  ),
-                                  image: image),
+                              child: InkWell(
+                                onTap: () {
+                                  _searchProfile(_filteredList[index]!);
+                                },
+                                child: CustomPersonHorizontalTile(
+                                    textColor: widget.themeData.primaryColor,
+                                    title: name != null ? name : null,
+                                    subTitle: _filteredList[index],
+                                    trailingWidget: InkWell(
+                                      onTap: () async {
+                                        await Provider.of<FollowService>(
+                                                context,
+                                                listen: false)
+                                            .performFollowUnfollow(
+                                                _filteredList[index]!,
+                                                forFollowersList: true);
+                                      },
+                                      child: (!widget.forSearchedAtsign &&
+                                              _provider
+                                                  .followers
+                                                  .atsignListDetails[index]
+                                                  .isRmovingFromFollowers)
+                                          ? CircularProgressIndicator()
+                                          : Text(
+                                              (_isFollowingThisAtsign
+                                                  ? 'Unfollow'
+                                                  : 'Follow'),
+                                              style: TextStyles.lightText(
+                                                  (_isFollowingThisAtsign
+                                                      ? ColorConstants.orange
+                                                      : ColorConstants
+                                                          .greyText),
+                                                  size: 16),
+                                            ),
+                                    ),
+                                    image: image),
+                              ),
                             );
                           }),
                         );
