@@ -5,6 +5,7 @@ import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
+import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_logo.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
@@ -37,14 +38,12 @@ class DesktopProfileInfoPage extends StatefulWidget {
 }
 
 class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
-  bool isMyProfile = true;
   late User _currentUser;
 
   @override
   void initState() {
     super.initState();
-    isMyProfile = !widget.isPreview;
-    if (!isMyProfile) {
+    if (widget.isPreview) {
       _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
     } else if (Provider.of<UserProvider>(context, listen: false).user != null) {
       _currentUser = Provider.of<UserProvider>(context, listen: false).user!;
@@ -123,7 +122,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                         appTheme),
                   ),
                   SizedBox(height: DesktopDimens.paddingLarge),
-                  isMyProfile
+                  !widget.isPreview
                       ? Column(
                           children: [
                             DesktopButton(
@@ -162,35 +161,35 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   }
 
   Widget _buildHeader() {
-    final appTheme = AppTheme.of(context);
-    return isMyProfile
-        ? Container(
-            padding: EdgeInsets.only(top: DesktopDimens.paddingNormal),
-            child: Center(child: DesktopLogo()),
-          )
-        : GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Container(
-              padding: EdgeInsets.all(24),
-              child: Text(
-                Strings.desktop_back,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: appTheme.primaryColor,
-                  fontWeight: FontWeight.normal,
-                  fontFamily: 'Inter',
-                ),
+    return Container(
+      height: 120,
+      child: Stack(
+        children: [
+          Center(
+            child: DesktopLogo(),
+          ),
+          Positioned(
+            top: 10,
+            left: 10,
+            child: Visibility(
+              visible: widget.isPreview,
+              child: DesktopIconButton(
+                iconData: Icons.close_rounded,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
             ),
-          );
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildNameWidget() {
     final appTheme = AppTheme.of(context);
     String name = '';
-    if (!isMyProfile) {
+    if (widget.isPreview) {
       name = context.select<UserPreview, String>(
         // Here, we are only interested whether [item] is inside the cart.
         (userPreview) {
@@ -204,10 +203,10 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
     } else if (Provider.of<UserProvider>(context, listen: false).user != null) {
       name = context.select<UserProvider, String>(
         // Here, we are only interested whether [item] is inside the cart.
-        (userPreview) {
+        (userProvider) {
           return _displayingName(
-            firstName: userPreview.user?.firstname.value,
-            lastName: userPreview.user?.lastname.value,
+            firstName: userProvider.user?.firstname.value,
+            lastName: userProvider.user?.lastname.value,
           );
         },
       );
