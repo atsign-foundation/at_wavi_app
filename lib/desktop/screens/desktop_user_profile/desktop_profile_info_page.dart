@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:at_client/at_client.dart';
 import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
@@ -7,6 +9,7 @@ import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_logo.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/search_service.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
@@ -255,8 +258,11 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   }
 
   void _openEditProfile() {
-    final user = context.read<UserProvider>().user;
-    Provider.of<UserPreview>(context, listen: false).setUser = user;
+    FieldOrderService().setPreviewOrder = {...FieldOrderService().fieldOrders};
+    var userJson =
+        User.toJson(Provider.of<UserProvider>(context, listen: false).user!);
+    User previewUser = User.fromJson(json.decode(json.encode(userJson)));
+    Provider.of<UserPreview>(context, listen: false).setUser = previewUser;
     Navigator.pushNamed(context, DesktopRoutes.DESKTOP_EDIT_PROFILE);
   }
 

@@ -19,14 +19,14 @@ class DesktopReorderableItemWidget extends StatelessWidget {
     return Container(
       color: appTheme.backgroundColor,
       child: Container(
-        height: 56,
+        height: 52,
         margin: margin,
         child: Row(
           children: [
             ReorderableDragStartListener(
               index: index,
               child: Container(
-                width: 55,
+                width: 52,
                 child: Center(
                   child: Icon(
                     Icons.reorder,

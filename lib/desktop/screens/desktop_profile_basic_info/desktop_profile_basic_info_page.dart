@@ -49,6 +49,7 @@ class _DesktopProfileBasicInfoPageState
     extends State<DesktopProfileBasicInfoPage>
     with AutomaticKeepAliveClientMixin {
   late DesktopBasicDetailModel _model;
+  final _scrollController = ScrollController();
 
   @override
   bool get wantKeepAlive => true;
@@ -200,6 +201,7 @@ class _DesktopProfileBasicInfoPageState
 
     final appTheme = AppTheme.of(context);
     return ListView.separated(
+      controller: _scrollController,
       itemBuilder: (context, index) {
         final item = data[index];
         BorderRadius? borderRadius;
@@ -262,6 +264,7 @@ class _DesktopProfileBasicInfoPageState
       {BasicData? locationData}) {
     final appTheme = AppTheme.of(context);
     return ListView.separated(
+      controller: _scrollController,
       itemBuilder: (context, index) {
         BorderRadius? borderRadius;
         if (data.length == 1) {

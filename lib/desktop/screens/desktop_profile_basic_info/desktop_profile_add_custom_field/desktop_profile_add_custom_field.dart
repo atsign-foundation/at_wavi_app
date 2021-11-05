@@ -54,6 +54,7 @@ class _DesktopProfileAddCustomFieldState
             CustomContentType.Number,
             CustomContentType.Image,
             CustomContentType.Youtube,
+            CustomContentType.Html,
           ];
     super.initState();
     _isUpdate = widget.data != null;

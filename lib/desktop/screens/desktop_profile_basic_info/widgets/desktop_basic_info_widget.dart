@@ -6,6 +6,7 @@ import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DesktopBasicInfoWidget extends StatelessWidget {
@@ -24,10 +25,13 @@ class DesktopBasicInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (data.type == CustomContentType.Youtube.name) {
+    if (data.type == CustomContentType.Youtube.name ||
+        data.type == CustomContentType.Link.name) {
       return _youtubeContent(context);
     } else if (data.type == CustomContentType.Image.name) {
       return _imageContent(context);
+    } else if (data.type == CustomContentType.Html.name) {
+      return _htmlContent(context);
     } else {
       return _textContent(context);
     }
@@ -152,6 +156,39 @@ class DesktopBasicInfoWidget extends StatelessWidget {
       ),
     );
   }
+
+  Widget _htmlContent(BuildContext context) {
+    final appTheme = AppTheme.of(context);
+    return Container(
+      constraints: BoxConstraints(
+        minHeight: 70,
+      ),
+      child: Row(
+        children: [
+          SizedBox(width: DesktopDimens.paddingNormal),
+          Container(
+            width: 150,
+            child: Text(
+              getTitle(data.accountName ?? ''),
+              style:
+              TextStyle(color: appTheme.secondaryTextColor, fontSize: 16),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(DesktopDimens.paddingSmall),
+              child: HtmlWidget(data.value),
+              decoration: BoxDecoration(
+                border: Border.all(color: appTheme.primaryTextColor, width: 1),
+              ),
+            ),
+          ),
+          _buildMenuWidget(context),
+        ],
+      ),
+    );
+  }
+
 
   Widget _buildMenuWidget(BuildContext context) {
     if (!isCustomField) {

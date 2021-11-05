@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
@@ -39,8 +40,8 @@ class _DesktopReorderBasicDetailPageState
         return _model;
       },
       child: Container(
-        width: 434,
-        padding: EdgeInsets.all(24),
+        width: DesktopDimens.dialogWidth,
+        padding: EdgeInsets.all(DesktopDimens.paddingNormal),
         decoration: BoxDecoration(
           color: appTheme.backgroundColor,
           borderRadius: BorderRadius.all(Radius.circular(8)),

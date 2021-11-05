@@ -43,8 +43,8 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
           BasicData(
         value: data,
       );
-      Provider.of<UserPreview>(context).notify();
       setState(() {});
+      Provider.of<UserPreview>(context).notify();
     }
   }
 
