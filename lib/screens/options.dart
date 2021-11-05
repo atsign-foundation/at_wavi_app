@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:at_client_mobile/at_client_mobile.dart';
-import 'package:at_follows_flutter/at_follows_flutter.dart';
 import 'package:at_follows_flutter/screens/qrscan.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
@@ -12,8 +11,8 @@ import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/change_privacy_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
-import 'package:at_wavi_app/services/size_config.dart';
-import 'package:at_wavi_app/utils/colors.dart';
+// import 'package:at_wavi_app/services/size_config.dart' as SizeConfigWavi;
+import 'package:at_wavi_app/utils/colors.dart' as WaviColors;
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
@@ -21,6 +20,8 @@ import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:at_follows_flutter/services/size_config.dart';
+import 'package:at_follows_flutter/utils/color_constants.dart';
 
 class Options extends StatefulWidget {
   final String? name;
@@ -38,6 +39,11 @@ class _OptionsState extends State<Options> {
 
   @override
   void initState() {
+    // for follows package
+    ColorConstants.appColor = Color.fromARGB(255, 0, 183, 184);
+    ColorConstants.darkTheme = false;
+    //
+
     getUser();
     _getThemeData();
     super.initState();
@@ -63,6 +69,8 @@ class _OptionsState extends State<Options> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context); // for follows package
+
     if (_themeData == null) {
       return CircularProgressIndicator();
     }
@@ -122,7 +130,7 @@ class _OptionsState extends State<Options> {
                     ? LoadingDialog().onlyText(
                         'Updating',
                         style: TextStyle(
-                            color: ColorConstants.DARK_GREY,
+                            color: WaviColors.ColorConstants.DARK_GREY,
                             fontSize: 16.toFont,
                             fontWeight: FontWeight.w400,
                             decoration: TextDecoration.none),
@@ -130,7 +138,7 @@ class _OptionsState extends State<Options> {
                     : Transform.scale(
                         scale: 0.7,
                         child: CupertinoSwitch(
-                          activeColor: ColorConstants.black,
+                          activeColor: WaviColors.ColorConstants.black,
                           value: _allPrivate,
                           onChanged: (value) async {
                             await ChangePrivacyService()
