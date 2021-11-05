@@ -17,6 +17,7 @@ import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
 import 'package:at_client/src/service/sync_service.dart';
@@ -165,6 +166,30 @@ class BackendService {
     for (String atsign in atsigns) {
       await KeychainUtil.resetAtSignFromKeychain(atsign);
       atClientServiceMap.remove(atsign);
+    }
+  }
+
+  deleteAtSignFromKeyChain(String atsign) async {
+    List<String>? atSignList = await KeychainUtil.getAtsignList();
+
+    await KeychainUtil.deleteAtSignFromKeychain(atsign);
+
+    if (atSignList != null) {
+      atSignList.removeWhere((element) => element == currentAtSign);
+    }
+
+    var nextAtsignToOnboard;
+    if (atSignList == null || atSignList.isEmpty) {
+      nextAtsignToOnboard = '';
+    } else {
+      nextAtsignToOnboard = atSignList.first;
+    }
+
+    if (nextAtsignToOnboard == '') {
+      await SetupRoutes.pushAndRemoveAll(
+          NavService.navKey.currentContext!, Routes.WELCOME_SCREEN);
+    } else {
+      await onboard(nextAtsignToOnboard);
     }
   }
 

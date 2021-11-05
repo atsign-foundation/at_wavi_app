@@ -24,11 +24,16 @@ class User {
   BasicData instagram;
   BasicData youtube;
   BasicData tumbler;
+  BasicData tiktok;
+  BasicData snapchat;
+  BasicData pinterest;
+  BasicData github;
   BasicData medium;
   BasicData ps4;
   BasicData xbox;
   BasicData steam;
   BasicData discord;
+  BasicData twitch;
   BasicData htmlToastView;
   Map<String, List<BasicData>> customFields;
 
@@ -51,10 +56,15 @@ class User {
       youtube,
       tumbler,
       medium,
+      tiktok,
+      snapchat,
+      pinterest,
+      github,
       ps4,
       xbox,
       steam,
       discord,
+      twitch,
       htmlToastView,
       customFields})
       : this.allPrivate = allPrivate,
@@ -75,10 +85,15 @@ class User {
         this.youtube = youtube ?? BasicData(),
         this.tumbler = tumbler ?? BasicData(),
         this.medium = medium ?? BasicData(),
+        this.tiktok = tiktok ?? BasicData(),
+        this.github = github ?? BasicData(),
+        this.snapchat = snapchat ?? BasicData(),
+        this.pinterest = pinterest ?? BasicData(),
         this.ps4 = ps4 ?? BasicData(),
         this.xbox = xbox ?? BasicData(),
         this.steam = steam ?? BasicData(),
         this.discord = discord ?? BasicData(),
+        this.twitch = twitch ?? BasicData(),
         this.htmlToastView = htmlToastView ?? BasicData(),
         this.customFields = customFields ?? {};
 
@@ -102,6 +117,11 @@ class User {
       FieldsEnum.YOUTUBE.name: user?.youtube,
       FieldsEnum.TUMBLR.name: user?.tumbler,
       FieldsEnum.MEDIUM.name: user?.medium,
+      FieldsEnum.TIKTOK.name: user?.tiktok,
+      FieldsEnum.SNAPCHAT.name: user?.snapchat,
+      FieldsEnum.PINTEREST.name: user?.pinterest,
+      FieldsEnum.GITHUB.name: user?.github,
+      FieldsEnum.TWITCH.name: user?.twitch,
       FieldsEnum.PS4.name: user?.ps4,
       FieldsEnum.XBOX.name: user?.xbox,
       FieldsEnum.STEAM.name: user?.steam,
@@ -224,6 +244,16 @@ class User {
             BasicData.fromJson(json.decode(userMap[FieldsEnum.TUMBLR.name])),
         medium:
             BasicData.fromJson(json.decode(userMap[FieldsEnum.MEDIUM.name])),
+        tiktok:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.TIKTOK.name])),
+        pinterest:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.PINTEREST.name])),
+        github:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.GITHUB.name])),
+        twitch:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.TWITCH.name])),
+        snapchat:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.SNAPCHAT.name])),
         ps4: BasicData.fromJson(json.decode(userMap[FieldsEnum.PS4.name])),
         xbox: BasicData.fromJson(json.decode(userMap[FieldsEnum.XBOX.name])),
         steam: BasicData.fromJson(json.decode(userMap[FieldsEnum.STEAM.name])),
