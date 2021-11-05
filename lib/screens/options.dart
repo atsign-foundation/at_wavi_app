@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:at_backupkey_flutter/widgets/backup_key_widget.dart';
 import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
@@ -69,13 +70,41 @@ class _OptionsState extends State<Options> {
       color: _themeData!.scaffoldBackgroundColor,
       child: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            CustomPersonHorizontalTile(
-              title: widget.name ??
-                  BackendService().atClientInstance.getCurrentAtSign(),
-              subTitle: BackendService().atClientInstance.getCurrentAtSign(),
-              textColor: _themeData!.primaryColor,
-              image: widget.image?.toList(),
+            Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: CustomPersonHorizontalTile(
+                    title: widget.name ??
+                        BackendService().atClientInstance.getCurrentAtSign(),
+                    subTitle:
+                        BackendService().atClientInstance.getCurrentAtSign(),
+                    textColor: _themeData!.primaryColor,
+                    image: widget.image?.toList(),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    padding: EdgeInsets.only(top: 10, left: 10),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Tooltip(
+                        message: 'Backup your keys',
+                        child: BackupKeyWidget(
+                          atClientService: BackendService().atClientInstance,
+                          atsign: AtClientManager.getInstance()
+                              .atClient
+                              .getCurrentAtSign()!,
+                          isIcon: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
             SizedBox(height: 15.toHeight),
             Divider(height: 1),
@@ -344,22 +373,30 @@ class _OptionsState extends State<Options> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    FlatButton(
-                        child: Text('DELETE',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            await BackendService()
-                                .deleteAtSignFromKeyChain(atsign);
-                          }
-                        }),
+                    TextButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          await BackendService()
+                              .deleteAtSignFromKeyChain(atsign);
+                        }
+                      },
+                      child: Text(
+                        'DELETE',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
+                    ),
                     Spacer(),
-                    FlatButton(
-                        child: Text('Cancel',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        })
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
+                    ),
                   ],
                 )
               ],
