@@ -32,7 +32,7 @@ class DesktopProfileTabBar extends StatelessWidget {
             tabs: [
               Container(child: Center(child: Text(Strings.desktop_details))),
               Container(child: Center(child: Text(Strings.desktop_channels))),
-              Container(child: Center(child: Text(Strings.desktop_featured))),
+              // Container(child: Center(child: Text(Strings.desktop_featured))),
             ],
             labelColor: Colors.white,
             unselectedLabelColor: appTheme.primaryTextColor,

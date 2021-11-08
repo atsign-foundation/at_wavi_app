@@ -43,7 +43,7 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
 
   late DesktopProfileDetailsPage profileDetailsPage;
   late DesktopProfileChannelsPage profileChannelsPage;
-  late DesktopProfileFeaturedPage profileFeaturedPage;
+  // late DesktopProfileFeaturedPage profileFeaturedPage;
 
   late List<PopupMenuEntry<String>> menuDetails;
   late List<PopupMenuEntry<String>> menuLocations;
@@ -55,9 +55,9 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
   void initState() {
     profileDetailsPage = DesktopProfileDetailsPage();
     profileChannelsPage = DesktopProfileChannelsPage();
-    profileFeaturedPage = DesktopProfileFeaturedPage();
+    // profileFeaturedPage = DesktopProfileFeaturedPage();
 
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
 
     PopupMenuItem<String> popupMenuItem = PopupMenuItem<String>(
       value: 'reorder',
@@ -214,7 +214,7 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
                     children: [
                       profileDetailsPage,
                       profileChannelsPage,
-                      profileFeaturedPage,
+                      // profileFeaturedPage,
                     ],
                   ),
                   Positioned(
@@ -260,9 +260,9 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
       case 'CHANNELS':
         await profileChannelsPage.showReOrderTabsPopUp();
         break;
-      case 'FEATURED':
-        await profileFeaturedPage.showReOrderTabsPopUp();
-        break;
+      // case 'FEATURED':
+      //   await profileFeaturedPage.showReOrderTabsPopUp();
+      //   break;
     }
   }
 
