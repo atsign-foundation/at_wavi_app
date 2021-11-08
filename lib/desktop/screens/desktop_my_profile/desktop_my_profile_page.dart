@@ -81,6 +81,8 @@ class _DesktopMyProfilePageState extends State<DesktopMyProfilePage> {
             ),
             Expanded(
               child: DesktopProfileDataPage(
+                isMyProfile: true,
+                isEditable: false,
                 onSearchPressed: () {
                   _globalKey.currentState?.openEndDrawer();
                 },

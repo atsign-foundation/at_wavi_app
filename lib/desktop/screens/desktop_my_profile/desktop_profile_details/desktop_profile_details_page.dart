@@ -13,10 +13,13 @@ import 'desktop_profile_details_model.dart';
 import 'desktop_media/desktop_media_page.dart';
 
 class DesktopProfileDetailsPage extends StatefulWidget {
-  final bool isPreview;
+  final bool isMyProfile;
+  final bool isEditable;
+
   DesktopProfileDetailsPage({
     Key? key,
-    this.isPreview = false,
+    required this.isMyProfile,
+    required this.isEditable,
   }) : super(key: key);
 
   _DesktopProfileDetailsPageState _desktopDetailsPageState =
@@ -167,21 +170,24 @@ class _DesktopProfileDetailsPageState extends State<DesktopProfileDetailsPage>
           atCategory: AtCategory.DETAILS,
           hideMenu: true,
           showWelcome: false,
-          isPreview: true,
+          isMyProfile: widget.isMyProfile,
+          isEditable: widget.isEditable,
         );
       case 'About':
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.ADDITIONAL_DETAILS,
           hideMenu: true,
           showWelcome: false,
-          isPreview: true,
+          isMyProfile: widget.isMyProfile,
+          isEditable: widget.isEditable,
         );
       case 'Location':
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.LOCATION,
           hideMenu: true,
           showWelcome: false,
-          isPreview: true,
+          isMyProfile: widget.isMyProfile,
+          isEditable: widget.isEditable,
         );
       default:
         return Container();

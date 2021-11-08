@@ -8,27 +8,26 @@ import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
-import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:showcaseview/showcaseview.dart';
 import 'desktop_main_detail_model.dart';
 import 'desktop_profile_channels/desktop_profile_channels_page.dart';
 import 'desktop_profile_details/desktop_profile_details_page.dart';
-import 'desktop_profile_featured/desktop_profile_featured_page.dart';
 import 'widgets/desktop_profile_tabbar.dart';
 
 class DesktopProfileDataPage extends StatefulWidget {
   final VoidCallback? onSearchPressed;
   final VoidCallback? onSettingPressed;
-  final bool isPreview;
+  final bool isMyProfile;
+  final bool isEditable;
 
   DesktopProfileDataPage({
     Key? key,
     this.onSearchPressed,
     this.onSettingPressed,
-    this.isPreview = false,
+    required this.isMyProfile,
+    required this.isEditable,
   }) : super(key: key);
 
   @override
@@ -43,6 +42,7 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
 
   late DesktopProfileDetailsPage profileDetailsPage;
   late DesktopProfileChannelsPage profileChannelsPage;
+
   // late DesktopProfileFeaturedPage profileFeaturedPage;
 
   late List<PopupMenuEntry<String>> menuDetails;
@@ -53,8 +53,14 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
 
   @override
   void initState() {
-    profileDetailsPage = DesktopProfileDetailsPage();
-    profileChannelsPage = DesktopProfileChannelsPage();
+    profileDetailsPage = DesktopProfileDetailsPage(
+      isMyProfile: widget.isMyProfile,
+      isEditable: widget.isEditable,
+    );
+    profileChannelsPage = DesktopProfileChannelsPage(
+      isMyProfile: widget.isMyProfile,
+      isEditable: widget.isEditable,
+    );
     // profileFeaturedPage = DesktopProfileFeaturedPage();
 
     _tabController = TabController(length: 2, vsync: this);
@@ -162,9 +168,8 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
                   ),
                   Expanded(
                     flex: 1,
-                    child: widget.isPreview
-                        ? Container()
-                        : Row(
+                    child: widget.isMyProfile
+                        ? Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -196,7 +201,8 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
                                 },
                               ),
                             ],
-                          ),
+                          )
+                        : Container(),
                   ),
                 ],
               ),
@@ -217,30 +223,30 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
                       // profileFeaturedPage,
                     ],
                   ),
-                  Positioned(
-                    top: 10,
-                    right: DesktopDimens.paddingLarge,
-                    child: Visibility(
-                      visible: widget.isPreview == false,
-                      child: GestureDetector(
-                        onTapDown: (details) =>
-                            showPopUpMenuAtTap(context, details),
-                        child: Container(
-                          height: 32,
-                          width: 32,
-                          decoration: BoxDecoration(
-                            color: appTheme.secondaryBackgroundColor,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.edit_rounded,
-                            size: 16,
-                            color: appTheme.primaryTextColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Positioned(
+                  //   top: 10,
+                  //   right: DesktopDimens.paddingLarge,
+                  //   child: Visibility(
+                  //     visible: widget.isMyProfile,
+                  //     child: GestureDetector(
+                  //       onTapDown: (details) =>
+                  //           showPopUpMenuAtTap(context, details),
+                  //       child: Container(
+                  //         height: 32,
+                  //         width: 32,
+                  //         decoration: BoxDecoration(
+                  //           color: appTheme.secondaryBackgroundColor,
+                  //           shape: BoxShape.circle,
+                  //         ),
+                  //         child: Icon(
+                  //           Icons.edit_rounded,
+                  //           size: 16,
+                  //           color: appTheme.primaryTextColor,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

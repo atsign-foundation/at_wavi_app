@@ -136,27 +136,32 @@ class _DesktopEditProfilePageState extends State<DesktopEditProfilePage> {
             case DesktopSideMenu.basicDetails:
               return DesktopProfileBasicInfoPage(
                 atCategory: AtCategory.DETAILS,
-                isPreview: false,
+                isMyProfile: true,
+                isEditable: true,
               );
             case DesktopSideMenu.additionalDetails:
               return DesktopProfileBasicInfoPage(
                 atCategory: AtCategory.ADDITIONAL_DETAILS,
-                isPreview: false,
+                isMyProfile: true,
+                isEditable: true,
               );
             case DesktopSideMenu.location:
               return DesktopProfileBasicInfoPage(
                 atCategory: AtCategory.LOCATION,
-                isPreview: false,
+                isMyProfile: true,
+                isEditable: true,
               );
             case DesktopSideMenu.socialChannel:
               return DesktopProfileBasicInfoPage(
                 atCategory: AtCategory.SOCIAL,
-                isPreview: false,
+                isMyProfile: true,
+                isEditable: true,
               );
             case DesktopSideMenu.gameChannel:
               return DesktopProfileBasicInfoPage(
                 atCategory: AtCategory.GAMER,
-                isPreview: false,
+                isMyProfile: true,
+                isEditable: true,
               );
             // case DesktopSideMenu.featuredChannel:
             //   return DesktopProfileBasicInfoPage(atCategory: AtCategory.FEATURED);

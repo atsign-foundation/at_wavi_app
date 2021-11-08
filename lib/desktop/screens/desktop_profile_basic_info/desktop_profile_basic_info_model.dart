@@ -4,10 +4,13 @@ import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 
 class DesktopBasicDetailModel extends ChangeNotifier {
+  final bool isMyProfile;
   final UserPreview userPreview;
+  final UserProvider userProvider;
   final AtCategory atCategory;
 
   List<BasicDataModel> _basicData = [];
@@ -37,7 +40,9 @@ class DesktopBasicDetailModel extends ChangeNotifier {
   }
 
   DesktopBasicDetailModel({
+    required this.isMyProfile,
     required this.userPreview,
+    required this.userProvider,
     required this.atCategory,
   }) {
     try {
@@ -48,10 +53,15 @@ class DesktopBasicDetailModel extends ChangeNotifier {
   }
 
   void fetchBasicData() {
+    User? user;
+    if (isMyProfile) {
+      user = userPreview.user();
+    } else {
+      user = userProvider.user;
+    }
     _basicData.clear();
-    var userMap = User.toJson(userPreview.user());
-    List<BasicData>? customFields =
-        userPreview.user()?.customFields[atCategory.name] ?? [];
+    var userMap = User.toJson(user);
+    List<BasicData>? customFields = user?.customFields[atCategory.name] ?? [];
 
     var fields = <String>[];
     fields = [...FieldNames().getFieldList(atCategory, isPreview: true)];
@@ -83,8 +93,8 @@ class DesktopBasicDetailModel extends ChangeNotifier {
     }
     //
     if (atCategory == AtCategory.LOCATION) {
-      _locationNicknameData = userPreview.user()?.locationNickName;
-      _locationData = userPreview.user()?.location;
+      _locationNicknameData = user?.locationNickName;
+      _locationData = user?.location;
       _basicData.removeWhere((element) {
         return element.data.accountName == _locationNicknameData?.accountName ||
             element.data.accountName == _locationData?.accountName;

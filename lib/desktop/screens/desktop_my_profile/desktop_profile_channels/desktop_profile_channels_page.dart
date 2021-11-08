@@ -11,11 +11,13 @@ import 'package:provider/provider.dart';
 import 'desktop_profile_channels_model.dart';
 
 class DesktopProfileChannelsPage extends StatefulWidget {
-  final bool isPreview;
+  final bool isMyProfile;
+  final bool isEditable;
 
   DesktopProfileChannelsPage({
     Key? key,
-    this.isPreview = false,
+    required this.isMyProfile,
+    required this.isEditable,
   }) : super(key: key);
 
   _DesktopProfileChannelsPageState _desktopChannelsPageState =
@@ -137,14 +139,16 @@ class _DesktopProfileChannelsPageState extends State<DesktopProfileChannelsPage>
           atCategory: AtCategory.SOCIAL,
           hideMenu: true,
           showWelcome: false,
-          isPreview: true,
+          isMyProfile: widget.isMyProfile,
+          isEditable: widget.isEditable,
         );
       case 'Game':
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.GAMER,
           hideMenu: true,
           showWelcome: false,
-          isPreview: true,
+          isMyProfile: widget.isMyProfile,
+          isEditable: widget.isEditable,
         );
       default:
         return Container();

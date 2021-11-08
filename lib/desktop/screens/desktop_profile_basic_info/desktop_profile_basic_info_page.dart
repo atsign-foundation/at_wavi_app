@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:at_wavi_app/common_components/provider_callback.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_my_profile_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_user_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
@@ -26,20 +23,21 @@ import 'desktop_reorder_basic_info/desktop_reorder_basic_info_page.dart';
 import 'widgets/desktop_basic_info_widget.dart';
 import 'widgets/desktop_empty_category_widget.dart';
 import 'widgets/desktop_location_item_widget.dart';
-import 'widgets/desktop_media_item_widget.dart';
 
 class DesktopProfileBasicInfoPage extends StatefulWidget {
   final AtCategory atCategory;
   final bool hideMenu;
   final bool showWelcome;
-  final bool isPreview;
+  final bool isMyProfile;
+  final bool isEditable;
 
   const DesktopProfileBasicInfoPage({
     Key? key,
     required this.atCategory,
     this.hideMenu = false,
     this.showWelcome = true,
-    required this.isPreview,
+    required this.isMyProfile,
+    required this.isEditable,
   }) : super(key: key);
 
   @override
@@ -66,8 +64,11 @@ class _DesktopProfileBasicInfoPageState
     return ChangeNotifierProvider(
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
+        final userProvider = Provider.of<UserProvider>(context);
         _model = DesktopBasicDetailModel(
+          isMyProfile: widget.isMyProfile,
           userPreview: userPreview,
+          userProvider: userProvider,
           atCategory: widget.atCategory,
         );
         return _model;
@@ -174,7 +175,7 @@ class _DesktopProfileBasicInfoPageState
             ),
           ),
           SizedBox(height: DesktopDimens.paddingNormal),
-          if (!widget.isPreview)
+          if (widget.isEditable)
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -190,7 +191,7 @@ class _DesktopProfileBasicInfoPageState
                 ),
               ],
             ),
-          SizedBox(height: DesktopDimens.paddingLarge),
+          if (widget.isEditable) SizedBox(height: DesktopDimens.paddingLarge),
         ],
       ),
     );

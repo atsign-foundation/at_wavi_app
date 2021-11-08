@@ -36,7 +36,8 @@ class _DesktopUserProfilePageState extends State<DesktopUserProfilePage> {
             ),
             Expanded(
               child: DesktopProfileDataPage(
-                isPreview: true,
+                isMyProfile: false,
+                isEditable: false,
                 onSearchPressed: () {},
                 onSettingPressed: () {},
               ),
