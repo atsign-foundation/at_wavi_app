@@ -20,23 +20,23 @@ class DesktopProfileChannelsPage extends StatefulWidget {
     required this.isEditable,
   }) : super(key: key);
 
-  _DesktopProfileChannelsPageState _desktopChannelsPageState =
-      _DesktopProfileChannelsPageState();
+  // _DesktopProfileChannelsPageState _desktopChannelsPageState =
+  //     _DesktopProfileChannelsPageState();
 
   @override
-  _DesktopProfileChannelsPageState createState() => _desktopChannelsPageState;
+  _DesktopProfileChannelsPageState createState() => _DesktopProfileChannelsPageState();
 
-  Future showReOrderTabsPopUp() async {
-    await _desktopChannelsPageState.showReOrderTabsPopUp();
-  }
+  // Future showReOrderTabsPopUp() async {
+  //   await _desktopChannelsPageState.showReOrderTabsPopUp();
+  // }
 
-  Future addFieldToSocial() async {
-    await _desktopChannelsPageState.addFieldToSocial();
-  }
-
-  Future addFieldToGame() async {
-    await _desktopChannelsPageState.addFieldToGame();
-  }
+  // Future addFieldToSocial() async {
+  //   await _desktopChannelsPageState.addFieldToSocial();
+  // }
+  //
+  // Future addFieldToGame() async {
+  //   await _desktopChannelsPageState.addFieldToGame();
+  // }
 }
 
 class _DesktopProfileChannelsPageState extends State<DesktopProfileChannelsPage>
@@ -46,20 +46,20 @@ class _DesktopProfileChannelsPageState extends State<DesktopProfileChannelsPage>
   late TabController _tabController;
   late DesktopProfileChannelsModel _model;
 
-  late DesktopBasicDetailPage desktopSocialAccountPage;
-  late DesktopBasicDetailPage desktopGameAccountPage;
+  // late DesktopBasicDetailPage desktopSocialAccountPage;
+  // late DesktopBasicDetailPage desktopGameAccountPage;
 
   final _pageController = PageController();
 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-    desktopSocialAccountPage = DesktopBasicDetailPage(
-      atCategory: AtCategory.SOCIAL,
-    );
-    desktopGameAccountPage = DesktopBasicDetailPage(
-      atCategory: AtCategory.GAMER,
-    );
+    // desktopSocialAccountPage = DesktopBasicDetailPage(
+    //   atCategory: AtCategory.SOCIAL,
+    // );
+    // desktopGameAccountPage = DesktopBasicDetailPage(
+    //   atCategory: AtCategory.GAMER,
+    // );
 
     super.initState();
   }
@@ -79,13 +79,13 @@ class _DesktopProfileChannelsPageState extends State<DesktopProfileChannelsPage>
     }
   }
 
-  Future addFieldToSocial() async {
-    await desktopSocialAccountPage.addField();
-  }
-
-  Future addFieldToGame() async {
-    await desktopGameAccountPage.addField();
-  }
+  // Future addFieldToSocial() async {
+  //   await desktopSocialAccountPage.addField();
+  // }
+  //
+  // Future addFieldToGame() async {
+  //   await desktopGameAccountPage.addField();
+  // }
 
   @override
   Widget build(BuildContext context) {

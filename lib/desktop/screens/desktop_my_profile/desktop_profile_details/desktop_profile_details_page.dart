@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_basic_info_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_media/desktop_profile_media_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
@@ -32,21 +33,21 @@ class DesktopProfileDetailsPage extends StatefulWidget {
     await _desktopDetailsPageState.showReOrderTabsPopUp();
   }
 
-  Future addMedia() async {
-    await _desktopDetailsPageState.addMedia();
-  }
-
-  Future addFieldToBasicDetail() async {
-    await _desktopDetailsPageState.addFieldToBasicDetail();
-  }
-
-  Future addFieldToAdditionalDetail() async {
-    await _desktopDetailsPageState.addFieldToAdditionalDetail();
-  }
-
-  Future addLocation() async {
-    await _desktopDetailsPageState.addLocation();
-  }
+// Future addMedia() async {
+//   await _desktopDetailsPageState.addMedia();
+// }
+//
+// Future addFieldToBasicDetail() async {
+//   await _desktopDetailsPageState.addFieldToBasicDetail();
+// }
+//
+// Future addFieldToAdditionalDetail() async {
+//   await _desktopDetailsPageState.addFieldToAdditionalDetail();
+// }
+//
+// Future addLocation() async {
+//   await _desktopDetailsPageState.addLocation();
+// }
 }
 
 class _DesktopProfileDetailsPageState extends State<DesktopProfileDetailsPage>
@@ -56,24 +57,24 @@ class _DesktopProfileDetailsPageState extends State<DesktopProfileDetailsPage>
   late TabController _tabController;
   late DesktopProfileDetailsModel _model;
 
-  late DesktopMediaPage desktopMediaPage;
-  late DesktopBasicDetailPage desktopBasicDetailPage;
-  late DesktopBasicDetailPage desktopAdditionalDetailPage;
-  late DesktopBasicDetailPage desktopLocationPage;
+  // late DesktopMediaPage desktopMediaPage;
+  // late DesktopBasicDetailPage desktopBasicDetailPage;
+  // late DesktopBasicDetailPage desktopAdditionalDetailPage;
+  // late DesktopBasicDetailPage desktopLocationPage;
 
   @override
   void initState() {
     _tabController = TabController(length: 4, vsync: this);
-    desktopMediaPage = DesktopMediaPage();
-    desktopBasicDetailPage = DesktopBasicDetailPage(
-      atCategory: AtCategory.DETAILS,
-    );
-    desktopAdditionalDetailPage = DesktopBasicDetailPage(
-      atCategory: AtCategory.ADDITIONAL_DETAILS,
-    );
-    desktopLocationPage = DesktopBasicDetailPage(
-      atCategory: AtCategory.LOCATION,
-    );
+    // desktopMediaPage = DesktopMediaPage();
+    // desktopBasicDetailPage = DesktopBasicDetailPage(
+    //   atCategory: AtCategory.DETAILS,
+    // );
+    // desktopAdditionalDetailPage = DesktopBasicDetailPage(
+    //   atCategory: AtCategory.ADDITIONAL_DETAILS,
+    // );
+    // desktopLocationPage = DesktopBasicDetailPage(
+    //   atCategory: AtCategory.LOCATION,
+    // );
     super.initState();
   }
 
@@ -92,21 +93,21 @@ class _DesktopProfileDetailsPageState extends State<DesktopProfileDetailsPage>
     }
   }
 
-  Future addMedia() async {
-    await desktopMediaPage.addMedia();
-  }
-
-  Future addFieldToBasicDetail() async {
-    await desktopBasicDetailPage.addField();
-  }
-
-  Future addFieldToAdditionalDetail() async {
-    await desktopAdditionalDetailPage.addField();
-  }
-
-  Future addLocation() async {
-    await desktopLocationPage.addField();
-  }
+  // Future addMedia() async {
+  //   await desktopMediaPage.addMedia();
+  // }
+  //
+  // Future addFieldToBasicDetail() async {
+  //   await desktopBasicDetailPage.addField();
+  // }
+  //
+  // Future addFieldToAdditionalDetail() async {
+  //   await desktopAdditionalDetailPage.addField();
+  // }
+  //
+  // Future addLocation() async {
+  //   await desktopLocationPage.addField();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +165,12 @@ class _DesktopProfileDetailsPageState extends State<DesktopProfileDetailsPage>
   Widget getWidget(String field) {
     switch (field) {
       case 'Media':
-        return desktopMediaPage;
+        return DesktopProfileMediaPage(
+          hideMenu: true,
+          showWelcome: false,
+          isMyProfile: widget.isMyProfile,
+          isEditable: widget.isEditable,
+        );
       case 'Contact':
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.DETAILS,
