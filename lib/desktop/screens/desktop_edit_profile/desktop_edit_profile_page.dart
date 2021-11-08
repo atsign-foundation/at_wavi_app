@@ -131,21 +131,33 @@ class _DesktopEditProfilePageState extends State<DesktopEditProfilePage> {
             case DesktopSideMenu.profile:
               // chua co
               return DesktopProfilePicturePage();
-            case DesktopSideMenu.media: 
+            case DesktopSideMenu.media:
               return DesktopMediaPage();
             case DesktopSideMenu.basicDetails:
               return DesktopProfileBasicInfoPage(
-                  atCategory: AtCategory.DETAILS);
+                atCategory: AtCategory.DETAILS,
+                isPreview: false,
+              );
             case DesktopSideMenu.additionalDetails:
               return DesktopProfileBasicInfoPage(
-                  atCategory: AtCategory.ADDITIONAL_DETAILS);
+                atCategory: AtCategory.ADDITIONAL_DETAILS,
+                isPreview: false,
+              );
             case DesktopSideMenu.location:
               return DesktopProfileBasicInfoPage(
-                  atCategory: AtCategory.LOCATION);
+                atCategory: AtCategory.LOCATION,
+                isPreview: false,
+              );
             case DesktopSideMenu.socialChannel:
-              return DesktopProfileBasicInfoPage(atCategory: AtCategory.SOCIAL);
+              return DesktopProfileBasicInfoPage(
+                atCategory: AtCategory.SOCIAL,
+                isPreview: false,
+              );
             case DesktopSideMenu.gameChannel:
-              return DesktopProfileBasicInfoPage(atCategory: AtCategory.GAMER);
+              return DesktopProfileBasicInfoPage(
+                atCategory: AtCategory.GAMER,
+                isPreview: false,
+              );
             // case DesktopSideMenu.featuredChannel:
             //   return DesktopProfileBasicInfoPage(atCategory: AtCategory.FEATURED);
             case DesktopSideMenu.appearance:

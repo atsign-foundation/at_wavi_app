@@ -11,8 +11,11 @@ import 'package:provider/provider.dart';
 import 'desktop_profile_channels_model.dart';
 
 class DesktopProfileChannelsPage extends StatefulWidget {
+  final bool isPreview;
+
   DesktopProfileChannelsPage({
     Key? key,
+    this.isPreview = false,
   }) : super(key: key);
 
   _DesktopProfileChannelsPageState _desktopChannelsPageState =
@@ -102,7 +105,7 @@ class _DesktopProfileChannelsPageState extends State<DesktopProfileChannelsPage>
                     children: [
                       Container(
                         padding:
-                        EdgeInsets.symmetric(vertical: 16, horizontal: 80),
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 80),
                         child: DesktopTabBar(
                           controller: _tabController,
                           tabTitles: model.fields,
@@ -134,12 +137,14 @@ class _DesktopProfileChannelsPageState extends State<DesktopProfileChannelsPage>
           atCategory: AtCategory.SOCIAL,
           hideMenu: true,
           showWelcome: false,
+          isPreview: true,
         );
       case 'Game':
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.GAMER,
           hideMenu: true,
           showWelcome: false,
+          isPreview: true,
         );
       default:
         return Container();

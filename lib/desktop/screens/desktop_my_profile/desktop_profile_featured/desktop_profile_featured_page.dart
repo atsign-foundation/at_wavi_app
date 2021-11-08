@@ -12,8 +12,10 @@ import 'desktop_instagram_page.dart';
 import 'desktop_twitter_page.dart';
 
 class DesktopProfileFeaturedPage extends StatefulWidget {
+  final bool isPreview;
   DesktopProfileFeaturedPage({
     Key? key,
+    this.isPreview = false,
   }) : super(key: key);
 
   _DesktopProfileFeaturedPageState _desktopFeaturedPageState =

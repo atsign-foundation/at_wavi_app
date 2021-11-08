@@ -162,11 +162,13 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
 
   Widget _buildHeader() {
     return Container(
-      height: 120,
       child: Stack(
         children: [
-          Center(
-            child: DesktopLogo(),
+          Container(
+            padding: EdgeInsets.only(top: DesktopDimens.paddingLarge),
+            child: Center(
+              child: DesktopLogo(),
+            ),
           ),
           Positioned(
             top: 10,

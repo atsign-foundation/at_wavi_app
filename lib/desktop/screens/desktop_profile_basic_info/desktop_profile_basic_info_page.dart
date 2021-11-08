@@ -32,12 +32,14 @@ class DesktopProfileBasicInfoPage extends StatefulWidget {
   final AtCategory atCategory;
   final bool hideMenu;
   final bool showWelcome;
+  final bool isPreview;
 
   const DesktopProfileBasicInfoPage({
     Key? key,
     required this.atCategory,
     this.hideMenu = false,
     this.showWelcome = true,
+    required this.isPreview,
   }) : super(key: key);
 
   @override
@@ -172,21 +174,22 @@ class _DesktopProfileBasicInfoPageState
             ),
           ),
           SizedBox(height: DesktopDimens.paddingNormal),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              if (widget.atCategory != AtCategory.LOCATION)
-                DesktopWhiteButton(
-                  title: 'Reorder',
-                  onPressed: _showReorderDetailPopup,
+          if (!widget.isPreview)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                if (widget.atCategory != AtCategory.LOCATION)
+                  DesktopWhiteButton(
+                    title: 'Reorder',
+                    onPressed: _showReorderDetailPopup,
+                  ),
+                SizedBox(width: 12),
+                DesktopButton(
+                  title: 'Save & Next',
+                  onPressed: _handleSaveAndNext,
                 ),
-              SizedBox(width: 12),
-              DesktopButton(
-                title: 'Save & Next',
-                onPressed: _handleSaveAndNext,
-              ),
-            ],
-          ),
+              ],
+            ),
           SizedBox(height: DesktopDimens.paddingLarge),
         ],
       ),

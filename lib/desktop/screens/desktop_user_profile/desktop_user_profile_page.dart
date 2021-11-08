@@ -1,3 +1,4 @@
+import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_profile_data_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -34,7 +35,11 @@ class _DesktopUserProfilePageState extends State<DesktopUserProfilePage> {
               color: appTheme.separatorColor,
             ),
             Expanded(
-              child: DesktopProfilePrivatePage(),
+              child: DesktopProfileDataPage(
+                isPreview: true,
+                onSearchPressed: () {},
+                onSettingPressed: () {},
+              ),
             ),
           ],
         ),

@@ -19,21 +19,23 @@ import 'desktop_profile_details/desktop_profile_details_page.dart';
 import 'desktop_profile_featured/desktop_profile_featured_page.dart';
 import 'widgets/desktop_profile_tabbar.dart';
 
-class DesktopMainDetailPage extends StatefulWidget {
+class DesktopProfileDataPage extends StatefulWidget {
   final VoidCallback? onSearchPressed;
   final VoidCallback? onSettingPressed;
+  final bool isPreview;
 
-  DesktopMainDetailPage({
+  DesktopProfileDataPage({
     Key? key,
     this.onSearchPressed,
     this.onSettingPressed,
+    this.isPreview = false,
   }) : super(key: key);
 
   @override
-  _DesktopMainDetailPageState createState() => _DesktopMainDetailPageState();
+  _DesktopProfileDataPageState createState() => _DesktopProfileDataPageState();
 }
 
-class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
+class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
     with SingleTickerProviderStateMixin {
   late PageController _pageController;
 
@@ -160,36 +162,41 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
                   ),
                   Expanded(
                     flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        DesktopIconButton(
-                          iconData: Icons.search,
-                          iconColor: appTheme.primaryTextColor,
-                          backgroundColor: appTheme.secondaryBackgroundColor,
-                          onPressed: () {
-                            widget.onSearchPressed?.call();
-                          },
-                        ),
-                        SizedBox(width: DesktopDimens.paddingSmall),
-                        DesktopIconButton(
-                          iconData: Icons.notifications,
-                          iconColor: appTheme.primaryTextColor,
-                          backgroundColor: appTheme.secondaryBackgroundColor,
-                          onPressed: _showNotificationPopup,
-                        ),
-                        SizedBox(width: DesktopDimens.paddingSmall),
-                        DesktopIconButton(
-                          iconData: Icons.more_vert,
-                          iconColor: appTheme.primaryTextColor,
-                          backgroundColor: appTheme.secondaryBackgroundColor,
-                          onPressed: () {
-                            widget.onSettingPressed?.call();
-                          },
-                        ),
-                      ],
-                    ),
+                    child: widget.isPreview
+                        ? Container()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              DesktopIconButton(
+                                iconData: Icons.search,
+                                iconColor: appTheme.primaryTextColor,
+                                backgroundColor:
+                                    appTheme.secondaryBackgroundColor,
+                                onPressed: () {
+                                  widget.onSearchPressed?.call();
+                                },
+                              ),
+                              SizedBox(width: DesktopDimens.paddingSmall),
+                              DesktopIconButton(
+                                iconData: Icons.notifications,
+                                iconColor: appTheme.primaryTextColor,
+                                backgroundColor:
+                                    appTheme.secondaryBackgroundColor,
+                                onPressed: _showNotificationPopup,
+                              ),
+                              SizedBox(width: DesktopDimens.paddingSmall),
+                              DesktopIconButton(
+                                iconData: Icons.more_vert,
+                                iconColor: appTheme.primaryTextColor,
+                                backgroundColor:
+                                    appTheme.secondaryBackgroundColor,
+                                onPressed: () {
+                                  widget.onSettingPressed?.call();
+                                },
+                              ),
+                            ],
+                          ),
                   ),
                 ],
               ),
@@ -213,20 +220,23 @@ class _DesktopMainDetailPageState extends State<DesktopMainDetailPage>
                   Positioned(
                     top: 10,
                     right: DesktopDimens.paddingLarge,
-                    child: GestureDetector(
-                      onTapDown: (details) =>
-                          showPopUpMenuAtTap(context, details),
-                      child: Container(
-                        height: 32,
-                        width: 32,
-                        decoration: BoxDecoration(
-                          color: appTheme.secondaryBackgroundColor,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.edit_rounded,
-                          size: 16,
-                          color: appTheme.primaryTextColor,
+                    child: Visibility(
+                      visible: widget.isPreview == false,
+                      child: GestureDetector(
+                        onTapDown: (details) =>
+                            showPopUpMenuAtTap(context, details),
+                        child: Container(
+                          height: 32,
+                          width: 32,
+                          decoration: BoxDecoration(
+                            color: appTheme.secondaryBackgroundColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.edit_rounded,
+                            size: 16,
+                            color: appTheme.primaryTextColor,
+                          ),
                         ),
                       ),
                     ),
