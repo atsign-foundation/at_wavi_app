@@ -183,6 +183,87 @@ valueOf(String property) {
   return '';
 }
 
+enum SocialLinks {
+  TWITTER,
+  FACEBOOK,
+  // LINKEDIN,
+  INSTAGRAM,
+  // YOUTUBE,
+  MEDIUM,
+  TUMBLR,
+  // TIKTOK,
+  ////
+  // SNAPCHAT,
+  // PINTEREST,
+  GITHUB,
+  // PS4,
+  // XBOX,
+  // STEAM,
+  // DISCORD,
+  // TWITCH,
+}
+
+extension SocialLinksValues on SocialLinks {
+  String get name {
+    return this.toString().split('.').last.toLowerCase();
+  }
+}
+
+SocialLinks? valueOfSocialLink(String? property) {
+  if (property == null) {
+    return null;
+  }
+
+  for (var field in SocialLinks.values) {
+    if (property.toLowerCase() == field.name.toString().toLowerCase()) {
+      return field;
+    }
+  }
+  return null;
+}
+
+String? clickableLink(SocialLinks _social, String _userName) {
+  switch (_social) {
+    case SocialLinks.TWITTER:
+      return 'https://twitter.com/$_userName';
+    case SocialLinks.FACEBOOK:
+      return 'https://facebook.com/$_userName';
+    // case SocialLinks.LINKEDIN:
+    //   return 'https://twitter.com';
+    case SocialLinks.INSTAGRAM:
+      return 'https://instagram.com/$_userName';
+    // case SocialLinks.YOUTUBE:
+    //   return 'https://youtube.com';
+    case SocialLinks.MEDIUM:
+      return 'https://medium.com/$_userName';
+    case SocialLinks.TUMBLR:
+      return 'https://$_userName/tumblr.com';
+    // case SocialLinks.TIKTOK:
+    //   return 'https://TIKTOK.com';
+    ////
+    // case SocialLinks.SNAPCHAT:
+    //   return 'https://SNAPCHAT.com';
+    // case SocialLinks.PINTEREST:
+    //   return 'https://pinterest.com';
+    case SocialLinks.GITHUB:
+      return 'https://github.com/$_userName';
+    // case SocialLinks.TWITTER:
+    //   return 'https://twitter.com';
+    // case SocialLinks.TWITTER:
+    //   return 'https://twitter.com';
+    // case SocialLinks.TWITTER:
+    //   return 'https://twitter.com';
+    // case SocialLinks.TWITTER:
+    //   return 'https://twitter.com';
+    // case SocialLinks.TWITTER:
+    //   return 'https://twitter.com';
+
+    ///
+    default:
+      return null;
+  }
+}
+
 // enum CATEGORY { DETAILS, ADDITIONAL_DETAILS, LOCATION, SOCIAL, GAMER, FEATURED }
 
 /// new app doesnt have IMAGE

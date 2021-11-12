@@ -42,6 +42,7 @@ dependencies:
   validators: ^3.0.0
   latlong2: ^0.8.0
   image_cropper: ^1.4.1
+  url_launcher: ^6.0.12
   
   html_editor_enhanced: ^2.3.0
   flutter_widget_from_html: ^0.6.2
@@ -62,7 +63,9 @@ dependencies:
 
 dependency_overrides:
   flutter_colorpicker: ^0.6.0 #because html_editor_enhanced uses 0.4.0, which gives flutter event errors
-
+  at_persistence_secondary_server: 3.0.5
+  at_persistence_spec: 2.0.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
