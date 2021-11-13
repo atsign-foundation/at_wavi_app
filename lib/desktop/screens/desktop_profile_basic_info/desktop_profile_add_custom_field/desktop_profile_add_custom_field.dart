@@ -20,15 +20,24 @@ import 'widgets/desktop_html_editor_page.dart';
 import 'widgets/desktop_html_preview_page.dart';
 
 class DesktopProfileAddCustomField extends StatefulWidget {
+  final String title;
   final AtCategory atCategory;
   final BasicData? data;
-  final bool isOnlyAddImage;
+  final List<CustomContentType> allowContentType;
 
   DesktopProfileAddCustomField({
     Key? key,
-    this.isOnlyAddImage = false,
+    this.title = Strings.desktop_add_custom_content,
     required this.atCategory,
     this.data,
+    this.allowContentType = const [
+      CustomContentType.Text,
+      CustomContentType.Link,
+      CustomContentType.Number,
+      CustomContentType.Image,
+      CustomContentType.Youtube,
+      CustomContentType.Html,
+    ],
   }) : super(key: key);
 
   @override
@@ -39,23 +48,10 @@ class DesktopProfileAddCustomField extends StatefulWidget {
 class _DesktopProfileAddCustomFieldState
     extends State<DesktopProfileAddCustomField> {
   late DesktopAddBasicDetailModel _model;
-
-  late var contentDropDown;
-
   bool _isUpdate = false;
 
   @override
   void initState() {
-    contentDropDown = widget.isOnlyAddImage
-        ? [CustomContentType.Image]
-        : [
-            CustomContentType.Text,
-            CustomContentType.Link,
-            CustomContentType.Number,
-            CustomContentType.Image,
-            CustomContentType.Youtube,
-            CustomContentType.Html,
-          ];
     super.initState();
     _isUpdate = widget.data != null;
     if (widget.data != null) {}
@@ -71,6 +67,7 @@ class _DesktopProfileAddCustomFieldState
           userPreview: userPreview,
           atCategory: widget.atCategory,
           originBasicData: widget.data,
+          allowContentType: widget.allowContentType,
         );
         // _model.setIsOnlyAddMedia(widget.isOnlyAddImage);
         return _model;
@@ -89,9 +86,7 @@ class _DesktopProfileAddCustomFieldState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.isOnlyAddImage
-                      ? Strings.desktop_add_media
-                      : Strings.desktop_add_custom_content,
+                  widget.title,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -140,7 +135,7 @@ class _DesktopProfileAddCustomFieldState
               borderSide: BorderSide(color: appTheme.primaryColor),
             ),
           ),
-          value: model.fieldType,
+          value: model.fieldType ?? widget.allowContentType.first,
           icon: Icon(Icons.keyboard_arrow_down),
           style: TextStyle(
             fontSize: 16,
@@ -158,7 +153,7 @@ class _DesktopProfileAddCustomFieldState
               _model.changeField(newValue);
             }
           },
-          items: contentDropDown.map<DropdownMenuItem<CustomContentType>>(
+          items: widget.allowContentType.map<DropdownMenuItem<CustomContentType>>(
               (CustomContentType value) {
             return DropdownMenuItem<CustomContentType>(
               value: value,
@@ -243,8 +238,7 @@ class _DesktopProfileAddCustomFieldState
       margin: EdgeInsets.all(DesktopDimens.paddingSmall),
       child: Image.memory(uInt8list),
       decoration: BoxDecoration(
-        border: Border.all(color: appTheme.secondaryTextColor, width: 1)
-      ),
+          border: Border.all(color: appTheme.secondaryTextColor, width: 1)),
     );
     // } else {
     //   return DesktopVideoThumbnailWidget(

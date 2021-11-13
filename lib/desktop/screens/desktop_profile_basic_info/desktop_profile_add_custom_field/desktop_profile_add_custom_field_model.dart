@@ -33,14 +33,20 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
   final showHideController = ShowHideController(isShow: true);
 
   final BasicData? originBasicData;
+  final List<CustomContentType> allowContentType;
 
   DesktopAddBasicDetailModel({
     required this.userPreview,
     required this.atCategory,
+    required this.allowContentType,
     this.originBasicData,
   }) {
     titleTextController.text = originBasicData?.accountName ?? '';
-    _fieldType = customContentNameToType(originBasicData?.type);
+    if (originBasicData?.type != null) {
+      _fieldType = customContentNameToType(originBasicData?.type);
+    } else {
+      _fieldType = allowContentType.first;
+    }
     if (originBasicData?.value is String) {
       valueContentTextController.text = originBasicData?.value;
     } else if (originBasicData?.value is Uint8List) {
@@ -78,7 +84,7 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
     } else {
       _basicData.value = selectedMedia;
     }
-    _basicData.type = fieldType.name;
+    _basicData.type = fieldType?.name;
     // await updateDefinedFields(
     //   context,
     //   _basicData!,
@@ -109,7 +115,7 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
     } else {
       _basicData.value = selectedMedia;
     }
-    _basicData.type = fieldType.name;
+    _basicData.type = fieldType?.name;
 
     List<BasicData>? customFields =
         userPreview.user()!.customFields[atCategory.name];

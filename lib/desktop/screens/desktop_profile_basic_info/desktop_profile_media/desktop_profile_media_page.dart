@@ -56,6 +56,9 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
   @override
   void initState() {
     super.initState();
+    Provider.of<UserPreview>(context).addListener(() {
+
+    });
   }
 
   @override
@@ -139,21 +142,9 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
                     ),
                   ),
                   Spacer(),
-                  if (widget.atCategory != AtCategory.LOCATION)
-                    DesktopIconLabelButton(
-                      iconData: Icons.add_circle_outline_sharp,
-                      label: 'Custom Content',
-                      onPressed: _showAddCustomContent,
-                    ),
-                  if (widget.atCategory == AtCategory.LOCATION)
-                    DesktopIconLabelButton(
-                      iconData: Icons.add_circle_outline_sharp,
-                      label: 'Add location',
-                      onPressed: _showAddLocation,
-                    ),
                   DesktopIconButton(
-                    iconData: Icons.edit_rounded,
-                    onPressed: _showAddDetailPopup,
+                    iconData: Icons.add_circle_outline_sharp,
+                    onPressed: _showAddCustomContent,
                   ),
                   SizedBox(width: 10),
                   DesktopPreviewButton(
@@ -232,6 +223,9 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
         backgroundColor: Colors.transparent,
         child: DesktopProfileAddCustomField(
           atCategory: widget.atCategory,
+          allowContentType: [
+            CustomContentType.Image,
+          ],
         ),
       ),
     );
