@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:at_common_flutter/at_common_flutter.dart';
+import 'package:at_location_flutter/utils/constants/colors.dart';
 import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/screens/edit_persona/html_editor_screen.dart';
@@ -104,23 +105,42 @@ class _AddCustomFieldState extends State<AddCustomField> {
               padding: const EdgeInsets.only(left: 8.0, right: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.arrow_back),
-                        SizedBox(width: 5),
-                        Text(
-                          'Add custom content',
-                          style: TextStyles.boldText(_themeData!.primaryColor,
-                              size: 16),
-                        ),
-                      ],
-                    ),
+                children: [
+                  Row(
+                    children: [
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Icon(Icons.arrow_back)),
+                      SizedBox(width: 5),
+                      Text(
+                        'Add custom content',
+                        style: TextStyles.boldText(_themeData!.primaryColor,
+                            size: 16),
+                      ),
+                    ],
                   ),
+                  _fieldType == CustomContentType.Html
+                      ? Tooltip(
+                          message: 'Use this to paste html content',
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  _themeData!.primaryColor),
+                            ),
+                            onPressed: () {
+                              _pasteHtml(basicData.valueDescription ?? '');
+                            },
+                            child: Text(
+                              'Paste html',
+                              style: TextStyles.lightText(
+                                  _themeData!.scaffoldBackgroundColor,
+                                  size: 16),
+                            ),
+                          ),
+                        )
+                      : SizedBox(),
                 ],
               ),
             ),
@@ -166,93 +186,58 @@ class _AddCustomFieldState extends State<AddCustomField> {
                         textInputAction: TextInputAction.done,
                       ),
                       Divider(thickness: 1, height: 1),
-                      SizedBox(height: 30),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Body',
-                              style: TextStyles.lightText(
-                                  _themeData!.primaryColor.withOpacity(0.5),
-                                  size: 16),
+                      SizedBox(
+                          height:
+                              _fieldType == CustomContentType.Html ? 0 : 30),
+                      _fieldType == CustomContentType.Html
+                          ? SizedBox()
+                          : Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                'Body',
+                                style: TextStyles.lightText(
+                                    _themeData!.primaryColor.withOpacity(0.5),
+                                    size: 16),
+                              ),
                             ),
-                            _fieldType == CustomContentType.Html
-                                ? Row(
-                                    children: [
-                                      Tooltip(
-                                        message:
-                                            'Use this to paste html content',
-                                        child: ElevatedButton(
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    _themeData!.primaryColor),
-                                          ),
-                                          onPressed: () {
-                                            _pasteHtml(
-                                                basicData.valueDescription ??
-                                                    '');
-                                          },
-                                          child: Text(
-                                            'Paste html',
-                                            style: TextStyles.lightText(
-                                                _themeData!
-                                                    .scaffoldBackgroundColor,
-                                                size: 16),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : SizedBox(),
-                          ],
-                        ),
-                      ),
                       SizedBox(
                         height: _fieldType == CustomContentType.Html
                             ? 7.toHeight
                             : 0,
                       ),
                       _fieldType == CustomContentType.Html
-                          ? InkWell(
-                              onTap: () async {
-                                var value = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HtmlEditorScreen(
-                                            initialText:
-                                                basicData.valueDescription,
-                                          )),
-                                );
-                                setState(() {
-                                  _htmlEditorKey =
-                                      UniqueKey(); // to re-render the html editor
-                                  basicData.valueDescription = value;
-                                });
-                              },
-                              child: AbsorbPointer(
-                                child: HtmlEditor(
-                                  key: _htmlEditorKey,
-                                  controller: controller, //required
-                                  htmlToolbarOptions: HtmlToolbarOptions(
-                                      // toolbarType: ToolbarType.nativeGrid,
-                                      ),
-                                  htmlEditorOptions: HtmlEditorOptions(
-                                    hint: "Your text here...",
-                                    initialText: basicData.valueDescription,
-                                    shouldEnsureVisible: true,
-                                  ),
-                                  otherOptions: OtherOptions(
-                                    height: 200,
-                                  ),
-                                  callbacks: Callbacks(
-                                      onBeforeCommand: (String? currentHtml) {},
-                                      onChangeContent: (String? changed) {
-                                        // print('content changed to $changed');
-                                        basicData.valueDescription = changed;
-                                      }),
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 16.toWidth,
+                                  vertical: 12.toHeight),
+                              child: InkWell(
+                                onTap: () async {
+                                  var value = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HtmlEditorScreen(
+                                              initialText:
+                                                  basicData.valueDescription,
+                                            )),
+                                  );
+                                  setState(() {
+                                    _htmlEditorKey =
+                                        UniqueKey(); // to re-render the html editor
+                                    basicData.valueDescription = value;
+                                  });
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Go to HTML editor',
+                                      style: TextStyles.lightText(
+                                          _themeData!.primaryColor,
+                                          size: 14),
+                                    ),
+                                    Icon(Icons.arrow_forward_sharp)
+                                  ],
                                 ),
                               ),
                             )
@@ -299,6 +284,35 @@ class _AddCustomFieldState extends State<AddCustomField> {
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.done,
                             ),
+                      _fieldType == CustomContentType.Html
+                          ? Divider(thickness: 1, height: 1)
+                          : SizedBox(),
+                      _fieldType == CustomContentType.Html
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 16.toWidth,
+                                  vertical: 12.toHeight),
+                              child: customInputField.CustomInputField(
+                                width: double.infinity,
+                                hintText: 'Preview (non editable)',
+                                hintTextColor: Theme.of(context)
+                                    .primaryColor
+                                    .withOpacity(0.5),
+                                bgColor: AllColors().INPUT_GREY_BACKGROUND,
+                                textColor: Theme.of(context).primaryColor,
+                                initialValue:
+                                    ('Preview (non editable)' + '\n\n') +
+                                        (basicData.valueDescription ?? ''),
+                                baseOffset:
+                                    (basicData.valueDescription ?? '').length,
+                                height: 250,
+                                maxLines: 2,
+                                expands: true,
+                                value: (str) {},
+                                isReadOnly: true,
+                              ),
+                            )
+                          : SizedBox(),
                       Divider(thickness: 1, height: 1),
                       _fieldType == CustomContentType.Html
                           ? SizedBox()
@@ -589,7 +603,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
                       hintText: 'Paste html here',
                       hintTextColor:
                           Theme.of(context).primaryColor.withOpacity(0.5),
-                      bgColor: Colors.transparent,
+                      bgColor: AllColors().INPUT_GREY_BACKGROUND,
                       textColor: Theme.of(context).primaryColor,
                       initialValue: _initialText,
                       baseOffset: _initialText.length,
