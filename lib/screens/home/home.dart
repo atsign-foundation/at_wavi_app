@@ -308,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             .showSnackBar(SnackBar(
                                           backgroundColor: ColorConstants.RED,
                                           content: Text(
-                                            'This is a Preview',
+                                            'You are currently in preview mode',
                                             style: CustomTextStyles
                                                 .customTextStyle(
                                               ColorConstants.white,
@@ -322,20 +322,36 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           NavService.navKey.currentContext!,
                                           Routes.EDIT_PERSONA);
                                     },
-                              child: Text(
-                                _isSearchScreen
-                                    ? (Provider.of<FollowService>(
-                                                NavService
-                                                    .navKey.currentContext!,
-                                                listen: false)
-                                            .isFollowing(_currentUser.atsign)
-                                        ? 'Following'
-                                        : 'Follow')
-                                    : 'Edit Profile',
-                                style: TextStyle(
-                                    fontSize: 16.toFont,
-                                    color: _themeData!.primaryColor
-                                        .withOpacity(0.5)),
+                              child: Row(
+                                mainAxisAlignment: _isSearchScreen
+                                    ? MainAxisAlignment.center
+                                    : MainAxisAlignment.start,
+                                children: [
+                                  if (!_isSearchScreen)
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12.toWidth),
+                                      child: Icon(Icons.edit,
+                                          color: _themeData!.primaryColor
+                                              .withOpacity(0.5)),
+                                    ),
+                                  Text(
+                                    _isSearchScreen
+                                        ? (Provider.of<FollowService>(
+                                                    NavService
+                                                        .navKey.currentContext!,
+                                                    listen: false)
+                                                .isFollowing(
+                                                    _currentUser.atsign)
+                                            ? 'Following'
+                                            : 'Follow')
+                                        : 'Edit',
+                                    style: TextStyle(
+                                        fontSize: 16.toFont,
+                                        color: _themeData!.primaryColor
+                                            .withOpacity(0.5)),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -360,7 +376,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             .showSnackBar(SnackBar(
                                           backgroundColor: ColorConstants.RED,
                                           content: Text(
-                                            'This is a Preview',
+                                            'You are currently in preview mode',
                                             style: CustomTextStyles
                                                 .customTextStyle(
                                               ColorConstants.white,

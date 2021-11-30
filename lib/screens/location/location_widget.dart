@@ -280,7 +280,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
-                        child: Text('Tag',
+                        child: Text('Title',
                             style: TextStyles.lightText(
                                 _themeData!.primaryColor.withOpacity(0.5),
                                 size: 16)),
@@ -292,7 +292,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                           borderColor: Colors.transparent,
                           focusedBorderColor: Colors.transparent,
                           width: double.infinity,
-                          hintText: 'Enter the tag',
+                          // hintText: 'Enter the tag',
                           hintTextColor:
                               _themeData!.primaryColor.withOpacity(0.5),
                           bgColor: Colors.transparent,
