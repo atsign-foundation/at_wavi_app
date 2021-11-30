@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
@@ -286,6 +287,17 @@ class BasicData {
       this.type,
       this.valueDescription});
 
+  String? get displayingAccountName {
+    if (FieldNames().basicDetailsFields.contains(accountName) ||
+        FieldNames().additionalDetailsFields.contains(accountName) ||
+        FieldNames().socialAccountsFields.contains(accountName) ||
+        FieldNames().gameFields.contains(accountName)) {
+      return accountName?.toCapitalized();
+    } else {
+      return accountName;
+    }
+  }
+
   factory BasicData.fromJson(Map<String, dynamic> json) {
     if (json['value'] != null &&
         json['accountName'] != null &&
@@ -384,3 +396,7 @@ BasicData formData(name, value, {private, type, valueDescription}) {
 //       break;
 //   }
 // }
+extension StringCasingExtension on String {
+  String toCapitalized() =>
+      this.length > 0 ? '${this[0].toUpperCase()}${this.substring(1)}' : '';
+}

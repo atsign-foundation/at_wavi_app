@@ -127,7 +127,7 @@ class _EditPersonaState extends State<EditPersona>
             iconTheme: IconThemeData(color: _themeData!.primaryColor),
             toolbarHeight: 55,
             title: Text(
-              'Edit Persona',
+              'Edit',
               style: CustomTextStyles.customBoldTextStyle(
                   _themeData!.primaryColor,
                   size: 16),

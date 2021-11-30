@@ -25,7 +25,7 @@ class CotentEdit extends StatefulWidget {
 class _CotentEditState extends State<CotentEdit> {
   var contentHeadings = [
     {
-      'heading': 'Profile picture',
+      'heading': 'Picture',
       'category': AtCategory.IMAGE,
       'route': '',
     },
@@ -314,7 +314,7 @@ class _CotentEditState extends State<CotentEdit> {
         widget = Column(
           children: [
             ContentEditFieldCard(
-              title: basicData.accountName!,
+              title: basicData.displayingAccountName ?? '',
               subtitle: basicData.value,
               theme: this.widget.themeData,
               isPrivate: basicData.isPrivate,
@@ -419,7 +419,7 @@ class _CotentEditState extends State<CotentEdit> {
       fieldCard = SizedBox(
         width: double.infinity,
         child: ContentEditFieldCard(
-          title: isLocation ? '' : basicData.accountName!,
+          title: isLocation ? '' : basicData.displayingAccountName ?? '',
           subtitle: isLocation ? basicData.accountName! : basicData.value,
           theme: widget.themeData,
           isPrivate: basicData.isPrivate,

@@ -82,7 +82,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
       bottomSheet: InkWell(
         onTap: () {
           if ((_data.accountName == null) || (_data.accountName == '')) {
-            return _showToast('Enter Location tag', isError: true);
+            return _showToast('Title is required', isError: true);
           }
 
           if (_data.accountName != null) {
@@ -94,7 +94,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
             FieldOrderService()
                 .addNewField(AtCategory.LOCATION, _data.accountName!);
           } else {
-            _showToast('Enter Location', isError: true);
+            _showToast('Location is required', isError: true);
           }
         },
         child: Container(
@@ -153,7 +153,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
-                child: Text('Tag',
+                child: Text('Title',
                     style: TextStyles.lightText(
                         Theme.of(context).primaryColor.withOpacity(0.5),
                         size: 16)),
@@ -165,7 +165,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                   borderColor: Colors.transparent,
                   focusedBorderColor: Colors.transparent,
                   width: double.infinity,
-                  hintText: 'Enter the tag',
+                  // hintText: 'Enter the tag',
                   hintTextColor:
                       Theme.of(context).primaryColor.withOpacity(0.5),
                   bgColor: Colors.transparent,
@@ -327,7 +327,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
         (_osmData.latitude == 'null') ||
         (_osmData.longitude == null) ||
         (_osmData.longitude == 'null')) {
-      _showToast('Enter Location', isError: true);
+      _showToast('Location is required', isError: true);
       return;
     }
 

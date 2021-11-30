@@ -146,11 +146,11 @@ class _AddCustomFieldState extends State<AddCustomField> {
                       TextFormField(
                         validator: (value) {
                           if (value == null || value == '') {
-                            return 'Please provide value';
+                            return 'Title is required';
                           }
                           return null;
                         },
-                        initialValue: basicData.accountName,
+                        initialValue: basicData.displayingAccountName ?? '',
                         onChanged: (String value) {
                           basicData.accountName = value;
                         },
@@ -268,17 +268,22 @@ class _AddCustomFieldState extends State<AddCustomField> {
                                   return null;
                                 }
                                 if (value == null || value == '') {
-                                  return 'Please provide value';
+                                  return 'Body is required';
                                 }
                                 if (_fieldType == CustomContentType.Link &&
                                     !UserPreview().isFormDataValid(
                                         value, CustomContentType.Link)) {
-                                  return 'Please provide valid link';
+                                  return 'Please add a link/url';
                                 }
                                 if (_fieldType == CustomContentType.Youtube &&
                                     !UserPreview().isFormDataValid(
                                         value, CustomContentType.Youtube)) {
-                                  return 'Please provide youtube link';
+                                  return 'Please add a valid youtube link/url';
+                                }
+                                if (_fieldType == CustomContentType.Number &&
+                                    !UserPreview().isFormDataValid(
+                                        value, CustomContentType.Number)) {
+                                  return 'Please add a number';
                                 }
                                 return null;
                               },
@@ -653,7 +658,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
 
   _onSave() {
     if (_fieldType == CustomContentType.Image && !isImageSelected) {
-      CommonFunctions().showSnackBar('Please add image');
+      CommonFunctions().showSnackBar('Please add an image');
       return;
     }
     checkFormValidation();
@@ -690,7 +695,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
 
     /// validation needed for html body
     if (basicData.value == null || basicData.value == '') {
-      CommonFunctions().showSnackBar('Form data not valid');
+      CommonFunctions().showSnackBar('Please fill in the required fields');
       return;
     }
 
@@ -712,7 +717,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
 
   checkFormValidation() {
     if (!_formKey.currentState!.validate()) {
-      CommonFunctions().showSnackBar('Form data not valid');
+      CommonFunctions().showSnackBar('Please fill in the required fields');
     }
   }
 

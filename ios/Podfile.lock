@@ -1,8 +1,6 @@
 PODS:
   - at_backupkey_flutter (0.0.1):
     - Flutter
-  - at_chat_flutter (0.0.1):
-    - Flutter
   - at_contacts_flutter (0.0.1):
     - Flutter
   - at_follows_flutter (0.0.1):
@@ -64,6 +62,8 @@ PODS:
     - Flutter
   - flutter_keychain (0.0.1):
     - Flutter
+  - flutter_local_notifications (0.0.1):
+    - Flutter
   - flutter_qr_reader (0.0.1):
     - Flutter
   - fluttertoast (0.0.2):
@@ -76,6 +76,9 @@ PODS:
     - Flutter
   - geolocator_apple (1.0.0):
     - Flutter
+  - image_cropper (0.0.4):
+    - Flutter
+    - TOCropViewController (~> 2.6.0)
   - just_audio (0.0.1):
     - Flutter
   - libwebp (1.2.0):
@@ -110,6 +113,7 @@ PODS:
     - FMDB (>= 2.7.5)
   - SwiftyGif (5.4.0)
   - Toast (4.0.0)
+  - TOCropViewController (2.6.0)
   - url_launcher (0.0.1):
     - Flutter
   - video_player (0.0.1):
@@ -121,7 +125,6 @@ PODS:
 
 DEPENDENCIES:
   - at_backupkey_flutter (from `.symlinks/plugins/at_backupkey_flutter/ios`)
-  - at_chat_flutter (from `.symlinks/plugins/at_chat_flutter/ios`)
   - at_contacts_flutter (from `.symlinks/plugins/at_contacts_flutter/ios`)
   - at_follows_flutter (from `.symlinks/plugins/at_follows_flutter/ios`)
   - at_location_flutter (from `.symlinks/plugins/at_location_flutter/ios`)
@@ -133,10 +136,12 @@ DEPENDENCIES:
   - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - flutter_keychain (from `.symlinks/plugins/flutter_keychain/ios`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_qr_reader (from `.symlinks/plugins/flutter_qr_reader/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geocoder (from `.symlinks/plugins/geocoder/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
+  - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - just_audio (from `.symlinks/plugins/just_audio/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
@@ -160,12 +165,11 @@ SPEC REPOS:
     - SDWebImageWebPCoder
     - SwiftyGif
     - Toast
+    - TOCropViewController
 
 EXTERNAL SOURCES:
   at_backupkey_flutter:
     :path: ".symlinks/plugins/at_backupkey_flutter/ios"
-  at_chat_flutter:
-    :path: ".symlinks/plugins/at_chat_flutter/ios"
   at_contacts_flutter:
     :path: ".symlinks/plugins/at_contacts_flutter/ios"
   at_follows_flutter:
@@ -188,6 +192,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
   flutter_keychain:
     :path: ".symlinks/plugins/flutter_keychain/ios"
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_qr_reader:
     :path: ".symlinks/plugins/flutter_qr_reader/ios"
   fluttertoast:
@@ -196,6 +202,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/geocoder/ios"
   geolocator_apple:
     :path: ".symlinks/plugins/geolocator_apple/ios"
+  image_cropper:
+    :path: ".symlinks/plugins/image_cropper/ios"
   just_audio:
     :path: ".symlinks/plugins/just_audio/ios"
   path_provider:
@@ -219,7 +227,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   at_backupkey_flutter: 2fc3d01138175e41bce8b574387a47544c53e01b
-  at_chat_flutter: 8df1b69f14a74f0360b21916b5dd6916c9ae7130
   at_contacts_flutter: 11ad3deb3c2a8f1e9daf302ac5962dadd48e21fb
   at_follows_flutter: cabf679ae84bc050016705c323901934a461c882
   at_location_flutter: 11cdb9f57b41159f51d1ce151f78c31b9b292607
@@ -233,11 +240,13 @@ SPEC CHECKSUMS:
   flutter_inappwebview: bfd58618f49dc62f2676de690fc6dcda1d6c3721
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   flutter_keychain: 01aabf894ffe8b01adfda1d9df21c210c1b4b452
+  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_qr_reader: d930dde3b2cfe2b3d0bb7d66e5ff3e514300a5e5
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geocoder: 3cfab70531a0b367e917bafe82df4c30f6d4c45a
   geolocator_apple: 60a1c3f5930c090d2f5164ba8bf25f4f89121e3c
+  image_cropper: f1668dd8d2cad2d357955caad15a40547856edcb
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
   libwebp: e90b9c01d99205d03b6bb8f2c8c415e5a4ef66f0
   Mantle: 4c0ed6ce47c96eccc4dc3bb071deb3def0e2c3be
@@ -251,11 +260,12 @@ SPEC CHECKSUMS:
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+  TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   webview_flutter: 3603125dfd3bcbc9d8d418c3f80aeecf331c068b
 
-PODFILE CHECKSUM: a75497545d4391e2d394c3668e20cfb1c2bbd4aa
+PODFILE CHECKSUM: be3641bcaef7a85afc04e2ed523c1b5ffa98afbe
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

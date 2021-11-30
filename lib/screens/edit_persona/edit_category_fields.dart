@@ -281,7 +281,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                basicData.accountName!,
+                basicData.displayingAccountName ?? '',
                 style: TextStyles.lightText(
                     _themeData!.primaryColor.withOpacity(0.5),
                     size: 16),
@@ -488,7 +488,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                     : AutovalidateMode.disabled,
                 validator: (value) {
                   if (value == null || value == '' && isCustomField) {
-                    return 'Please provide value';
+                    return 'Body is required';
                   }
                   return null;
                 },
