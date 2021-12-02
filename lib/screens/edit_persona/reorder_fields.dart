@@ -202,7 +202,7 @@ class _ReorderFieldsState extends State<ReorderFields> {
               Padding(
                 padding: EdgeInsets.only(left: 10),
                 child: Text(
-                  basicData.accountName!,
+                  basicData.displayingAccountName ?? '',
                   style: TextStyles.lightText(
                       _themeData!.primaryColor.withOpacity(0.5),
                       size: 16),

@@ -87,6 +87,10 @@ class UserPreview extends BaseModel {
       case CustomContentType.Youtube:
         return RegExp(AtText.YOUTUBE_PATTERN).hasMatch(value);
 
+      case CustomContentType.Number:
+        //Add condition to validate number
+        return true;
+
       default:
         return false;
     }

@@ -308,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             .showSnackBar(SnackBar(
                                           backgroundColor: ColorConstants.RED,
                                           content: Text(
-                                            'This is a Preview',
+                                            'You are currently in preview mode',
                                             style: CustomTextStyles
                                                 .customTextStyle(
                                               ColorConstants.white,
@@ -332,7 +332,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               .isFollowing(_currentUser.atsign)
                                           ? 'Following'
                                           : 'Follow')
-                                      : 'Edit Profile  ',
+                                      : 'Edit  ',
                                   style: TextStyle(
                                       fontSize: 16.toFont,
                                       color: _themeData!.primaryColor
@@ -376,7 +376,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             .showSnackBar(SnackBar(
                                           backgroundColor: ColorConstants.RED,
                                           content: Text(
-                                            'This is a Preview',
+                                            'You are currently in preview mode',
                                             style: CustomTextStyles
                                                 .customTextStyle(
                                               ColorConstants.white,
@@ -390,7 +390,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     },
                               child: RichText(
                                 text: TextSpan(
-                                  text: 'Share Profile  ',
+                                  text: 'Share  ',
                                   style: TextStyle(
                                       fontSize: 16.toFont,
                                       color: _themeData!.primaryColor

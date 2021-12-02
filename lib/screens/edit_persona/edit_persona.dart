@@ -127,7 +127,7 @@ class _EditPersonaState extends State<EditPersona>
             iconTheme: IconThemeData(color: _themeData!.primaryColor),
             toolbarHeight: 55,
             title: Text(
-              'Edit Persona',
+              'Edit',
               style: CustomTextStyles.customBoldTextStyle(
                   _themeData!.primaryColor,
                   size: 16),
@@ -608,7 +608,7 @@ class _EditPersonaState extends State<EditPersona>
       },
       onError: (provider) {},
       showDialog: false,
-      text: 'Saving user data',
+      text: 'Saving data',
       taskName: (provider) => provider.UPDATE_USER,
       onSuccess: (provider) async {
         await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);

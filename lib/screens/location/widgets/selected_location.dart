@@ -243,7 +243,7 @@ class _SelectedLocationState extends State<SelectedLocation> {
                                 children: [
                                   TextSpan(
                                     text:
-                                        'The view you select (Position of the marker, zoom level and radius of the circle), will be shown to other users.',
+                                        'The view you select (Position of the marker, zoom level and radius of the circle), will be shown to other people.',
                                     style: CustomTextStyles.customTextStyle(
                                         Theme.of(context)
                                             .primaryColor
