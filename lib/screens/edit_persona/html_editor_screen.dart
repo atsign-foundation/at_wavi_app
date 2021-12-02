@@ -6,8 +6,10 @@ import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:provider/provider.dart';
+import 'dart:convert';
 
 class HtmlEditorScreen extends StatefulWidget {
   final String? initialText;
@@ -83,6 +85,37 @@ class _HtmlEditorScreenState extends State<HtmlEditorScreen> {
               toolbarType: ToolbarType.nativeGrid,
               dropdownBackgroundColor:
                   Theme.of(context).scaffoldBackgroundColor,
+              mediaUploadInterceptor: (file, InsertFileType type) async {
+                if (type == InsertFileType.image) {
+                  var compressedFile =
+                      await FlutterImageCompress.compressWithFile(
+                    file.path!,
+                    minWidth: 400,
+                    minHeight: 200,
+                    quality: 75,
+                  );
+
+                  if (compressedFile!.lengthInBytes > 512000) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      backgroundColor: ColorConstants.RED,
+                      content: Text(
+                        'Select a file smaller than 512 KB',
+                        style: CustomTextStyles.customTextStyle(
+                          ColorConstants.white,
+                        ),
+                      ),
+                    ));
+
+                    return false;
+                  }
+
+                  _controller.insertHtml(
+                      '<img src="data:image/jpeg;base64,${base64.encode(compressedFile)}" width="200" height="300">');
+
+                  return false;
+                }
+                return true;
+              },
             ),
             htmlEditorOptions: HtmlEditorOptions(
               hint: "Your text here...",
