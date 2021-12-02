@@ -1,5 +1,7 @@
+import 'package:at_location_flutter/utils/constants/colors.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
+import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -87,15 +89,22 @@ class _HtmlEditorScreenState extends State<HtmlEditorScreen> {
                   Theme.of(context).scaffoldBackgroundColor,
               mediaUploadInterceptor: (file, InsertFileType type) async {
                 if (type == InsertFileType.image) {
-                  var compressedFile =
+                  var _res = await imageCompressor(file.path!);
+
+                  /// width is -1 when cancel is pressed
+                  if (_res['width'] == -1) {
+                    return false;
+                  }
+
+                  var _compressedFile =
                       await FlutterImageCompress.compressWithFile(
                     file.path!,
-                    minWidth: 400,
-                    minHeight: 200,
-                    quality: 75,
+                    minWidth: _res['width'],
+                    minHeight: _res['height'],
+                    quality: _res['compression'],
                   );
 
-                  if (compressedFile!.lengthInBytes > 512000) {
+                  if (_compressedFile!.lengthInBytes > 512000) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       backgroundColor: ColorConstants.RED,
                       content: Text(
@@ -110,7 +119,7 @@ class _HtmlEditorScreenState extends State<HtmlEditorScreen> {
                   }
 
                   _controller.insertHtml(
-                      '<img src="data:image/jpeg;base64,${base64.encode(compressedFile)}" width="200" height="300">');
+                      '<img src="data:image/jpeg;base64,${base64.encode(_compressedFile)}" width="${_res['width']}" height="${_res['height']}">');
 
                   return false;
                 }
@@ -201,4 +210,140 @@ class _HtmlEditorScreenState extends State<HtmlEditorScreen> {
       ),
     );
   }
+}
+
+Future<Map> imageCompressor(String path) async {
+  double _width = 400, _height = 200, _compression = 75;
+  await showDialog<void>(
+    context: NavService.navKey.currentContext!,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return StatefulBuilder(builder: (_context, _setDialogState) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.fromLTRB(10, 20, 5, 10),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Image Compressor',
+                    style: TextStyles.boldText(Theme.of(context).primaryColor,
+                        size: 16)),
+                SizedBox(height: 10.toHeight),
+                Divider(
+                  thickness: 1,
+                  height: 1,
+                ),
+                SizedBox(height: 10.toHeight),
+                Text('Width: $_width px',
+                    style: CustomTextStyles.customTextStyle(
+                        Theme.of(context).primaryColor.withOpacity(0.5))),
+                Slider(
+                  activeColor: Theme.of(context).primaryColor,
+                  inactiveColor: ColorConstants.LIGHT_GREY,
+                  value: _width,
+                  min: 50,
+                  max: 700,
+                  divisions: 20000,
+                  onChanged: (double _newWidth) {
+                    _setDialogState(() {
+                      _width = _newWidth;
+                    });
+                  },
+                ),
+                SizedBox(height: 10.toHeight),
+                Text('Height: $_height px',
+                    style: CustomTextStyles.customTextStyle(
+                        Theme.of(context).primaryColor.withOpacity(0.5))),
+                Slider(
+                  activeColor: Theme.of(context).primaryColor,
+                  inactiveColor: ColorConstants.LIGHT_GREY,
+                  value: _height,
+                  min: 50,
+                  max: 700,
+                  divisions: 20000,
+                  onChanged: (double _newWidth) {
+                    _setDialogState(() {
+                      _height = _newWidth;
+                    });
+                  },
+                ),
+                SizedBox(height: 10.toHeight),
+                Text('Quality: $_compression%',
+                    style: CustomTextStyles.customTextStyle(
+                        Theme.of(context).primaryColor.withOpacity(0.5))),
+                Slider(
+                  activeColor: Theme.of(context).primaryColor,
+                  inactiveColor: ColorConstants.LIGHT_GREY,
+                  value: _compression,
+                  min: 1,
+                  max: 99,
+                  divisions: 20000,
+                  onChanged: (double _newWidth) {
+                    _setDialogState(() {
+                      _compression = _newWidth;
+                    });
+                  },
+                ),
+                SizedBox(height: 10.toHeight),
+                Text(
+                  'NOTE: We only accept images below 512KB',
+                  style: CustomTextStyles.customTextStyle(
+                      AllColors().RED.withOpacity(0.8),
+                      size: 14),
+                ),
+                SizedBox(height: 10.toHeight),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context).scaffoldBackgroundColor),
+                        ),
+                        onPressed: () {
+                          _width = -1;
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'Cancel',
+                          style: TextStyles.lightText(
+                              Theme.of(context).primaryColor,
+                              size: 16),
+                        ),
+                      ),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context).primaryColor),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'Done',
+                          style: TextStyles.lightText(
+                              Theme.of(context).scaffoldBackgroundColor,
+                              size: 16),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      });
+    },
+  );
+
+  print('_width $_width, _height $_height, _compression $_compression');
+
+  return {
+    'width': _width.floor(),
+    'height': _height.floor(),
+    'compression': _compression.floor(),
+  };
 }
