@@ -300,11 +300,10 @@ class _AddCustomFieldState extends State<AddCustomField> {
                               child: customInputField.CustomInputField(
                                 width: double.infinity,
                                 hintText: 'Preview (non editable)',
-                                hintTextColor: Theme.of(context)
-                                    .primaryColor
-                                    .withOpacity(0.5),
+                                hintTextColor:
+                                    AllColors().Black.withOpacity(0.5),
                                 bgColor: AllColors().INPUT_GREY_BACKGROUND,
-                                textColor: Theme.of(context).primaryColor,
+                                textColor: AllColors().Black,
                                 initialValue:
                                     ('Preview (non editable)' + '\n\n') +
                                         (basicData.valueDescription ?? ''),
@@ -606,10 +605,9 @@ class _AddCustomFieldState extends State<AddCustomField> {
                     child: customInputField.CustomInputField(
                       width: double.infinity,
                       hintText: 'Paste html here',
-                      hintTextColor:
-                          Theme.of(context).primaryColor.withOpacity(0.5),
+                      hintTextColor: AllColors().Black.withOpacity(0.5),
                       bgColor: AllColors().INPUT_GREY_BACKGROUND,
-                      textColor: Theme.of(context).primaryColor,
+                      textColor: AllColors().Black,
                       initialValue: _initialText,
                       baseOffset: _initialText.length,
                       height: 250,

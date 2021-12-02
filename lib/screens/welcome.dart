@@ -126,16 +126,16 @@ class _WelcomeState extends State<Welcome> {
                   ],
                 ),
                 SizedBox(height: 60),
-                Text('All links in one!',
+                Text('Say Hello with @wavi.ng',
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 38.toFont,
+                        fontSize: 28.toFont,
                         fontFamily: 'PlayfairDisplay')),
                 SizedBox(height: 15),
                 Text(
                   '''
-Create your persona in a single link
-and share it with others.''',
+Create your very own,
+free personal microsite.''',
                   style: TextStyle(
                       color: ColorConstants.greyText, fontSize: 15.toFont),
                   textAlign: TextAlign.center,
@@ -147,7 +147,7 @@ and share it with others.''',
                     BackendService().onboard('');
                   },
                   buttonColor: ColorConstants.black,
-                  buttonText: 'Create my persona',
+                  buttonText: 'Create my microsite',
                   fontColor: ColorConstants.white,
                   width: SizeConfig().screenWidth * 0.8,
                   height: 65.toHeight,
@@ -162,7 +162,7 @@ and share it with others.''',
                           TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                 ),
                 SizedBox(height: 50),
-                Text('The @ Company Copyright 2020',
+                Text('© 2021 The @ Company',
                     style: TextStyle(
                         color: ColorConstants.greyText, fontSize: 13.toFont)),
               ],
