@@ -322,20 +322,36 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           NavService.navKey.currentContext!,
                                           Routes.EDIT_PERSONA);
                                     },
-                              child: Text(
-                                _isSearchScreen
-                                    ? (Provider.of<FollowService>(
-                                                NavService
-                                                    .navKey.currentContext!,
-                                                listen: false)
-                                            .isFollowing(_currentUser.atsign)
-                                        ? 'Following'
-                                        : 'Follow')
-                                    : 'Edit Profile',
-                                style: TextStyle(
-                                    fontSize: 16.toFont,
-                                    color: _themeData!.primaryColor
-                                        .withOpacity(0.5)),
+                              child: RichText(
+                                text: TextSpan(
+                                  text: _isSearchScreen
+                                      ? (Provider.of<FollowService>(
+                                                  NavService
+                                                      .navKey.currentContext!,
+                                                  listen: false)
+                                              .isFollowing(_currentUser.atsign)
+                                          ? 'Following'
+                                          : 'Follow')
+                                      : 'Edit Profile  ',
+                                  style: TextStyle(
+                                      fontSize: 16.toFont,
+                                      color: _themeData!.primaryColor
+                                          .withOpacity(0.5)),
+                                  children: _isSearchScreen
+                                      ? []
+                                      : [
+                                          WidgetSpan(
+                                            alignment:
+                                                PlaceholderAlignment.middle,
+                                            child: Icon(
+                                              Icons.edit,
+                                              size: 18,
+                                              color: _themeData!.primaryColor
+                                                  .withOpacity(0.7),
+                                            ),
+                                          ),
+                                        ],
+                                ),
                               ),
                             ),
                           ),
@@ -372,11 +388,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   : () {
                                       shareProfile();
                                     },
-                              child: Text('Share Profile',
+                              child: RichText(
+                                text: TextSpan(
+                                  text: 'Share Profile  ',
                                   style: TextStyle(
                                       fontSize: 16.toFont,
                                       color: _themeData!.primaryColor
-                                          .withOpacity(0.5))),
+                                          .withOpacity(0.5)),
+                                  children: [
+                                    WidgetSpan(
+                                      alignment: PlaceholderAlignment.middle,
+                                      child: Icon(
+                                        Icons.share,
+                                        size: 18,
+                                        color: _themeData!.primaryColor
+                                            .withOpacity(0.7),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         )
