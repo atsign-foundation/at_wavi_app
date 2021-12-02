@@ -9,6 +9,7 @@ import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_show_hide_radio_button.dart';
 import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:file_picker/file_picker.dart';
@@ -261,6 +262,7 @@ class _DesktopProfileAddCustomFieldState
   }
 
   void _onSaveData() {
+    SizeConfig().init(context);
     if (_isUpdate) {
       _model.updateCustomField(context);
     } else {

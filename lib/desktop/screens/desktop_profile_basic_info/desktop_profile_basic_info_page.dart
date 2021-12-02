@@ -113,6 +113,7 @@ class _DesktopProfileBasicInfoPageState
                 onAddDetailsPressed: widget.atCategory == AtCategory.LOCATION
                     ? _showAddLocation
                     : _showAddDetailPopup,
+                showAddButton: widget.isEditable,
               ),
             ),
           ),

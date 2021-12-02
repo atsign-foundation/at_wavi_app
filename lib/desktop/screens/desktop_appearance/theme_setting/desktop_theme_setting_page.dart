@@ -1,5 +1,6 @@
 import 'package:at_wavi_app/app.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:flutter/material.dart';
 
 import 'widgets/desktop_theme_card.dart';
@@ -24,7 +25,7 @@ class _DesktopThemeSettingPageState extends State<DesktopThemeSettingPage>
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      padding: EdgeInsets.only(left: 80, top: 60),
+      padding: EdgeInsets.only(left: DesktopDimens.marginExtraLarge, top: DesktopDimens.marginLarge),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -9,6 +9,7 @@ class DesktopEmptyWidget extends StatelessWidget {
   final String description;
   final String buttonTitle;
   final VoidCallback? onButtonPressed;
+  final bool showAddButton;
 
   const DesktopEmptyWidget({
     Key? key,
@@ -17,6 +18,7 @@ class DesktopEmptyWidget extends StatelessWidget {
     required this.description,
     required this.buttonTitle,
     required this.onButtonPressed,
+    this.showAddButton = true,
   }) : super(key: key);
 
   @override
@@ -42,21 +44,22 @@ class DesktopEmptyWidget extends StatelessWidget {
             fontWeight: FontWeight.normal,
           ),
         ),
-        SizedBox(height: DesktopDimens.paddingNormal),
-        ElevatedButton(
-          onPressed: onButtonPressed,
-          child: Text(
-            buttonTitle,
-            style: appTheme.textTheme.button?.copyWith(
-              color: appTheme.primaryColor,
+        if (showAddButton) SizedBox(height: DesktopDimens.paddingNormal),
+        if (showAddButton)
+          ElevatedButton(
+            onPressed: onButtonPressed,
+            child: Text(
+              buttonTitle,
+              style: appTheme.textTheme.button?.copyWith(
+                color: appTheme.primaryColor,
+              ),
             ),
-          ),
-          style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(Colors.transparent),
-            elevation: MaterialStateProperty.all<double>(0),
-          ),
-        )
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.transparent),
+              elevation: MaterialStateProperty.all<double>(0),
+            ),
+          )
       ],
     );
   }

@@ -1,5 +1,6 @@
 import 'package:at_wavi_app/app.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class _DesktopColorSettingPageState extends State<DesktopColorSettingPage>
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      padding: EdgeInsets.only(left: 80, top: 60),
+      padding: EdgeInsets.only(left: DesktopDimens.marginExtraLarge, top: DesktopDimens.marginLarge),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

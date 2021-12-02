@@ -56,9 +56,6 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
   @override
   void initState() {
     super.initState();
-    Provider.of<UserPreview>(context).addListener(() {
-
-    });
   }
 
   @override
@@ -112,6 +109,7 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
                 onAddDetailsPressed: widget.atCategory == AtCategory.LOCATION
                     ? _showAddLocation
                     : _showAddDetailPopup,
+                showAddButton: false,
               ),
             ),
           ),

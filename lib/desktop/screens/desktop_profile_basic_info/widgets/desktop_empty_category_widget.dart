@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 
 class DesktopEmptyCategoryWidget extends StatelessWidget {
   final AtCategory atCategory;
+  final bool showAddButton;
   final VoidCallback onAddDetailsPressed;
 
   DesktopEmptyCategoryWidget({
     required this.atCategory,
+    required this.showAddButton,
     required this.onAddDetailsPressed,
   });
 
@@ -25,6 +27,7 @@ class DesktopEmptyCategoryWidget extends StatelessWidget {
       description: atCategory.description,
       buttonTitle: atCategory.titleButton,
       onButtonPressed: onAddDetailsPressed,
+      showAddButton: showAddButton,
     );
   }
 }
@@ -46,7 +49,8 @@ extension AtCategoryExt on AtCategory {
         return Images.introBasicDetail;
     }
   }
-    String get titleButton {
+
+  String get titleButton {
     switch (this) {
       case AtCategory.DETAILS:
         return 'Add Contact Details';
@@ -79,7 +83,8 @@ extension AtCategoryExt on AtCategory {
         return '';
     }
   }
-    String get titlePage {
+
+  String get titlePage {
     switch (this) {
       case AtCategory.DETAILS:
         return ' Let’s create your @wavi';
