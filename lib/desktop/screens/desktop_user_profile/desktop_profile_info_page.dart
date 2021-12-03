@@ -1,18 +1,34 @@
+import 'dart:convert';
+
+import 'package:at_client/at_client.dart';
 import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
+import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
-import 'package:at_wavi_app/utils/images.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_logo.dart';
+import 'package:at_wavi_app/model/at_follows_value.dart';
+import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/field_order_service.dart';
+import 'package:at_wavi_app/services/nav_service.dart';
+import 'package:at_wavi_app/services/search_service.dart';
+import 'package:at_wavi_app/view_models/follow_service.dart';
+import 'package:at_wavi_app/view_models/user_preview.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DesktopProfileInfoPage extends StatefulWidget {
   final String? atSign;
   final VoidCallback? onFollowerPressed;
   final VoidCallback? onFollowingPressed;
+  final bool isPreview;
 
   DesktopProfileInfoPage({
     Key? key,
     required this.atSign,
+    required this.isPreview,
     this.onFollowerPressed,
     this.onFollowingPressed,
   }) : super(key: key);
@@ -22,7 +38,21 @@ class DesktopProfileInfoPage extends StatefulWidget {
 }
 
 class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
-  bool isMyProfile = true;
+  late User _currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isPreview) {
+      _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
+    } else if (Provider.of<UserProvider>(context, listen: false).user != null) {
+      _currentUser = Provider.of<UserProvider>(context, listen: false).user!;
+    } else {
+      _currentUser = User(
+        atsign: AtClientManager.getInstance().atClient.getCurrentAtSign(),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,159 +60,175 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
     return Container(
       color: appTheme.primaryLighterColor,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          isMyProfile
-              ? Container(
-                  padding: EdgeInsets.only(top: 60),
-                  child: Center(
-                    child: Image.asset(
-                      appTheme.isDark ? Images.logoLight : Images.logoDark,
-                      width: 90,
-                      height: 34,
-                    ),
-                  ),
-                )
-              : GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(24),
-                    child: Text(
-                      Strings.desktop_back,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: appTheme.primaryColor,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'Inter',
-                      ),
-                    ),
-                  ),
-                ),
+          _buildHeader(),
+          SizedBox(height: DesktopDimens.paddingLarge),
           Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: 160,
-                  height: 160,
-                  child: Icon(
-                    Icons.account_circle,
-                    size: 160,
-                  ),
-                  // ClipRRect(
-                  //   borderRadius:
-                  //   BorderRadius.circular(90.0),
-                  //   child: Container(
-                  //     width: 80,
-                  //     height: 80,
-                  //     decoration: new BoxDecoration(
-                  //       color: Colors.transparent,
-                  //       borderRadius: new BorderRadius.all(
-                  //           Radius.circular(90)),
-                  //     ),
-                  //     child: Image.network(
-                  //       'https://i.picsum.photos/id/866/300/300.jpg?hmac=9qmLpcaT9TgKd6PD37aZJZ_7QvgrVFMcvI3JQKWVUIQ',
-                  //     ),
-                  //   ),
-                  // ),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                Text(
-                  'Lauren London',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: appTheme.primaryTextColor,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(
-                  height: 12,
-                ),
-                Text(
-                  '@laurenlondon',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: appTheme.primaryColor,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                GestureDetector(
-                  onTap: widget.onFollowerPressed,
-                  child: _buildInteractiveItem(
-                      Strings.desktop_followers, '120', appTheme),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                GestureDetector(
-                  onTap: widget.onFollowingPressed,
-                  child: _buildInteractiveItem(
-                      Strings.desktop_following, '121', appTheme),
-                ),
-                SizedBox(
-                  height: 32,
-                ),
-                isMyProfile
-                    ? Column(
-                        children: [
-                          DesktopButton(
-                            width: 280,
-                            height: 46,
-                            backgroundColor: Colors.transparent,
-                            titleColor: appTheme.primaryColor,
-                            borderColor: appTheme.primaryColor,
-                            title: Strings.desktop_edit_profile,
-                            onPressed: _openEditProfile,
+            child: SingleChildScrollView(
+              padding:
+                  EdgeInsets.symmetric(horizontal: DesktopDimens.paddingNormal),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  (_currentUser.image.value != null)
+                      ? Container(
+                          width: 120,
+                          height: 120,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(80.0),
+                            child: Image.memory(
+                              _currentUser.image.value,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                          SizedBox(
-                            height: 16,
+                        )
+                      : Container(
+                          width: 120,
+                          height: 120,
+                          child: Icon(
+                            Icons.account_circle,
+                            size: 120,
                           ),
-                          DesktopButton(
-                            width: 280,
-                            height: 46,
-                            title: Strings.desktop_share_profile,
-                            backgroundColor: appTheme.primaryColor,
-                            onPressed: () async {},
-                          ),
-                        ],
-                      )
-                    : DesktopButton(
-                        width: 280,
-                        height: 46,
-                        backgroundColor: appTheme.primaryColor,
-                        title: Strings.desktop_follow,
-                        onPressed: () async {},
-                      ),
-                SizedBox(
-                  height: 24,
-                ),
-              ],
+                        ),
+                  SizedBox(height: DesktopDimens.paddingNormal),
+                  _buildNameWidget(),
+                  SizedBox(height: DesktopDimens.paddingSmall),
+                  Text(
+                    _currentUser.atsign,
+                    style: appTheme.textTheme.subtitle1?.copyWith(
+                      color: appTheme.primaryColor,
+                    ),
+                  ),
+                  SizedBox(height: DesktopDimens.paddingLarge),
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: widget.onFollowerPressed,
+                    child: _buildInteractiveItem(
+                        Strings.desktop_followers,
+                        (SearchService().followers_count != null)
+                            ? SearchService().followers_count.toString()
+                            : '${followsCount(isFollowers: true)}',
+                        appTheme),
+                  ),
+                  SizedBox(height: DesktopDimens.paddingSmall),
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: widget.onFollowingPressed,
+                    child: _buildInteractiveItem(
+                        Strings.desktop_following,
+                        (SearchService().following_count != null)
+                            ? SearchService().following_count.toString()
+                            : '${followsCount()}',
+                        appTheme),
+                  ),
+                  SizedBox(height: DesktopDimens.paddingLarge),
+                  !widget.isPreview
+                      ? Column(
+                          children: [
+                            DesktopButton(
+                              width: double.infinity,
+                              height: DesktopDimens.buttonHeight,
+                              backgroundColor: Colors.transparent,
+                              titleColor: appTheme.primaryColor,
+                              borderColor: appTheme.primaryColor,
+                              title: Strings.desktop_edit_profile,
+                              onPressed: _openEditProfile,
+                            ),
+                            SizedBox(height: DesktopDimens.paddingNormal),
+                            DesktopButton(
+                              width: double.infinity,
+                              height: DesktopDimens.buttonHeight,
+                              title: Strings.desktop_share_profile,
+                              backgroundColor: appTheme.primaryColor,
+                              onPressed: () async {},
+                            ),
+                          ],
+                        )
+                      : DesktopButton(
+                          width: double.infinity,
+                          height: DesktopDimens.buttonHeight,
+                          backgroundColor: appTheme.primaryColor,
+                          title: Strings.desktop_follow,
+                          onPressed: () async {},
+                        ),
+                ],
+              ),
             ),
-          ),
-          Container(
-            height: 96,
           ),
         ],
       ),
     );
   }
 
+  Widget _buildHeader() {
+    return Container(
+      child: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: DesktopDimens.paddingLarge),
+            child: Center(
+              child: DesktopLogo(),
+            ),
+          ),
+          Positioned(
+            top: 10,
+            left: 10,
+            child: Visibility(
+              visible: widget.isPreview,
+              child: DesktopIconButton(
+                iconData: Icons.close_rounded,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNameWidget() {
+    final appTheme = AppTheme.of(context);
+    String name = '';
+    if (widget.isPreview) {
+      name = context.select<UserPreview, String>(
+        // Here, we are only interested whether [item] is inside the cart.
+        (userPreview) {
+          return _displayingName(
+            firstName: userPreview.user()?.firstname.value,
+            lastName: userPreview.user()?.lastname.value,
+          );
+        },
+      );
+      // _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
+    } else if (Provider.of<UserProvider>(context, listen: false).user != null) {
+      name = context.select<UserProvider, String>(
+        // Here, we are only interested whether [item] is inside the cart.
+        (userProvider) {
+          return _displayingName(
+            firstName: userProvider.user?.firstname.value,
+            lastName: userProvider.user?.lastname.value,
+          );
+        },
+      );
+      // _currentUser = Provider.of<UserProvider>(context, listen: false).user!;
+    }
+    return Text(
+      name,
+      style: appTheme.textTheme.headline6?.copyWith(
+        fontWeight: FontWeight.w600,
+      ),
+      maxLines: 2,
+    );
+  }
+
   _buildInteractiveItem(String title, String subTitle, AppTheme appTheme) {
     return Row(
       children: [
-        SizedBox(width: 40),
         Text(
           title,
-          style: TextStyle(
-            fontSize: 16,
+          style: appTheme.textTheme.subtitle2?.copyWith(
             color: appTheme.secondaryTextColor,
             fontWeight: FontWeight.normal,
           ),
@@ -190,18 +236,68 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
         Spacer(),
         Text(
           subTitle,
-          style: TextStyle(
-            fontSize: 18,
+          style: appTheme.textTheme.subtitle1?.copyWith(
             color: appTheme.primaryTextColor,
             fontWeight: FontWeight.w600,
           ),
         ),
-        SizedBox(width: 40),
       ],
     );
   }
 
+  String _displayingName({dynamic firstName, dynamic lastName}) {
+    String _name = '';
+    _name = _currentUser.firstname.value ?? '';
+    if (_currentUser.lastname.value != null) {
+      _name = '$_name ${_currentUser.lastname.value}';
+    }
+
+    if (_name.isEmpty) {
+      _name = _currentUser.atsign.replaceFirst('@', '');
+    }
+    return _name;
+  }
+
   void _openEditProfile() {
+    FieldOrderService().setPreviewOrder = {...FieldOrderService().fieldOrders};
+    var userJson =
+        User.toJson(Provider.of<UserProvider>(context, listen: false).user!);
+    User previewUser = User.fromJson(json.decode(json.encode(userJson)));
+    Provider.of<UserPreview>(context, listen: false).setUser = previewUser;
     Navigator.pushNamed(context, DesktopRoutes.DESKTOP_EDIT_PROFILE);
+  }
+
+  String followsCount({bool isFollowers: false}) {
+    AtFollowsData atFollowsData;
+    var followsProvider = Provider.of<FollowService>(
+        NavService.navKey.currentContext!,
+        listen: false);
+    if (!followsProvider.isFollowersFetched && isFollowers) {
+      return '0';
+    }
+
+    if (!followsProvider.isFollowingFetched && !isFollowers) {
+      return '0';
+    }
+
+    if (isFollowers) {
+      atFollowsData = followsProvider.followers;
+    } else {
+      atFollowsData = followsProvider.following;
+    }
+
+    int num = atFollowsData.list!.length;
+
+    if (num > 999 && num < 99999) {
+      return "${(num / 1000).toStringAsFixed(1)} K";
+    } else if (num > 99999 && num < 999999) {
+      return "${(num / 1000).toStringAsFixed(0)} K";
+    } else if (num > 999999 && num < 999999999) {
+      return "${(num / 1000000).toStringAsFixed(1)} M";
+    } else if (num > 999999999) {
+      return "${(num / 1000000000).toStringAsFixed(1)} B";
+    } else {
+      return num.toString();
+    }
   }
 }

@@ -1,4 +1,12 @@
 import 'package:at_wavi_app/common_components/provider_callback.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_add_location/desktop_add_location_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_edit_basic_detail/desktop_edit_basic_detail_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_add_custom_field/desktop_profile_add_custom_field.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_media/widgets/desktop_media_item.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_reorder_basic_info/desktop_reorder_basic_info_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/widgets/desktop_basic_info_widget.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/widgets/desktop_empty_category_widget.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/widgets/desktop_location_item_widget.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_user_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
@@ -15,25 +23,17 @@ import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'desktop_add_location/desktop_add_location_page.dart';
-import 'desktop_profile_add_custom_field/desktop_profile_add_custom_field.dart';
-import 'desktop_profile_basic_info_model.dart';
-import 'desktop_edit_basic_detail/desktop_edit_basic_detail_page.dart';
-import 'desktop_reorder_basic_info/desktop_reorder_basic_info_page.dart';
-import 'widgets/desktop_basic_info_widget.dart';
-import 'widgets/desktop_empty_category_widget.dart';
-import 'widgets/desktop_location_item_widget.dart';
+import 'desktop_profile_media_model.dart';
 
-class DesktopProfileBasicInfoPage extends StatefulWidget {
-  final AtCategory atCategory;
+class DesktopProfileMediaPage extends StatefulWidget {
+  final AtCategory atCategory = AtCategory.IMAGE;
   final bool hideMenu;
   final bool showWelcome;
   final bool isMyProfile;
   final bool isEditable;
 
-  const DesktopProfileBasicInfoPage({
+  const DesktopProfileMediaPage({
     Key? key,
-    required this.atCategory,
     this.hideMenu = false,
     this.showWelcome = true,
     required this.isMyProfile,
@@ -41,14 +41,13 @@ class DesktopProfileBasicInfoPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DesktopProfileBasicInfoPageState createState() =>
-      _DesktopProfileBasicInfoPageState();
+  _DesktopProfileMediaPageState createState() =>
+      _DesktopProfileMediaPageState();
 }
 
-class _DesktopProfileBasicInfoPageState
-    extends State<DesktopProfileBasicInfoPage>
+class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
     with AutomaticKeepAliveClientMixin {
-  late DesktopBasicDetailModel _model;
+  late DesktopProfileMediaModel _model;
   final _scrollController = ScrollController();
 
   @override
@@ -65,7 +64,7 @@ class _DesktopProfileBasicInfoPageState
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
         final userProvider = Provider.of<UserProvider>(context);
-        _model = DesktopBasicDetailModel(
+        _model = DesktopProfileMediaModel(
           isMyProfile: widget.isMyProfile,
           userPreview: userPreview,
           userProvider: userProvider,
@@ -80,16 +79,13 @@ class _DesktopProfileBasicInfoPageState
   }
 
   Widget _buildBodyWidget() {
-    return Consumer<DesktopBasicDetailModel>(
+    return Consumer<DesktopProfileMediaModel>(
       builder: (_, model, child) {
-        if (model.isEmptyData) {
-          return _buildEmptyWidget();
-        } else {
-          return _buildContentWidget(
-            model.basicData,
-            locationData: model.locationData,
-          );
-        }
+        // if (model.isEmptyData) {
+        //   return _buildEmptyWidget();
+        // } else {
+        return _buildContentWidget(model.mediaFields);
+        // }
       },
     );
   }
@@ -113,7 +109,7 @@ class _DesktopProfileBasicInfoPageState
                 onAddDetailsPressed: widget.atCategory == AtCategory.LOCATION
                     ? _showAddLocation
                     : _showAddDetailPopup,
-                showAddButton: widget.isEditable,
+                showAddButton: false,
               ),
             ),
           ),
@@ -122,8 +118,7 @@ class _DesktopProfileBasicInfoPageState
     );
   }
 
-  Widget _buildContentWidget(List<BasicDataModel> data,
-      {BasicData? locationData}) {
+  Widget _buildContentWidget(List<BasicData> items) {
     final appTheme = AppTheme.of(context);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: DesktopDimens.paddingExtraLarge),
@@ -145,21 +140,9 @@ class _DesktopProfileBasicInfoPageState
                     ),
                   ),
                   Spacer(),
-                  if (widget.atCategory != AtCategory.LOCATION)
-                    DesktopIconLabelButton(
-                      iconData: Icons.add_circle_outline_sharp,
-                      label: 'Custom Content',
-                      onPressed: _showAddCustomContent,
-                    ),
-                  if (widget.atCategory == AtCategory.LOCATION)
-                    DesktopIconLabelButton(
-                      iconData: Icons.add_circle_outline_sharp,
-                      label: 'Add location',
-                      onPressed: _showAddLocation,
-                    ),
                   DesktopIconButton(
-                    iconData: Icons.edit_rounded,
-                    onPressed: _showAddDetailPopup,
+                    iconData: Icons.add_circle_outline_sharp,
+                    onPressed: _showAddCustomContent,
                   ),
                   SizedBox(width: 10),
                   DesktopPreviewButton(
@@ -172,7 +155,7 @@ class _DesktopProfileBasicInfoPageState
             SizedBox(height: DesktopDimens.paddingLarge),
           Expanded(
             child: Container(
-              child: _buildFieldsWidget(data, locationData: locationData),
+              child: _buildFieldsWidget(items),
             ),
           ),
           SizedBox(height: DesktopDimens.paddingNormal),
@@ -180,12 +163,6 @@ class _DesktopProfileBasicInfoPageState
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                if (widget.atCategory != AtCategory.LOCATION)
-                  DesktopWhiteButton(
-                    title: 'Reorder',
-                    onPressed: _showReorderDetailPopup,
-                  ),
-                SizedBox(width: 12),
                 DesktopButton(
                   title: 'Save & Next',
                   onPressed: _handleSaveAndNext,
@@ -198,144 +175,19 @@ class _DesktopProfileBasicInfoPageState
     );
   }
 
-  Widget _buildFieldsWidget(List<BasicDataModel> data,
-      {BasicData? locationData}) {
-    if (widget.atCategory == AtCategory.LOCATION) {
-      return _buildLocationFieldWidget(data, locationData: locationData);
-    }
-
-    final appTheme = AppTheme.of(context);
-    return ListView.separated(
-      controller: _scrollController,
-      itemBuilder: (context, index) {
-        final item = data[index];
-        BorderRadius? borderRadius;
-        if (data.length == 1) {
-          borderRadius = BorderRadius.all(Radius.circular(10));
-        } else {
-          if (index == 0) {
-            borderRadius = BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            );
-          } else if (index == data.length - 1) {
-            borderRadius = BorderRadius.only(
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10),
-            );
-          }
-        }
-        return Container(
-          decoration: BoxDecoration(
-            color: appTheme.secondaryBackgroundColor,
-            borderRadius: borderRadius,
-          ),
-          child: DesktopBasicInfoWidget(
-            data: item.data,
-            isCustomField: item.isCustomField,
-            onDeletePressed: () {
-              _model.deleteData(item.data);
-            },
-            onEditPressed: () {
-              _showEditCustomContent(item.data);
-            },
-          ),
-          // child: item.data.extension != null
-          //     ? DesktopMediaItemWidget(
-          //         data: item.data,
-          //       )
-          //     : DesktopBasicDetailItemWidget(
-          //         title: item.data.accountName ?? '',
-          //         description: item.data.value ?? '',
-          //       ),
-        );
-      },
-      separatorBuilder: (context, index) {
-        return Container(
-          padding:
-              EdgeInsets.symmetric(horizontal: DesktopDimens.paddingNormal),
-          color: appTheme.secondaryBackgroundColor,
-          child: Container(
-            color: appTheme.separatorColor,
-            height: DesktopDimens.dividerHeight,
-          ),
-        );
-      },
-      itemCount: data.length,
-    );
-  }
-
-  Widget _buildLocationFieldWidget(List<BasicDataModel> data,
-      {BasicData? locationData}) {
-    final appTheme = AppTheme.of(context);
-    return ListView.separated(
-      controller: _scrollController,
-      itemBuilder: (context, index) {
-        BorderRadius? borderRadius;
-        if (data.length == 1) {
-          borderRadius = BorderRadius.all(Radius.circular(10));
-        } else {
-          if (index == 0) {
-            borderRadius = BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            );
-          } else if (index == data.length - 1) {
-            borderRadius = BorderRadius.only(
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10),
-            );
-          }
-        }
-        if (index == 0) {
-          print(_model.locationData?.value);
-          return Container(
-            decoration: BoxDecoration(
-              color: appTheme.secondaryBackgroundColor,
-              borderRadius: borderRadius,
-            ),
-            child: DesktopLocationItemWidget(
-              title: _model.locationNicknameData?.accountName ?? '',
-              location: _model.locationData?.value as String?,
-            ),
-          );
-        }
-
-        final item = data[index - 1];
-        return Container(
-          decoration: BoxDecoration(
-            color: appTheme.secondaryBackgroundColor,
-            borderRadius: borderRadius,
-          ),
-          child: DesktopLocationItemWidget(
-            title: item.data.accountName,
-            location: item.data.value,
-          ),
-        );
-      },
-      separatorBuilder: (context, index) {
-        if (index == 0) {
-          return Container(
-            padding: EdgeInsets.only(top: 40, bottom: 20),
-            child: Text(
-              'More Locations',
-              style: TextStyle(
-                  color: appTheme.primaryTextColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500),
-            ),
-          );
-        }
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          color: appTheme.secondaryBackgroundColor,
-          child: Container(
-            color: appTheme.separatorColor,
-            height: 2,
-          ),
-        );
-      },
-      itemCount: data.length + 1,
+  Widget _buildFieldsWidget(List<BasicData> items) {
+    return Container(
+      width: double.infinity,
+      child: GridView.count(
+        controller: _scrollController,
+        crossAxisCount: 4,
+        crossAxisSpacing: 8,
+        children: items
+            .map((e) => DesktopMediaItem(
+                  data: e,
+                ))
+            .toList(),
+      ),
     );
   }
 
@@ -369,6 +221,9 @@ class _DesktopProfileBasicInfoPageState
         backgroundColor: Colors.transparent,
         child: DesktopProfileAddCustomField(
           atCategory: widget.atCategory,
+          allowContentType: [
+            CustomContentType.Image,
+          ],
         ),
       ),
     );

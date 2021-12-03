@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:flutter/material.dart';
 
 import '../desktop_side_menu.dart';
@@ -19,18 +20,15 @@ class DesktopSideMenuWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 40),
+      padding: EdgeInsets.symmetric(horizontal: DesktopDimens.paddingNormal),
       child: ElevatedButton(
         onPressed: onPressed,
         child: Container(
-          height: 50,
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          height: DesktopDimens.buttonHeight,
           alignment: Alignment.centerLeft,
           child: Text(
             menu.title,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
+            style: appTheme.textTheme.button?.copyWith(
               color: isSelected ? Colors.white : appTheme.secondaryTextColor,
             ),
           ),

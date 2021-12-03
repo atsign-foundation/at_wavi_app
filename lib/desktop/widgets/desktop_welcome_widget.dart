@@ -1,9 +1,13 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_logo.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/material.dart';
 
 class DesktopWelcomeWidget extends StatelessWidget {
-  const DesktopWelcomeWidget({Key? key}) : super(key: key);
+  final String? titlePage;
+
+  const DesktopWelcomeWidget({Key? key, this.titlePage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,29 +23,22 @@ class DesktopWelcomeWidget extends StatelessWidget {
             children: [
               Text(
                 'Welcome to',
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w500,
-                  color: appTheme.primaryTextColor,
+                style: appTheme.textTheme.headline4?.copyWith(
+                  fontSize: 32,
                 ),
               ),
-              SizedBox(width: 16),
+              //note
+              SizedBox(width: DesktopDimens.paddingSmall),
               Container(
                 padding: EdgeInsets.only(bottom: 7),
-                child: Image.asset(
-                  appTheme.isDark ? Images.logoLight : Images.logoDark,
-                  width: 110,
-                  height: 40,
-                  fit: BoxFit.fill,
-                ),
+                child: DesktopLogo(),
               ),
             ],
           ),
-          SizedBox(height: 8),
+          SizedBox(height: DesktopDimens.paddingSmall),
           Text(
-            'Please fill-in the necessary details to start using.',
-            style: TextStyle(
-              fontSize: 18,
+            titlePage ?? 'Please fill-in the necessary details to start using.',
+            style: appTheme.textTheme.subtitle2?.copyWith(
               fontWeight: FontWeight.w500,
               color: appTheme.secondaryTextColor,
             ),

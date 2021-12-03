@@ -1,10 +1,13 @@
 import 'package:at_wavi_app/desktop/screens/desktop_appearance/desktop_appearance_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_profile_details/desktop_media/desktop_media_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_basic_info_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_edit_profile/desktop_profile_picture/desktop_profile_picture_page.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_media/desktop_profile_media_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_logo.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
-import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -69,27 +72,23 @@ class _DesktopEditProfilePageState extends State<DesktopEditProfilePage> {
     return Consumer<DesktopEditProfileModel>(
       builder: (context, provider, child) {
         return Container(
-          width: 360,
+          width: DesktopDimens.sideMenuWidth,
           margin: EdgeInsets.only(right: 1),
           child: Column(
             children: [
               Container(
-                height: 150,
+                height: 120,
                 child: Stack(
                   children: [
                     Center(
-                      child: Image.asset(
-                        appTheme.isDark ? Images.logoLight : Images.logoDark,
-                        width: 89,
-                        height: 33,
-                      ),
+                      child: DesktopLogo(),
                     ),
                     Positioned(
                       top: 10,
                       left: 10,
                       child: DesktopIconButton(
                         iconData: Icons.close_rounded,
-                        onPressed: (){
+                        onPressed: () {
                           Navigator.pop(context);
                         },
                       ),
@@ -131,22 +130,45 @@ class _DesktopEditProfilePageState extends State<DesktopEditProfilePage> {
         children: DesktopSideMenu.values.map((e) {
           switch (e) {
             case DesktopSideMenu.profile:
-              return Container(color: appTheme.backgroundColor);
+              return DesktopProfilePicturePage();
             case DesktopSideMenu.media:
-              return DesktopMediaPage();
+              // return DesktopMediaPage();
+              return DesktopProfileMediaPage(
+                isMyProfile: true,
+                isEditable: true,
+              );
             case DesktopSideMenu.basicDetails:
-              return DesktopProfileBasicInfoPage(atCategory: AtCategory.DETAILS);
+              return DesktopProfileBasicInfoPage(
+                atCategory: AtCategory.DETAILS,
+                isMyProfile: true,
+                isEditable: true,
+              );
             case DesktopSideMenu.additionalDetails:
               return DesktopProfileBasicInfoPage(
-                  atCategory: AtCategory.ADDITIONAL_DETAILS);
+                atCategory: AtCategory.ADDITIONAL_DETAILS,
+                isMyProfile: true,
+                isEditable: true,
+              );
             case DesktopSideMenu.location:
-              return DesktopProfileBasicInfoPage(atCategory: AtCategory.LOCATION);
+              return DesktopProfileBasicInfoPage(
+                atCategory: AtCategory.LOCATION,
+                isMyProfile: true,
+                isEditable: true,
+              );
             case DesktopSideMenu.socialChannel:
-              return DesktopProfileBasicInfoPage(atCategory: AtCategory.SOCIAL);
+              return DesktopProfileBasicInfoPage(
+                atCategory: AtCategory.SOCIAL,
+                isMyProfile: true,
+                isEditable: true,
+              );
             case DesktopSideMenu.gameChannel:
-              return DesktopProfileBasicInfoPage(atCategory: AtCategory.GAMER);
-            case DesktopSideMenu.featuredChannel:
-              return DesktopProfileBasicInfoPage(atCategory: AtCategory.FEATURED);
+              return DesktopProfileBasicInfoPage(
+                atCategory: AtCategory.GAMER,
+                isMyProfile: true,
+                isEditable: true,
+              );
+            // case DesktopSideMenu.featuredChannel:
+            //   return DesktopProfileBasicInfoPage(atCategory: AtCategory.FEATURED);
             case DesktopSideMenu.appearance:
               return DesktopAppearancePage();
             default:

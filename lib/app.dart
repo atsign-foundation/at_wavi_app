@@ -86,9 +86,9 @@ class MaterialAppClass extends StatelessWidget {
     /// MaterialApp for desktop
     if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
       /// Mock data
-      Provider.of<UserPreview>(context, listen: false).setUser = MockData.getMockUser;
-      FieldOrderService().setPreviewOrder = MockData.getMockPreviewOrders;
-      FieldOrderService().setFieldOrder = MockData.getMockFieldOrders;
+      // Provider.of<UserPreview>(context, listen: false).setUser = MockData.getMockUser;
+      // FieldOrderService().setPreviewOrder = MockData.getMockPreviewOrders;
+      // FieldOrderService().setFieldOrder = MockData.getMockFieldOrders;
 
       return StreamBuilder<AppTheme>(
         stream: appThemeController.stream,

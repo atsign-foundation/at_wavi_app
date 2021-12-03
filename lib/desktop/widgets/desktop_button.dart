@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -20,9 +21,9 @@ class DesktopButton extends StatelessWidget {
     this.backgroundColor,
     this.borderColor,
     this.borderRadius = 5,
-    this.textSize = 16,
-    this.width = 184,
-    this.height = 56,
+    this.textSize = 14,
+    this.width = 160,
+    this.height = 44,
     this.onPressed,
   }) : super(key: key);
 
@@ -76,8 +77,8 @@ class DesktopWhiteButton extends StatelessWidget {
     this.titleColor,
     this.borderColor,
     this.textSize = 16,
-    this.width = 184,
-    this.height = 56,
+    this.width = 160,
+    this.height = 44,
     this.onPressed,
   }) : super(key: key);
 

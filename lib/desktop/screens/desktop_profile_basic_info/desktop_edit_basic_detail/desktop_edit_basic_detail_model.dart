@@ -57,7 +57,6 @@ class DesktopEditBasicDetailModel extends ChangeNotifier {
       _basicData.add(
         BasicDataModel(
           data: basicData,
-          controller: TextEditingController(text: basicData.value),
           isCustomField: isCustomField,
         ),
       );
@@ -69,8 +68,23 @@ class DesktopEditBasicDetailModel extends ChangeNotifier {
     for (var data in _basicData) {
       final newBasicData = data.data;
       newBasicData.value = data.controller?.text.trim();
+      newBasicData.isPrivate = !(data.publicController.value);
       await updateDefinedFields(context, newBasicData);
     }
-    Navigator.of(context).pop('saved');
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop('saved');
+    }
+  }
+
+  void saveAllFieldPublic() {
+    for (var data in _basicData) {
+      data.publicController.value = true;
+    }
+  }
+
+  void saveAllFieldPrivate() {
+    for (var data in _basicData) {
+      data.publicController.value = false;
+    }
   }
 }

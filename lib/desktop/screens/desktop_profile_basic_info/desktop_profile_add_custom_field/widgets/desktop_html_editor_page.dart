@@ -18,8 +18,8 @@ class DesktopHtmlEditorPage extends StatelessWidget {
     return Stack(
       children: [
         TextFormField(
-          minLines: 10,
-          maxLines: 10,
+          minLines: 6,
+          maxLines: 6,
           keyboardType: TextInputType.multiline,
           controller: textController,
           style: TextStyle(

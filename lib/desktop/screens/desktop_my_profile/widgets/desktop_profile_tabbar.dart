@@ -12,8 +12,8 @@ class DesktopProfileTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      height: 56,
-      width: 350,
+      height: 48,
+      width: 320,
       child: Stack(
         children: [
           Container(
@@ -32,16 +32,12 @@ class DesktopProfileTabBar extends StatelessWidget {
             tabs: [
               Container(child: Center(child: Text(Strings.desktop_details))),
               Container(child: Center(child: Text(Strings.desktop_channels))),
-              Container(child: Center(child: Text(Strings.desktop_featured))),
+              // Container(child: Center(child: Text(Strings.desktop_featured))),
             ],
             labelColor: Colors.white,
             unselectedLabelColor: appTheme.primaryTextColor,
-            labelStyle: TextStyle(
-              fontSize: 18,
-            ),
-            unselectedLabelStyle: TextStyle(
-              fontSize: 18,
-            ),
+            labelStyle: appTheme.textTheme.subtitle1,
+            unselectedLabelStyle: appTheme.textTheme.subtitle1,
             padding: EdgeInsets.zero,
             indicator: BoxDecoration(
               color: appTheme.primaryColor,

@@ -1,6 +1,7 @@
 import 'package:at_wavi_app/desktop/screens/desktop_appearance/color_setting/desktop_color_setting_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_appearance/theme_setting/desktop_theme_setting_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_tabbar.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_welcome_widget.dart';
@@ -32,16 +33,20 @@ class _DesktopAppearancePageState extends State<DesktopAppearancePage>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: DesktopDimens.paddingLarge),
             Container(
-              height: 200,
               child: Center(
                 child: DesktopWelcomeWidget(),
               ),
             ),
+            SizedBox(height: DesktopDimens.paddingLarge),
             _buildTabBar(),
             Expanded(child: _buildPageView()),
             Container(
-              padding: EdgeInsets.only(right: 46, bottom: 64),
+              padding: EdgeInsets.only(
+                right: DesktopDimens.paddingLarge,
+                bottom: DesktopDimens.paddingLarge,
+              ),
               alignment: Alignment.bottomRight,
               child: _buildSaveButton(),
             ),

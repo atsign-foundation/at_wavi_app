@@ -17,6 +17,7 @@ import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
 import 'package:at_client/src/service/sync_service.dart';
@@ -38,7 +39,12 @@ class BackendService {
   Directory? downloadDirectory;
   Map<String?, AtClientService> atClientServiceMap = {};
 
-  onboard(String atSign, {AtClientPreference? atClientPreference}) async {
+  onboard(
+    String atSign, {
+    AtClientPreference? atClientPreference,
+    Color appColor = ColorConstants.green,
+    VoidCallback? onSuccess,
+  }) async {
     var atClientPrefernce;
     await getAtClientPreference()
         .then((value) => atClientPrefernce = value)
@@ -49,14 +55,18 @@ class BackendService {
       atClientPreference: atClientPrefernce,
       domain: MixedConstants.ROOT_DOMAIN,
       appAPIKey: MixedConstants.devAPIKey,
-      appColor: ColorConstants.green,
+      appColor: appColor,
       rootEnvironment: RootEnvironment.Production,
       onboard: (atClientServiceMap, onboardedAtsign) async {
         LoadingDialog().show(text: '$onboardedAtsign', heading: 'Loading');
         await onSuccessOnboard(atClientServiceMap, onboardedAtsign);
         LoadingDialog().hide();
-        SetupRoutes.pushAndRemoveAll(
-            NavService.navKey.currentContext!, Routes.HOME);
+        if (Platform.isLinux || Platform.isMacOS ||  Platform.isWindows) {
+          onSuccess?.call();
+        } else {
+          SetupRoutes.pushAndRemoveAll(
+              NavService.navKey.currentContext!, Routes.HOME);
+        }
       },
       onError: (error) {
         print('Onboarding throws $error error');
@@ -95,7 +105,7 @@ class BackendService {
   }
 
   Future<AtClientPreference> getAtClientPreference() async {
-    if (Platform.isIOS) {
+    if (Platform.isIOS || Platform.isMacOS) {
       downloadDirectory =
           await path_provider.getApplicationDocumentsDirectory();
     } else {

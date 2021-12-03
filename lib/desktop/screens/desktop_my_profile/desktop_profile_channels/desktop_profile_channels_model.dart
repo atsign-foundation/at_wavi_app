@@ -18,7 +18,7 @@ class DesktopProfileChannelsModel extends ChangeNotifier {
     _fields.clear();
     var fields = <String>[];
     fields = [
-      ...FieldNames().getFieldList(AtCategory.CHANNELS, isPreview: true)
+      ...FieldNames().getFieldList(AtCategory.CHANNELS, isPreview: false)
     ];
     updateField(fields);
     notifyListeners();

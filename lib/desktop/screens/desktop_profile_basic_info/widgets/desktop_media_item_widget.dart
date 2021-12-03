@@ -6,7 +6,7 @@ import 'package:at_wavi_app/model/user.dart';
 import 'package:flutter/cupertino.dart';
 
 class DesktopMediaItemWidget extends StatelessWidget {
-  BasicData data;
+  final BasicData data;
 
   DesktopMediaItemWidget({
     required this.data,

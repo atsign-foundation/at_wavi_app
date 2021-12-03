@@ -18,6 +18,8 @@ class DesktopHtmlPreviewPage extends StatelessWidget {
       child: Stack(
         children: [
           Container(
+            width: double.infinity,
+            height: double.infinity,
             padding: EdgeInsets.all(12),
             child: SingleChildScrollView(
               child: Container(

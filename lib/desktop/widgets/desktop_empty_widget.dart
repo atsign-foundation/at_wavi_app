@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,7 @@ class DesktopEmptyWidget extends StatelessWidget {
   final String description;
   final String buttonTitle;
   final VoidCallback? onButtonPressed;
+  final bool showAddButton;
 
   const DesktopEmptyWidget({
     Key? key,
@@ -16,6 +18,7 @@ class DesktopEmptyWidget extends StatelessWidget {
     required this.description,
     required this.buttonTitle,
     required this.onButtonPressed,
+    this.showAddButton = true,
   }) : super(key: key);
 
   @override
@@ -25,39 +28,38 @@ class DesktopEmptyWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         image,
-        SizedBox(height: 16),
+        SizedBox(height: DesktopDimens.paddingNormal),
         Text(
           title,
-          style: TextStyle(
-            fontSize: 18,
+          style: appTheme.textTheme.subtitle1?.copyWith(
             fontWeight: FontWeight.bold,
             color: appTheme.primaryTextColor,
           ),
         ),
-        SizedBox(height: 16),
+        SizedBox(height: DesktopDimens.paddingSmall),
         Text(
           description,
-          style: TextStyle(
-            fontSize: 16,
+          style: appTheme.textTheme.subtitle2?.copyWith(
             color: appTheme.secondaryTextColor,
+            fontWeight: FontWeight.normal,
           ),
         ),
-        SizedBox(height: 32),
-        ElevatedButton(
-          onPressed: onButtonPressed,
-          child: Text(
-            buttonTitle,
-            style: TextStyle(
-              fontSize: 18,
-              color: appTheme.primaryColor,
+        if (showAddButton) SizedBox(height: DesktopDimens.paddingNormal),
+        if (showAddButton)
+          ElevatedButton(
+            onPressed: onButtonPressed,
+            child: Text(
+              buttonTitle,
+              style: appTheme.textTheme.button?.copyWith(
+                color: appTheme.primaryColor,
+              ),
             ),
-          ),
-          style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(Colors.transparent),
-            elevation: MaterialStateProperty.all<double>(0),
-          ),
-        )
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.transparent),
+              elevation: MaterialStateProperty.all<double>(0),
+            ),
+          )
       ],
     );
   }
