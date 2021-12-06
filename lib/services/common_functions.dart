@@ -16,6 +16,7 @@ import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
@@ -36,9 +37,7 @@ class CommonFunctions {
   }
 
   bool isOsmDataPresent(Map _locationData) {
-    if ((_locationData['diameter'] != null) &&
-        (_locationData['zoom'] != null) &&
-        (_locationData['latitude'] != null) &&
+    if ((_locationData['latitude'] != null) &&
         (_locationData['longitude'] != null)) {
       return true;
     }
@@ -48,6 +47,8 @@ class CommonFunctions {
 
   List<Widget> getCustomLocationCards(ThemeData _themeData,
       {bool isPreview = false}) {
+    List<String> fieldOrder =
+        FieldNames().getFieldList(AtCategory.LOCATION, isPreview: isPreview);
     var customLocationWidgets = <Widget>[];
 
     User _currentUser = User.fromJson(
@@ -63,24 +64,30 @@ class CommonFunctions {
         ),
       ),
     );
+    List<BasicData>? customFields =
+        _currentUser.customFields[AtCategory.LOCATION.name];
+    if (customFields == null) {
+      customFields = [];
+    }
 
-    List.generate(_currentUser.customFields['LOCATION']?.length ?? 0, (_int) {
-      if ((_currentUser.customFields['LOCATION']?[_int].accountName ?? '')
-          .contains('_deleted')) {
-      } else {
+    for (int i = 0; i < fieldOrder.length; i++) {
+      var index =
+          customFields.indexWhere((el) => el.accountName == fieldOrder[i]);
+      if (index != -1 &&
+          !customFields[index].accountName!.contains(AtText.IS_DELETED)) {
         customLocationWidgets.add(
           Padding(
             padding: EdgeInsets.only(top: 10),
             child: buildMap(
               OsmLocationModel.fromJson(json
-                  .decode(_currentUser.customFields['LOCATION']?[_int].value)),
-              _currentUser.customFields['LOCATION']?[_int].accountName ?? '',
+                  .decode(_currentUser.customFields['LOCATION']?[index].value)),
+              _currentUser.customFields['LOCATION']?[index].accountName ?? '',
               _themeData,
             ),
           ),
         );
       }
-    });
+    }
 
     return customLocationWidgets;
   }
@@ -98,13 +105,12 @@ class CommonFunctions {
                     listen: false)
                 .user!))));
 
-    if ((_currentUser.locationNickName.value != null) &&
-        (_currentUser.location.value != null) &&
+    if ((_currentUser.location.value != null) &&
         (isOsmDataPresent(json.decode(_currentUser.location.value)))) {
       locationWidgets.add(
         buildMap(
           OsmLocationModel.fromJson(json.decode(_currentUser.location.value)),
-          _currentUser.locationNickName.value,
+          _currentUser.locationNickName.value ?? '',
           _themeData,
         ),
       );
@@ -360,10 +366,11 @@ class CommonFunctions {
             null) {
       return false;
     }
-    if (Provider.of<UserProvider>(NavService.navKey.currentContext!,
-                listen: false)
-            .user ==
-        null) {
+    if (!isPreview &&
+        Provider.of<UserProvider>(NavService.navKey.currentContext!,
+                    listen: false)
+                .user ==
+            null) {
       return false;
     }
     var userMap = User.toJson(isPreview
@@ -374,7 +381,8 @@ class CommonFunctions {
                 listen: false)
             .user!);
     var isPresent = false;
-    List<String> fields = FieldNames().getFieldList(category);
+    List<String> fields =
+        FieldNames().getFieldList(category, isPreview: isPreview);
 
     for (var field in userMap.entries) {
       if (field.key != null &&
@@ -382,6 +390,10 @@ class CommonFunctions {
           field.value != null &&
           field.value.value != null &&
           field.value.value != '') {
+        if (field.key == FieldsEnum.FIRSTNAME.name ||
+            field.key == FieldsEnum.LASTNAME.name) {
+          continue;
+        }
         return true;
       }
     }
@@ -570,7 +582,7 @@ class CommonFunctions {
                         point: _osmLocationModel.latLng!,
                         builder: (ctx) => Container(
                             child: createMarker(
-                                diameterOfCircle: _osmLocationModel.diameter!)),
+                                diameterOfCircle: _osmLocationModel.radius!)),
                       )
                     ])
                   ],
@@ -594,7 +606,7 @@ class CommonFunctions {
                               'title': _locationNickname,
                               'latLng': _osmLocationModel.latLng!,
                               'zoom': _osmLocationModel.zoom!,
-                              'diameterOfCircle': _osmLocationModel.diameter!,
+                              'diameterOfCircle': _osmLocationModel.radius!,
                             });
                       },
                       icon: Icon(Icons.fullscreen)),

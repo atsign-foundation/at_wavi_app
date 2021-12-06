@@ -105,9 +105,12 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                     onTap: widget.onFollowerPressed,
                     child: _buildInteractiveItem(
                         Strings.desktop_followers,
-                        (SearchService().followers_count != null)
-                            ? SearchService().followers_count.toString()
-                            : '${followsCount(isFollowers: true)}',
+                        (SearchService()
+                                    .getAlreadySearchedAtsignDetails(
+                                        _currentUser.atsign)!
+                                    .following_count ??
+                                '-')
+                            .toString(),
                         appTheme),
                   ),
                   SizedBox(height: DesktopDimens.paddingSmall),
@@ -116,9 +119,12 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                     onTap: widget.onFollowingPressed,
                     child: _buildInteractiveItem(
                         Strings.desktop_following,
-                        (SearchService().following_count != null)
-                            ? SearchService().following_count.toString()
-                            : '${followsCount()}',
+                        (SearchService()
+                            .getAlreadySearchedAtsignDetails(
+                            _currentUser.atsign)!
+                            .following_count ??
+                            '-')
+                            .toString(),
                         appTheme),
                   ),
                   SizedBox(height: DesktopDimens.paddingLarge),

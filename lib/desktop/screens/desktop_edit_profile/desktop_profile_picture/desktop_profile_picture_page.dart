@@ -35,7 +35,7 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
       type: FileType.media,
     );
     if (result?.files.single.path != null) {
-      var _file = File(result!.files.single.path);
+      var _file = File(result!.files.single.path!);
       final data = await _file.readAsBytes();
       // _currentUser?.image.value = data;
 

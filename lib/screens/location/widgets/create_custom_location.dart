@@ -3,14 +3,12 @@ import 'package:at_location_flutter/at_location_flutter.dart';
 import 'package:at_location_flutter/utils/constants/constants.dart';
 import 'package:at_wavi_app/common_components/create_marker.dart';
 import 'package:at_wavi_app/common_components/custom_input_field.dart';
-import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
 import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/location/widgets/select_location.dart';
-import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/compare_basicdata.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
@@ -19,12 +17,13 @@ import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'package:provider/provider.dart';
 
 class CreateCustomLocation extends StatefulWidget {
   final BasicData? basicData;
-  const CreateCustomLocation({Key? key, this.basicData}) : super(key: key);
+  final Function? onSave;
+  const CreateCustomLocation({Key? key, this.basicData, this.onSave})
+      : super(key: key);
 
   @override
   _CreateCustomLocationState createState() => _CreateCustomLocationState();
@@ -82,13 +81,20 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
     return Scaffold(
       bottomSheet: InkWell(
         onTap: () {
+          if ((_data.accountName == null) || (_data.accountName == '')) {
+            return _showToast('Title is required', isError: true);
+          }
+
+          if (_data.accountName != null) {
+            _data.accountName = _data.accountName!.trim();
+          }
+
           if (_data.value != null) {
             _updateLocation(_osmLocationModel!);
+            FieldOrderService()
+                .addNewField(AtCategory.LOCATION, _data.accountName!);
           } else {
-            if (_data.accountName != null) {
-              return _showToast('Enter Location tag', isError: true);
-            }
-            _showToast('Enter Location', isError: true);
+            _showToast('Location is required', isError: true);
           }
         },
         child: Container(
@@ -147,7 +153,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
-                child: Text('Tag',
+                child: Text('Title',
                     style: TextStyles.lightText(
                         Theme.of(context).primaryColor.withOpacity(0.5),
                         size: 16)),
@@ -159,7 +165,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                   borderColor: Colors.transparent,
                   focusedBorderColor: Colors.transparent,
                   width: double.infinity,
-                  hintText: 'Enter the tag',
+                  // hintText: 'Enter the tag',
                   hintTextColor:
                       Theme.of(context).primaryColor.withOpacity(0.5),
                   bgColor: Colors.transparent,
@@ -273,7 +279,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                                     builder: (ctx) => Container(
                                         child: createMarker(
                                             diameterOfCircle:
-                                                _osmLocationModel!.diameter!)),
+                                                _osmLocationModel!.radius!)),
                                   )
                                 ])
                               ],
@@ -298,7 +304,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
                                           'latLng': _osmLocationModel!.latLng!,
                                           'zoom': _osmLocationModel!.zoom!,
                                           'diameterOfCircle':
-                                              _osmLocationModel!.diameter!,
+                                              _osmLocationModel!.radius!,
                                         });
                                   },
                                   icon: Icon(Icons.fullscreen)),
@@ -317,6 +323,14 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
   }
 
   _updateLocation(OsmLocationModel _osmData) async {
+    if ((_osmData.latitude == null) ||
+        (_osmData.latitude == 'null') ||
+        (_osmData.longitude == null) ||
+        (_osmData.longitude == 'null')) {
+      _showToast('Location is required', isError: true);
+      return;
+    }
+
     // when field is being added, checking if title name is already taken or not
     if (widget.basicData == null) {
       if (Provider.of<UserPreview>(context, listen: false)
@@ -355,7 +369,7 @@ class _CreateCustomLocationState extends State<CreateCustomLocation> {
         }
       }
     }
-
+    widget.onSave?.call();
     // LoadingDialog().hide();
     Navigator.of(context).pop();
   }

@@ -170,6 +170,38 @@ class BackendService {
     return scanKeys;
   }
 
+  ///Resets [atsigns] list from device storage.
+  Future<void> resetAtsigns(List atsigns) async {
+    for (String atsign in atsigns) {
+      await KeychainUtil.resetAtSignFromKeychain(atsign);
+      atClientServiceMap.remove(atsign);
+    }
+  }
+
+  deleteAtSignFromKeyChain(String atsign) async {
+    List<String>? atSignList = await KeychainUtil.getAtsignList();
+
+    await KeychainUtil.deleteAtSignFromKeychain(atsign);
+
+    if (atSignList != null) {
+      atSignList.removeWhere((element) => element == currentAtSign);
+    }
+
+    var nextAtsignToOnboard;
+    if (atSignList == null || atSignList.isEmpty) {
+      nextAtsignToOnboard = '';
+    } else {
+      nextAtsignToOnboard = atSignList.first;
+    }
+
+    if (nextAtsignToOnboard == '') {
+      await SetupRoutes.pushAndRemoveAll(
+          NavService.navKey.currentContext!, Routes.WELCOME_SCREEN);
+    } else {
+      await onboard(nextAtsignToOnboard);
+    }
+  }
+
   Future<AtFollowsValue> scanAndGet(String regex) async {
     var scanKey = await BackendService()
         .atClientInstance

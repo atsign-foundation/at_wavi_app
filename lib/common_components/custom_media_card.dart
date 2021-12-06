@@ -66,9 +66,7 @@ class _CustomMediaCardState extends State<CustomMediaCard> {
             Text(
               '${widget.basicData.accountName![0].toUpperCase()}${widget.basicData.accountName!.substring(1)}',
               style: TextStyles.lightText(
-                  _isDark
-                      ? widget.themeData.primaryColor.withOpacity(0.5)
-                      : widget.themeData.highlightColor.withOpacity(0.7),
+                  widget.themeData.primaryColor.withOpacity(0.5),
                   size: 16),
             ),
             SizedBox(height: 6),
@@ -76,11 +74,8 @@ class _CustomMediaCardState extends State<CustomMediaCard> {
                     (widget.basicData.valueDescription != 'null'))
                 ? Text(
                     widget.basicData.valueDescription!,
-                    style: _isDark
-                        ? TextStyles.lightText(widget.themeData.primaryColor,
-                            size: 18)
-                        : TextStyles.lightText(widget.themeData.highlightColor,
-                            size: 18),
+                    style: TextStyles.lightText(widget.themeData.primaryColor,
+                        size: 18),
                   )
                 : SizedBox(),
             (widget.basicData.valueDescription != null) &&

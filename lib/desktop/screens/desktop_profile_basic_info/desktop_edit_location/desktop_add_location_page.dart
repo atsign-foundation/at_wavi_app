@@ -187,7 +187,7 @@ class _DesktopAddLocationPageState extends State<DesktopAddLocationPage> {
       type: FileType.image,
     );
     if (result?.files.single.path != null) {
-      File file = File(result!.files.single.path);
+      File file = File(result!.files.single.path!);
       final imageData = file.readAsBytesSync();
       _model.didSelectImage(imageData);
     } else {

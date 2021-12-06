@@ -35,9 +35,7 @@ class CustomCard extends StatelessWidget {
                 ? Text(
                     '${title![0].toUpperCase()}${title!.substring(1)}',
                     style: TextStyles.lightText(
-                        _isDark
-                            ? themeData.primaryColor.withOpacity(0.5)
-                            : themeData.highlightColor.withOpacity(0.7),
+                        themeData.primaryColor.withOpacity(0.5),
                         size: 16),
                   )
                 : SizedBox(),
@@ -56,9 +54,7 @@ class CustomCard extends StatelessWidget {
                       textStyle: TextStyle(
                         color: isUrl
                             ? ColorConstants.orange
-                            : _isDark
-                                ? themeData.primaryColor
-                                : themeData.highlightColor,
+                            : themeData.primaryColor,
                         fontSize: 16.toFont,
                       ),
                       webView: true,

@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 
 class User {
   bool allPrivate;
@@ -23,11 +25,17 @@ class User {
   BasicData instagram;
   BasicData youtube;
   BasicData tumbler;
+  BasicData tiktok;
+  BasicData snapchat;
+  BasicData pinterest;
+  BasicData github;
   BasicData medium;
   BasicData ps4;
   BasicData xbox;
   BasicData steam;
   BasicData discord;
+  BasicData twitch;
+  BasicData htmlToastView;
   Map<String, List<BasicData>> customFields;
 
   User(
@@ -49,10 +57,16 @@ class User {
       youtube,
       tumbler,
       medium,
+      tiktok,
+      snapchat,
+      pinterest,
+      github,
       ps4,
       xbox,
       steam,
       discord,
+      twitch,
+      htmlToastView,
       customFields})
       : this.allPrivate = allPrivate,
         this.atsign = atsign,
@@ -72,10 +86,16 @@ class User {
         this.youtube = youtube ?? BasicData(),
         this.tumbler = tumbler ?? BasicData(),
         this.medium = medium ?? BasicData(),
+        this.tiktok = tiktok ?? BasicData(),
+        this.github = github ?? BasicData(),
+        this.snapchat = snapchat ?? BasicData(),
+        this.pinterest = pinterest ?? BasicData(),
         this.ps4 = ps4 ?? BasicData(),
         this.xbox = xbox ?? BasicData(),
         this.steam = steam ?? BasicData(),
         this.discord = discord ?? BasicData(),
+        this.twitch = twitch ?? BasicData(),
+        this.htmlToastView = htmlToastView ?? BasicData(),
         this.customFields = customFields ?? {};
 
   static Map<dynamic, dynamic> toJson(User? user) {
@@ -98,12 +118,83 @@ class User {
       FieldsEnum.YOUTUBE.name: user?.youtube,
       FieldsEnum.TUMBLR.name: user?.tumbler,
       FieldsEnum.MEDIUM.name: user?.medium,
+      FieldsEnum.TIKTOK.name: user?.tiktok,
+      FieldsEnum.SNAPCHAT.name: user?.snapchat,
+      FieldsEnum.PINTEREST.name: user?.pinterest,
+      FieldsEnum.GITHUB.name: user?.github,
+      FieldsEnum.TWITCH.name: user?.twitch,
       FieldsEnum.PS4.name: user?.ps4,
       FieldsEnum.XBOX.name: user?.xbox,
       FieldsEnum.STEAM.name: user?.steam,
       FieldsEnum.DISCORD.name: user?.discord,
+      FieldsEnum.HTMLTOASTVIEW.name: user?.htmlToastView,
       'customFields': user?.customFields
     };
+  }
+
+  /// return [true] if [user1], [user2] have same data
+  static bool isEqual(User user1, User user2) {
+    var u1 = User.toJson(user1);
+    var u2 = User.toJson(user2);
+
+    var _result = true;
+
+    // to remove empty customfields, for eg sometimes, we have empty 'IMAGE: []' in userPreview data
+    CustomContentType.values.forEach((_value) {
+      if (u1['customFields'][_value.name.toUpperCase()] == null ||
+          (u1['customFields'][_value.name.toUpperCase()]).length == 0) {
+        (u1['customFields'] as Map).remove(_value.name.toUpperCase());
+      }
+
+      if (u2['customFields'][_value.name.toUpperCase()] == null ||
+          (u2['customFields'][_value.name.toUpperCase()]).length == 0) {
+        (u2['customFields'] as Map).remove(_value.name.toUpperCase());
+      }
+    });
+
+    u1.forEach((key, value) {
+      if (_result) {
+        if (key == FieldsEnum.IMAGE.name) {
+          Function eq = const ListEquality().equals;
+          if (!eq(u1[key].value, u2[key].value)) {
+            _result = false;
+          }
+        }
+
+        if (key != FieldsEnum.IMAGE.name) {
+          if (key == 'customFields') {
+            if (u1[key].length != u2[key].length) {
+              _result = false;
+            } else {
+              var _key1 = u1[key];
+              var _key2 = u2[key];
+
+              if (_key1.toString() != _key2.toString()) {
+                _result = false;
+              }
+            }
+          } else {
+            if ((u1[key] is BasicData) &&
+                (u2[key] is BasicData) &&
+                (u2[key].value != u1[key].value)) {
+              _result = false;
+
+              /// sometimes, values dont match because we have null in some and empty string
+              if ((u1[key].value == null ||
+                      u1[key].value == '' ||
+                      u1[key].value == 'null') &&
+                  (u2[key].value == null ||
+                      u2[key].value == '' ||
+                      u2[key].value == 'null')) {
+                _result = true;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    return _result;
   }
 
   static fromJson(Map<dynamic, dynamic> userMap) {
@@ -154,11 +245,23 @@ class User {
             BasicData.fromJson(json.decode(userMap[FieldsEnum.TUMBLR.name])),
         medium:
             BasicData.fromJson(json.decode(userMap[FieldsEnum.MEDIUM.name])),
+        tiktok:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.TIKTOK.name])),
+        pinterest:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.PINTEREST.name])),
+        github:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.GITHUB.name])),
+        twitch:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.TWITCH.name])),
+        snapchat:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.SNAPCHAT.name])),
         ps4: BasicData.fromJson(json.decode(userMap[FieldsEnum.PS4.name])),
         xbox: BasicData.fromJson(json.decode(userMap[FieldsEnum.XBOX.name])),
         steam: BasicData.fromJson(json.decode(userMap[FieldsEnum.STEAM.name])),
         discord:
             BasicData.fromJson(json.decode(userMap[FieldsEnum.DISCORD.name])),
+        htmlToastView: BasicData.fromJson(
+            json.decode(userMap[FieldsEnum.HTMLTOASTVIEW.name])),
         customFields: customFields,
       );
     } catch (e) {
@@ -188,6 +291,17 @@ class BasicData {
     this.extension,
   });
 
+  String? get displayingAccountName {
+    if (FieldNames().basicDetailsFields.contains(accountName) ||
+        FieldNames().additionalDetailsFields.contains(accountName) ||
+        FieldNames().socialAccountsFields.contains(accountName) ||
+        FieldNames().gameFields.contains(accountName)) {
+      return accountName?.toCapitalized();
+    } else {
+      return accountName;
+    }
+  }
+
   factory BasicData.fromJson(Map<String, dynamic> json) {
     if (json['value'] != null &&
         json['accountName'] != null &&
@@ -205,13 +319,11 @@ class BasicData {
         json['value'] = null;
       }
       return BasicData(
-        value: json['value'],
-        isPrivate: json['isPrivate'] == 'false' ? false : true,
-        accountName: json['accountName'],
-        valueDescription: json['valueDescription'],
-        type: json['type'],
-        extension: json['extension'],
-      );
+          value: json['value'],
+          isPrivate: json['isPrivate'] == 'false' ? false : true,
+          accountName: json['accountName'],
+          valueDescription: json['valueDescription'] ?? null,
+          type: json['type']);
     } else {
       return BasicData();
     }
@@ -219,11 +331,11 @@ class BasicData {
 
   toJson() {
     return json.encode({
-      'value': value.toString(),
+      'value': value?.toString(),
       // 'location': 'NH 18, Chas, Bokaro, 827013, Jharkhand, India',
       'isPrivate': isPrivate.toString(),
       'accountName': accountName.toString(),
-      'valueDescription': valueDescription.toString(),
+      'valueDescription': valueDescription?.toString(),
       'type': type.toString(),
       'extension': extension.toString(),
     });
@@ -289,3 +401,7 @@ BasicData formData(name, value, {private, type, valueDescription}) {
 //       break;
 //   }
 // }
+extension StringCasingExtension on String {
+  String toCapitalized() =>
+      this.length > 0 ? '${this[0].toUpperCase()}${this.substring(1)}' : '';
+}

@@ -326,9 +326,9 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
       null,
       null,
       zoom,
-      diameterOfCircle,
       latitude: center.latitude,
       longitude: center.longitude,
+      diameter: diameterOfCircle,
     );
     if (widget.onLocationPicked != null) {
       widget.onLocationPicked?.call(_finalData);

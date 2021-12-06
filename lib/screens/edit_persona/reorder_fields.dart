@@ -4,6 +4,7 @@ import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
@@ -24,6 +25,8 @@ class ReorderFields extends StatefulWidget {
 class _ReorderFieldsState extends State<ReorderFields> {
   var fields = <String>[];
   ThemeData? _themeData;
+  late Map<dynamic, dynamic> userMap;
+  List<BasicData>? customFields;
 
   @override
   void initState() {
@@ -31,7 +34,22 @@ class _ReorderFieldsState extends State<ReorderFields> {
     if (FieldOrderService().previewOrders[widget.category.name] != null) {
       fields = [...FieldOrderService().previewOrders[widget.category.name]!];
     }
+    // removing pre defined fields for location category.
+    if (widget.category == AtCategory.LOCATION) {
+      FieldNames().locationFields.forEach((el) {
+        fields.removeWhere((element) => element == el);
+      });
+    }
+    _getUserData();
     super.initState();
+  }
+
+  _getUserData() {
+    userMap =
+        User.toJson(Provider.of<UserPreview>(context, listen: false).user());
+    customFields = Provider.of<UserPreview>(context, listen: false)
+        .user()!
+        .customFields[widget.category.name];
   }
 
   _getThemeData() async {
@@ -124,38 +142,44 @@ class _ReorderFieldsState extends State<ReorderFields> {
 
   List<Widget> getRowTitle() {
     var reorderList = <ListTile>[];
+    List<String> predefinedLocationFields =
+        FieldNames().getPredefinedFieldList(AtCategory.LOCATION);
 
     for (int index = 0; index < fields.length; index++) {
-      reorderList.add(ListTile(
-        contentPadding: EdgeInsets.all(0),
-        key: Key('$index'),
-        title: reorderTitle(fields[index]),
-      ));
+      if (widget.category == AtCategory.LOCATION) {
+        // skipping location predefined fields
+        if (predefinedLocationFields.indexOf(fields[index]) != -1) {
+          continue;
+        }
+      }
+
+      BasicData basicData = BasicData();
+      if (userMap.containsKey(fields[index])) {
+        basicData = userMap[fields[index]];
+      } else {
+        var i =
+            customFields!.indexWhere((el) => el.accountName == fields[index]);
+        if (i != -1) basicData = customFields![i];
+      }
+
+      if (basicData.value == null) {
+        basicData.value = '';
+      }
+      if (basicData.accountName != null &&
+          basicData.value != null &&
+          !basicData.accountName!.contains(AtText.IS_DELETED)) {
+        reorderList.add(ListTile(
+          contentPadding: EdgeInsets.all(0),
+          key: Key('$index'),
+          title: reorderTitle(fields[index], basicData),
+        ));
+      }
     }
     return reorderList;
   }
 
-  Widget reorderTitle(String field) {
+  Widget reorderTitle(String field, BasicData basicData) {
     var tile = SizedBox();
-    BasicData basicData = BasicData();
-
-    var userMap =
-        User.toJson(Provider.of<UserPreview>(context, listen: false).user());
-    List<BasicData>? customFields =
-        Provider.of<UserPreview>(context, listen: false)
-            .user()!
-            .customFields[widget.category.name];
-
-    if (userMap.containsKey(field)) {
-      basicData = userMap[field];
-    } else {
-      var index = customFields!.indexWhere((el) => el.accountName == field);
-      if (index != -1) basicData = customFields[index];
-    }
-
-    if (basicData.value == null) {
-      basicData.value = '';
-    }
 
     if (basicData.accountName != null &&
         basicData.value != null &&
@@ -178,7 +202,7 @@ class _ReorderFieldsState extends State<ReorderFields> {
               Padding(
                 padding: EdgeInsets.only(left: 10),
                 child: Text(
-                  basicData.accountName!,
+                  basicData.displayingAccountName ?? '',
                   style: TextStyles.lightText(
                       _themeData!.primaryColor.withOpacity(0.5),
                       size: 16),
@@ -187,18 +211,22 @@ class _ReorderFieldsState extends State<ReorderFields> {
                 ),
               ),
               SizedBox(height: 15),
-              Padding(
-                padding: EdgeInsets.only(left: 10),
-                child: basicData.type == CustomContentType.Image.name
-                    ? Image.memory(basicData.value)
-                    : Text(
-                        basicData.value!,
-                        style: TextStyles.lightText(_themeData!.primaryColor,
-                            size: 18),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-              ),
+              // not showing location field values
+              widget.category == AtCategory.LOCATION
+                  ? SizedBox()
+                  : Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: basicData.type == CustomContentType.Image.name
+                          ? Image.memory(basicData.value)
+                          : Text(
+                              basicData.value!,
+                              style: TextStyles.lightText(
+                                  _themeData!.primaryColor,
+                                  size: 18),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                    ),
               Divider()
             ],
           ),

@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:at_client_mobile/at_client_mobile.dart';
-import 'package:at_commons/at_commons.dart';
 import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/empty_widget.dart';
 import 'package:at_wavi_app/common_components/header.dart';
@@ -17,8 +14,6 @@ import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_private_account.dart';
 import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/screens/website_webview/website_webview.dart';
-import 'package:at_wavi_app/services/at_key_get_service.dart';
-import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
@@ -26,11 +21,9 @@ import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/search_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
-import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
-import 'package:at_wavi_app/utils/images.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
@@ -38,7 +31,6 @@ import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:at_location_flutter/utils/constants/constants.dart'
     as location_package_constants;
 
@@ -257,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   Text(_name,
                                       style: TextStyle(
                                           fontSize: 18.toFont,
-                                          color: _themeData!.highlightColor,
+                                          color: _themeData!.primaryColor,
                                           fontWeight: FontWeight.w600)),
                                   SizedBox(height: 8.toHeight),
                                   Text(
@@ -316,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             .showSnackBar(SnackBar(
                                           backgroundColor: ColorConstants.RED,
                                           content: Text(
-                                            'This is a Preview',
+                                            'You are currently in preview mode',
                                             style: CustomTextStyles
                                                 .customTextStyle(
                                               ColorConstants.white,
@@ -330,20 +322,36 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           NavService.navKey.currentContext!,
                                           Routes.EDIT_PERSONA);
                                     },
-                              child: Text(
-                                _isSearchScreen
-                                    ? (Provider.of<FollowService>(
-                                                NavService
-                                                    .navKey.currentContext!,
-                                                listen: false)
-                                            .isFollowing(_currentUser.atsign)
-                                        ? 'Following'
-                                        : 'Follow')
-                                    : 'Edit Profile',
-                                style: TextStyle(
-                                    fontSize: 16.toFont,
-                                    color: _themeData!.primaryColor
-                                        .withOpacity(0.5)),
+                              child: RichText(
+                                text: TextSpan(
+                                  text: _isSearchScreen
+                                      ? (Provider.of<FollowService>(
+                                                  NavService
+                                                      .navKey.currentContext!,
+                                                  listen: false)
+                                              .isFollowing(_currentUser.atsign)
+                                          ? 'Following'
+                                          : 'Follow')
+                                      : 'Edit  ',
+                                  style: TextStyle(
+                                      fontSize: 16.toFont,
+                                      color: _themeData!.primaryColor
+                                          .withOpacity(0.5)),
+                                  children: _isSearchScreen
+                                      ? []
+                                      : [
+                                          WidgetSpan(
+                                            alignment:
+                                                PlaceholderAlignment.middle,
+                                            child: Icon(
+                                              Icons.edit,
+                                              size: 18,
+                                              color: _themeData!.primaryColor
+                                                  .withOpacity(0.7),
+                                            ),
+                                          ),
+                                        ],
+                                ),
                               ),
                             ),
                           ),
@@ -368,7 +376,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             .showSnackBar(SnackBar(
                                           backgroundColor: ColorConstants.RED,
                                           content: Text(
-                                            'This is a Preview',
+                                            'You are currently in preview mode',
                                             style: CustomTextStyles
                                                 .customTextStyle(
                                               ColorConstants.white,
@@ -380,11 +388,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   : () {
                                       shareProfile();
                                     },
-                              child: Text('Share Profile',
+                              child: RichText(
+                                text: TextSpan(
+                                  text: 'Share  ',
                                   style: TextStyle(
                                       fontSize: 16.toFont,
                                       color: _themeData!.primaryColor
-                                          .withOpacity(0.5))),
+                                          .withOpacity(0.5)),
+                                  children: [
+                                    WidgetSpan(
+                                      alignment: PlaceholderAlignment.middle,
+                                      child: Icon(
+                                        Icons.share,
+                                        size: 18,
+                                        color: _themeData!.primaryColor
+                                            .withOpacity(0.7),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         )
@@ -392,11 +415,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                     SizedBox(height: 25.toHeight),
 
-                    _isSearchScreen && SearchService().isPrivateAccount
+                    _isSearchScreen &&
+                            SearchService()
+                                .getAlreadySearchedAtsignDetails(
+                                    _currentUser.atsign)!
+                                .isPrivateAccount
                         ? HomePrivateAccount(_themeData!)
                         : SizedBox(),
 
-                    _isSearchScreen && SearchService().isPrivateAccount
+                    _isSearchScreen &&
+                            SearchService()
+                                .getAlreadySearchedAtsignDetails(
+                                    _currentUser.atsign)!
+                                .isPrivateAccount
                         ? SizedBox()
                         : Container(
                             height: 70.toHeight,
@@ -442,12 +473,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             ),
                           ),
                     SizedBox(
-                      height:
-                          _isSearchScreen && SearchService().isPrivateAccount
-                              ? 0
-                              : 20.toHeight,
+                      height: _isSearchScreen &&
+                              SearchService()
+                                  .getAlreadySearchedAtsignDetails(
+                                      _currentUser.atsign)!
+                                  .isPrivateAccount
+                          ? 0
+                          : 20.toHeight,
                     ),
-                    _isSearchScreen && SearchService().isPrivateAccount
+                    _isSearchScreen &&
+                            SearchService()
+                                .getAlreadySearchedAtsignDetails(
+                                    _currentUser.atsign)!
+                                .isPrivateAccount
                         ? SizedBox()
                         : Consumer<UserProvider>(
                             builder: (context, _provider, _) {
@@ -527,7 +565,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       shape: StadiumBorder(),
                                       builder: (BuildContext context) {
                                         return Container(
-                                          height: 400.toHeight,
+                                          height: 480.toHeight,
                                           padding: EdgeInsets.symmetric(
                                               vertical: 20, horizontal: 20),
                                           decoration: BoxDecoration(
@@ -615,6 +653,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Routes.FOLLOWING_SCREEN,
                   arguments: {
                     'forSearchedAtsign': _isSearchScreen,
+                    'searchedAtsign':
+                        _isSearchScreen ? _currentUser.atsign : null,
                     'themeData': _themeData,
                   },
                 );
@@ -624,7 +664,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 children: [
                   Text(
                     _isSearchScreen
-                        ? (SearchService().following_count ?? '-').toString()
+                        ? (SearchService()
+                                    .getAlreadySearchedAtsignDetails(
+                                        _currentUser.atsign)!
+                                    .following_count ??
+                                '-')
+                            .toString()
                         : '${followsCount()}',
                     style: TextStyle(
                         fontSize: 18.toFont,
@@ -652,6 +697,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Routes.FOLLOWING_SCREEN,
                   arguments: {
                     'forSearchedAtsign': _isSearchScreen,
+                    'searchedAtsign':
+                        _isSearchScreen ? _currentUser.atsign : null,
                     'tabIndex': 1,
                     'themeData': _themeData,
                   },
@@ -662,7 +709,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 children: [
                   Text(
                     _isSearchScreen
-                        ? (SearchService().followers_count ?? '-').toString()
+                        ? (SearchService()
+                                    .getAlreadySearchedAtsignDetails(
+                                        _currentUser.atsign)!
+                                    .followers_count ??
+                                '-')
+                            .toString()
                         : '${followsCount(isFollowers: true)}',
                     style: TextStyle(
                         fontSize: 18.toFont,
@@ -749,8 +801,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       return;
     }
 
-    bool _isSearchingSameAtsign = SearchService().user.atsign == searchedAtsign;
-
     if (loadingSearchedAtsign) {
       return;
     }
@@ -758,19 +808,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       loadingSearchedAtsign = true;
     });
 
-    bool _isPresent = _isSearchingSameAtsign;
-    if (!_isSearchingSameAtsign) {
+    var _searchedAtsignData =
+        SearchService().getAlreadySearchedAtsignDetails(searchedAtsign);
+
+    late bool _isPresent;
+    if (_searchedAtsignData != null) {
+      _isPresent = true;
+    } else {
       _isPresent = await CommonFunctions().checkAtsign(searchedAtsign);
     }
 
     if (_isPresent) {
-      User? _res = SearchService().user;
+      SearchInstance? _searchService =
+          await SearchService().getAtsignDetails(searchedAtsign);
+      User? _res = _searchService?.user;
 
-      if (!_isSearchingSameAtsign) {
-        _res = await SearchService().getAtsignDetails(searchedAtsign);
-      }
-
-      if (_res == null) {
+      if (_searchService == null) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: ColorConstants.RED,
           content: Text(
@@ -793,10 +846,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       //         listen: false)
       //     .setSearchedUser(_res);
       Provider.of<UserPreview>(context, listen: false).setUser = _res;
-      FieldOrderService().setPreviewOrder = SearchService().fieldOrders;
+      FieldOrderService().setPreviewOrder = _searchService.fieldOrders;
 
       await SetupRoutes.push(context, Routes.HOME, arguments: {
-        'themeData': SearchService().currentAtsignThemeData,
+        'themeData': _searchService.currentAtsignThemeData,
         'isPreview': true,
       });
     } else {

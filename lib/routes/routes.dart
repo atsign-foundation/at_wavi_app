@@ -55,6 +55,7 @@ class SetupRoutes {
               as Map<String, dynamic>;
           return Following(
             forSearchedAtsign: args['forSearchedAtsign'] ?? false,
+            searchedAtsign: args['searchedAtsign'],
             tabIndex: args['tabIndex'] ?? 0,
             themeData: args['themeData'],
           );
@@ -102,7 +103,8 @@ class SetupRoutes {
             (ModalRoute.of(context)!.settings.arguments != null)) {
           Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
               as Map<String, dynamic>;
-          return CreateCustomLocation(basicData: args['basicData']);
+          return CreateCustomLocation(
+              basicData: args['basicData'], onSave: args['onSave']);
         }
 
         return CreateCustomLocation();

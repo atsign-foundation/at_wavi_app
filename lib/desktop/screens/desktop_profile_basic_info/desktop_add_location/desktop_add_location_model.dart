@@ -31,11 +31,11 @@ class DesktopAddLocationModel extends ChangeNotifier {
 
     _osmLocationModel = OsmLocationModel(
       "Ha Noi",
-      '10',
-      14,
       10,
+      14,
       latitude: 21.028511,
       longitude: 105.804817,
+      diameter: 10,
     );
   }
 
@@ -57,9 +57,9 @@ class DesktopAddLocationModel extends ChangeNotifier {
           tagTextController.text,
           osmLocationModel!.radius,
           osmLocationModel!.zoom,
-          osmLocationModel!.diameter,
           latitude: osmLocationModel!.latitude,
           longitude: osmLocationModel!.longitude,
+          diameter: osmLocationModel!.diameter,
         ).toJson(),
       );
       await updateDefinedFields(

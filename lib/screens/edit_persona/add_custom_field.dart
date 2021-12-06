@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:at_common_flutter/at_common_flutter.dart';
+import 'package:at_location_flutter/utils/constants/colors.dart';
 import 'package:at_wavi_app/common_components/public_private_bottomsheet.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/screens/edit_persona/html_editor_screen.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/image_picker.dart';
@@ -15,6 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:provider/provider.dart';
 import 'package:html_editor_enhanced/utils/options.dart';
+import 'package:at_wavi_app/common_components/custom_input_field.dart'
+    as customInputField;
 
 class AddCustomField extends StatefulWidget {
   // ValueChanged<BasicData> onSave;
@@ -40,9 +44,18 @@ class _AddCustomFieldState extends State<AddCustomField> {
   BasicData basicData =
       BasicData(isPrivate: false, type: CustomContentType.Text.name);
   bool isImageSelected = false;
-  var contentDropDown = CustomContentType.values;
+  var contentDropDown = [
+    CustomContentType.Text,
+    CustomContentType.Link,
+    CustomContentType.Number,
+    CustomContentType.Image,
+    CustomContentType.Youtube,
+    CustomContentType.Html
+  ];
   CustomContentType _fieldType = CustomContentType.Text;
   final _formKey = GlobalKey<FormState>();
+
+  Key _htmlEditorKey = UniqueKey(); // to re-render the html editor
 
   @override
   void initState() {
@@ -92,29 +105,49 @@ class _AddCustomFieldState extends State<AddCustomField> {
               padding: const EdgeInsets.only(left: 8.0, right: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.arrow_back),
-                        SizedBox(width: 5),
-                        Text(
-                          'Add custom content',
-                          style: TextStyles.boldText(_themeData!.primaryColor,
-                              size: 16),
-                        ),
-                      ],
-                    ),
+                children: [
+                  Row(
+                    children: [
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Icon(Icons.arrow_back)),
+                      SizedBox(width: 5),
+                      Text(
+                        'Add custom content',
+                        style: TextStyles.boldText(_themeData!.primaryColor,
+                            size: 16),
+                      ),
+                    ],
                   ),
+                  _fieldType == CustomContentType.Html
+                      ? Tooltip(
+                          message: 'Use this to paste html content',
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  _themeData!.primaryColor),
+                            ),
+                            onPressed: () {
+                              _pasteHtml(basicData.valueDescription ?? '');
+                            },
+                            child: Text(
+                              'Paste html',
+                              style: TextStyles.lightText(
+                                  _themeData!.scaffoldBackgroundColor,
+                                  size: 16),
+                            ),
+                          ),
+                        )
+                      : SizedBox(),
                 ],
               ),
             ),
             Expanded(
               child: Form(
                 key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   child: Column(
@@ -131,16 +164,13 @@ class _AddCustomFieldState extends State<AddCustomField> {
                         ),
                       ),
                       TextFormField(
-                        autovalidateMode: basicData.accountName != ''
-                            ? AutovalidateMode.disabled
-                            : AutovalidateMode.onUserInteraction,
                         validator: (value) {
                           if (value == null || value == '') {
-                            return 'Please provide value';
+                            return 'Title is required';
                           }
                           return null;
                         },
-                        initialValue: basicData.accountName,
+                        initialValue: basicData.displayingAccountName ?? '',
                         onChanged: (String value) {
                           basicData.accountName = value;
                         },
@@ -156,38 +186,60 @@ class _AddCustomFieldState extends State<AddCustomField> {
                         textInputAction: TextInputAction.done,
                       ),
                       Divider(thickness: 1, height: 1),
-                      SizedBox(height: 30),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
-                          'Body',
-                          style: TextStyles.lightText(
-                              _themeData!.primaryColor.withOpacity(0.5),
-                              size: 16),
-                        ),
-                      ),
+                      SizedBox(
+                          height:
+                              _fieldType == CustomContentType.Html ? 0 : 30),
+                      _fieldType == CustomContentType.Html
+                          ? SizedBox()
+                          : Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                'Body',
+                                style: TextStyles.lightText(
+                                    _themeData!.primaryColor.withOpacity(0.5),
+                                    size: 16),
+                              ),
+                            ),
                       SizedBox(
                         height: _fieldType == CustomContentType.Html
                             ? 7.toHeight
                             : 0,
                       ),
                       _fieldType == CustomContentType.Html
-                          ? HtmlEditor(
-                              controller: controller, //required
-                              htmlEditorOptions: HtmlEditorOptions(
-                                hint: "Your text here...",
-                                initialText: basicData.valueDescription,
-                                shouldEnsureVisible: true,
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 16.toWidth,
+                                  vertical: 12.toHeight),
+                              child: InkWell(
+                                onTap: () async {
+                                  var value = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HtmlEditorScreen(
+                                              initialText:
+                                                  basicData.valueDescription,
+                                            )),
+                                  );
+                                  setState(() {
+                                    _htmlEditorKey =
+                                        UniqueKey(); // to re-render the html editor
+                                    basicData.valueDescription = value;
+                                  });
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Go to HTML editor',
+                                      style: TextStyles.lightText(
+                                          _themeData!.primaryColor,
+                                          size: 14),
+                                    ),
+                                    Icon(Icons.arrow_forward_sharp)
+                                  ],
+                                ),
                               ),
-                              otherOptions: OtherOptions(
-                                height: 300,
-                              ),
-                              callbacks: Callbacks(
-                                  onBeforeCommand: (String? currentHtml) {},
-                                  onChangeContent: (String? changed) {
-                                    // print('content changed to $changed');
-                                    basicData.valueDescription = changed;
-                                  }),
                             )
                           : TextFormField(
                               autovalidateMode:
@@ -201,23 +253,28 @@ class _AddCustomFieldState extends State<AddCustomField> {
                                   return null;
                                 }
                                 if (value == null || value == '') {
-                                  return 'Please provide value';
+                                  return 'Body is required';
                                 }
                                 if (_fieldType == CustomContentType.Link &&
                                     !UserPreview().isFormDataValid(
                                         value, CustomContentType.Link)) {
-                                  return 'Please provide valid link';
+                                  return 'Please add a link/url';
                                 }
                                 if (_fieldType == CustomContentType.Youtube &&
                                     !UserPreview().isFormDataValid(
                                         value, CustomContentType.Youtube)) {
-                                  return 'Please provide youtube link';
+                                  return 'Please add a valid youtube link/url';
+                                }
+                                if (_fieldType == CustomContentType.Number &&
+                                    !UserPreview().isFormDataValid(
+                                        value, CustomContentType.Number)) {
+                                  return 'Please add a number';
                                 }
                                 return null;
                               },
-                              initialValue: basicData.valueDescription,
+                              initialValue: basicData.valueDescription ?? '',
                               onChanged: (String value) {
-                                basicData.valueDescription = value;
+                                basicData.valueDescription = value.trim();
                                 _formKey.currentState!.validate();
                               },
                               decoration: InputDecoration(
@@ -232,6 +289,34 @@ class _AddCustomFieldState extends State<AddCustomField> {
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.done,
                             ),
+                      _fieldType == CustomContentType.Html
+                          ? Divider(thickness: 1, height: 1)
+                          : SizedBox(),
+                      _fieldType == CustomContentType.Html
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 16.toWidth,
+                                  vertical: 12.toHeight),
+                              child: customInputField.CustomInputField(
+                                width: double.infinity,
+                                hintText: 'Preview (non editable)',
+                                hintTextColor:
+                                    AllColors().Black.withOpacity(0.5),
+                                bgColor: AllColors().INPUT_GREY_BACKGROUND,
+                                textColor: AllColors().Black,
+                                initialValue:
+                                    ('Preview (non editable)' + '\n\n') +
+                                        (basicData.valueDescription ?? ''),
+                                baseOffset:
+                                    (basicData.valueDescription ?? '').length,
+                                height: 250,
+                                maxLines: 2,
+                                expands: true,
+                                value: (str) {},
+                                isReadOnly: true,
+                              ),
+                            )
+                          : SizedBox(),
                       Divider(thickness: 1, height: 1),
                       _fieldType == CustomContentType.Html
                           ? SizedBox()
@@ -303,7 +388,9 @@ class _AddCustomFieldState extends State<AddCustomField> {
                                                 borderRadius:
                                                     BorderRadius.circular(15)),
                                             child: Icon(Icons.highlight_remove,
-                                                size: 30, color: Colors.white),
+                                                size: 30,
+                                                color: _themeData!
+                                                    .scaffoldBackgroundColor),
                                           ),
                                         ),
                                       ),
@@ -473,15 +560,124 @@ class _AddCustomFieldState extends State<AddCustomField> {
     }
   }
 
+  _pasteHtml(String _initialText) async {
+    String? _value;
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (_context, _setDialogState) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.fromLTRB(10, 20, 5, 10),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Html',
+                            style: TextStyles.lightText(
+                                Theme.of(context).primaryColor,
+                                size: 16)),
+                        InkWell(
+                          onTap: () {
+                            _setDialogState(() {
+                              _initialText = '';
+                            });
+                          },
+                          child: Text(
+                            "Clear",
+                            style: CustomTextStyles.customTextStyle(
+                              ColorConstants.red,
+                              size: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 16.toWidth, vertical: 12.toHeight),
+                    child: customInputField.CustomInputField(
+                      width: double.infinity,
+                      hintText: 'Paste html here',
+                      hintTextColor: AllColors().Black.withOpacity(0.5),
+                      bgColor: AllColors().INPUT_GREY_BACKGROUND,
+                      textColor: AllColors().Black,
+                      initialValue: _initialText,
+                      baseOffset: _initialText.length,
+                      height: 250,
+                      maxLines: 2,
+                      expands: true,
+                      value: (str) => _value = str,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                _themeData!.scaffoldBackgroundColor),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            'Cancel',
+                            style: TextStyles.lightText(
+                                _themeData!.primaryColor,
+                                size: 16),
+                          ),
+                        ),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                _themeData!.primaryColor),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _htmlEditorKey =
+                                  UniqueKey(); // to re-render the html editor
+                              basicData.valueDescription = _value;
+                            });
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            'Done',
+                            style: TextStyles.lightText(
+                                _themeData!.scaffoldBackgroundColor,
+                                size: 16),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+      },
+    );
+  }
+
   _onSave() {
     if (_fieldType == CustomContentType.Image && !isImageSelected) {
-      CommonFunctions().showSnackBar('Please add image');
+      CommonFunctions().showSnackBar('Please add an image');
       return;
     }
     checkFormValidation();
     if (!_formKey.currentState!.validate()) {
       return;
     }
+    basicData.accountName = basicData.accountName!.trim();
 
     // when new field is being added, checking if title name is already taken or not
     if (!widget.isEdit) {
@@ -508,6 +704,13 @@ class _AddCustomFieldState extends State<AddCustomField> {
       basicData.value = basicData.valueDescription;
       basicData.valueDescription = null;
     }
+
+    /// validation needed for html body
+    if (basicData.value == null || basicData.value == '') {
+      CommonFunctions().showSnackBar('Please fill in the required fields');
+      return;
+    }
+
     var index;
     // calculating index of current data
     if (widget.isEdit) {
@@ -526,7 +729,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
 
   checkFormValidation() {
     if (!_formKey.currentState!.validate()) {
-      CommonFunctions().showSnackBar('Form data not valid');
+      CommonFunctions().showSnackBar('Please fill in the required fields');
     }
   }
 

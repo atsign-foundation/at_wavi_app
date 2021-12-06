@@ -26,6 +26,7 @@ class AtKeyGetService {
   }
 
   resetUser() {
+    init();
     user.customFields[AtCategory.DETAILS.name] = [];
     user.customFields[AtCategory.LOCATION.name] = [];
     user.customFields[AtCategory.SOCIAL.name] = [];
@@ -275,6 +276,18 @@ class AtKeyGetService {
       case FieldsEnum.MEDIUM:
         user.medium = data;
         break;
+      case FieldsEnum.TIKTOK:
+        user.tiktok = data;
+        break;
+      case FieldsEnum.SNAPCHAT:
+        user.snapchat = data;
+        break;
+      case FieldsEnum.GITHUB:
+        user.github = data;
+        break;
+      case FieldsEnum.PINTEREST:
+        user.pinterest = data;
+        break;
       case FieldsEnum.PS4:
         user.ps4 = data;
         break;
@@ -286,6 +299,12 @@ class AtKeyGetService {
         break;
       case FieldsEnum.DISCORD:
         user.discord = data;
+        break;
+      case FieldsEnum.TWITCH:
+        user.twitch = data;
+        break;
+      case FieldsEnum.HTMLTOASTVIEW:
+        user.htmlToastView = data;
         break;
       default:
         break;

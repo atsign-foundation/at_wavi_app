@@ -256,7 +256,7 @@ class _SelectLocationState extends State<SelectLocation> {
                   : snapshot.hasData
                       // ignore: prefer_is_empty
                       ? snapshot.data!.length == 0
-                          ? Text('No such location found')
+                          ? Text('Location not found')
                           : Expanded(
                               child: ListView.separated(
                                 itemCount: snapshot.data!.length,
