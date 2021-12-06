@@ -259,12 +259,12 @@ class _HtmlEditorScreenState extends State<HtmlEditorScreen> {
                     value: _width,
                     min: 50,
                     max: 700,
-                    divisions: 20000,
+                    divisions: 650,
                     onChanged: _fullWidth
                         ? null
                         : (double _newWidth) {
                             _setDialogState(() {
-                              _width = _newWidth;
+                              _width = _newWidth.floorToDouble();
                             });
                           },
                   ),
@@ -281,10 +281,10 @@ class _HtmlEditorScreenState extends State<HtmlEditorScreen> {
                     value: _compression,
                     min: 1,
                     max: 99,
-                    divisions: 20000,
+                    divisions: 98,
                     onChanged: (double _newWidth) {
                       _setDialogState(() {
-                        _compression = _newWidth;
+                        _compression = _newWidth.floorToDouble();
                       });
                     },
                   ),
