@@ -117,11 +117,10 @@ class _DesktopProfileChannelsPageState extends State<DesktopProfileChannelsPage>
                       Expanded(
                         child: TabBarView(
                           controller: _tabController,
-                          children: model.fields
-                              .map(
-                                (e) => getWidget(e),
-                              )
-                              .toList(),
+                          children: [
+                            AtCategory.SOCIAL,
+                            AtCategory.GAMER,
+                          ].map((e) => getWidget(e)).toList(),
                         ),
                       ),
                     ],
@@ -132,9 +131,9 @@ class _DesktopProfileChannelsPageState extends State<DesktopProfileChannelsPage>
     );
   }
 
-  Widget getWidget(String field) {
+  Widget getWidget(AtCategory field) {
     switch (field) {
-      case 'Social':
+      case AtCategory.SOCIAL:
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.SOCIAL,
           hideMenu: true,
@@ -142,7 +141,7 @@ class _DesktopProfileChannelsPageState extends State<DesktopProfileChannelsPage>
           isMyProfile: widget.isMyProfile,
           isEditable: widget.isEditable,
         );
-      case 'Game':
+      case AtCategory.GAMER:
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.GAMER,
           hideMenu: true,

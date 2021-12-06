@@ -141,11 +141,12 @@ class _DesktopProfileDetailsPageState extends State<DesktopProfileDetailsPage>
                       Expanded(
                         child: TabBarView(
                           controller: _tabController,
-                          children: model.fields
-                              .map(
-                                (e) => getWidget(e),
-                              )
-                              .toList(),
+                          children: [
+                            AtCategory.IMAGE,
+                            AtCategory.DETAILS,
+                            AtCategory.ADDITIONAL_DETAILS,
+                            AtCategory.LOCATION,
+                          ].map((e) => getWidget(e)).toList(),
                         ),
                       ),
                     ],
@@ -162,16 +163,16 @@ class _DesktopProfileDetailsPageState extends State<DesktopProfileDetailsPage>
     super.dispose();
   }
 
-  Widget getWidget(String field) {
-    switch (field) {
-      case 'Media':
+  Widget getWidget(AtCategory atCategory) {
+    switch (atCategory) {
+      case AtCategory.IMAGE:
         return DesktopProfileMediaPage(
           hideMenu: true,
           showWelcome: false,
           isMyProfile: widget.isMyProfile,
           isEditable: widget.isEditable,
         );
-      case 'Contact':
+      case AtCategory.DETAILS:
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.DETAILS,
           hideMenu: true,
@@ -179,7 +180,7 @@ class _DesktopProfileDetailsPageState extends State<DesktopProfileDetailsPage>
           isMyProfile: widget.isMyProfile,
           isEditable: widget.isEditable,
         );
-      case 'About':
+      case AtCategory.ADDITIONAL_DETAILS:
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.ADDITIONAL_DETAILS,
           hideMenu: true,
@@ -187,7 +188,7 @@ class _DesktopProfileDetailsPageState extends State<DesktopProfileDetailsPage>
           isMyProfile: widget.isMyProfile,
           isEditable: widget.isEditable,
         );
-      case 'Location':
+      case AtCategory.LOCATION:
         return DesktopProfileBasicInfoPage(
           atCategory: AtCategory.LOCATION,
           hideMenu: true,
