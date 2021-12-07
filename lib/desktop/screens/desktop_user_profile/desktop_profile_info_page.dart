@@ -107,8 +107,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                         Strings.desktop_followers,
                         (SearchService()
                                     .getAlreadySearchedAtsignDetails(
-                                        _currentUser.atsign)!
-                                    .following_count ??
+                                        _currentUser.atsign)?.followers_count ??
                                 '-')
                             .toString(),
                         appTheme),
@@ -121,8 +120,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                         Strings.desktop_following,
                         (SearchService()
                             .getAlreadySearchedAtsignDetails(
-                            _currentUser.atsign)!
-                            .following_count ??
+                            _currentUser.atsign)?.following_count ??
                             '-')
                             .toString(),
                         appTheme),
