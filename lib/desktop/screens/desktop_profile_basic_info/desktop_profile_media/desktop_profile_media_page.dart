@@ -60,6 +60,7 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
 
   @override
   Widget build(BuildContext context) {
+    AppTheme appTheme = AppTheme.of(context);
     return ChangeNotifierProvider(
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
@@ -73,6 +74,7 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
         return _model;
       },
       child: Scaffold(
+        backgroundColor: appTheme.backgroundColor,
         body: _buildBodyWidget(),
       ),
     );

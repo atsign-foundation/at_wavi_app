@@ -61,6 +61,7 @@ class _DesktopProfileBasicInfoPageState
 
   @override
   Widget build(BuildContext context) {
+    AppTheme appTheme = AppTheme.of(context);
     return ChangeNotifierProvider(
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
@@ -74,6 +75,7 @@ class _DesktopProfileBasicInfoPageState
         return _model;
       },
       child: Scaffold(
+        backgroundColor: appTheme.backgroundColor,
         body: _buildBodyWidget(),
       ),
     );

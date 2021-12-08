@@ -94,7 +94,24 @@ class MaterialAppClass extends StatelessWidget {
         stream: appThemeController.stream,
         initialData: AppTheme.from(brightness: brightness),
         builder: (context, snapshot) {
-          AppTheme appTheme = snapshot.data ?? AppTheme.from();
+          final themeProvider = Provider.of<ThemeProvider>(context);
+          // theme: ((Provider.of<ThemeProvider>(context)
+          //     .currentAtsignThemeData
+          //     ?.scaffoldBackgroundColor ==
+          //     ColorConstants.black)
+          //     ? Themes.darkTheme(highlightColor: Colors.transparent)
+          //     : Themes.lightTheme(highlightColor: Colors.transparent)),
+
+          // AppTheme appTheme = snapshot.data ?? AppTheme.from();
+          AppTheme appTheme = AppTheme.from(
+            brightness: (themeProvider
+                        .currentAtsignThemeData?.scaffoldBackgroundColor ==
+                    ColorConstants.black)
+                ? Brightness.dark
+                : Brightness.light,
+            primaryColor: themeProvider.currentAtsignThemeData?.highlightColor ??
+                ColorConstants.green,
+          );
           return InheritedAppTheme(
             theme: appTheme,
             child: MaterialApp(

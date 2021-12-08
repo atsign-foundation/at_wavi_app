@@ -2,7 +2,9 @@ import 'package:at_wavi_app/app.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../desktop_appearance_model.dart';
 import 'widgets/desktop_theme_card.dart';
 
 class DesktopThemeSettingPage extends StatefulWidget {
@@ -15,7 +17,6 @@ class DesktopThemeSettingPage extends StatefulWidget {
 
 class _DesktopThemeSettingPageState extends State<DesktopThemeSettingPage>
     with AutomaticKeepAliveClientMixin {
-
   @override
   void initState() {
     super.initState();
@@ -23,9 +24,13 @@ class _DesktopThemeSettingPageState extends State<DesktopThemeSettingPage>
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = AppTheme.of(context);
+    // final appTheme = AppTheme.of(context);
+    final desktopAppearanceModel = Provider.of<DesktopAppearanceModel>(
+      context,
+    );
     return Container(
-      padding: EdgeInsets.only(left: DesktopDimens.marginExtraLarge, top: DesktopDimens.marginLarge),
+      padding: EdgeInsets.only(
+          left: DesktopDimens.marginExtraLarge, top: DesktopDimens.marginLarge),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -35,17 +40,18 @@ class _DesktopThemeSettingPageState extends State<DesktopThemeSettingPage>
               Container(
                 width: 166,
                 child: DesktopThemeCard(
-                  primaryColor: appTheme.primaryColor,
+                  primaryColor: desktopAppearanceModel.color,
                   brightness: Brightness.light,
-                  isSelected: appTheme.brightness == Brightness.light,
+                  isSelected: !desktopAppearanceModel.isDarkMode,
                   onPressed: () {
-                    setState(() {
-                      final newTheme = AppTheme.from(
-                        primaryColor: appTheme.primaryColor,
-                        brightness: Brightness.light,
-                      );
-                      appThemeController.sink.add(newTheme);
-                    });
+                    desktopAppearanceModel.changeDarkMode(false);
+                    // setState(() {
+                    //   final newTheme = AppTheme.from(
+                    //     primaryColor: appTheme.primaryColor,
+                    //     brightness: Brightness.light,
+                    //   );
+                    //   appThemeController.sink.add(newTheme);
+                    // });
                   },
                 ),
               ),
@@ -53,17 +59,18 @@ class _DesktopThemeSettingPageState extends State<DesktopThemeSettingPage>
               Container(
                 width: 166,
                 child: DesktopThemeCard(
-                  primaryColor: appTheme.primaryColor,
+                  primaryColor: desktopAppearanceModel.color,
                   brightness: Brightness.dark,
-                  isSelected: appTheme.brightness == Brightness.dark,
+                  isSelected: desktopAppearanceModel.isDarkMode,
                   onPressed: () {
-                    setState(() {
-                      final newTheme = AppTheme.from(
-                        primaryColor: appTheme.primaryColor,
-                        brightness: Brightness.dark,
-                      );
-                      appThemeController.sink.add(newTheme);
-                    });
+                    desktopAppearanceModel.changeDarkMode(true);
+                    // setState(() {
+                    //   final newTheme = AppTheme.from(
+                    //     primaryColor: appTheme.primaryColor,
+                    //     brightness: Brightness.dark,
+                    //   );
+                    //   appThemeController.sink.add(newTheme);
+                    // });
                   },
                 ),
               ),
