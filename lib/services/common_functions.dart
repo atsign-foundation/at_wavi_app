@@ -75,17 +75,21 @@ class CommonFunctions {
           customFields.indexWhere((el) => el.accountName == fieldOrder[i]);
       if (index != -1 &&
           !customFields[index].accountName!.contains(AtText.IS_DELETED)) {
-        customLocationWidgets.add(
-          Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: buildMap(
-              OsmLocationModel.fromJson(json
-                  .decode(_currentUser.customFields['LOCATION']?[index].value)),
-              _currentUser.customFields['LOCATION']?[index].accountName ?? '',
-              _themeData,
+        var _osmModel = OsmLocationModel.fromJson(
+            json.decode(_currentUser.customFields['LOCATION']?[index].value));
+
+        if (_osmModel.latLng != null) {
+          customLocationWidgets.add(
+            Padding(
+              padding: EdgeInsets.only(top: 10),
+              child: buildMap(
+                _osmModel,
+                _currentUser.customFields['LOCATION']?[index].accountName ?? '',
+                _themeData,
+              ),
             ),
-          ),
-        );
+          );
+        }
       }
     }
 
@@ -107,13 +111,18 @@ class CommonFunctions {
 
     if ((_currentUser.location.value != null) &&
         (isOsmDataPresent(json.decode(_currentUser.location.value)))) {
-      locationWidgets.add(
-        buildMap(
-          OsmLocationModel.fromJson(json.decode(_currentUser.location.value)),
-          _currentUser.locationNickName.value ?? '',
-          _themeData,
-        ),
-      );
+      var _osmModel =
+          OsmLocationModel.fromJson(json.decode(_currentUser.location.value));
+
+      if (_osmModel.latLng != null) {
+        locationWidgets.add(
+          buildMap(
+            _osmModel,
+            _currentUser.locationNickName.value ?? '',
+            _themeData,
+          ),
+        );
+      }
     }
 
     locationWidgets
@@ -536,6 +545,10 @@ class CommonFunctions {
 
   buildMap(OsmLocationModel _osmLocationModel, String _locationNickname,
       ThemeData themeData) {
+    if (_osmLocationModel.latLng == null) {
+      return SizedBox();
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -563,7 +576,7 @@ class CommonFunctions {
                   options: MapOptions(
                     boundsOptions: FitBoundsOptions(padding: EdgeInsets.all(0)),
                     center: _osmLocationModel.latLng!,
-                    zoom: _osmLocationModel.zoom!,
+                    zoom: _osmLocationModel.zoom ?? 16,
                   ),
                   layers: [
                     TileLayerOptions(
@@ -582,7 +595,8 @@ class CommonFunctions {
                         point: _osmLocationModel.latLng!,
                         builder: (ctx) => Container(
                             child: createMarker(
-                                diameterOfCircle: _osmLocationModel.radius!)),
+                                diameterOfCircle:
+                                    _osmLocationModel.radius ?? 100)),
                       )
                     ])
                   ],
@@ -605,8 +619,9 @@ class CommonFunctions {
                             arguments: {
                               'title': _locationNickname,
                               'latLng': _osmLocationModel.latLng!,
-                              'zoom': _osmLocationModel.zoom!,
-                              'diameterOfCircle': _osmLocationModel.radius!,
+                              'zoom': _osmLocationModel.zoom ?? 16,
+                              'diameterOfCircle':
+                                  _osmLocationModel.radius ?? 100,
                             });
                       },
                       icon: Icon(Icons.fullscreen)),
