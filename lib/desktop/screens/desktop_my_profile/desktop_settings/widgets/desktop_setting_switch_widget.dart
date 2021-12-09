@@ -1,47 +1,48 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:flutter/material.dart';
 
 class DesktopSettingSwitchWidget extends StatelessWidget {
   final IconData prefixIcon;
   final String title;
+  final bool isOn;
+  final ValueChanged<bool>? onChanged;
 
   const DesktopSettingSwitchWidget({
     Key? key,
     required this.prefixIcon,
     required this.title,
+    required this.isOn,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
-      height: 60,
+      padding: EdgeInsets.symmetric(vertical: DesktopDimens.paddingSmall),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(width: 24),
+          SizedBox(width: DesktopDimens.paddingNormal),
           Icon(
             prefixIcon,
             color: appTheme.primaryTextColor,
           ),
-          SizedBox(width: 12),
+          SizedBox(width: DesktopDimens.paddingNormal),
           Expanded(
             child: Text(
               title,
-              style: TextStyle(
-                color: appTheme.primaryTextColor,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
+              style: appTheme.textTheme.subtitle1,
             ),
           ),
-          SizedBox(width: 16),
+          SizedBox(width: DesktopDimens.paddingSmall),
           Switch(
-            value: true,
-            onChanged: (value) {},
+            value: isOn,
+            onChanged: onChanged,
             activeColor: appTheme.primaryColor,
           ),
-          SizedBox(width: 24),
+          SizedBox(width: DesktopDimens.paddingNormal),
         ],
       ),
     );
