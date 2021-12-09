@@ -80,7 +80,8 @@ class BackendService {
     initializeContactsService(rootDomain: MixedConstants.ROOT_DOMAIN);
     Provider.of<FollowService>(NavService.navKey.currentContext!, listen: false)
         .resetData();
-    Provider.of<FollowService>(NavService.navKey.currentContext!, listen: false)
+    await Provider.of<FollowService>(NavService.navKey.currentContext!,
+            listen: false)
         .init();
     await sync();
     Provider.of<ThemeProvider>(NavService.navKey.currentContext!, listen: false)
