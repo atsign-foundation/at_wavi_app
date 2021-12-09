@@ -19,7 +19,7 @@ class FollowService extends BaseModel {
   bool isFollowersFetched = false;
   bool isFollowingFetched = false;
 
-  init() async {
+  Future<void> init() async {
     try {
       await AtFollowServices()
           .initializeFollowService(BackendService().atClientServiceInstance);
@@ -103,7 +103,7 @@ class FollowService extends BaseModel {
   ///[forFollowersList] is to identify whether we want to perform operation on followers list or following list.
   Future unfollow(String atsign, {bool forFollowersList: false}) async {
     var _choice = await confirmationDialog(atsign);
-    if (!_choice) {
+    if ((_choice == null) || !_choice) {
       return;
     }
 
@@ -178,7 +178,8 @@ class FollowService extends BaseModel {
   }
 
   ///[forFollowersList] is to identify whether we want to perform operation on followers list or following list.
-  performFollowUnfollow(String atsign, {bool forFollowersList: false}) async {
+  Future<void> performFollowUnfollow(String atsign,
+      {bool forFollowersList: false}) async {
     try {
       bool isFollowingAtsign = isFollowing(atsign);
       if (isFollowingAtsign) {
@@ -186,8 +187,8 @@ class FollowService extends BaseModel {
       } else {
         await AtFollowServices().follow(atsign);
       }
-      BackendService().sync();
-      await getFollowing();
+      // BackendService().sync();
+      // await getFollowing();
     } catch (e) {
       print('Error in performFollowUnfollow $e');
     }

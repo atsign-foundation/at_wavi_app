@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 
 import 'custom_button.dart';
 
-Future<bool> confirmationDialog(String atsign) async {
-  late bool _choice;
+Future<bool?> confirmationDialog(String atsign) async {
+  bool? _choice;
   await showDialog<bool>(
     context: NavService.navKey.currentContext!,
     barrierDismissible: true,
