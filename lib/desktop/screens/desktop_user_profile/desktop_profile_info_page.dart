@@ -10,6 +10,7 @@ import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_logo.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/search_service.dart';
@@ -18,6 +19,7 @@ import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DesktopProfileInfoPage extends StatefulWidget {
   final String? atSign;
@@ -39,6 +41,7 @@ class DesktopProfileInfoPage extends StatefulWidget {
 
 class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   late User _currentUser;
+  bool _isSearchScreen = false;
 
   @override
   void initState() {
@@ -51,6 +54,11 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
       _currentUser = User(
         atsign: AtClientManager.getInstance().atClient.getCurrentAtSign(),
       );
+    }
+    if ((widget.isPreview) &&
+        (_currentUser.atsign !=
+            BackendService().atClientInstance.getCurrentAtSign())) {
+      _isSearchScreen = true;
     }
   }
 
@@ -105,11 +113,14 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                     onTap: widget.onFollowerPressed,
                     child: _buildInteractiveItem(
                         Strings.desktop_followers,
-                        (SearchService()
-                                    .getAlreadySearchedAtsignDetails(
-                                        _currentUser.atsign)?.followers_count ??
-                                '-')
-                            .toString(),
+                        _isSearchScreen
+                            ? (SearchService()
+                                        .getAlreadySearchedAtsignDetails(
+                                            _currentUser.atsign)
+                                        ?.followers_count ??
+                                    '-')
+                                .toString()
+                            : '${followsCount()}',
                         appTheme),
                   ),
                   SizedBox(height: DesktopDimens.paddingSmall),
@@ -118,11 +129,14 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                     onTap: widget.onFollowingPressed,
                     child: _buildInteractiveItem(
                         Strings.desktop_following,
-                        (SearchService()
-                            .getAlreadySearchedAtsignDetails(
-                            _currentUser.atsign)?.following_count ??
-                            '-')
-                            .toString(),
+                        _isSearchScreen
+                            ? (SearchService()
+                                        .getAlreadySearchedAtsignDetails(
+                                            _currentUser.atsign)
+                                        ?.following_count ??
+                                    '-')
+                                .toString()
+                            : '${followsCount()}',
                         appTheme),
                   ),
                   SizedBox(height: DesktopDimens.paddingLarge),
@@ -144,7 +158,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                               height: DesktopDimens.buttonHeight,
                               title: Strings.desktop_share_profile,
                               backgroundColor: appTheme.primaryColor,
-                              onPressed: () async {},
+                              onPressed: shareProfile,
                             ),
                           ],
                         )
@@ -303,5 +317,11 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
     } else {
       return num.toString();
     }
+  }
+
+  void shareProfile() {
+    try {
+      launch('https://wavi.ng/${_currentUser.atsign}');
+    } catch (e) {}
   }
 }

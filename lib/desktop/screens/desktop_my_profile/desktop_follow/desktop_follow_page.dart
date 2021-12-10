@@ -1,13 +1,13 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_tabbar.dart';
 import 'package:flutter/material.dart';
 
-import 'desktop_follower/desktop_follower_page.dart';
-import 'desktop_following/desktop_following_page.dart';
+import 'desktop_followers_page.dart';
 
 class DesktopFollowPage extends StatefulWidget {
-  bool isFollower;
+  final bool isFollower;
 
   DesktopFollowPage({
     Key? key,
@@ -48,10 +48,10 @@ class _DesktopFollowPageState extends State<DesktopFollowPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: 40,
+            height: DesktopDimens.paddingLarge,
           ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            padding: EdgeInsets.all(DesktopDimens.paddingNormal),
             child: DesktopTabBar(
               controller: _tabController,
               tabTitles: [
@@ -64,8 +64,8 @@ class _DesktopFollowPageState extends State<DesktopFollowPage>
             child: TabBarView(
               controller: _tabController,
               children: [
-                DesktopFollowerPage(),
-                DesktopFollowingPage(),
+                DesktopFollowersPage(followListType: FollowListType.followers),
+                DesktopFollowersPage(followListType: FollowListType.following),
               ],
             ),
           ),
