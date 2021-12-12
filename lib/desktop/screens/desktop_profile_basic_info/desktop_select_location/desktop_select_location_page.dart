@@ -2,15 +2,17 @@ import 'package:at_location_flutter/at_location_flutter.dart';
 import 'package:at_location_flutter/common_components/circle_marker_painter.dart';
 import 'package:at_location_flutter/map_content/flutter_map/flutter_map.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/screens/location/location_widget.dart';
+import 'package:at_wavi_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 
 class DesktopSelectLocationPage extends StatefulWidget {
-  final LatLng point;
-  final String displayName;
+  final LatLng? point;
+  final String? displayName;
   final Function(OsmLocationModel)? onLocationPicked;
 
   DesktopSelectLocationPage(
@@ -33,8 +35,8 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
       leftOfCircle; // widthOfMarker and size of icon is same
 
   var mapController = MapController();
-  late Marker marker;
-  late LatLng center;
+  late Marker? marker;
+  late LatLng? center;
   late bool _absorbDoubleTapPointer;
   late double zoom;
 
@@ -44,6 +46,12 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
     center = widget.point;
     zoom = 16;
     super.initState();
+    if (center == null) {
+      center = LatLng(
+        21.028511,
+        105.804817,
+      );
+    }
   }
 
   calculateMarkerDimensions() {
@@ -61,6 +69,8 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
     final appTheme = AppTheme.of(context);
     calculateMarkerDimensions();
     return Container(
+      width:
+          MediaQuery.of(context).size.width / 2 + DesktopDimens.sideMenuWidth,
       decoration: BoxDecoration(
         color: appTheme.backgroundColor,
         borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -69,14 +79,15 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            width: 600,
-            padding: EdgeInsets.all(20),
-            child: _buildMapWidget(),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(DesktopDimens.paddingNormal),
+              child: _buildMapWidget(),
+            ),
           ),
           Container(width: 1, color: appTheme.separatorColor),
           Container(
-            width: 360,
+            width: DesktopDimens.sideMenuWidth,
             decoration: BoxDecoration(
               color: appTheme.backgroundColor,
               borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -90,44 +101,46 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
 
   Widget _buildMapWidget() {
     final appTheme = AppTheme.of(context);
-    marker = Marker(
-      width: widthOfMarker,
-      height: heightOfMarker,
-      point: center,
-      builder: (ctx) => Container(
-        // color: Colors.red,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Positioned(
-              bottom:
-                  heightOfMarker / 2, // height/2 => so, it starts from center
-              child: Icon(
-                Icons.location_on,
-                color: appTheme.primaryColor,
-                size: widthOfMarker, // same as width of marker
-              ),
-            ),
-            Positioned(
-              // 25 + 20 (bottom + size/2) for center
-              bottom: bottomOfCircle,
-              // ((25 + (20))*2 - 200) => ((bottom of icon + (size of icon/2))*2 - heightof circle)
-              left: leftOfCircle,
-              // (40-200)/2 => (size of icon - width of circle)/2
-              child: SizedBox(
-                width: diameterOfCircle,
-                height: diameterOfCircle,
-                child: CustomPaint(
-                  painter: CircleMarkerPainter(
-                      color: appTheme.primaryColor.withOpacity(0.4),
-                      paintingStyle: PaintingStyle.fill),
+    if (center != null) {
+      marker = Marker(
+        width: widthOfMarker,
+        height: heightOfMarker,
+        point: center!,
+        builder: (ctx) => Container(
+          // color: Colors.red,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Positioned(
+                bottom:
+                    heightOfMarker / 2, // height/2 => so, it starts from center
+                child: Icon(
+                  Icons.location_on,
+                  color: appTheme.primaryColor,
+                  size: widthOfMarker, // same as width of marker
                 ),
               ),
-            ),
-          ],
+              Positioned(
+                // 25 + 20 (bottom + size/2) for center
+                bottom: bottomOfCircle,
+                // ((25 + (20))*2 - 200) => ((bottom of icon + (size of icon/2))*2 - heightof circle)
+                left: leftOfCircle,
+                // (40-200)/2 => (size of icon - width of circle)/2
+                child: SizedBox(
+                  width: diameterOfCircle,
+                  height: diameterOfCircle,
+                  child: CustomPaint(
+                    painter: CircleMarkerPainter(
+                        color: appTheme.primaryColor.withOpacity(0.4),
+                        paintingStyle: PaintingStyle.fill),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
     return FlutterMap(
       mapController: mapController,
       returnPositionTapped: (_latLng, _zoom) {
@@ -147,14 +160,14 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
       layers: [
         TileLayerOptions(
           urlTemplate:
-              'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Jr6qaSd6EftaATGRMYaN',
+              'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=${MixedConstants.MAP_KEY}',
           subdomains: ['a', 'b', 'c'],
           minNativeZoom: 2,
           maxNativeZoom: 18,
           minZoom: 1,
           tileProvider: NonCachingNetworkTileProvider(),
         ),
-        MarkerLayerOptions(markers: [marker])
+        MarkerLayerOptions(markers: (marker == null) ? [] : [marker!])
       ],
     );
   }
@@ -201,11 +214,7 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
                           SizedBox(height: 7),
                           Text(
                             'Enable double tap to move pointer',
-                            style: TextStyle(
-                              color: appTheme.primaryTextColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.normal,
-                            ),
+                            style: appTheme.textTheme.bodyText2,
                           ),
                           (_absorbDoubleTapPointer)
                               ? Flexible(
@@ -213,11 +222,7 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
                                     '(Double tap zoom is disabled)',
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: appTheme.secondaryTextColor,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                                    style: appTheme.textTheme.bodyText2,
                                   ),
                                 )
                               : SizedBox()
@@ -254,7 +259,7 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
                       SizedBox(width: 8),
                       Flexible(
                         child: Text(
-                          widget.displayName,
+                          widget.displayName ?? '',
                           style: TextStyle(
                             color: appTheme.primaryTextColor,
                             fontSize: 16,
@@ -274,16 +279,10 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
                         TextSpan(
                           text:
                               'The view you select (Position of the marker, zoom level and radius of the circle), will be shown to other users.',
-                          style: TextStyle(
-                            color: appTheme.primaryTextColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                          ),
+                          style: appTheme.textTheme.bodyText2,
                         )
                       ],
-                      style: TextStyle(
-                        color: appTheme.primaryTextColor,
-                        fontSize: 16,
+                      style: appTheme.textTheme.bodyText2?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -307,12 +306,12 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
           title: 'Confirm',
           onPressed: onConfirmPressed,
         ),
-        SizedBox(height: 10),
+        SizedBox(height: DesktopDimens.paddingNormal),
         DesktopWhiteButton(
           title: 'Cancel',
           onPressed: onCancelPressed,
         ),
-        SizedBox(height: 10),
+        SizedBox(height: DesktopDimens.paddingNormal),
       ],
     );
   }
@@ -322,12 +321,15 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
   }
 
   void onConfirmPressed() async {
+    if (center == null) {
+      return;
+    }
     var _finalData = OsmLocationModel(
       null,
       null,
       zoom,
-      latitude: center.latitude,
-      longitude: center.longitude,
+      latitude: center?.latitude,
+      longitude: center?.longitude,
       diameter: diameterOfCircle,
     );
     if (widget.onLocationPicked != null) {

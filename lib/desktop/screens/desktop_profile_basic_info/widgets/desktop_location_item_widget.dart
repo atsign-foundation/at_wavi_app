@@ -4,6 +4,7 @@ import 'package:at_location_flutter/map_content/flutter_map/flutter_map.dart';
 import 'package:at_wavi_app/common_components/create_marker.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/model/osm_location_model.dart';
+import 'package:at_wavi_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class DesktopLocationItemWidget extends StatelessWidget {
@@ -55,7 +56,7 @@ class DesktopLocationItemWidget extends StatelessWidget {
                       layers: [
                         TileLayerOptions(
                           urlTemplate:
-                              'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Jr6qaSd6EftaATGRMYaN',
+                              'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=${MixedConstants.MAP_KEY}',
                           subdomains: ['a', 'b', 'c'],
                           minNativeZoom: 2,
                           maxNativeZoom: 18,

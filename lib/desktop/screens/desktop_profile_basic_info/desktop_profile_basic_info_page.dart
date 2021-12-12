@@ -277,12 +277,12 @@ class _DesktopProfileBasicInfoPageState
         if (data.length == 1) {
           borderRadius = BorderRadius.all(Radius.circular(10));
         } else {
-          if (index == 0) {
+          if (index == 1) {
             borderRadius = BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             );
-          } else if (index == data.length - 1) {
+          } else if (index == data.length) {
             borderRadius = BorderRadius.only(
               bottomLeft: Radius.circular(10),
               bottomRight: Radius.circular(10),
@@ -294,10 +294,10 @@ class _DesktopProfileBasicInfoPageState
           return Container(
             decoration: BoxDecoration(
               color: appTheme.secondaryBackgroundColor,
-              borderRadius: borderRadius,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             child: DesktopLocationItemWidget(
-              title: _model.locationNicknameData?.accountName ?? '',
+              title: _model.locationNicknameData?.value ?? '',
               location: _model.locationData?.value as String?,
             ),
           );
