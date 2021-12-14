@@ -37,14 +37,11 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
     if (result?.files.single.path != null) {
       var _file = File(result!.files.single.path!);
       final data = await _file.readAsBytes();
-      // _currentUser?.image.value = data;
-
       Provider.of<UserPreview>(context, listen: false).user()!.image =
           BasicData(
         value: data,
       );
-      setState(() {});
-      Provider.of<UserPreview>(context).notify();
+      Provider.of<UserPreview>(context, listen: false).notify();
     }
   }
 
@@ -60,7 +57,6 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
       text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,
       onSuccess: (provider) async {
-        Navigator.pop(context, 'saved');
       },
     );
   }

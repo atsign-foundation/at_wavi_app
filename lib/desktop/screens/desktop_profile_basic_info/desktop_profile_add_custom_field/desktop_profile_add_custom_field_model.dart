@@ -115,7 +115,7 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
     } else {
       _basicData.value = selectedMedia;
     }
-    _basicData.type = fieldType?.name;
+    _basicData.type = fieldType.name;
 
     List<BasicData>? customFields =
         userPreview.user()!.customFields[atCategory.name];

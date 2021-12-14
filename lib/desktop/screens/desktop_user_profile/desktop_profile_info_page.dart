@@ -46,6 +46,10 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   @override
   void initState() {
     super.initState();
+    _initData();
+  }
+
+  void _initData() {
     if (widget.isPreview) {
       _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
     } else if (Provider.of<UserProvider>(context, listen: false).user != null) {
@@ -108,37 +112,41 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                     ),
                   ),
                   SizedBox(height: DesktopDimens.paddingLarge),
-                  GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: widget.onFollowerPressed,
-                    child: _buildInteractiveItem(
-                        Strings.desktop_followers,
-                        _isSearchScreen
-                            ? (SearchService()
-                                        .getAlreadySearchedAtsignDetails(
-                                            _currentUser.atsign)
-                                        ?.followers_count ??
-                                    '-')
-                                .toString()
-                            : '${followsCount()}',
-                        appTheme),
-                  ),
+                  Consumer<FollowService>(builder: (context, _provider, _) {
+                    return GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: widget.onFollowerPressed,
+                      child: _buildInteractiveItem(
+                          Strings.desktop_followers,
+                          _isSearchScreen
+                              ? (SearchService()
+                                          .getAlreadySearchedAtsignDetails(
+                                              _currentUser.atsign)
+                                          ?.followers_count ??
+                                      '-')
+                                  .toString()
+                              : '${followsCount(isFollowers: true)}',
+                          appTheme),
+                    );
+                  }),
                   SizedBox(height: DesktopDimens.paddingSmall),
-                  GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: widget.onFollowingPressed,
-                    child: _buildInteractiveItem(
-                        Strings.desktop_following,
-                        _isSearchScreen
-                            ? (SearchService()
-                                        .getAlreadySearchedAtsignDetails(
-                                            _currentUser.atsign)
-                                        ?.following_count ??
-                                    '-')
-                                .toString()
-                            : '${followsCount()}',
-                        appTheme),
-                  ),
+                  Consumer<FollowService>(builder: (context, _provider, _) {
+                    return GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: widget.onFollowingPressed,
+                      child: _buildInteractiveItem(
+                          Strings.desktop_following,
+                          _isSearchScreen
+                              ? (SearchService()
+                                          .getAlreadySearchedAtsignDetails(
+                                              _currentUser.atsign)
+                                          ?.following_count ??
+                                      '-')
+                                  .toString()
+                              : '${followsCount(isFollowers: false)}',
+                          appTheme),
+                    );
+                  }),
                   SizedBox(height: DesktopDimens.paddingLarge),
                   !widget.isPreview
                       ? Column(
@@ -211,7 +219,6 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
     String name = '';
     if (widget.isPreview) {
       name = context.select<UserPreview, String>(
-        // Here, we are only interested whether [item] is inside the cart.
         (userPreview) {
           return _displayingName(
             firstName: userPreview.user()?.firstname.value,
@@ -219,10 +226,8 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
           );
         },
       );
-      // _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
     } else if (Provider.of<UserProvider>(context, listen: false).user != null) {
       name = context.select<UserProvider, String>(
-        // Here, we are only interested whether [item] is inside the cart.
         (userProvider) {
           return _displayingName(
             firstName: userProvider.user?.firstname.value,
@@ -230,7 +235,6 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
           );
         },
       );
-      // _currentUser = Provider.of<UserProvider>(context, listen: false).user!;
     }
     return Text(
       name,
@@ -276,13 +280,15 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
     return _name;
   }
 
-  void _openEditProfile() {
+  void _openEditProfile() async {
     FieldOrderService().setPreviewOrder = {...FieldOrderService().fieldOrders};
     var userJson =
         User.toJson(Provider.of<UserProvider>(context, listen: false).user!);
     User previewUser = User.fromJson(json.decode(json.encode(userJson)));
     Provider.of<UserPreview>(context, listen: false).setUser = previewUser;
-    Navigator.pushNamed(context, DesktopRoutes.DESKTOP_EDIT_PROFILE);
+    await Navigator.pushNamed(context, DesktopRoutes.DESKTOP_EDIT_PROFILE);
+    _initData();
+    setState(() {});
   }
 
   String followsCount({bool isFollowers: false}) {
