@@ -12,7 +12,13 @@ import 'contact_initial.dart';
 
 class AtSignBottomSheet extends StatefulWidget {
   final List<String> atSignList;
-  AtSignBottomSheet({Key? key, required this.atSignList}) : super(key: key);
+  final VoidCallback? onSuccess;
+
+  AtSignBottomSheet({
+    Key? key,
+    required this.atSignList,
+    this.onSuccess,
+  }) : super(key: key);
 
   @override
   _AtSignBottomSheetState createState() => _AtSignBottomSheetState();
@@ -55,8 +61,10 @@ class _AtSignBottomSheetState extends State<AtSignBottomSheet> {
                               ? () {}
                               : () async {
                                   setState(() {});
-                                  await backendService
-                                      .onboard(widget.atSignList[index]);
+                                  await backendService.onboard(
+                                    widget.atSignList[index],
+                                    onSuccess: widget.onSuccess,
+                                  );
                                 },
                           child: Padding(
                             padding:

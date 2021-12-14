@@ -8,6 +8,7 @@ import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
+import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,7 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     final appTheme = AppTheme.of(context);
     return ChangeNotifierProvider<DesktopLoginModel>(
       create: (BuildContext c) => _model,
