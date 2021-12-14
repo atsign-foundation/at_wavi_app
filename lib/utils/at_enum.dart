@@ -75,7 +75,7 @@ extension FieldsEnumValues on FieldsEnum {
       case FieldsEnum.DISCORD:
         return 'DISCORD';
       case FieldsEnum.HTMLTOASTVIEW:
-        return 'DISCORD';
+        return 'HTMLTOASTVIEW';
       case FieldsEnum.TIKTOK:
         return 'TIKTOK';
       case FieldsEnum.SNAPCHAT:
