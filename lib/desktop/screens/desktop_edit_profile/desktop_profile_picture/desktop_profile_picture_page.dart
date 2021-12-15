@@ -23,8 +23,6 @@ class DesktopProfilePicturePage extends StatefulWidget {
 }
 
 class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
-  bool _isPrivate = false;
-
   @override
   void initState() {
     super.initState();
@@ -37,10 +35,10 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
     if (result?.files.single.path != null) {
       var _file = File(result!.files.single.path!);
       final data = await _file.readAsBytes();
-      Provider.of<UserPreview>(context, listen: false).user()!.image =
-          BasicData(
-        value: data,
-      );
+      final image =
+          Provider.of<UserPreview>(context, listen: false).user()!.image;
+      image.value = data;
+      Provider.of<UserPreview>(context, listen: false).user()!.image = image;
       Provider.of<UserPreview>(context, listen: false).notify();
     }
   }
@@ -56,8 +54,7 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
       showDialog: false,
       text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,
-      onSuccess: (provider) async {
-      },
+      onSuccess: (provider) async {},
     );
   }
 
@@ -116,22 +113,7 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
           const SizedBox(
             height: DesktopDimens.paddingNormal,
           ),
-          Container(
-            width: 300,
-            child: SwitchListTile(
-              activeColor: appTheme.primaryColor,
-              title: Text(
-                'Set image to private',
-                style: appTheme.textTheme.bodyText2,
-              ),
-              value: _isPrivate,
-              onChanged: (bool value) {
-                setState(() {
-                  _isPrivate = value;
-                });
-              },
-            ),
-          ),
+          _buildPrivateWidget(),
           Padding(
             padding: const EdgeInsets.only(
               right: DesktopDimens.paddingLarge,
@@ -164,6 +146,32 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
                   fit: BoxFit.cover,
                 )
               : Container(),
+        ),
+      );
+    });
+  }
+
+  Widget _buildPrivateWidget() {
+    final appTheme = AppTheme.of(context);
+    return Consumer<UserPreview>(builder: (context, provider, child) {
+      bool isPrivate = provider.user()?.image.isPrivate ?? false;
+      return Container(
+        width: 300,
+        child: SwitchListTile(
+          activeColor: appTheme.primaryColor,
+          title: Text(
+            'Set image to private',
+            style: appTheme.textTheme.bodyText2,
+          ),
+          value: isPrivate,
+          onChanged: (bool value) {
+            final image =
+                Provider.of<UserPreview>(context, listen: false).user()!.image;
+            image.isPrivate = value;
+            Provider.of<UserPreview>(context, listen: false).user()!.image =
+                image;
+            Provider.of<UserPreview>(context, listen: false).notify();
+          },
         ),
       );
     });
