@@ -4,6 +4,7 @@ import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/change_privacy_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/constants.dart';
@@ -27,8 +28,8 @@ class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     final isPrivateAccount =
-        Provider.of<UserProvider>(context, listen: false).user?.allPrivate ??
-            false;
+        Provider.of<UserProvider>(context).user?.allPrivate ?? false;
+    final isUpdating = Provider.of<SetPrivateState>(context).isLoading;
     return Container(
       width: DesktopDimens.sideMenuWidth,
       color: appTheme.backgroundColor,
@@ -39,6 +40,7 @@ class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
             prefixIcon: Icons.lock_rounded,
             title: "Make all information private",
             isOn: isPrivateAccount,
+            isUpdating: isUpdating,
             onChanged: (isOn) async {
               final user =
                   Provider.of<UserProvider>(context, listen: false).user;

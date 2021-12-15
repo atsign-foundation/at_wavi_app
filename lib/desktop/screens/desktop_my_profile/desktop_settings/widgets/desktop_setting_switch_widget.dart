@@ -6,6 +6,7 @@ class DesktopSettingSwitchWidget extends StatelessWidget {
   final IconData prefixIcon;
   final String title;
   final bool isOn;
+  final bool isUpdating;
   final ValueChanged<bool>? onChanged;
 
   const DesktopSettingSwitchWidget({
@@ -13,6 +14,7 @@ class DesktopSettingSwitchWidget extends StatelessWidget {
     required this.prefixIcon,
     required this.title,
     required this.isOn,
+    required this.isUpdating,
     required this.onChanged,
   }) : super(key: key);
 
@@ -37,10 +39,23 @@ class DesktopSettingSwitchWidget extends StatelessWidget {
             ),
           ),
           SizedBox(width: DesktopDimens.paddingSmall),
-          Switch(
-            value: isOn,
-            onChanged: onChanged,
-            activeColor: appTheme.primaryColor,
+          Container(
+            width: 48,
+            child: Center(
+              child: isUpdating
+                  ? SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: appTheme.primaryColor,
+                      ),
+                    )
+                  : Switch(
+                      value: isOn,
+                      onChanged: onChanged,
+                      activeColor: appTheme.primaryColor,
+                    ),
+            ),
           ),
           SizedBox(width: DesktopDimens.paddingNormal),
         ],
