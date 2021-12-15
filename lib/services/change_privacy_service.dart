@@ -18,11 +18,12 @@ class ChangePrivacyService {
   Future<bool> storeInSecondary([isCheck, scanKeys]) async {
     //storing detail fields
     for (FieldsEnum field in FieldsEnum.values) {
-      var data = this.get(field.name);
       if ((field == FieldsEnum.ATSIGN) ||
-          (field == FieldsEnum.PRIVATEACCOUNT)) {
+          (field == FieldsEnum.PRIVATEACCOUNT) ||
+          (field == FieldsEnum.HTMLTOASTVIEW)) {
         continue;
       }
+      var data = this.get(field.name);
       if (data.value != null) {
         // String key = atkeys.get(field.name);
         var isUpdated = await AtKeySetService()
@@ -56,7 +57,8 @@ class ChangePrivacyService {
 
       for (var field in FieldsEnum.values) {
         if ((field == FieldsEnum.ATSIGN) ||
-            (field == FieldsEnum.PRIVATEACCOUNT)) {
+            (field == FieldsEnum.PRIVATEACCOUNT) ||
+            (field == FieldsEnum.HTMLTOASTVIEW)) {
           continue;
         }
         await setPrivacy(field.name, private);
@@ -119,7 +121,7 @@ class ChangePrivacyService {
     if (_mapRep.containsKey(propertyName)) {
       return _mapRep[propertyName];
     }
-    throw ArgumentError('propery not found');
+    throw ArgumentError('$propertyName propery not found');
   }
 
   Map<dynamic, dynamic> _toMap() {
@@ -146,6 +148,13 @@ class ChangePrivacyService {
       FieldsEnum.XBOX.name: user.xbox,
       FieldsEnum.STEAM.name: user.steam,
       FieldsEnum.DISCORD.name: user.discord,
+
+      ///
+      FieldsEnum.TIKTOK.name: user.tiktok,
+      FieldsEnum.SNAPCHAT.name: user.snapchat,
+      FieldsEnum.PINTEREST.name: user.pinterest,
+      FieldsEnum.GITHUB.name: user.github,
+      FieldsEnum.TWITCH.name: user.twitch,
     };
   }
 }

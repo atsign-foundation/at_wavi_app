@@ -88,9 +88,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       // await followsProvider.fetchAtsignDetails(followsProvider.followers.list!);
       // await followsProvider.fetchAtsignDetails(followsProvider.following.list!,
       // isFollowing: true);
-      Provider.of<FollowService>(NavService.navKey.currentContext!,
-              listen: false)
-          .init();
+      // Provider.of<FollowService>(NavService.navKey.currentContext!,
+      //         listen: false)
+      //     .init();
     });
     super.initState();
   }
@@ -150,6 +150,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       setState(() {
         hideHeader = false;
         searchedAtsign = '';
+        loadingSearchedAtsign = false;
       });
       _inputBoxController.reverse();
       return;
@@ -284,76 +285,73 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         Expanded(
                           child: SizedBox(
                             height: 55.toHeight,
-                            child: TextButton(
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(_themeData!
-                                        .highlightColor
-                                        .withOpacity(0.1)),
-                              ),
-                              onPressed: widget.isPreview
-                                  ? () async {
-                                      if (_isSearchScreen) {
-                                        LoadingDialog().show(text: 'Updating');
-                                        await Provider.of<FollowService>(
-                                                NavService
-                                                    .navKey.currentContext!,
-                                                listen: false)
-                                            .performFollowUnfollow(
-                                                _currentUser.atsign);
-                                        LoadingDialog().hide();
-                                        setState(() {});
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                          backgroundColor: ColorConstants.RED,
-                                          content: Text(
-                                            'You are currently in preview mode',
-                                            style: CustomTextStyles
-                                                .customTextStyle(
-                                              ColorConstants.white,
-                                            ),
-                                          ),
-                                        ));
-                                      }
-                                    }
-                                  : () async {
-                                      SetupRoutes.push(
-                                          NavService.navKey.currentContext!,
-                                          Routes.EDIT_PERSONA);
-                                    },
-                              child: RichText(
-                                text: TextSpan(
-                                  text: _isSearchScreen
-                                      ? (Provider.of<FollowService>(
-                                                  NavService
-                                                      .navKey.currentContext!,
-                                                  listen: false)
-                                              .isFollowing(_currentUser.atsign)
-                                          ? 'Following'
-                                          : 'Follow')
-                                      : 'Edit  ',
-                                  style: TextStyle(
-                                      fontSize: 16.toFont,
-                                      color: _themeData!.primaryColor
-                                          .withOpacity(0.5)),
-                                  children: _isSearchScreen
-                                      ? []
-                                      : [
-                                          WidgetSpan(
-                                            alignment:
-                                                PlaceholderAlignment.middle,
-                                            child: Icon(
-                                              Icons.edit,
-                                              size: 18,
-                                              color: _themeData!.primaryColor
-                                                  .withOpacity(0.7),
-                                            ),
-                                          ),
-                                        ],
+                            child: Consumer<FollowService>(
+                                builder: (context, _provider, _) {
+                              return TextButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          _themeData!.highlightColor
+                                              .withOpacity(0.1)),
                                 ),
-                              ),
-                            ),
+                                onPressed: widget.isPreview
+                                    ? () async {
+                                        if (_isSearchScreen) {
+                                          // LoadingDialog()
+                                          //     .show(text: 'Updating');
+                                          await _provider.performFollowUnfollow(
+                                              _currentUser.atsign);
+                                          // LoadingDialog().hide();
+                                          // setState(() {});
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            backgroundColor: ColorConstants.RED,
+                                            content: Text(
+                                              'You are currently in preview mode',
+                                              style: CustomTextStyles
+                                                  .customTextStyle(
+                                                ColorConstants.white,
+                                              ),
+                                            ),
+                                          ));
+                                        }
+                                      }
+                                    : () async {
+                                        SetupRoutes.push(
+                                            NavService.navKey.currentContext!,
+                                            Routes.EDIT_PERSONA);
+                                      },
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: _isSearchScreen
+                                        ? (_provider.isFollowing(
+                                                _currentUser.atsign)
+                                            ? 'Following'
+                                            : 'Follow')
+                                        : 'Edit  ',
+                                    style: TextStyle(
+                                        fontSize: 16.toFont,
+                                        color: _themeData!.primaryColor
+                                            .withOpacity(0.5)),
+                                    children: _isSearchScreen
+                                        ? []
+                                        : [
+                                            WidgetSpan(
+                                              alignment:
+                                                  PlaceholderAlignment.middle,
+                                              child: Icon(
+                                                Icons.edit,
+                                                size: 18,
+                                                color: _themeData!.primaryColor
+                                                    .withOpacity(0.7),
+                                              ),
+                                            ),
+                                          ],
+                                  ),
+                                ),
+                              );
+                            }),
                           ),
                         ),
                         SizedBox(width: 16),
@@ -822,35 +820,38 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           await SearchService().getAtsignDetails(searchedAtsign);
       User? _res = _searchService?.user;
 
-      if (_searchService == null) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: ColorConstants.RED,
-          content: Text(
-            'Something went wrong',
-            style: CustomTextStyles.customTextStyle(
-              ColorConstants.white,
+      /// in case the search is cancelled, dont do anything
+      if (loadingSearchedAtsign) {
+        if (_searchService == null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: ColorConstants.RED,
+            content: Text(
+              'Something went wrong',
+              style: CustomTextStyles.customTextStyle(
+                ColorConstants.white,
+              ),
             ),
-          ),
-        ));
+          ));
+          setState(() {
+            loadingSearchedAtsign = false;
+          });
+          return;
+        }
+
+        // Provider.of<UserPreview>(context,
+        //         listen: false)
+        //     .setSearchedUser(_res);
+
+        Provider.of<UserPreview>(context, listen: false).setUser = _res;
+        FieldOrderService().setPreviewOrder = _searchService.fieldOrders;
+        await SetupRoutes.push(context, Routes.HOME, arguments: {
+          'themeData': _searchService.currentAtsignThemeData,
+          'isPreview': true,
+        });
         setState(() {
           loadingSearchedAtsign = false;
         });
-        return;
       }
-
-      setState(() {
-        loadingSearchedAtsign = false;
-      });
-      // Provider.of<UserPreview>(context,
-      //         listen: false)
-      //     .setSearchedUser(_res);
-      Provider.of<UserPreview>(context, listen: false).setUser = _res;
-      FieldOrderService().setPreviewOrder = _searchService.fieldOrders;
-
-      await SetupRoutes.push(context, Routes.HOME, arguments: {
-        'themeData': _searchService.currentAtsignThemeData,
-        'isPreview': true,
-      });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: ColorConstants.RED,

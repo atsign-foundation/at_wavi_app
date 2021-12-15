@@ -82,39 +82,12 @@ class _OptionsState extends State<Options> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: CustomPersonHorizontalTile(
-                    title: widget.name ??
-                        BackendService().atClientInstance.getCurrentAtSign(),
-                    subTitle:
-                        BackendService().atClientInstance.getCurrentAtSign(),
-                    textColor: _themeData!.primaryColor,
-                    image: widget.image?.toList(),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(top: 10, left: 10),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Tooltip(
-                        message: 'Backup your keys',
-                        child: BackupKeyWidget(
-                          atClientService: BackendService().atClientInstance,
-                          atsign: AtClientManager.getInstance()
-                              .atClient
-                              .getCurrentAtSign()!,
-                          isIcon: true,
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
+            CustomPersonHorizontalTile(
+              title: widget.name ??
+                  BackendService().atClientInstance.getCurrentAtSign(),
+              subTitle: BackendService().atClientInstance.getCurrentAtSign(),
+              textColor: _themeData!.primaryColor,
+              image: widget.image?.toList(),
             ),
             SizedBox(height: 15.toHeight),
             Divider(height: 1),
@@ -132,6 +105,33 @@ class _OptionsState extends State<Options> {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
                         'Scan QR Code',
+                        style: TextStyles.lightText(_themeData!.primaryColor),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 15.toHeight),
+            Divider(height: 1),
+            SizedBox(height: 5.toHeight),
+            InkWell(
+              onTap: () async {
+                BackupKeyWidget(
+                  atClientService: AtClientManager.getInstance().atClient,
+                  atsign: AtClientManager.getInstance()
+                      .atClient
+                      .getCurrentAtSign()!,
+                ).showBackupDialog(context);
+              },
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.file_copy, size: 25),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Backup your keys',
                         style: TextStyles.lightText(_themeData!.primaryColor),
                       ),
                     ),
@@ -182,6 +182,7 @@ class _OptionsState extends State<Options> {
             ),
             SizedBox(height: 15.toHeight),
             Divider(height: 1),
+            SizedBox(height: 5.toHeight),
             InkWell(
               onTap: () {
                 SetupRoutes.push(context, Routes.TERMS_CONDITIONS_SCREEN);

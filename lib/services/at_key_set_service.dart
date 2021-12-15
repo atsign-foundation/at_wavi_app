@@ -122,6 +122,9 @@ class AtKeySetService {
   Future<bool> updateCustomFields(String category, List<BasicData> value,
       {bool? isCheck = true, var scanKeys, String? previousKey}) async {
     var result;
+    if (scanKeys == null) {
+      scanKeys = await BackendService().atClientInstance.getAtKeys();
+    }
     for (var data in value) {
       String oldkey = _formatOldCustomTitle(data.accountName);
       for (int i = 0; i < scanKeys.length; i++) {

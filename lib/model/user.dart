@@ -296,6 +296,12 @@ class BasicData {
         FieldNames().additionalDetailsFields.contains(accountName) ||
         FieldNames().socialAccountsFields.contains(accountName) ||
         FieldNames().gameFields.contains(accountName)) {
+      switch (accountName?.toLowerCase()) {
+        case 'firstname':
+          return 'First Name';
+        case 'lastname':
+          return 'Last Name';
+      }
       return accountName?.toCapitalized();
     } else {
       return accountName;

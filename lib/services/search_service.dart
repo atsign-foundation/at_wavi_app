@@ -90,7 +90,6 @@ class SearchInstance {
     }
   }
 
-  /// TODO: throws an error for image, serach 'colin/kevin'
   Future<User?> getAtsignDetails(String atsign) async {
     try {
       followers = [];
