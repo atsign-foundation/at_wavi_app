@@ -92,33 +92,33 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
     );
   }
 
-  Widget _buildEmptyWidget() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        if (widget.showWelcome)
-          Container(
-            padding: EdgeInsets.only(top: DesktopDimens.paddingLarge),
-            child: DesktopWelcomeWidget(
-              titlePage: widget.atCategory.titlePage,
-            ),
-          ),
-        Expanded(
-          child: Container(
-            child: Center(
-              child: DesktopEmptyCategoryWidget(
-                atCategory: widget.atCategory,
-                onAddDetailsPressed: widget.atCategory == AtCategory.LOCATION
-                    ? _showAddLocation
-                    : _showAddDetailPopup,
-                showAddButton: false,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _buildEmptyWidget() {
+  //   return Column(
+  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //     children: [
+  //       if (widget.showWelcome)
+  //         Container(
+  //           padding: EdgeInsets.only(top: DesktopDimens.paddingLarge),
+  //           child: DesktopWelcomeWidget(
+  //             titlePage: widget.atCategory.titlePage,
+  //           ),
+  //         ),
+  //       Expanded(
+  //         child: Container(
+  //           child: Center(
+  //             child: DesktopEmptyCategoryWidget(
+  //               atCategory: widget.atCategory,
+  //               onAddDetailsPressed: widget.atCategory == AtCategory.LOCATION
+  //                   ? _showAddLocation
+  //                   : _showAddDetailPopup,
+  //               showAddButton: false,
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _buildContentWidget(List<BasicData> items) {
     final appTheme = AppTheme.of(context);
@@ -250,33 +250,33 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
     }
   }
 
-  void _showAddLocation() async {
-    final result = await showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => Dialog(
-        backgroundColor: Colors.transparent,
-        child: DesktopAddLocationPage(),
-      ),
-    );
-    if (result == 'saved') {
-      _model.fetchBasicData();
-    }
-  }
-
-  void _showReorderDetailPopup() async {
-    final result = await showDialog<List<String>>(
-      context: context,
-      builder: (BuildContext context) => Dialog(
-        backgroundColor: Colors.transparent,
-        child: DesktopReorderBasicDetailPage(
-          atCategory: widget.atCategory,
-        ),
-      ),
-    );
-    if (result != null) {
-      _model.fetchBasicData();
-    }
-  }
+  // void _showAddLocation() async {
+  //   final result = await showDialog<String>(
+  //     context: context,
+  //     builder: (BuildContext context) => Dialog(
+  //       backgroundColor: Colors.transparent,
+  //       child: DesktopAddLocationPage(),
+  //     ),
+  //   );
+  //   if (result == 'saved') {
+  //     _model.fetchBasicData();
+  //   }
+  // }
+  //
+  // void _showReorderDetailPopup() async {
+  //   final result = await showDialog<List<String>>(
+  //     context: context,
+  //     builder: (BuildContext context) => Dialog(
+  //       backgroundColor: Colors.transparent,
+  //       child: DesktopReorderBasicDetailPage(
+  //         atCategory: widget.atCategory,
+  //       ),
+  //     ),
+  //   );
+  //   if (result != null) {
+  //     _model.fetchBasicData();
+  //   }
+  // }
 
   void _handleSaveAndNext() async {
     await providerCallback<UserProvider>(

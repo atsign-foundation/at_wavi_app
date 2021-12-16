@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/model/user.dart';
@@ -21,23 +23,36 @@ class DesktopAddLocationModel extends ChangeNotifier {
 
   BasicData? get data => _data;
   late bool _isPrivate;
-  String _locationString = '';
 
-  var locationTextController = TextEditingController();
   var tagTextController = TextEditingController();
 
-  DesktopAddLocationModel({required this.userPreview}) {
+  bool _isEditing = false;
+  bool _isCustomField = false;
+  BasicData? _location;
+  BasicData? _locationNickname;
+
+  DesktopAddLocationModel({
+    required this.userPreview,
+    required bool isEditing,
+    required bool isCustomField,
+    BasicData? location,
+    BasicData? locationNickname,
+  }) {
     _data = userPreview.user()!.location;
     _isPrivate = userPreview.user()!.location.isPrivate;
 
-    // _osmLocationModel = OsmLocationModel(
-    //   "Ha Noi",
-    //   10,
-    //   14,
-    //   latitude: 21.028511,
-    //   longitude: 105.804817,
-    //   diameter: 10,
-    // );
+    _isEditing = isEditing;
+    _isCustomField = isCustomField;
+    _location = location;
+    _locationNickname = locationNickname;
+
+    if (!_isCustomField) {
+      tagTextController.text = userPreview.user()?.locationNickName.value ?? '';
+      try {
+        _osmLocationModel = OsmLocationModel.fromJson(jsonDecode(
+            (userPreview.user()?.location.value as String?) ?? "{}"));
+      } catch (e) {}
+    }
   }
 
   void changeField(CustomContentType fieldType) {
@@ -64,14 +79,31 @@ class DesktopAddLocationModel extends ChangeNotifier {
         ).toJson(),
       );
 
-      List<BasicData>? customFields =
-          userPreview.user()!.customFields[AtCategory.LOCATION.name];
-      customFields!.add(basicData);
+      if (_isCustomField) {
+        List<BasicData>? customFields =
+            userPreview.user()!.customFields[AtCategory.LOCATION.name];
+        customFields!.add(basicData);
 
-      userPreview.user()?.customFields[AtCategory.LOCATION.name] = customFields;
+        userPreview.user()?.customFields[AtCategory.LOCATION.name] =
+            customFields;
 
-      FieldOrderService()
-          .addNewField(AtCategory.LOCATION, basicData.accountName!);
+        FieldOrderService()
+            .addNewField(AtCategory.LOCATION, basicData.accountName!);
+      } else {
+        userPreview.user()?.location = BasicData(
+          value: OsmLocationModel(
+            tagTextController.text,
+            osmLocationModel!.radius,
+            osmLocationModel!.zoom,
+            latitude: osmLocationModel!.latitude,
+            longitude: osmLocationModel!.longitude,
+            diameter: osmLocationModel!.diameter,
+          ).toJson(),
+        );
+        userPreview.user()?.locationNickName = BasicData(
+          value: tagTextController.text,
+        );
+      }
 
       Navigator.of(context).pop('saved');
     } else {

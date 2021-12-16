@@ -4,16 +4,27 @@ import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_s
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
+import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 import 'desktop_add_location_model.dart';
 
 class DesktopAddLocationPage extends StatefulWidget {
-  const DesktopAddLocationPage({Key? key}) : super(key: key);
+  final bool isEditing;
+  final bool isCustomFiled;
+  final BasicData? location;
+  final BasicData? locationNickname;
+
+  const DesktopAddLocationPage({
+    Key? key,
+    required this.isEditing,
+    required this.isCustomFiled,
+    this.location,
+    this.locationNickname,
+  }) : super(key: key);
 
   @override
   _DesktopAddLocationPageState createState() => _DesktopAddLocationPageState();
@@ -28,7 +39,13 @@ class _DesktopAddLocationPageState extends State<DesktopAddLocationPage> {
     return ChangeNotifierProvider(
       create: (BuildContext c) {
         final userPreview = Provider.of<UserPreview>(context);
-        _model = DesktopAddLocationModel(userPreview: userPreview);
+        _model = DesktopAddLocationModel(
+          userPreview: userPreview,
+          isEditing: widget.isEditing,
+          isCustomField: widget.isCustomFiled,
+          location: widget.location,
+          locationNickname: widget.locationNickname,
+        );
         return _model;
       },
       child: Consumer<DesktopAddLocationModel>(

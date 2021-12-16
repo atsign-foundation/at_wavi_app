@@ -157,7 +157,9 @@ class _DesktopProfileBasicInfoPageState
                     DesktopIconLabelButton(
                       iconData: Icons.add_circle_outline_sharp,
                       label: 'Add location',
-                      onPressed: _showAddLocation,
+                      onPressed: () {
+                        _showAddLocation(isCustomFiled: true);
+                      },
                     ),
                   DesktopIconButton(
                     iconData: Icons.edit_rounded,
@@ -395,12 +397,15 @@ class _DesktopProfileBasicInfoPageState
     }
   }
 
-  void _showAddLocation() async {
+  void _showAddLocation({bool isCustomFiled = false}) async {
     final result = await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
-        child: DesktopAddLocationPage(),
+        child: DesktopAddLocationPage(
+          isEditing: false,
+          isCustomFiled: isCustomFiled,
+        ),
       ),
     );
     if (result == 'saved') {

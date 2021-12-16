@@ -25,6 +25,9 @@ class DesktopBasicDetailModel extends ChangeNotifier {
   BasicData? get locationNicknameData => _locationNicknameData;
 
   bool get isEmptyData {
+    if (atCategory == AtCategory.LOCATION) {
+      return (_locationData?.value.toString() ?? '').isEmpty;
+    }
     bool isEmpty = true;
     basicData.forEach((element) {
       final value = element.data.value;
