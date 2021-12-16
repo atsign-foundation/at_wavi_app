@@ -26,7 +26,7 @@ class DesktopMediaItemWidget extends StatelessWidget {
           Container(
             width: 200,
             child: Text(
-              data.accountName ?? '',
+              data.displayingAccountName ?? '',
               style: TextStyle(
                   fontSize: 16,
                   color: appTheme.secondaryTextColor,

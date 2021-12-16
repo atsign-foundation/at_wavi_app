@@ -49,7 +49,7 @@ class DesktopBasicInfoWidget extends StatelessWidget {
           Container(
             width: 150,
             child: Text(
-              getTitle(data.accountName ?? ''),
+              getTitle(data.displayingAccountName ?? ''),
               style: appTheme.textTheme.bodyText2?.copyWith(
                 color: appTheme.secondaryTextColor,
               ),
@@ -83,7 +83,7 @@ class DesktopBasicInfoWidget extends StatelessWidget {
           Container(
             width: 150,
             child: Text(
-              getTitle(data.accountName ?? ''),
+              getTitle(data.displayingAccountName ?? ''),
               style: appTheme.textTheme.bodyText2?.copyWith(
                 color: appTheme.secondaryTextColor,
               ),
@@ -124,7 +124,7 @@ class DesktopBasicInfoWidget extends StatelessWidget {
           Container(
             width: 150,
             child: Text(
-              getTitle(data.accountName ?? ''),
+              getTitle(data.displayingAccountName ?? ''),
               style:
                   TextStyle(color: appTheme.secondaryTextColor, fontSize: 16),
             ),
@@ -169,7 +169,7 @@ class DesktopBasicInfoWidget extends StatelessWidget {
           Container(
             width: 150,
             child: Text(
-              getTitle(data.accountName ?? ''),
+              getTitle(data.displayingAccountName ?? ''),
               style:
               TextStyle(color: appTheme.secondaryTextColor, fontSize: 16),
             ),

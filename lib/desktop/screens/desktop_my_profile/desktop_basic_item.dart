@@ -26,7 +26,7 @@ class DesktopBasicItem extends StatelessWidget {
           Container(
             width: 120,
             child: Text(
-              getTitle(data.accountName ?? ''),
+              getTitle(data.displayingAccountName ?? ''),
               style: TextStyle(
                   fontSize: 12,
                   color: appTheme.secondaryTextColor,

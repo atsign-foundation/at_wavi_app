@@ -33,6 +33,7 @@ class _DesktopOnBoardingPageState extends State<DesktopOnBoardingPage>
   void dispose() {
     super.dispose();
     timer?.cancel();
+    _pageController.dispose();
   }
 
   @override

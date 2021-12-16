@@ -31,38 +31,33 @@ class DesktopReorderBasicDetailModel extends ChangeNotifier {
     var fields = <String>[];
     fields = [...FieldNames().getFieldList(atCategory, isPreview: true)];
 
-    if (atCategory == AtCategory.DETAILS_TAB ||
-        atCategory == AtCategory.CHANNELS) {
-      _fields = fields;
-    } else {
-      for (int i = 0; i < fields.length; i++) {
-        BasicData basicData = BasicData();
-        bool isCustomField = false;
+    for (int i = 0; i < fields.length; i++) {
+      BasicData basicData = BasicData();
+      bool isCustomField = false;
 
-        if (userMap.containsKey(fields[i])) {
-          basicData = userMap[fields[i]];
-          if (basicData.accountName == null) basicData.accountName = fields[i];
-          if (basicData.value == null) basicData.value = '';
-        } else {
-          var index =
-              customFields.indexWhere((el) => el.accountName == fields[i]);
-          if (index != -1) {
-            basicData = customFields[index];
-            isCustomField = true;
-          }
+      if (userMap.containsKey(fields[i])) {
+        basicData = userMap[fields[i]];
+        if (basicData.accountName == null) basicData.accountName = fields[i];
+        if (basicData.value == null) basicData.value = '';
+      } else {
+        var index =
+        customFields.indexWhere((el) => el.accountName == fields[i]);
+        if (index != -1) {
+          basicData = customFields[index];
+          isCustomField = true;
         }
+      }
 
-        if (atCategory == AtCategory.LOCATION) {
-          if (basicData.value is OsmLocationModel) {
-            _fields.add(basicData.accountName!);
-          }
-        } else if (atCategory == AtCategory.FEATURED) {
-          if (basicData.value != null && basicData.value.isNotEmpty) {
-            _fields.add(basicData.accountName!);
-          }
-        } else {
+      if (atCategory == AtCategory.LOCATION) {
+        if (basicData.value is OsmLocationModel) {
           _fields.add(basicData.accountName!);
         }
+      } else if (atCategory == AtCategory.FEATURED) {
+        if (basicData.value != null && basicData.value.isNotEmpty) {
+          _fields.add(basicData.accountName!);
+        }
+      } else {
+        _fields.add(basicData.accountName!);
       }
     }
     notifyListeners();

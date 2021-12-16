@@ -119,11 +119,11 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
     ];
 
     _pageController = PageController();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      //clearSharedPreferences();
-      saveStringToSharedPreferences(
-          key: Strings.desktop_current_tab, value: AtCategory.DETAILS_TAB.name);
-    });
+    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+    //   //clearSharedPreferences();
+    //   saveStringToSharedPreferences(
+    //       key: Strings.desktop_current_tab, value: AtCategory.DETAILS_TAB.name);
+    // });
     super.initState();
     _showTutorial();
   }

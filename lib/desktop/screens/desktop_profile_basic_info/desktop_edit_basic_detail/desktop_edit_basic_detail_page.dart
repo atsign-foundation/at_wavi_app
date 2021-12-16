@@ -116,7 +116,7 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
                     Expanded(
                       child: DesktopTextField(
                         controller: data.controller ?? TextEditingController(),
-                        title: data.data.accountName ?? '',
+                        title: data.data.displayingAccountName ?? '',
                       ),
                     ),
                     Container(

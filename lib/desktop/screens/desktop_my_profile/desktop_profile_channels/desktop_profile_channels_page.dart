@@ -1,14 +1,8 @@
-import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_profile_details/desktop_basic_detail/desktop_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_basic_info_page.dart';
-import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
-import 'package:at_wavi_app/desktop/utils/dialog_utils.dart';
+import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_tabbar.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
-import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'desktop_profile_channels_model.dart';
 
 class DesktopProfileChannelsPage extends StatefulWidget {
   final bool isMyProfile;
@@ -20,23 +14,9 @@ class DesktopProfileChannelsPage extends StatefulWidget {
     required this.isEditable,
   }) : super(key: key);
 
-  // _DesktopProfileChannelsPageState _desktopChannelsPageState =
-  //     _DesktopProfileChannelsPageState();
-
   @override
-  _DesktopProfileChannelsPageState createState() => _DesktopProfileChannelsPageState();
-
-  // Future showReOrderTabsPopUp() async {
-  //   await _desktopChannelsPageState.showReOrderTabsPopUp();
-  // }
-
-  // Future addFieldToSocial() async {
-  //   await _desktopChannelsPageState.addFieldToSocial();
-  // }
-  //
-  // Future addFieldToGame() async {
-  //   await _desktopChannelsPageState.addFieldToGame();
-  // }
+  _DesktopProfileChannelsPageState createState() =>
+      _DesktopProfileChannelsPageState();
 }
 
 class _DesktopProfileChannelsPageState extends State<DesktopProfileChannelsPage>
@@ -44,89 +24,46 @@ class _DesktopProfileChannelsPageState extends State<DesktopProfileChannelsPage>
         SingleTickerProviderStateMixin,
         AutomaticKeepAliveClientMixin<DesktopProfileChannelsPage> {
   late TabController _tabController;
-  late DesktopProfileChannelsModel _model;
 
-  // late DesktopBasicDetailPage desktopSocialAccountPage;
-  // late DesktopBasicDetailPage desktopGameAccountPage;
-
-  final _pageController = PageController();
+  final categories = [
+    AtCategory.SOCIAL,
+    AtCategory.GAMER,
+  ];
 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-    // desktopSocialAccountPage = DesktopBasicDetailPage(
-    //   atCategory: AtCategory.SOCIAL,
-    // );
-    // desktopGameAccountPage = DesktopBasicDetailPage(
-    //   atCategory: AtCategory.GAMER,
-    // );
-
     super.initState();
   }
 
   @override
   bool get wantKeepAlive => true;
 
-  Future showReOrderTabsPopUp() async {
-    if (this.mounted) {
-      await showReOderTabsPopUp(
-        context,
-        (fields) {
-          /// Update Fields after reorder
-          _model.updateField(fields);
-        },
-      );
-    }
-  }
-
-  // Future addFieldToSocial() async {
-  //   await desktopSocialAccountPage.addField();
-  // }
-  //
-  // Future addFieldToGame() async {
-  //   await desktopGameAccountPage.addField();
-  // }
-
   @override
   Widget build(BuildContext context) {
-    final appTheme = AppTheme.of(context);
-    return ChangeNotifierProvider(
-      create: (BuildContext c) {
-        final userPreview = Provider.of<UserPreview>(context);
-        _model = DesktopProfileChannelsModel(userPreview: userPreview);
-        return _model;
-      },
-      child: Container(
-        child: Consumer<DesktopProfileChannelsModel>(
-          builder: (_, model, child) {
-            return model.fields.isEmpty
-                ? Container()
-                : Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 16, horizontal: 80),
-                        child: DesktopTabBar(
-                          controller: _tabController,
-                          tabTitles: model.fields,
-                          spacer: 40,
-                        ),
-                      ),
-                      Expanded(
-                        child: TabBarView(
-                          controller: _tabController,
-                          children: [
-                            AtCategory.SOCIAL,
-                            AtCategory.GAMER,
-                          ].map((e) => getWidget(e)).toList(),
-                        ),
-                      ),
-                    ],
-                  );
-          },
-        ),
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(
+              vertical: DesktopDimens.paddingNormal,
+              horizontal: DesktopDimens.paddingExtraLarge,
+            ),
+            child: DesktopTabBar(
+              controller: _tabController,
+              tabTitles: categories.map((e) => e.newLabel).toList(),
+              spacer: DesktopDimens.paddingLarge,
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: categories.map((e) => getWidget(e)).toList(),
+            ),
+          ),
+        ],
       ),
     );
   }

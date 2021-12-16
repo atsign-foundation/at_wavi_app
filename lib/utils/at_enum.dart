@@ -187,17 +187,15 @@ valueOf(String property) {
 
 /// new app doesnt have IMAGE
 enum AtCategory {
-  DETAILS_TAB,
-  CHANNELS,
-  FEATURED,
-
   IMAGE,
+  DETAILS,
   LOCATION,
   SOCIAL,
   GAMER,
-  DETAILS,
+
+  /// Added for new wavi app
   ADDITIONAL_DETAILS,
-  OTHERS,
+  FEATURED
 }
 
 extension AtCategoryValues on AtCategory {
@@ -227,6 +225,27 @@ extension AtCategoryValues on AtCategory {
       case AtCategory.ADDITIONAL_DETAILS:
         return 'Additional_Details';
 
+      default:
+        return '';
+    }
+  }
+
+  String get newLabel {
+    switch (this) {
+      case AtCategory.IMAGE:
+        return 'Image';
+      case AtCategory.DETAILS:
+        return 'Contact';
+      case AtCategory.SOCIAL:
+        return 'Social';
+      case AtCategory.GAMER:
+        return 'Gaming';
+      case AtCategory.LOCATION:
+        return 'Location';
+      case AtCategory.FEATURED:
+        return 'Featured';
+      case AtCategory.ADDITIONAL_DETAILS:
+        return 'About';
       default:
         return '';
     }

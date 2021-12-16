@@ -135,6 +135,7 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
   }
 
   Widget _buildAvatarWidget() {
+    final appTheme = AppTheme.of(context);
     return Consumer<UserPreview>(builder: (context, provider, child) {
       dynamic data = provider.user()?.image.value;
       return AspectRatio(
@@ -145,7 +146,9 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
                   data,
                   fit: BoxFit.cover,
                 )
-              : Container(),
+              : Container(
+            color: appTheme.primaryLighterColor,
+          ),
         ),
       );
     });

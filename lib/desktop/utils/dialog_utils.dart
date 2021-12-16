@@ -58,32 +58,32 @@ class DialogUtils {
 //   );
 // }
 
-Future showReOderTabsPopUp(
-    BuildContext context, Function(List<String>) updateFields) async {
-  var currentScreen =
-      await getStringFromSharedPreferences(key: Strings.desktop_current_tab);
-  AtCategory atCategory;
-  atCategory = AtCategory.values.firstWhere(
-    (element) {
-      return element.name == currentScreen;
-    },
-    orElse: () => AtCategory.OTHERS,
-  );
-
-  final results = await showDialog<List<String>>(
-    context: context,
-    builder: (BuildContext context) => Dialog(
-      backgroundColor: Colors.transparent,
-      child: DesktopReorderBasicDetailPage(
-        atCategory: atCategory,
-      ),
-    ),
-  );
-  if (results != null) {
-    List<String> fields = results;
-    updateFields(fields);
-  }
-}
+// Future showReOderTabsPopUp(
+//     BuildContext context, Function(List<String>) updateFields) async {
+//   var currentScreen =
+//       await getStringFromSharedPreferences(key: Strings.desktop_current_tab);
+//   AtCategory atCategory;
+//   atCategory = AtCategory.values.firstWhere(
+//     (element) {
+//       return element.name == currentScreen;
+//     },
+//     orElse: () => AtCategory.OTHERS,
+//   );
+//
+//   final results = await showDialog<List<String>>(
+//     context: context,
+//     builder: (BuildContext context) => Dialog(
+//       backgroundColor: Colors.transparent,
+//       child: DesktopReorderBasicDetailPage(
+//         atCategory: atCategory,
+//       ),
+//     ),
+//   );
+//   if (results != null) {
+//     List<String> fields = results;
+//     updateFields(fields);
+//   }
+// }
 
 Future showReOderFieldsPopUp(BuildContext context, AtCategory atCategory,
     Function() updateFields) async {

@@ -25,7 +25,7 @@ class DesktopLocationItem extends StatelessWidget {
           Container(
             width: 110,
             child: Text(
-              data.accountName ?? '',
+              data.displayingAccountName ?? '',
               style: TextStyle(
                   fontSize: 12,
                   color: appTheme.secondaryTextColor,
