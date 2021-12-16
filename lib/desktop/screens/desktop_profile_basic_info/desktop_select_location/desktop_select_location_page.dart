@@ -325,8 +325,8 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
       return;
     }
     var _finalData = OsmLocationModel(
-      null,
-      null,
+      '',
+      diameterOfCircle,
       zoom,
       latitude: center?.latitude,
       longitude: center?.longitude,

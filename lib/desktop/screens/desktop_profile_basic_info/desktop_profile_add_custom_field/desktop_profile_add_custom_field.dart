@@ -136,7 +136,7 @@ class _DesktopProfileAddCustomFieldState
               borderSide: BorderSide(color: appTheme.primaryColor),
             ),
           ),
-          value: model.fieldType ?? widget.allowContentType.first,
+          value: model.fieldType,
           icon: Icon(Icons.keyboard_arrow_down),
           style: TextStyle(
             fontSize: 16,

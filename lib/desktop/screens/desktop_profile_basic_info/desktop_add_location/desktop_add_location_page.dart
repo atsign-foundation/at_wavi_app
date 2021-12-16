@@ -181,7 +181,7 @@ class _DesktopAddLocationPageState extends State<DesktopAddLocationPage> {
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
         child: DesktopSelectLocationPage(
-          'Ha noi',
+          '',
           latLng,
           onLocationPicked: (location) {
             _model.changeLocation(location);

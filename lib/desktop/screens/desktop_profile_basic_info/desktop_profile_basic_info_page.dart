@@ -161,10 +161,11 @@ class _DesktopProfileBasicInfoPageState
                         _showAddLocation(isCustomFiled: true);
                       },
                     ),
-                  DesktopIconButton(
-                    iconData: Icons.edit_rounded,
-                    onPressed: _showAddDetailPopup,
-                  ),
+                  if (widget.atCategory != AtCategory.LOCATION)
+                    DesktopIconButton(
+                      iconData: Icons.edit_rounded,
+                      onPressed: _showAddDetailPopup,
+                    ),
                   SizedBox(width: 10),
                   DesktopPreviewButton(
                     onPressed: _showUserPreview,
@@ -243,6 +244,7 @@ class _DesktopProfileBasicInfoPageState
             onEditPressed: () {
               _showEditCustomContent(item.data);
             },
+            showMenu: widget.isEditable,
           ),
           // child: item.data.extension != null
           //     ? DesktopMediaItemWidget(
@@ -301,6 +303,16 @@ class _DesktopProfileBasicInfoPageState
             child: DesktopLocationItemWidget(
               title: _model.locationNicknameData?.value ?? '',
               location: _model.locationData?.value as String?,
+              isCustomField: false,
+              onEditPressed: () {
+                _showAddLocation(
+                  isCustomFiled: false,
+                  isEditing: true,
+                  location: _model.locationData,
+                  locationNickname: _model.locationNicknameData,
+                );
+              },
+              showMenu: widget.isEditable,
             ),
           );
         }
@@ -314,6 +326,18 @@ class _DesktopProfileBasicInfoPageState
           child: DesktopLocationItemWidget(
             title: item.data.accountName,
             location: item.data.value,
+            isCustomField: true,
+            onDeletePressed: () {
+              _model.deleteData(item.data);
+            },
+            onEditPressed: () {
+              _showAddLocation(
+                isCustomFiled: true,
+                isEditing: true,
+                location: item.data,
+              );
+            },
+            showMenu: widget.isEditable,
           ),
         );
       },
@@ -397,14 +421,21 @@ class _DesktopProfileBasicInfoPageState
     }
   }
 
-  void _showAddLocation({bool isCustomFiled = false}) async {
+  void _showAddLocation({
+    bool isCustomFiled = false,
+    bool isEditing = false,
+    BasicData? location,
+    BasicData? locationNickname,
+  }) async {
     final result = await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
         child: DesktopAddLocationPage(
-          isEditing: false,
+          isEditing: isEditing,
           isCustomFiled: isCustomFiled,
+          location: location,
+          locationNickname: locationNickname,
         ),
       ),
     );

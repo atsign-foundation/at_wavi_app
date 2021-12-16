@@ -84,7 +84,7 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
     } else {
       _basicData.value = selectedMedia;
     }
-    _basicData.type = fieldType?.name;
+    _basicData.type = fieldType.name;
     // await updateDefinedFields(
     //   context,
     //   _basicData!,
@@ -128,7 +128,11 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
     }
 
     userPreview.user()?.customFields[atCategory.name] = customFields!;
-
+    FieldOrderService().updateSingleField(
+      atCategory,
+      originBasicData?.accountName ?? '',
+      _basicData.accountName ?? '',
+    );
     Navigator.of(context).pop('saved');
   }
 }

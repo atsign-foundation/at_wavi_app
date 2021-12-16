@@ -12,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 class DesktopBasicInfoWidget extends StatelessWidget {
   final BasicData data;
   final bool isCustomField;
+  final bool showMenu;
   final VoidCallback? onEditPressed;
   final VoidCallback? onDeletePressed;
 
@@ -19,6 +20,7 @@ class DesktopBasicInfoWidget extends StatelessWidget {
     Key? key,
     required this.data,
     required this.isCustomField,
+    required this.showMenu,
     this.onEditPressed,
     this.onDeletePressed,
   }) : super(key: key);
@@ -171,7 +173,7 @@ class DesktopBasicInfoWidget extends StatelessWidget {
             child: Text(
               getTitle(data.displayingAccountName ?? ''),
               style:
-              TextStyle(color: appTheme.secondaryTextColor, fontSize: 16),
+                  TextStyle(color: appTheme.secondaryTextColor, fontSize: 16),
             ),
           ),
           Expanded(
@@ -189,8 +191,10 @@ class DesktopBasicInfoWidget extends StatelessWidget {
     );
   }
 
-
   Widget _buildMenuWidget(BuildContext context) {
+    if (!showMenu) {
+      return SizedBox();
+    }
     if (!isCustomField) {
       return Container();
     }
@@ -201,7 +205,7 @@ class DesktopBasicInfoWidget extends StatelessWidget {
           child: SizedBox(
             child: Text(
               "Edit",
-              style: appTheme.textTheme.bodyText1,
+              style: appTheme.textTheme.bodyText2,
             ),
           ),
           value: 0,
@@ -210,7 +214,7 @@ class DesktopBasicInfoWidget extends StatelessWidget {
           child: SizedBox(
             child: Text(
               "Delete",
-              style: appTheme.textTheme.bodyText1,
+              style: appTheme.textTheme.bodyText2,
             ),
           ),
           value: 1,

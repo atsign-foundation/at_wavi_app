@@ -20,6 +20,7 @@ class DesktopAddLocationModel extends ChangeNotifier {
   OsmLocationModel? get osmLocationModel => _osmLocationModel;
 
   BasicData? _data;
+  BasicData? originBasicData;
 
   BasicData? get data => _data;
   late bool _isPrivate;
@@ -46,13 +47,22 @@ class DesktopAddLocationModel extends ChangeNotifier {
     _location = location;
     _locationNickname = locationNickname;
 
-    if (!_isCustomField) {
-      tagTextController.text = userPreview.user()?.locationNickName.value ?? '';
-      try {
-        _osmLocationModel = OsmLocationModel.fromJson(jsonDecode(
-            (userPreview.user()?.location.value as String?) ?? "{}"));
-      } catch (e) {}
-    }
+    if (_isEditing) {
+      if (_isCustomField) {
+        originBasicData = location;
+        tagTextController.text = location?.accountName ?? '';
+        try {
+          _osmLocationModel = OsmLocationModel.fromJson(
+              jsonDecode((location?.value as String?) ?? "{}"));
+        } catch (e) {}
+      } else {
+        tagTextController.text = locationNickname?.value?.toString() ?? '';
+        try {
+          _osmLocationModel = OsmLocationModel.fromJson(
+              jsonDecode((location?.value as String?) ?? "{}"));
+        } catch (e) {}
+      }
+    } else {}
   }
 
   void changeField(CustomContentType fieldType) {
@@ -77,18 +87,39 @@ class DesktopAddLocationModel extends ChangeNotifier {
           longitude: osmLocationModel!.longitude,
           diameter: osmLocationModel!.diameter,
         ).toJson(),
+        type: CustomContentType.Location.name,
       );
 
       if (_isCustomField) {
-        List<BasicData>? customFields =
-            userPreview.user()!.customFields[AtCategory.LOCATION.name];
-        customFields!.add(basicData);
+        if (_isEditing) {
+          List<BasicData>? customFields =
+              userPreview.user()!.customFields[AtCategory.LOCATION.name];
 
-        userPreview.user()?.customFields[AtCategory.LOCATION.name] =
-            customFields;
+          int index = customFields?.indexWhere((element) =>
+                  element.accountName == originBasicData?.accountName) ??
+              -1;
+          if (index >= 0) {
+            customFields![index] = basicData;
+          }
 
-        FieldOrderService()
-            .addNewField(AtCategory.LOCATION, basicData.accountName!);
+          userPreview.user()?.customFields[AtCategory.LOCATION.name] =
+              customFields ?? [];
+          FieldOrderService().updateSingleField(
+            AtCategory.LOCATION,
+            originBasicData?.accountName ?? '',
+            basicData.accountName ?? '',
+          );
+        } else {
+          List<BasicData>? customFields =
+              userPreview.user()!.customFields[AtCategory.LOCATION.name];
+          customFields!.add(basicData);
+
+          userPreview.user()?.customFields[AtCategory.LOCATION.name] =
+              customFields;
+
+          FieldOrderService()
+              .addNewField(AtCategory.LOCATION, basicData.accountName!);
+        }
       } else {
         userPreview.user()?.location = BasicData(
           value: OsmLocationModel(
