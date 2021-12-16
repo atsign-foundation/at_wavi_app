@@ -151,7 +151,7 @@ class _EditPersonaState extends State<EditPersona>
                     onTap: (index) async {},
                     labelColor: _themeData!.primaryColor,
                     indicatorWeight: 5.toHeight,
-                    indicatorColor: ColorConstants.green,
+                    indicatorColor: _themeData!.primaryColorDark,
                     indicatorSize: TabBarIndicatorSize.label,
                     unselectedLabelColor:
                         _themeData!.primaryColor.withOpacity(0.5),
