@@ -74,6 +74,7 @@ class DesktopReorderBasicDetailModel extends ChangeNotifier {
 
   void saveData(BuildContext context) {
     FieldOrderService().updateField(atCategory, fields);
+    userPreview.notifyListeners();
     Navigator.of(context).pop(fields);
   }
 }
