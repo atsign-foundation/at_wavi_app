@@ -98,8 +98,8 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
     userPreview.user()?.customFields[atCategory.name] = customFields;
 
     FieldOrderService().addNewField(atCategory, _basicData.accountName!);
-
-    Navigator.of(context).pop('saved');
+    userPreview.notifyListeners();
+    Navigator.of(context).pop();
   }
 
   Future updateCustomField(BuildContext context) async {
@@ -133,6 +133,7 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
       originBasicData?.accountName ?? '',
       _basicData.accountName ?? '',
     );
-    Navigator.of(context).pop('saved');
+    userPreview.notifyListeners();
+    Navigator.of(context).pop();
   }
 }

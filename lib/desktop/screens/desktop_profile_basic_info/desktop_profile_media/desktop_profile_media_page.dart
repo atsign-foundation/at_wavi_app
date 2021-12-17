@@ -1,21 +1,13 @@
 import 'package:at_wavi_app/common_components/provider_callback.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_add_location/desktop_add_location_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_edit_basic_detail/desktop_edit_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_add_custom_field/desktop_profile_add_custom_field.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_media/widgets/desktop_media_item.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_reorder_basic_info/desktop_reorder_basic_info_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/widgets/desktop_basic_info_widget.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/widgets/desktop_empty_category_widget.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/widgets/desktop_location_item_widget.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_user_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
-import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
-import 'package:at_wavi_app/desktop/widgets/desktop_welcome_widget.dart';
-import 'package:at_wavi_app/model/basic_data_model.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
@@ -47,7 +39,6 @@ class DesktopProfileMediaPage extends StatefulWidget {
 
 class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
     with AutomaticKeepAliveClientMixin {
-  late DesktopProfileMediaModel _model;
   final _scrollController = ScrollController();
 
   @override
@@ -61,36 +52,23 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
   @override
   Widget build(BuildContext context) {
     AppTheme appTheme = AppTheme.of(context);
-    return ChangeNotifierProvider(
-      create: (BuildContext c) {
-        final userPreview = Provider.of<UserPreview>(context);
-        final userProvider = Provider.of<UserProvider>(context);
-        _model = DesktopProfileMediaModel(
-          isMyProfile: widget.isMyProfile,
-          userPreview: userPreview,
-          userProvider: userProvider,
-          atCategory: widget.atCategory,
-        );
-        return _model;
-      },
-      child: Scaffold(
-        backgroundColor: appTheme.backgroundColor,
-        body: _buildBodyWidget(),
-      ),
+    return Scaffold(
+      backgroundColor: appTheme.backgroundColor,
+      body: _buildContentWidget(),
     );
   }
 
-  Widget _buildBodyWidget() {
-    return Consumer<DesktopProfileMediaModel>(
-      builder: (_, model, child) {
-        // if (model.isEmptyData) {
-        //   return _buildEmptyWidget();
-        // } else {
-        return _buildContentWidget(model.mediaFields);
-        // }
-      },
-    );
-  }
+  // Widget _buildBodyWidget() {
+  //   return Consumer<DesktopProfileMediaModel>(
+  //     builder: (_, model, child) {
+  //       // if (model.isEmptyData) {
+  //       //   return _buildEmptyWidget();
+  //       // } else {
+  //       return _buildContentWidget(model.mediaFields);
+  //       // }
+  //     },
+  //   );
+  // }
 
   // Widget _buildEmptyWidget() {
   //   return Column(
@@ -120,7 +98,16 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
   //   );
   // }
 
-  Widget _buildContentWidget(List<BasicData> items) {
+  Widget _buildContentWidget() {
+    User? user;
+    if (widget.isMyProfile && widget.isEditable == false) {
+      user = Provider.of<UserProvider>(context).user;
+    } else {
+      user = Provider.of<UserPreview>(context).user();
+    }
+    List<BasicData>? customFields = user?.customFields[AtCategory.IMAGE.name] ?? [];
+    final items = customFields;
+
     final appTheme = AppTheme.of(context);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: DesktopDimens.paddingExtraLarge),
@@ -193,20 +180,20 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
     );
   }
 
-  void _showAddDetailPopup() async {
-    final result = await showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => Dialog(
-        backgroundColor: Colors.transparent,
-        child: DesktopEditBasicDetailPage(
-          atCategory: widget.atCategory,
-        ),
-      ),
-    );
-    if (result == 'saved') {
-      _model.fetchBasicData();
-    }
-  }
+  // void _showAddDetailPopup() async {
+  //   final result = await showDialog<String>(
+  //     context: context,
+  //     builder: (BuildContext context) => Dialog(
+  //       backgroundColor: Colors.transparent,
+  //       child: DesktopEditBasicDetailPage(
+  //         atCategory: widget.atCategory,
+  //       ),
+  //     ),
+  //   );
+  //   if (result == 'saved') {
+  //     _model.fetchBasicData();
+  //   }
+  // }
 
   void _showUserPreview() async {
     Navigator.of(context).push(
@@ -229,9 +216,9 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
         ),
       ),
     );
-    if (result == 'saved') {
-      _model.fetchBasicData();
-    }
+    // if (result == 'saved') {
+    //   _model.fetchBasicData();
+    // }
   }
 
   void _showEditCustomContent(BasicData data) async {
@@ -245,9 +232,9 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
         ),
       ),
     );
-    if (result == 'saved') {
-      _model.fetchBasicData();
-    }
+    // if (result == 'saved') {
+    //   _model.fetchBasicData();
+    // }
   }
 
   // void _showAddLocation() async {

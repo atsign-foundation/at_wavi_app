@@ -40,11 +40,6 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
 
   late DesktopMainDetailModel _model;
 
-  late DesktopProfileDetailsPage profileDetailsPage;
-  late DesktopProfileChannelsPage profileChannelsPage;
-
-  // late DesktopProfileFeaturedPage profileFeaturedPage;
-
   late List<PopupMenuEntry<String>> menuDetails;
   late List<PopupMenuEntry<String>> menuLocations;
   late List<PopupMenuEntry<String>> menuMedias;
@@ -53,16 +48,6 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
 
   @override
   void initState() {
-    profileDetailsPage = DesktopProfileDetailsPage(
-      isMyProfile: widget.isMyProfile,
-      isEditable: widget.isEditable,
-    );
-    profileChannelsPage = DesktopProfileChannelsPage(
-      isMyProfile: widget.isMyProfile,
-      isEditable: widget.isEditable,
-    );
-    // profileFeaturedPage = DesktopProfileFeaturedPage();
-
     _tabController = TabController(length: 2, vsync: this);
 
     PopupMenuItem<String> popupMenuItem = PopupMenuItem<String>(
@@ -218,9 +203,14 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
                     onPageChanged: (int page) {},
                     controller: _pageController,
                     children: [
-                      profileDetailsPage,
-                      profileChannelsPage,
-                      // profileFeaturedPage,
+                      DesktopProfileDetailsPage(
+                        isMyProfile: widget.isMyProfile,
+                        isEditable: widget.isEditable,
+                      ),
+                      DesktopProfileChannelsPage(
+                        isMyProfile: widget.isMyProfile,
+                        isEditable: widget.isEditable,
+                      ),
                     ],
                   ),
                   // Positioned(

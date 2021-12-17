@@ -10,6 +10,7 @@ import 'package:at_wavi_app/desktop/widgets/desktop_welcome_widget.dart';
 import 'package:at_wavi_app/model/basic_data_model.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,6 @@ import 'package:provider/provider.dart';
 
 import 'desktop_add_location/desktop_add_location_page.dart';
 import 'desktop_profile_add_custom_field/desktop_profile_add_custom_field.dart';
-import 'desktop_profile_basic_info_model.dart';
 import 'desktop_edit_basic_detail/desktop_edit_basic_detail_page.dart';
 import 'desktop_reorder_basic_info/desktop_reorder_basic_info_page.dart';
 import 'widgets/desktop_basic_info_widget.dart';
@@ -48,7 +48,6 @@ class DesktopProfileBasicInfoPage extends StatefulWidget {
 class _DesktopProfileBasicInfoPageState
     extends State<DesktopProfileBasicInfoPage>
     with AutomaticKeepAliveClientMixin {
-  late DesktopBasicDetailModel _model;
   final _scrollController = ScrollController();
 
   @override
@@ -62,38 +61,111 @@ class _DesktopProfileBasicInfoPageState
   @override
   Widget build(BuildContext context) {
     AppTheme appTheme = AppTheme.of(context);
-    return ChangeNotifierProvider(
-      create: (BuildContext c) {
-        final userPreview = Provider.of<UserPreview>(context);
-        final userProvider = Provider.of<UserProvider>(context);
-        _model = DesktopBasicDetailModel(
-          isMyProfile: widget.isMyProfile,
-          userPreview: userPreview,
-          userProvider: userProvider,
-          atCategory: widget.atCategory,
-        );
-        return _model;
-      },
-      child: Scaffold(
-        backgroundColor: appTheme.backgroundColor,
-        body: _buildBodyWidget(),
-      ),
+    return Scaffold(
+      backgroundColor: appTheme.backgroundColor,
+      body: _buildBodyWidget(),
     );
   }
 
   Widget _buildBodyWidget() {
-    return Consumer<DesktopBasicDetailModel>(
-      builder: (_, model, child) {
-        if (model.isEmptyData) {
-          return _buildEmptyWidget();
-        } else {
-          return _buildContentWidget(
-            model.basicData,
-            locationData: model.locationData,
-          );
+    //Get data
+    User? user;
+    if (widget.isMyProfile && widget.isEditable == false) {
+      user = Provider.of<UserProvider>(context).user;
+    } else {
+      user = Provider.of<UserPreview>(context).user();
+    }
+    List<BasicDataModel> basicDataList = [];
+    BasicData? locationData;
+    BasicData? locationNicknameData;
+    var userMap = User.toJson(user);
+    List<BasicData>? customFields =
+        user?.customFields[widget.atCategory.name] ?? [];
+
+    var fields = <String>[];
+    if (widget.isMyProfile && widget.isEditable == false) {
+      fields = [
+        ...FieldNames().getFieldList(widget.atCategory, isPreview: false)
+      ];
+    } else {
+      fields = [
+        ...FieldNames().getFieldList(widget.atCategory, isPreview: true)
+      ];
+    }
+
+    for (int i = 0; i < fields.length; i++) {
+      bool isCustomField = false;
+      BasicData basicData = BasicData();
+
+      if (userMap.containsKey(fields[i])) {
+        basicData = userMap[fields[i]];
+        if (basicData.accountName == null) basicData.accountName = fields[i];
+        if (basicData.value == null) basicData.value = '';
+      } else {
+        var index =
+            customFields.indexWhere((el) => el.accountName == fields[i]);
+        if (index != -1) {
+          basicData = customFields[index];
+          isCustomField = true;
         }
-      },
-    );
+      }
+
+      if (basicData.accountName == null) {
+        continue;
+      }
+      basicDataList.add(BasicDataModel(
+        data: basicData,
+        isCustomField: isCustomField,
+      ));
+    }
+    //
+    if (widget.atCategory == AtCategory.LOCATION) {
+      locationNicknameData = user?.locationNickName;
+      locationData = user?.location;
+      basicDataList.removeWhere((element) {
+        return element.data.accountName == locationNicknameData?.accountName ||
+            element.data.accountName == locationData?.accountName;
+      });
+    }
+
+    //Check empty data
+    bool isEmptyData = true;
+    if (widget.atCategory == AtCategory.LOCATION) {
+      isEmptyData = (locationData?.value.toString() ?? '').isEmpty;
+    }
+    basicDataList.forEach((element) {
+      final value = element.data.value;
+      if (value is String) {
+        if (value.isNotEmpty) {
+          isEmptyData = false;
+        }
+      } else if (value != null) {
+        isEmptyData = false;
+      }
+    });
+
+    if (isEmptyData) {
+      return _buildEmptyWidget();
+    } else {
+      return _buildContentWidget(
+        basicDataList: basicDataList,
+        locationData: locationData,
+        locationNicknameData: locationNicknameData,
+      );
+    }
+
+    // //View
+    // return Consumer<DesktopBasicDetailModel>(
+    //   builder: (_, model, child) {
+    //     if (model.isEmptyData) {
+    //       return _buildEmptyWidget();
+    //     } else {
+    //       return _buildContentWidget(
+    //         model.basicData,
+    //       );
+    //     }
+    //   },
+    // );
   }
 
   Widget _buildEmptyWidget() {
@@ -124,8 +196,11 @@ class _DesktopProfileBasicInfoPageState
     );
   }
 
-  Widget _buildContentWidget(List<BasicDataModel> data,
-      {BasicData? locationData}) {
+  Widget _buildContentWidget({
+    required List<BasicDataModel> basicDataList,
+    BasicData? locationData,
+    BasicData? locationNicknameData,
+  }) {
     final appTheme = AppTheme.of(context);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: DesktopDimens.paddingExtraLarge),
@@ -177,7 +252,11 @@ class _DesktopProfileBasicInfoPageState
             SizedBox(height: DesktopDimens.paddingLarge),
           Expanded(
             child: Container(
-              child: _buildFieldsWidget(data, locationData: locationData),
+              child: _buildFieldsWidget(
+                basicDataList: basicDataList,
+                locationData: locationData,
+                locationNicknameData: locationNicknameData,
+              ),
             ),
           ),
           SizedBox(height: DesktopDimens.paddingNormal),
@@ -203,19 +282,26 @@ class _DesktopProfileBasicInfoPageState
     );
   }
 
-  Widget _buildFieldsWidget(List<BasicDataModel> data,
-      {BasicData? locationData}) {
+  Widget _buildFieldsWidget({
+    required List<BasicDataModel> basicDataList,
+    BasicData? locationData,
+    BasicData? locationNicknameData,
+  }) {
     if (widget.atCategory == AtCategory.LOCATION) {
-      return _buildLocationFieldWidget(data, locationData: locationData);
+      return _buildLocationFieldWidget(
+        basicDataList: basicDataList,
+        locationData: locationData,
+        locationNicknameData: locationNicknameData,
+      );
     }
 
     final appTheme = AppTheme.of(context);
     return ListView.separated(
       controller: _scrollController,
       itemBuilder: (context, index) {
-        final item = data[index];
+        final item = basicDataList[index];
         BorderRadius? borderRadius;
-        if (data.length == 1) {
+        if (basicDataList.length == 1) {
           borderRadius = BorderRadius.all(Radius.circular(10));
         } else {
           if (index == 0) {
@@ -223,7 +309,7 @@ class _DesktopProfileBasicInfoPageState
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             );
-          } else if (index == data.length - 1) {
+          } else if (index == basicDataList.length - 1) {
             borderRadius = BorderRadius.only(
               bottomLeft: Radius.circular(10),
               bottomRight: Radius.circular(10),
@@ -239,7 +325,7 @@ class _DesktopProfileBasicInfoPageState
             data: item.data,
             isCustomField: item.isCustomField,
             onDeletePressed: () {
-              _model.deleteData(item.data);
+              deleteData(item.data, widget.atCategory);
             },
             onEditPressed: () {
               _showEditCustomContent(item.data);
@@ -267,18 +353,71 @@ class _DesktopProfileBasicInfoPageState
           ),
         );
       },
-      itemCount: data.length,
+      itemCount: basicDataList.length,
     );
   }
 
-  Widget _buildLocationFieldWidget(List<BasicDataModel> data,
-      {BasicData? locationData}) {
+  Widget _buildLocationFieldWidget({
+    required List<BasicDataModel> basicDataList,
+    BasicData? locationData,
+    BasicData? locationNicknameData,
+  }) {
+    // User? user;
+    // if (widget.isMyProfile && widget.isEditable == false) {
+    //   user = Provider.of<UserProvider>(context).user;
+    // } else {
+    //   user = Provider.of<UserPreview>(context).user();
+    // }
+    // List<BasicDataModel> basicDataList = [];
+    // BasicData? locationData;
+    // BasicData? locationNicknameData;
+    // var userMap = User.toJson(user);
+    // List<BasicData>? customFields = user?.customFields[widget.atCategory.name] ?? [];
+    //
+    // var fields = <String>[];
+    // fields = [...FieldNames().getFieldList(widget.atCategory, isPreview: true)];
+    //
+    // for (int i = 0; i < fields.length; i++) {
+    //   bool isCustomField = false;
+    //   BasicData basicData = BasicData();
+    //
+    //   if (userMap.containsKey(fields[i])) {
+    //     basicData = userMap[fields[i]];
+    //     if (basicData.accountName == null) basicData.accountName = fields[i];
+    //     if (basicData.value == null) basicData.value = '';
+    //   } else {
+    //     var index =
+    //     customFields.indexWhere((el) => el.accountName == fields[i]);
+    //     if (index != -1) {
+    //       basicData = customFields[index];
+    //       isCustomField = true;
+    //     }
+    //   }
+    //
+    //   if (basicData.accountName == null) {
+    //     continue;
+    //   }
+    //   basicDataList.add(BasicDataModel(
+    //     data: basicData,
+    //     isCustomField: isCustomField,
+    //   ));
+    // }
+    // //
+    // if (widget.atCategory == AtCategory.LOCATION) {
+    //   locationNicknameData = user?.locationNickName;
+    //   locationData = user?.location;
+    //   basicDataList.removeWhere((element) {
+    //     return element.data.accountName == locationNicknameData?.accountName ||
+    //         element.data.accountName == locationData?.accountName;
+    //   });
+    // }
+
     final appTheme = AppTheme.of(context);
     return ListView.separated(
       controller: _scrollController,
       itemBuilder: (context, index) {
         BorderRadius? borderRadius;
-        if (data.length == 1) {
+        if (basicDataList.length == 1) {
           borderRadius = BorderRadius.all(Radius.circular(10));
         } else {
           if (index == 1) {
@@ -286,7 +425,7 @@ class _DesktopProfileBasicInfoPageState
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             );
-          } else if (index == data.length) {
+          } else if (index == basicDataList.length) {
             borderRadius = BorderRadius.only(
               bottomLeft: Radius.circular(10),
               bottomRight: Radius.circular(10),
@@ -294,22 +433,21 @@ class _DesktopProfileBasicInfoPageState
           }
         }
         if (index == 0) {
-          print(_model.locationData?.value);
           return Container(
             decoration: BoxDecoration(
               color: appTheme.secondaryBackgroundColor,
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             child: DesktopLocationItemWidget(
-              title: _model.locationNicknameData?.value ?? '',
-              location: _model.locationData?.value as String?,
+              title: locationNicknameData?.value ?? '',
+              location: locationData?.value as String?,
               isCustomField: false,
               onEditPressed: () {
                 _showAddLocation(
                   isCustomFiled: false,
                   isEditing: true,
-                  location: _model.locationData,
-                  locationNickname: _model.locationNicknameData,
+                  location: locationData,
+                  locationNickname: locationNicknameData,
                 );
               },
               showMenu: widget.isEditable,
@@ -317,7 +455,7 @@ class _DesktopProfileBasicInfoPageState
           );
         }
 
-        final item = data[index - 1];
+        final item = basicDataList[index - 1];
         return Container(
           decoration: BoxDecoration(
             color: appTheme.secondaryBackgroundColor,
@@ -328,7 +466,7 @@ class _DesktopProfileBasicInfoPageState
             location: item.data.value,
             isCustomField: true,
             onDeletePressed: () {
-              _model.deleteData(item.data);
+              deleteData(item.data, widget.atCategory);
             },
             onEditPressed: () {
               _showAddLocation(
@@ -363,7 +501,7 @@ class _DesktopProfileBasicInfoPageState
           ),
         );
       },
-      itemCount: data.length + 1,
+      itemCount: basicDataList.length + 1,
     );
   }
 
@@ -377,9 +515,9 @@ class _DesktopProfileBasicInfoPageState
         ),
       ),
     );
-    if (result == 'saved') {
-      _model.fetchBasicData();
-    }
+    // if (result == 'saved') {
+    //   _model.fetchBasicData();
+    // }
   }
 
   void _showUserPreview() async {
@@ -400,9 +538,9 @@ class _DesktopProfileBasicInfoPageState
         ),
       ),
     );
-    if (result == 'saved') {
-      _model.fetchBasicData();
-    }
+    // if (result == 'saved') {
+    //   _model.fetchBasicData();
+    // }
   }
 
   void _showEditCustomContent(BasicData data) async {
@@ -416,9 +554,9 @@ class _DesktopProfileBasicInfoPageState
         ),
       ),
     );
-    if (result == 'saved') {
-      _model.fetchBasicData();
-    }
+    // if (result == 'saved') {
+    //   _model.fetchBasicData();
+    // }
   }
 
   void _showAddLocation({
@@ -439,9 +577,9 @@ class _DesktopProfileBasicInfoPageState
         ),
       ),
     );
-    if (result == 'saved') {
-      _model.fetchBasicData();
-    }
+    // if (result == 'saved') {
+    //   _model.fetchBasicData();
+    // }
   }
 
   void _showReorderDetailPopup() async {
@@ -454,9 +592,9 @@ class _DesktopProfileBasicInfoPageState
         ),
       ),
     );
-    if (result != null) {
-      _model.fetchBasicData();
-    }
+    // if (result != null) {
+    //   _model.fetchBasicData();
+    // }
   }
 
   void _handleSaveAndNext() async {
@@ -475,5 +613,9 @@ class _DesktopProfileBasicInfoPageState
         // await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
       },
     );
+  }
+
+  void deleteData(BasicData basicData, AtCategory atCategory) {
+    UserPreview().deletCustomField(atCategory, basicData);
   }
 }

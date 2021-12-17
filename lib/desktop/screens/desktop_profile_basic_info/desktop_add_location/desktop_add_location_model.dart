@@ -135,8 +135,9 @@ class DesktopAddLocationModel extends ChangeNotifier {
           value: tagTextController.text,
         );
       }
-
-      Navigator.of(context).pop('saved');
+      userPreview.notifyListeners();
+      Navigator.of(context).pop();
+      // Navigator.of(context).pop('saved');
     } else {
       Navigator.of(context).pop();
     }
