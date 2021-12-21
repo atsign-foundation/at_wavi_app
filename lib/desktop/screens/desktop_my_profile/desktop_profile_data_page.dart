@@ -1,13 +1,11 @@
 import 'package:at_wavi_app/desktop/screens/desktop_notification/desktop_notification_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_add_location/desktop_add_location_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_add_custom_field/desktop_profile_add_custom_field.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_tutorial/desktop_tutorial_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
-import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +33,7 @@ class DesktopProfileDataPage extends StatefulWidget {
 }
 
 class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late PageController _pageController;
 
   late DesktopMainDetailModel _model;
@@ -45,6 +43,14 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
   late List<PopupMenuEntry<String>> menuMedias;
 
   late TabController _tabController;
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(seconds: 2),
+    vsync: this,
+  );
+  late final Animation<double> _animation = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.elasticOut,
+  );
 
   @override
   void initState() {
@@ -122,6 +128,12 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return ChangeNotifierProvider(
@@ -168,13 +180,25 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
                                 },
                               ),
                               SizedBox(width: DesktopDimens.paddingSmall),
-                              DesktopIconButton(
-                                iconData: Icons.notifications,
-                                iconColor: appTheme.primaryTextColor,
-                                backgroundColor:
-                                    appTheme.secondaryBackgroundColor,
-                                onPressed: _showNotificationPopup,
-                              ),
+                              // DesktopIconButton(
+                              //   iconData: Icons.notifications,
+                              //   iconColor: appTheme.primaryTextColor,
+                              //   backgroundColor:
+                              //       appTheme.secondaryBackgroundColor,
+                              //   onPressed: _showNotificationPopup,
+                              // ),
+                              if (widget.isMyProfile &&
+                                  widget.isEditable == false)
+                                RotationTransition(
+                                  turns: _animation,
+                                  child: DesktopIconButton(
+                                    iconData: Icons.sync,
+                                    iconColor: appTheme.primaryTextColor,
+                                    backgroundColor:
+                                        appTheme.secondaryBackgroundColor,
+                                    onPressed: _syncData,
+                                  ),
+                                ),
                               SizedBox(width: DesktopDimens.paddingSmall),
                               DesktopIconButton(
                                 iconData: Icons.more_vert,
@@ -390,5 +414,12 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
         context: context,
         builder: (BuildContext context) => DesktopNotificationPage(),
         barrierColor: Colors.transparent);
+  }
+
+  void _syncData() async {
+    _controller.reset();
+    _controller.forward();
+    await BackendService().sync();
+    setState(() {});
   }
 }
