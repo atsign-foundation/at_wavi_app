@@ -105,7 +105,8 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
     } else {
       user = Provider.of<UserPreview>(context).user();
     }
-    List<BasicData>? customFields = user?.customFields[AtCategory.IMAGE.name] ?? [];
+    List<BasicData>? customFields =
+        user?.customFields[AtCategory.IMAGE.name] ?? [];
     final items = customFields;
 
     final appTheme = AppTheme.of(context);
@@ -174,6 +175,13 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
         children: items
             .map((e) => DesktopMediaItem(
                   data: e,
+                  showMenu: widget.isEditable,
+                  onEditPressed: () {
+                    _editData(e);
+                  },
+                  onDeletePressed: () {
+                    _deleteData(e);
+                  },
                 ))
             .toList(),
       ),
@@ -264,6 +272,26 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
   //     _model.fetchBasicData();
   //   }
   // }
+  void _deleteData(BasicData basicData) {
+    UserPreview().deletCustomField(AtCategory.IMAGE, basicData);
+    setState(() {});
+  }
+
+  void _editData(BasicData basicData) async {
+    final result = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: DesktopProfileAddCustomField(
+          atCategory: AtCategory.IMAGE,
+          data: basicData,
+          allowContentType: [
+            CustomContentType.Image,
+          ],
+        ),
+      ),
+    );
+  }
 
   void _handleSaveAndNext() async {
     await providerCallback<UserProvider>(
