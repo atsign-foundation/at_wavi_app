@@ -624,5 +624,6 @@ class _DesktopProfileBasicInfoPageState
 
   void deleteData(BasicData basicData, AtCategory atCategory) {
     UserPreview().deletCustomField(atCategory, basicData);
+    setState(() {});
   }
 }
