@@ -61,6 +61,16 @@ dependencies:
   at_location_flutter: ^3.0.1
 
 dependency_overrides:
+  at_onboarding_flutter:
+    git:
+      url: https://github.com/atsign-foundation/at_widgets.git
+      path: at_onboarding_flutter  
+      ref: feat/onboarding-with-trunk-changes
+  at_follows_flutter:
+    git:
+      url: https://github.com/atsign-foundation/at_widgets.git
+      path: at_follows_flutter  
+      ref: feat/onboarding-with-trunk-changes
   flutter_colorpicker: ^0.6.0 #because html_editor_enhanced uses 0.4.0, which gives flutter event errors
   
 dev_dependencies:
