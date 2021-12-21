@@ -251,7 +251,7 @@ class _DesktopProfileBasicInfoPageState
           if (widget.hideMenu == false)
             SizedBox(height: DesktopDimens.paddingLarge),
           Expanded(
-            child: Container(
+            child: SingleChildScrollView(
               child: _buildFieldsWidget(
                 basicDataList: basicDataList,
                 locationData: locationData,
@@ -296,64 +296,71 @@ class _DesktopProfileBasicInfoPageState
     }
 
     final appTheme = AppTheme.of(context);
-    return ListView.separated(
-      controller: _scrollController,
-      itemBuilder: (context, index) {
-        final item = basicDataList[index];
-        BorderRadius? borderRadius;
-        if (basicDataList.length == 1) {
-          borderRadius = BorderRadius.all(Radius.circular(10));
-        } else {
-          if (index == 0) {
-            borderRadius = BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            );
-          } else if (index == basicDataList.length - 1) {
-            borderRadius = BorderRadius.only(
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10),
-            );
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: ListView.separated(
+        controller: _scrollController,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          final item = basicDataList[index];
+          BorderRadius? borderRadius;
+          if (basicDataList.length == 1) {
+            borderRadius = BorderRadius.all(Radius.circular(10));
+          } else {
+            if (index == 0) {
+              borderRadius = BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+              );
+            } else if (index == basicDataList.length - 1) {
+              borderRadius = BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10),
+              );
+            }
           }
-        }
-        return Container(
-          decoration: BoxDecoration(
+          return Container(
+            decoration: BoxDecoration(
+              color: appTheme.secondaryBackgroundColor,
+              borderRadius: borderRadius,
+            ),
+            child: DesktopBasicInfoWidget(
+              data: item.data,
+              isCustomField: item.isCustomField,
+              onDeletePressed: () {
+                deleteData(item.data, widget.atCategory);
+              },
+              onEditPressed: () {
+                _showEditCustomContent(item.data);
+              },
+              showMenu: widget.isEditable,
+            ),
+            // child: item.data.extension != null
+            //     ? DesktopMediaItemWidget(
+            //         data: item.data,
+            //       )
+            //     : DesktopBasicDetailItemWidget(
+            //         title: item.data.accountName ?? '',
+            //         description: item.data.value ?? '',
+            //       ),
+          );
+        },
+        separatorBuilder: (context, index) {
+          if (basicDataList[index].data.isPrivate) {
+            return Container();
+          }
+          return Container(
+            padding:
+                EdgeInsets.symmetric(horizontal: DesktopDimens.paddingNormal),
             color: appTheme.secondaryBackgroundColor,
-            borderRadius: borderRadius,
-          ),
-          child: DesktopBasicInfoWidget(
-            data: item.data,
-            isCustomField: item.isCustomField,
-            onDeletePressed: () {
-              deleteData(item.data, widget.atCategory);
-            },
-            onEditPressed: () {
-              _showEditCustomContent(item.data);
-            },
-            showMenu: widget.isEditable,
-          ),
-          // child: item.data.extension != null
-          //     ? DesktopMediaItemWidget(
-          //         data: item.data,
-          //       )
-          //     : DesktopBasicDetailItemWidget(
-          //         title: item.data.accountName ?? '',
-          //         description: item.data.value ?? '',
-          //       ),
-        );
-      },
-      separatorBuilder: (context, index) {
-        return Container(
-          padding:
-              EdgeInsets.symmetric(horizontal: DesktopDimens.paddingNormal),
-          color: appTheme.secondaryBackgroundColor,
-          child: Container(
-            color: appTheme.separatorColor,
-            height: DesktopDimens.dividerHeight,
-          ),
-        );
-      },
-      itemCount: basicDataList.length,
+            child: Container(
+              color: appTheme.separatorColor,
+              height: DesktopDimens.dividerHeight,
+            ),
+          );
+        },
+        itemCount: basicDataList.length,
+      ),
     );
   }
 
