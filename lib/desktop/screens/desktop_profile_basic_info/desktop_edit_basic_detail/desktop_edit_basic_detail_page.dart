@@ -24,7 +24,7 @@ class DesktopEditBasicDetailPage extends StatefulWidget {
 }
 
 class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
-  final _showHideController = ShowHideController(isShow: true);
+  final _showHideController = ShowHideController(isShow: null);
   late DesktopEditBasicDetailModel _model;
 
   @override
@@ -35,6 +35,12 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
       userPreview: userPreview,
       atCategory: widget.atCategory,
     );
+    if (_model.allFieldPrivate) {
+      _showHideController.value = false;
+    }
+    if (_model.allFieldPublic) {
+      _showHideController.value = true;
+    }
   }
 
   @override

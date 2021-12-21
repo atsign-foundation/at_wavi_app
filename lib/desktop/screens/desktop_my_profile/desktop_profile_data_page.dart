@@ -3,13 +3,9 @@ import 'package:at_wavi_app/desktop/screens/desktop_tutorial/desktop_tutorial_pa
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
-import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
-import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'desktop_main_detail_model.dart';
 import 'desktop_profile_channels/desktop_profile_channels_page.dart';
 import 'desktop_profile_details/desktop_profile_details_page.dart';
 import 'widgets/desktop_profile_tabbar.dart';
@@ -35,13 +31,6 @@ class DesktopProfileDataPage extends StatefulWidget {
 class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
     with TickerProviderStateMixin {
   late PageController _pageController;
-
-  late DesktopMainDetailModel _model;
-
-  late List<PopupMenuEntry<String>> menuDetails;
-  late List<PopupMenuEntry<String>> menuLocations;
-  late List<PopupMenuEntry<String>> menuMedias;
-
   late TabController _tabController;
   late final AnimationController _controller = AnimationController(
     duration: const Duration(seconds: 2),
@@ -55,66 +44,7 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-
-    PopupMenuItem<String> popupMenuItem = PopupMenuItem<String>(
-      value: 'reorder',
-      child: Text(
-        Strings.desktop_reorder,
-        style: TextStyle(
-          fontFamily: 'Inter',
-          fontSize: 14,
-        ),
-      ),
-    );
-
-    menuDetails = <PopupMenuEntry<String>>[
-      popupMenuItem,
-      PopupMenuItem<String>(
-        value: 'add_custom_content',
-        child: Text(
-          Strings.desktop_add_custom_content,
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 14,
-          ),
-        ),
-      ),
-    ];
-
-    menuLocations = <PopupMenuEntry<String>>[
-      popupMenuItem,
-      PopupMenuItem<String>(
-        value: 'add_location',
-        child: Text(
-          Strings.desktop_add_location,
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 14,
-          ),
-        ),
-      ),
-    ];
-
-    menuMedias = <PopupMenuEntry<String>>[
-      popupMenuItem,
-      PopupMenuItem<String>(
-        value: 'add_media',
-        child: Text(
-          Strings.desktop_add_media,
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 14,
-          ),
-        ),
-      ),
-    ];
-
     _pageController = PageController();
-    // WidgetsBinding.instance!.addPostFrameCallback((_) {
-    //   //clearSharedPreferences();
-    //   saveStringToSharedPreferences(
-    //       key: Strings.desktop_current_tab, value: AtCategory.DETAILS_TAB.name);
-    // });
     super.initState();
     _showTutorial();
   }
@@ -136,136 +66,129 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
-    return ChangeNotifierProvider(
-      create: (BuildContext c) {
-        final userPreview = Provider.of<UserPreview>(context);
-        _model = DesktopMainDetailModel(userPreview: userPreview);
-        return _model;
-      },
-      child: Container(
-        color: appTheme.backgroundColor,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(height: DesktopDimens.paddingLarge),
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: DesktopDimens.paddingLarge,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(child: Container(), flex: 1),
-                  DesktopProfileTabBar(
-                    onTap: (index) {
-                      _pageController.jumpToPage(index);
-                    },
-                    tab: _tabController,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: widget.isMyProfile
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              DesktopIconButton(
-                                iconData: Icons.search,
-                                iconColor: appTheme.primaryTextColor,
-                                backgroundColor:
-                                    appTheme.secondaryBackgroundColor,
-                                onPressed: () {
-                                  widget.onSearchPressed?.call();
-                                },
-                              ),
-                              SizedBox(width: DesktopDimens.paddingSmall),
-                              // DesktopIconButton(
-                              //   iconData: Icons.notifications,
-                              //   iconColor: appTheme.primaryTextColor,
-                              //   backgroundColor:
-                              //       appTheme.secondaryBackgroundColor,
-                              //   onPressed: _showNotificationPopup,
-                              // ),
-                              if (widget.isMyProfile &&
-                                  widget.isEditable == false)
-                                RotationTransition(
-                                  turns: _animation,
-                                  child: DesktopIconButton(
-                                    iconData: Icons.sync,
-                                    iconColor: appTheme.primaryTextColor,
-                                    backgroundColor:
-                                        appTheme.secondaryBackgroundColor,
-                                    onPressed: _syncData,
-                                  ),
-                                ),
-                              SizedBox(width: DesktopDimens.paddingSmall),
-                              DesktopIconButton(
-                                iconData: Icons.more_vert,
-                                iconColor: appTheme.primaryTextColor,
-                                backgroundColor:
-                                    appTheme.secondaryBackgroundColor,
-                                onPressed: () {
-                                  widget.onSettingPressed?.call();
-                                },
-                              ),
-                            ],
-                          )
-                        : Container(),
-                  ),
-                ],
-              ),
+    return Container(
+      color: appTheme.backgroundColor,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(height: DesktopDimens.paddingLarge),
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: DesktopDimens.paddingLarge,
             ),
-            SizedBox(
-              height: DesktopDimens.paddingNormal,
-            ),
-            Expanded(
-              child: Stack(
-                children: [
-                  PageView(
-                    physics: NeverScrollableScrollPhysics(),
-                    onPageChanged: (int page) {},
-                    controller: _pageController,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(child: Container(), flex: 1),
+                DesktopProfileTabBar(
+                  onTap: (index) {
+                    _pageController.jumpToPage(index);
+                  },
+                  tab: _tabController,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: widget.isMyProfile
+                      ? Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      DesktopProfileDetailsPage(
-                        isMyProfile: widget.isMyProfile,
-                        isEditable: widget.isEditable,
+                      DesktopIconButton(
+                        iconData: Icons.search,
+                        iconColor: appTheme.primaryTextColor,
+                        backgroundColor:
+                        appTheme.secondaryBackgroundColor,
+                        onPressed: () {
+                          widget.onSearchPressed?.call();
+                        },
                       ),
-                      DesktopProfileChannelsPage(
-                        isMyProfile: widget.isMyProfile,
-                        isEditable: widget.isEditable,
+                      SizedBox(width: DesktopDimens.paddingSmall),
+                      // DesktopIconButton(
+                      //   iconData: Icons.notifications,
+                      //   iconColor: appTheme.primaryTextColor,
+                      //   backgroundColor:
+                      //       appTheme.secondaryBackgroundColor,
+                      //   onPressed: _showNotificationPopup,
+                      // ),
+                      if (widget.isMyProfile &&
+                          widget.isEditable == false)
+                        RotationTransition(
+                          turns: _animation,
+                          child: DesktopIconButton(
+                            iconData: Icons.sync,
+                            iconColor: appTheme.primaryTextColor,
+                            backgroundColor:
+                            appTheme.secondaryBackgroundColor,
+                            onPressed: _syncData,
+                          ),
+                        ),
+                      SizedBox(width: DesktopDimens.paddingSmall),
+                      DesktopIconButton(
+                        iconData: Icons.more_vert,
+                        iconColor: appTheme.primaryTextColor,
+                        backgroundColor:
+                        appTheme.secondaryBackgroundColor,
+                        onPressed: () {
+                          widget.onSettingPressed?.call();
+                        },
                       ),
                     ],
-                  ),
-                  // Positioned(
-                  //   top: 10,
-                  //   right: DesktopDimens.paddingLarge,
-                  //   child: Visibility(
-                  //     visible: widget.isMyProfile,
-                  //     child: GestureDetector(
-                  //       onTapDown: (details) =>
-                  //           showPopUpMenuAtTap(context, details),
-                  //       child: Container(
-                  //         height: 32,
-                  //         width: 32,
-                  //         decoration: BoxDecoration(
-                  //           color: appTheme.secondaryBackgroundColor,
-                  //           shape: BoxShape.circle,
-                  //         ),
-                  //         child: Icon(
-                  //           Icons.edit_rounded,
-                  //           size: 16,
-                  //           color: appTheme.primaryTextColor,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                ],
-              ),
+                  )
+                      : Container(),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: DesktopDimens.paddingNormal,
+          ),
+          Expanded(
+            child: Stack(
+              children: [
+                PageView(
+                  physics: NeverScrollableScrollPhysics(),
+                  onPageChanged: (int page) {},
+                  controller: _pageController,
+                  children: [
+                    DesktopProfileDetailsPage(
+                      isMyProfile: widget.isMyProfile,
+                      isEditable: widget.isEditable,
+                    ),
+                    DesktopProfileChannelsPage(
+                      isMyProfile: widget.isMyProfile,
+                      isEditable: widget.isEditable,
+                    ),
+                  ],
+                ),
+                // Positioned(
+                //   top: 10,
+                //   right: DesktopDimens.paddingLarge,
+                //   child: Visibility(
+                //     visible: widget.isMyProfile,
+                //     child: GestureDetector(
+                //       onTapDown: (details) =>
+                //           showPopUpMenuAtTap(context, details),
+                //       child: Container(
+                //         height: 32,
+                //         width: 32,
+                //         decoration: BoxDecoration(
+                //           color: appTheme.secondaryBackgroundColor,
+                //           shape: BoxShape.circle,
+                //         ),
+                //         child: Icon(
+                //           Icons.edit_rounded,
+                //           size: 16,
+                //           color: appTheme.primaryTextColor,
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

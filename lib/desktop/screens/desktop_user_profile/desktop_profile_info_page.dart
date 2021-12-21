@@ -49,11 +49,14 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
     _initData();
   }
 
-  void _initData() {
+  void _initData() {}
+
+  @override
+  Widget build(BuildContext context) {
     if (widget.isPreview) {
-      _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
-    } else if (Provider.of<UserProvider>(context, listen: false).user != null) {
-      _currentUser = Provider.of<UserProvider>(context, listen: false).user!;
+      _currentUser = Provider.of<UserPreview>(context).user()!;
+    } else if (Provider.of<UserProvider>(context).user != null) {
+      _currentUser = Provider.of<UserProvider>(context).user!;
     } else {
       _currentUser = User(
         atsign: AtClientManager.getInstance().atClient.getCurrentAtSign(),
@@ -64,10 +67,6 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
             BackendService().atClientInstance.getCurrentAtSign())) {
       _isSearchScreen = true;
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     return Container(
       color: appTheme.primaryLighterColor,
@@ -216,6 +215,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
 
   Widget _buildNameWidget() {
     final appTheme = AppTheme.of(context);
+    final user = Provider.of<UserProvider>(context).user;
     String name = '';
     if (widget.isPreview) {
       name = context.select<UserPreview, String>(
@@ -226,7 +226,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
           );
         },
       );
-    } else if (Provider.of<UserProvider>(context, listen: false).user != null) {
+    } else if (user != null) {
       name = context.select<UserProvider, String>(
         (userProvider) {
           return _displayingName(

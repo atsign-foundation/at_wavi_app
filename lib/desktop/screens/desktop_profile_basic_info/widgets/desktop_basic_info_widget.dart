@@ -27,6 +27,10 @@ class DesktopBasicInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (data.isPrivate) {
+      return Container();
+    }
+
     if (data.type == CustomContentType.Youtube.name ||
         data.type == CustomContentType.Link.name) {
       return _youtubeContent(context);

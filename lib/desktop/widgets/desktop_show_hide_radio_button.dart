@@ -1,10 +1,10 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
-class ShowHideController extends ValueNotifier<bool> {
-  ShowHideController({bool isShow = true}) : super(isShow);
+class ShowHideController extends ValueNotifier<bool?> {
+  ShowHideController({bool? isShow = true}) : super(isShow);
 
-  bool get isShow => value;
+  bool? get isShow => value;
 }
 
 class DesktopShowHideRadioButton extends StatelessWidget {
@@ -20,9 +20,9 @@ class DesktopShowHideRadioButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
-    return ValueListenableBuilder<bool>(
+    return ValueListenableBuilder<bool?>(
       valueListenable: controller,
-      builder: (context, bool value, widget) {
+      builder: (context, bool? value, widget) {
         return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,

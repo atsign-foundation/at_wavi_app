@@ -16,6 +16,22 @@ class DesktopEditBasicDetailModel extends ChangeNotifier {
 
   List<BasicDataModel> get basicData => _basicData;
 
+  bool get allFieldPrivate {
+    return _basicData
+            .map((e) => e.data.isPrivate ? 0 : 1)
+            .toList()
+            .reduce((a, b) => a + b) ==
+        0;
+  }
+
+  bool get allFieldPublic {
+    return _basicData
+            .map((e) => e.data.isPrivate ? 1 : 0)
+            .toList()
+            .reduce((a, b) => a + b) ==
+        0;
+  }
+
   DesktopEditBasicDetailModel({
     required this.userPreview,
     required this.atCategory,
@@ -74,7 +90,6 @@ class DesktopEditBasicDetailModel extends ChangeNotifier {
     }
     Provider.of<UserPreview>(context, listen: false).notifyListeners();
     if (Navigator.of(context).canPop()) {
-      // Navigator.of(context).pop('saved');
       Navigator.of(context).pop();
     }
   }

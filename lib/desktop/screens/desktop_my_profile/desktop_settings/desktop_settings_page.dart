@@ -96,17 +96,20 @@ class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
 
   void onSwitchAccountTapped() async {
     var atSignList = await KeychainUtil.getAtsignList();
-
-    await showModalBottomSheet(
+    final result = await showModalBottomSheet(
       context: NavService.navKey.currentContext!,
       backgroundColor: Colors.transparent,
       builder: (context) => AtSignBottomSheet(
         atSignList: atSignList ?? [],
         onSuccess: () {
-          SetupRoutes.pushAndRemoveAll(NavService.navKey.currentContext!,
-              DesktopRoutes.DESKTOP_MY_PROFILE);
+          Navigator.pop(context, 'atSign_changed');
+          // SetupRoutes.pushAndRemoveAll(NavService.navKey.currentContext!,
+          //     DesktopRoutes.DESKTOP_MY_PROFILE);
         },
       ),
     );
+    if (result == 'atSign_changed') {
+      Navigator.pop(context);
+    }
   }
 }
