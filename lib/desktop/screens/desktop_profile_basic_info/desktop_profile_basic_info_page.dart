@@ -422,6 +422,7 @@ class _DesktopProfileBasicInfoPageState
     final appTheme = AppTheme.of(context);
     return ListView.separated(
       controller: _scrollController,
+      shrinkWrap: true,
       itemBuilder: (context, index) {
         BorderRadius? borderRadius;
         if (basicDataList.length == 1) {
