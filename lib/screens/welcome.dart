@@ -158,8 +158,8 @@ free personal microsite.''',
                     _showResetDialog();
                   },
                   child: Text('Reset',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                      style: TextStyle(
+                          fontSize: 15.toFont, fontWeight: FontWeight.bold)),
                 ),
                 SizedBox(height: 50),
                 Text('© 2021 The @ Company',
