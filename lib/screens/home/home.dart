@@ -788,6 +788,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ? HomeFeatured(
               twitterUsername: _currentUser.twitter.value,
               instagramUsername: _currentUser.instagram.value,
+              isPrivateTwitter: _currentUser.twitter.isPrivate,
+              isPrivateInstagram: _currentUser.instagram.isPrivate,
               themeData: _themeData)
           : getEmptyWidget(_themeData!);
     } else
