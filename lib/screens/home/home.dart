@@ -878,7 +878,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       context,
       MaterialPageRoute(
         builder: (context) => WebsiteScreen(
-          title: 'Wavi.ng',
+          title: 'Wavi',
           url: 'https://wavi.ng/${_currentUser.atsign}',
           isShareProfileScreen: true,
         ),
