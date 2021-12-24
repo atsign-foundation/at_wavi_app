@@ -319,7 +319,7 @@ class _DesktopProfileBasicInfoPageState
               );
             }
           }
-          return Container(
+          return item.data.value != "" ? Container(
             decoration: BoxDecoration(
               color: appTheme.secondaryBackgroundColor,
               borderRadius: borderRadius,
@@ -343,7 +343,7 @@ class _DesktopProfileBasicInfoPageState
             //         title: item.data.accountName ?? '',
             //         description: item.data.value ?? '',
             //       ),
-          );
+          ) : SizedBox();
         },
         separatorBuilder: (context, index) {
           if (basicDataList[index].data.isPrivate) {

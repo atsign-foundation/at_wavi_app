@@ -64,7 +64,7 @@ class _DesktopSearchAtSignPageState extends State<DesktopSearchAtSignPage> {
                       hasUnderlineBorder: false,
                       contentPadding: 0,
                       prefixIcon: Container(
-                        width: 60,
+                        width: 30,
                         margin: EdgeInsets.only(left: 10, bottom: 1),
                         child: Center(
                           child: RichText(
@@ -74,13 +74,6 @@ class _DesktopSearchAtSignPageState extends State<DesktopSearchAtSignPage> {
                                   text: '@',
                                   style: TextStyle(
                                     color: appTheme.primaryColor,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: 'sign',
-                                  style: TextStyle(
-                                    color: appTheme.primaryTextColor,
                                     fontSize: 16,
                                   ),
                                 ),
