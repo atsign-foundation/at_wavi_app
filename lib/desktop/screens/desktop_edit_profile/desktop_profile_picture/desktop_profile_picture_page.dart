@@ -54,7 +54,9 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
       showDialog: false,
       text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,
-      onSuccess: (provider) async {},
+      onSuccess: (provider) async {
+        Navigator.pop(context);
+      },
     );
   }
 
@@ -101,8 +103,8 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
                 child: _buildAvatarWidget(),
               ),
               Positioned(
-                bottom: 10,
-                right: 10,
+                bottom: 0,
+                right: 0,
                 child: DesktopIconButton(
                   onPressed: _onSelectMedia,
                   iconData: Icons.edit,
