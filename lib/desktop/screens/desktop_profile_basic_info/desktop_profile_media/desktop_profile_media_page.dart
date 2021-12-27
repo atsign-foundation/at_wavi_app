@@ -10,6 +10,7 @@ import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart'
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,10 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
     }
     List<BasicData>? customFields =
         user?.customFields[AtCategory.IMAGE.name] ?? [];
-    final items = customFields;
+    final items = customFields
+        .where((element) =>
+            element.accountName?.contains(AtText.IS_DELETED) == false)
+        .toList();
 
     final appTheme = AppTheme.of(context);
     return Container(

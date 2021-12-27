@@ -17,6 +17,7 @@ class DesktopMediaItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = AppTheme.of(context);
     return Stack(
       children: [
         Container(
@@ -24,14 +25,45 @@ class DesktopMediaItem extends StatelessWidget {
             data.value,
             fit: BoxFit.cover,
           ),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(4)),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
           clipBehavior: Clip.antiAlias,
         ),
-        Positioned(
-          bottom: 0,
-          right: 0,
-          child: _buildMenuWidget(context),
-        )
+        if (showMenu)
+          Positioned(
+            bottom: 0,
+            right: 0,
+            left: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black.withOpacity(0.1),
+                      Colors.black.withOpacity(0.8),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
+                  )),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      child: Text(
+                        data.accountName ?? '',
+                        style: appTheme.textTheme.subtitle2
+                            ?.copyWith(color: Colors.white),
+                      ),
+                      padding: EdgeInsets.only(left: 8, top: 8, bottom: 8),
+                    ),
+                  ),
+                  _buildMenuWidget(context),
+                ],
+              ),
+            ),
+          )
       ],
     );
   }
