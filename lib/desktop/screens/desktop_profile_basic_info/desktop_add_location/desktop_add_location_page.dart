@@ -158,13 +158,26 @@ class _DesktopAddLocationPageState extends State<DesktopAddLocationPage> {
                     ),
                   ),
                 SizedBox(height: DesktopDimens.paddingNormal),
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: DesktopButton(
-                    title: 'Save',
-                    width: 180,
-                    onPressed: _onSaveData,
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: DesktopWhiteButton(
+                        title: 'Cancel',
+                        width: 180,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: DesktopButton(
+                        title: 'Save',
+                        width: 180,
+                        onPressed: _onSaveData,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -89,10 +89,24 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
             Container(
               padding:
                   EdgeInsets.symmetric(horizontal: DesktopDimens.paddingNormal),
-              child: DesktopButton(
-                title: 'Done',
-                width: double.infinity,
-                onPressed: _onSaveData,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: DesktopWhiteButton(
+                      title: 'Cancel',
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: DesktopButton(
+                      title: 'Done',
+                      onPressed: _onSaveData,
+                    ),
+                  ),
+                ],
               ),
             ),
             SizedBox(height: DesktopDimens.paddingNormal),

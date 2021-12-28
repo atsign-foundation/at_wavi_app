@@ -107,10 +107,24 @@ class _DesktopProfileAddCustomFieldState
                   controller: model.showHideController,
                 ),
                 SizedBox(height: DesktopDimens.paddingNormal),
-                DesktopButton(
-                  title: Strings.desktop_done,
-                  width: double.infinity,
-                  onPressed: _onSaveData,
+                Row(
+                  children: [
+                    Expanded(
+                      child: DesktopWhiteButton(
+                        title: 'Cancel',
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: DesktopButton(
+                        title: Strings.desktop_done,
+                        onPressed: _onSaveData,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
