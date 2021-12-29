@@ -76,7 +76,7 @@ extension AtCategoryExt on AtCategory {
       case AtCategory.LOCATION:
         return 'Add your Location details';
       case AtCategory.SOCIAL:
-        return 'Add your Social Channel';
+        return 'Add your Social';
       case AtCategory.GAMER:
         return 'Add your gaming info';
       default:
@@ -87,7 +87,7 @@ extension AtCategoryExt on AtCategory {
   String get titlePage {
     switch (this) {
       case AtCategory.DETAILS:
-        return ' Let’s create your @wavi';
+        return 'Let’s create your @wavi';
       case AtCategory.ADDITIONAL_DETAILS:
         return 'Let’s add to your @wavi';
       case AtCategory.LOCATION:

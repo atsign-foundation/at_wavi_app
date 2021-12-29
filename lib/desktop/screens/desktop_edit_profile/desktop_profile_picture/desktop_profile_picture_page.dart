@@ -143,14 +143,17 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
       return AspectRatio(
         aspectRatio: 1,
         child: Container(
-          child: data is Uint8List
+          child: false
               ? Image.memory(
                   data,
                   fit: BoxFit.cover,
                 )
               : Container(
-            color: appTheme.primaryLighterColor,
-          ),
+                  child: FittedBox(
+                    fit: BoxFit.cover,
+                    child: Icon(Icons.account_circle, color: Colors.grey),
+                  ),
+                ),
         ),
       );
     });
