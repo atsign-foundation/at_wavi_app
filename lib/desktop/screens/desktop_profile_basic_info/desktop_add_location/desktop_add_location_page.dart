@@ -3,6 +3,7 @@ import 'package:at_wavi_app/common_components/create_marker.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_select_location/desktop_select_location_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
+import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/constants.dart';
@@ -112,48 +113,61 @@ class _DesktopAddLocationPageState extends State<DesktopAddLocationPage> {
                   Expanded(
                     child: GestureDetector(
                       onTap: openSelectLocation,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(color: appTheme.borderColor, width: 1),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: AbsorbPointer(
-                          absorbing: true,
-                          child: FlutterMap(
-                            options: MapOptions(
-                              boundsOptions:
-                                  FitBoundsOptions(padding: EdgeInsets.all(0)),
-                              center: model.osmLocationModel?.latLng,
-                              zoom: model.osmLocationModel?.zoom ?? 14.0,
+                      child: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: appTheme.borderColor, width: 1),
+                              borderRadius: BorderRadius.circular(4),
                             ),
-                            layers: [
-                              TileLayerOptions(
-                                urlTemplate:
-                                    'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=${MixedConstants.MAP_KEY}',
-                                subdomains: ['a', 'b', 'c'],
-                                minNativeZoom: 2,
-                                maxNativeZoom: 18,
-                                minZoom: 1,
-                                tileProvider: NonCachingNetworkTileProvider(),
+                            child: AbsorbPointer(
+                              absorbing: true,
+                              child: FlutterMap(
+                                options: MapOptions(
+                                  boundsOptions:
+                                      FitBoundsOptions(padding: EdgeInsets.all(0)),
+                                  center: model.osmLocationModel?.latLng,
+                                  zoom: model.osmLocationModel?.zoom ?? 14.0,
+                                ),
+                                layers: [
+                                  TileLayerOptions(
+                                    urlTemplate:
+                                        'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=${MixedConstants.MAP_KEY}',
+                                    subdomains: ['a', 'b', 'c'],
+                                    minNativeZoom: 2,
+                                    maxNativeZoom: 18,
+                                    minZoom: 1,
+                                    tileProvider: NonCachingNetworkTileProvider(),
+                                  ),
+                                  MarkerLayerOptions(markers: [
+                                    if (model.osmLocationModel?.latLng != null)
+                                      Marker(
+                                        width: 40,
+                                        height: 50,
+                                        point: model.osmLocationModel!.latLng!,
+                                        builder: (ctx) => Container(
+                                            child: createMarker(
+                                                diameterOfCircle: model
+                                                        .osmLocationModel!
+                                                        .diameter ??
+                                                    0)),
+                                      )
+                                  ])
+                                ],
                               ),
-                              MarkerLayerOptions(markers: [
-                                if (model.osmLocationModel?.latLng != null)
-                                  Marker(
-                                    width: 40,
-                                    height: 50,
-                                    point: model.osmLocationModel!.latLng!,
-                                    builder: (ctx) => Container(
-                                        child: createMarker(
-                                            diameterOfCircle: model
-                                                    .osmLocationModel!
-                                                    .diameter ??
-                                                0)),
-                                  )
-                              ])
-                            ],
+                            ),
                           ),
-                        ),
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: DesktopIconButton(
+                              iconData: Icons.edit,
+                              onPressed: openSelectLocation,
+                              backgroundColor: Colors.black.withOpacity(0.2),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

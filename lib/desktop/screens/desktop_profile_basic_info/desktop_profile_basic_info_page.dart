@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/common_components/provider_callback.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_location/desktop_location_preview_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_user_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
@@ -8,7 +9,9 @@ import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart'
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_welcome_widget.dart';
 import 'package:at_wavi_app/model/basic_data_model.dart';
+import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/screens/location/widgets/preview_location.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
@@ -319,31 +322,33 @@ class _DesktopProfileBasicInfoPageState
               );
             }
           }
-          return item.data.value != "" ? Container(
-            decoration: BoxDecoration(
-              color: appTheme.secondaryBackgroundColor,
-              borderRadius: borderRadius,
-            ),
-            child: DesktopBasicInfoWidget(
-              data: item.data,
-              isCustomField: item.isCustomField,
-              onDeletePressed: () {
-                deleteData(item.data, widget.atCategory);
-              },
-              onEditPressed: () {
-                _showEditCustomContent(item.data);
-              },
-              showMenu: widget.isEditable,
-            ),
-            // child: item.data.extension != null
-            //     ? DesktopMediaItemWidget(
-            //         data: item.data,
-            //       )
-            //     : DesktopBasicDetailItemWidget(
-            //         title: item.data.accountName ?? '',
-            //         description: item.data.value ?? '',
-            //       ),
-          ) : SizedBox();
+          return item.data.value != ""
+              ? Container(
+                  decoration: BoxDecoration(
+                    color: appTheme.secondaryBackgroundColor,
+                    borderRadius: borderRadius,
+                  ),
+                  child: DesktopBasicInfoWidget(
+                    data: item.data,
+                    isCustomField: item.isCustomField,
+                    onDeletePressed: () {
+                      deleteData(item.data, widget.atCategory);
+                    },
+                    onEditPressed: () {
+                      _showEditCustomContent(item.data);
+                    },
+                    showMenu: widget.isEditable,
+                  ),
+                  // child: item.data.extension != null
+                  //     ? DesktopMediaItemWidget(
+                  //         data: item.data,
+                  //       )
+                  //     : DesktopBasicDetailItemWidget(
+                  //         title: item.data.accountName ?? '',
+                  //         description: item.data.value ?? '',
+                  //       ),
+                )
+              : SizedBox();
         },
         separatorBuilder: (context, index) {
           if (basicDataList[index].data.isPrivate) {
@@ -459,6 +464,10 @@ class _DesktopProfileBasicInfoPageState
                 );
               },
               showMenu: widget.isEditable,
+              onPreviewPressed: (location) {
+                _showLocationPreview(
+                    locationNicknameData?.value ?? '', location);
+              },
             ),
           );
         }
@@ -484,6 +493,9 @@ class _DesktopProfileBasicInfoPageState
               );
             },
             showMenu: widget.isEditable,
+            onPreviewPressed: (location) {
+              _showLocationPreview(item.data.accountName, location);
+            },
           ),
         );
       },
@@ -603,6 +615,25 @@ class _DesktopProfileBasicInfoPageState
     // if (result != null) {
     //   _model.fetchBasicData();
     // }
+  }
+
+  void _showLocationPreview(String? title, OsmLocationModel location) {
+    final latLng = location.latLng;
+    final radius = location.radius ?? 10;
+    final zoom = location.zoom ?? 14;
+    if (latLng != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DesktopLocationPreviewPage(
+            latLng: latLng,
+            diameterOfCircle: radius,
+            zoom: zoom,
+            title: title ?? '',
+          ),
+        ),
+      );
+    }
   }
 
   void _handleSaveAndNext() async {
