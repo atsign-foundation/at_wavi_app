@@ -6,9 +6,13 @@ import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:flutter/material.dart';
 
 class DesktopLoginModel extends ChangeNotifier {
+  bool isAuthorizing = false;
+
   void checkToOnboard({
     required Color onBoardingColor,
   }) async {
+    isAuthorizing = true;
+    notifyListeners();
     String? currentAtSign = await BackendService().getAtSign();
     AtClientPreference? atClientPreference;
     await BackendService()
@@ -24,16 +28,22 @@ class DesktopLoginModel extends ChangeNotifier {
         onSuccess: openHomePage,
       );
     }
+    isAuthorizing = false;
+    notifyListeners();
   }
 
   void openOnboard({
     required Color onBoardingColor,
   }) async {
+    isAuthorizing = true;
+    notifyListeners();
     await BackendService().onboard(
       '',
       appColor: onBoardingColor,
       onSuccess: openHomePage,
     );
+    isAuthorizing = false;
+    notifyListeners();
   }
 
   void openHomePage() {

@@ -17,6 +17,7 @@ class DesktopTextField extends StatelessWidget {
   final bool hasUnderlineBorder;
   final double contentPadding;
   final bool readOnly;
+  final bool enabled;
   final FormFieldValidator<String>? validator;
 
   DesktopTextField({
@@ -33,6 +34,7 @@ class DesktopTextField extends StatelessWidget {
     this.hasUnderlineBorder = true,
     this.contentPadding = 0,
     this.readOnly = false,
+    this.enabled = true,
     this.borderColor = Colors.transparent,
     this.validator,
   });
@@ -55,6 +57,7 @@ class DesktopTextField extends StatelessWidget {
           controller: controller,
           keyboardType: keyboardType,
           readOnly: readOnly,
+          enabled: enabled,
           style: style ??
               appTheme.textTheme.bodyText2?.copyWith(
                 color: appTheme.primaryTextColor,
