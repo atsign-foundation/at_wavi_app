@@ -2,12 +2,14 @@ import 'package:at_wavi_app/common_components/provider_callback.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_edit_basic_detail/desktop_edit_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_add_custom_field/desktop_profile_add_custom_field.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_media/widgets/desktop_media_item.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/widgets/desktop_empty_category_widget.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_user_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
+import 'package:at_wavi_app/desktop/widgets/desktop_welcome_widget.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
@@ -59,45 +61,31 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
     );
   }
 
-  // Widget _buildBodyWidget() {
-  //   return Consumer<DesktopProfileMediaModel>(
-  //     builder: (_, model, child) {
-  //       // if (model.isEmptyData) {
-  //       //   return _buildEmptyWidget();
-  //       // } else {
-  //       return _buildContentWidget(model.mediaFields);
-  //       // }
-  //     },
-  //   );
-  // }
-
-  // Widget _buildEmptyWidget() {
-  //   return Column(
-  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //     children: [
-  //       if (widget.showWelcome)
-  //         Container(
-  //           padding: EdgeInsets.only(top: DesktopDimens.paddingLarge),
-  //           child: DesktopWelcomeWidget(
-  //             titlePage: widget.atCategory.titlePage,
-  //           ),
-  //         ),
-  //       Expanded(
-  //         child: Container(
-  //           child: Center(
-  //             child: DesktopEmptyCategoryWidget(
-  //               atCategory: widget.atCategory,
-  //               onAddDetailsPressed: widget.atCategory == AtCategory.LOCATION
-  //                   ? _showAddLocation
-  //                   : _showAddDetailPopup,
-  //               showAddButton: false,
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
+  Widget _buildEmptyWidget() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        if (widget.showWelcome)
+          Container(
+            padding: EdgeInsets.only(top: DesktopDimens.paddingLarge),
+            child: DesktopWelcomeWidget(
+              titlePage: widget.atCategory.titlePage,
+            ),
+          ),
+        Expanded(
+          child: Container(
+            child: Center(
+              child: DesktopEmptyCategoryWidget(
+                atCategory: widget.atCategory,
+                onAddDetailsPressed: _showAddCustomContent,
+                showAddButton: true,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _buildContentWidget() {
     User? user;
@@ -106,12 +94,18 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
     } else {
       user = Provider.of<UserPreview>(context).user();
     }
-    List<BasicData>? customFields =
+    List<BasicData> customFields =
         user?.customFields[AtCategory.IMAGE.name] ?? [];
     final items = customFields
         .where((element) =>
             element.accountName?.contains(AtText.IS_DELETED) == false)
         .toList();
+
+    bool isEmptyData = (items).isEmpty;
+
+    if (isEmptyData) {
+      return _buildEmptyWidget();
+    }
 
     final appTheme = AppTheme.of(context);
     return Container(
