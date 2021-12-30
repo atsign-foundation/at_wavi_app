@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/empty_widget.dart';
 import 'package:at_wavi_app/common_components/header.dart';
-import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
@@ -33,6 +34,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:at_location_flutter/utils/constants/constants.dart'
     as location_package_constants;
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:uni_links/uni_links.dart';
 
 enum HOME_TABS { DETAILS, CHANNELS, FEATURED }
 
@@ -51,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   ThemeData? _themeData;
   late String _name;
   late User _currentUser;
+  late StreamSubscription<dynamic> _intentDataStreamSubscription;
 
   bool _isSearchScreen = false;
 
@@ -60,6 +64,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    _receiveIntent();
+    _initialLink();
     _inputBoxController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
 
@@ -92,6 +98,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       //         listen: false)
       //     .init();
     });
+
     super.initState();
   }
 
@@ -160,6 +167,82 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       hideHeader = true;
     });
     _inputBoxController.forward();
+  }
+
+  _initialLink() async {
+    try {
+      //when app is in background.
+      linkStream.listen((String? link) {
+        print('uni link data: $link');
+        if (link != null) {
+          if (mounted) {
+            _animate();
+            setState(() {
+              searchedAtsign = link.replaceAll('atprotocol://persona/@', '');
+            });
+          }
+          _searchProfile();
+        }
+      });
+
+      //when app is opened with deep link.
+      String? initialLink = await getInitialLink();
+
+      if (initialLink != null) {
+        WidgetsBinding.instance!.addPersistentFrameCallback((timeStamp) {
+          if (mounted) {
+            _animate();
+            setState(() {
+              searchedAtsign =
+                  initialLink.replaceAll('atprotocol://persona/@', '');
+            });
+            _searchProfile();
+          }
+        });
+      }
+    } catch (e) {
+      print('error in uni link');
+    }
+  }
+
+  _receiveIntent() async {
+    // For sharing images coming from outside the app while the app is in the memory
+    _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
+        .listen((List<SharedMediaFile> value) {
+      print("Incoming Shared file in home :" +
+          (value.map((f) => f.path).join(",")));
+
+      if (value != null) {}
+    }, onError: (err) {
+      print("getIntentDataStream error: $err");
+    });
+
+    // For sharing images coming from outside the app while the app is closed
+    ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
+      print('Incoming images Value in home  is $value');
+      if (value != null) {}
+    });
+
+    // For sharing or opening urls/text coming from outside the app while the app is in the memory
+    _intentDataStreamSubscription =
+        ReceiveSharingIntent.getTextStream().listen((String value) {
+      print('Incoming text Value in home  is $value');
+      if (value != null) {
+        SetupRoutes.push(NavService.navKey.currentContext!, Routes.ADD_LINK,
+            arguments: {'url': value});
+      }
+    }, onError: (err) {
+      print("getLinkStream error: $err");
+    });
+
+    // For sharing or opening urls/text coming from outside the app while the app is closed
+    ReceiveSharingIntent.getInitialText().then((String? value) {
+      if (value != null) {
+        SetupRoutes.push(NavService.navKey.currentContext!, Routes.ADD_LINK,
+            arguments: {'url': value});
+      }
+      print('Incoming text in home  when app is closed $value');
+    });
   }
 
   @override
