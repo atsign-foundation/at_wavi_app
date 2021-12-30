@@ -16,6 +16,7 @@ class Strings {
   static const String desktop_followers = 'Followers';
   static const String desktop_following = 'Following';
   static const String desktop_follow = 'Follow';
+  static const String desktop_unfollow = 'Unfollow';
   static const String desktop_edit_profile = 'Edit Profile';
   static const String desktop_share_profile = 'Share Profile';
   static const String desktop_details = 'Details';

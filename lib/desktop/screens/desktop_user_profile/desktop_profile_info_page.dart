@@ -169,15 +169,22 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                             ),
                           ],
                         )
-                      : DesktopButton(
-                          width: double.infinity,
-                          height: DesktopDimens.buttonHeight,
-                          backgroundColor: appTheme.primaryColor,
-                          title: Strings.desktop_follow,
-                          onPressed: () async {
-                            unfollowAtSign(_currentUser.atsign);
-                          },
-                        ),
+                      : Consumer<FollowService>(
+                          builder: (context, provider, _) {
+                          final isFollowing =
+                              provider.isFollowing(_currentUser.atsign);
+                          return DesktopButton(
+                            width: double.infinity,
+                            height: DesktopDimens.buttonHeight,
+                            backgroundColor: appTheme.primaryColor,
+                            title: isFollowing
+                                ? Strings.desktop_unfollow
+                                : Strings.desktop_follow,
+                            onPressed: () async {
+                              unfollowAtSign(_currentUser.atsign);
+                            },
+                          );
+                        }),
                 ],
               ),
             ),
