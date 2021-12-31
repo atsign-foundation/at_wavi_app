@@ -143,10 +143,13 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
       return AspectRatio(
         aspectRatio: 1,
         child: Container(
-          child: false
-              ? Image.memory(
-                  data,
-                  fit: BoxFit.cover,
+          child: data is Uint8List
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(1000),
+                  child: Image.memory(
+                    data,
+                    fit: BoxFit.cover,
+                  ),
                 )
               : Container(
                   child: FittedBox(
