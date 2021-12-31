@@ -50,6 +50,7 @@ class _DesktopProfileAddCustomFieldState
     extends State<DesktopProfileAddCustomField> {
   late DesktopAddBasicDetailModel _model;
   bool _isUpdate = false;
+  bool _isPickingFile = false;
 
   @override
   void initState() {
@@ -264,6 +265,11 @@ class _DesktopProfileAddCustomFieldState
   }
 
   void _onSelectMedia() async {
+    if(_isPickingFile) {
+      return;
+    } else {
+      _isPickingFile = true;
+    }
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.image,
     );
@@ -273,6 +279,7 @@ class _DesktopProfileAddCustomFieldState
     } else {
       // User canceled the picker
     }
+    _isPickingFile = false;
   }
 
   void _onSaveData() {
