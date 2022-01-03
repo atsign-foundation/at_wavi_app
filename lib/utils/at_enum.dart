@@ -97,7 +97,7 @@ extension FieldsEnumValues on FieldsEnum {
 
   String get title {
     return this == FieldsEnum.ABOUT
-        ? 'about me'
+        ? 'About Me'
         : this.toString().split('.').last.toLowerCase();
   }
 
@@ -107,10 +107,10 @@ extension FieldsEnumValues on FieldsEnum {
         return 'Private Account';
 
       case FieldsEnum.FIRSTNAME:
-        return 'First name';
+        return 'First Name';
 
       case FieldsEnum.LASTNAME:
-        return 'Last name';
+        return 'Last Name';
 
       case FieldsEnum.PHONE:
         return 'Phone Number';
@@ -149,7 +149,7 @@ extension FieldsEnumValues on FieldsEnum {
         return 'PS4';
 
       case FieldsEnum.XBOX:
-        return 'XBOX';
+        return 'XBox';
 
       case FieldsEnum.STEAM:
         return 'Steam (PC)';
@@ -187,15 +187,17 @@ valueOf(String property) {
 
 /// new app doesnt have IMAGE
 enum AtCategory {
+  DETAILS_TAB,
+  CHANNELS,
+  FEATURED,
+
   IMAGE,
-  DETAILS,
   LOCATION,
   SOCIAL,
   GAMER,
-
-  /// Added for new wavi app
+  DETAILS,
   ADDITIONAL_DETAILS,
-  FEATURED
+  OTHERS,
 }
 
 extension AtCategoryValues on AtCategory {
@@ -395,6 +397,8 @@ extension values on CustomContentType {
   String get label {
     if (this == CustomContentType.Youtube) {
       return 'YouTube';
+    } else  if (this == CustomContentType.Image) {
+      return 'Image/Video';
     } else {
       return this.name;
     }

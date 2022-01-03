@@ -1,0 +1,4 @@
+enum NotificationItemType {
+  Normal,
+  Media,
+}

@@ -12,6 +12,10 @@ class FieldNames {
   static FieldNames _instance = FieldNames._();
   factory FieldNames() => _instance;
 
+  static const _detailsTabs = ['Media', 'Basic Details', 'Additional Details', 'Location'];
+  static const _channelsTabs = ['Social', 'Game'];
+  static const _featuredTabs = ['Twitter', 'Instagram'];
+
   static const _basicDetails = ['firstname', 'lastname', 'phone', 'email'];
   static const _additionalDetails = ['pronoun', 'about'];
   static const _socialAccounts = [
@@ -55,6 +59,18 @@ class FieldNames {
     FieldsEnum.STEAM,
     FieldsEnum.DISCORD
   ];
+
+  List<String> get detailsTabs {
+    return _detailsTabs;
+  }
+
+  List<String> get channelsTabs {
+    return _channelsTabs;
+  }
+
+  List<String> get featuredTabs {
+    return _featuredTabs;
+  }
 
   List<String> get basicDetailsFields {
     return _basicDetails;
@@ -119,6 +135,12 @@ class FieldNames {
       fields = [..._gameFields];
     } else if (category == AtCategory.LOCATION) {
       fields = [..._locationFields];
+    } else if (category == AtCategory.DETAILS_TAB) {
+      fields = [..._detailsTabs];
+    } else if (category == AtCategory.CHANNELS) {
+      fields = [..._channelsTabs];
+    } else if (category == AtCategory.FEATURED) {
+      fields = [..._socialAccounts];
     }
 
     var sortedFields = [...fields];
