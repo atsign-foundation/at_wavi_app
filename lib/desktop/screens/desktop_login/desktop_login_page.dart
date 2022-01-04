@@ -95,7 +95,9 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                   style: appTheme.textTheme.bodyText1,
                 ),
                 SizedBox(height: DesktopDimens.paddingSmall),
-                Container(
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: _showOnBoardScreen,
                   child: Form(
                     key: _formKey,
                     child: DesktopTextField(
@@ -103,6 +105,8 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                       hint: Strings.desktop_enter_sign,
                       backgroundColor: appTheme.secondaryBackgroundColor,
                       borderRadius: 10,
+                      readOnly: true,
+                      enabled: false,
                       style: appTheme.textTheme.bodyText1,
                       hasUnderlineBorder: false,
                       contentPadding: 20,
@@ -122,13 +126,12 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                   title: Strings.desktop_send,
                   borderRadius: 10,
                   height: 54,
-                  onPressed: _showPassCodeDialog,
+                  onPressed: _showOnBoardScreen,
                 ),
                 SizedBox(height: DesktopDimens.paddingNormal),
                 GestureDetector(
-                  onTap: () {
-                    BackendService().onboard('');
-                  },
+                  behavior: HitTestBehavior.translucent,
+                  onTap: _showOnBoardScreen,
                   child: Text(
                     Strings.desktop_get_sign,
                     style: appTheme.textTheme.overline,
@@ -170,7 +173,11 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
     );
   }
 
-  void _showPassCodeDialog() async {
+  void _showOnBoardScreen() async {
+    if(_model.isAuthorizing == true) {
+      return;
+    }
+    print("SonLT");
     final user = atSignTextEditingController.text;
     final appTheme = AppTheme.of(context);
     _model.openOnboard(onBoardingColor: appTheme.primaryColor);

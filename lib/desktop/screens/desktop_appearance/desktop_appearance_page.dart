@@ -152,7 +152,9 @@ class _DesktopAppearancePageState extends State<DesktopAppearancePage>
           showDialog: false,
           text: 'Publishing theme',
           taskName: (provider) => provider.SET_THEME,
-          onSuccess: (provider) async {},
+          onSuccess: (provider) async {
+            Navigator.pop(context);
+          },
         );
         //
         await providerCallback<ThemeProvider>(

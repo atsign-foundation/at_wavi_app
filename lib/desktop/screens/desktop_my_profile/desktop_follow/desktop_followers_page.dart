@@ -72,7 +72,7 @@ class _DesktopFollowersPageState extends State<DesktopFollowersPage>
                 setState(() {});
               },
               prefixIcon: Container(
-                width: 60,
+                width: 30,
                 margin: EdgeInsets.only(left: 10, bottom: 1),
                 child: Center(
                   child: RichText(
@@ -82,13 +82,6 @@ class _DesktopFollowersPageState extends State<DesktopFollowersPage>
                           text: '@',
                           style: TextStyle(
                             color: appTheme.primaryColor,
-                            fontSize: 16,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'sign',
-                          style: TextStyle(
-                            color: appTheme.primaryTextColor,
                             fontSize: 16,
                           ),
                         ),

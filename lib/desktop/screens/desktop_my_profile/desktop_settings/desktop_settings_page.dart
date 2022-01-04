@@ -12,6 +12,7 @@ import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'desktop_switch_account/desktop_switch_account_page.dart';
 import 'widgets/desktop_setting_switch_widget.dart';
 import 'widgets/desktop_setting_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -99,7 +100,7 @@ class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
     final result = await showModalBottomSheet(
       context: NavService.navKey.currentContext!,
       backgroundColor: Colors.transparent,
-      builder: (context) => AtSignBottomSheet(
+      builder: (context) => DesktopSwitchAccountPage(
         atSignList: atSignList ?? [],
         onSuccess: () {
           Navigator.pop(context, 'atSign_changed');

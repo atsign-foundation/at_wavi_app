@@ -35,6 +35,8 @@ class DesktopEmptyCategoryWidget extends StatelessWidget {
 extension AtCategoryExt on AtCategory {
   String get imageData {
     switch (this) {
+      case AtCategory.IMAGE:
+        return Images.introMedia;
       case AtCategory.DETAILS:
         return Images.introBasicDetail;
       case AtCategory.ADDITIONAL_DETAILS:
@@ -52,6 +54,8 @@ extension AtCategoryExt on AtCategory {
 
   String get titleButton {
     switch (this) {
+      case AtCategory.IMAGE:
+        return 'Add details';
       case AtCategory.DETAILS:
         return 'Add Contact Details';
       case AtCategory.ADDITIONAL_DETAILS:
@@ -69,6 +73,8 @@ extension AtCategoryExt on AtCategory {
 
   String get title {
     switch (this) {
+      case AtCategory.IMAGE:
+        return 'Add your Media details';
       case AtCategory.DETAILS:
         return 'Start with your contact details';
       case AtCategory.ADDITIONAL_DETAILS:
@@ -76,7 +82,7 @@ extension AtCategoryExt on AtCategory {
       case AtCategory.LOCATION:
         return 'Add your Location details';
       case AtCategory.SOCIAL:
-        return 'Add your Social Channel';
+        return 'Add your Social';
       case AtCategory.GAMER:
         return 'Add your gaming info';
       default:
@@ -86,8 +92,10 @@ extension AtCategoryExt on AtCategory {
 
   String get titlePage {
     switch (this) {
+      case AtCategory.IMAGE:
+        return 'Let’s add to your @wavi';
       case AtCategory.DETAILS:
-        return ' Let’s create your @wavi';
+        return 'Let’s create your @wavi';
       case AtCategory.ADDITIONAL_DETAILS:
         return 'Let’s add to your @wavi';
       case AtCategory.LOCATION:
@@ -103,6 +111,8 @@ extension AtCategoryExt on AtCategory {
 
   String get description {
     switch (this) {
+      case AtCategory.IMAGE:
+        return 'Add media details to start\nsharing your profile with others.';
       case AtCategory.DETAILS:
         return 'Remember, this information will be public, unless you select “Hide.”';
       case AtCategory.ADDITIONAL_DETAILS:

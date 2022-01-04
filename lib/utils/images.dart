@@ -11,6 +11,7 @@ class Images {
   static const splash_2 = 'assets/images/splash_2.png';
 
   ///For desktop icons
+  static const introMedia = 'assets/images/intro_media.png';
   static const introBasicDetail = 'assets/images/intro_basic_detail.png';
   static const introAdditionalDetail =
       'assets/images/intro_additional_detail.png';

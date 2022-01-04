@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/common_components/provider_callback.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_location/desktop_location_preview_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_user_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
@@ -8,7 +9,9 @@ import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart'
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_welcome_widget.dart';
 import 'package:at_wavi_app/model/basic_data_model.dart';
+import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/screens/location/widgets/preview_location.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
@@ -295,6 +298,14 @@ class _DesktopProfileBasicInfoPageState
       );
     }
 
+    final displayItem = basicDataList.where((element) {
+      if (element.data.value is String &&
+          element.data.value.toString().trim().isEmpty) {
+        return false;
+      }
+      return element.data.value != null;
+    }).toList();
+
     final appTheme = AppTheme.of(context);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -302,27 +313,10 @@ class _DesktopProfileBasicInfoPageState
         controller: _scrollController,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          final item = basicDataList[index];
-          BorderRadius? borderRadius;
-          if (basicDataList.length == 1) {
-            borderRadius = BorderRadius.all(Radius.circular(10));
-          } else {
-            if (index == 0) {
-              borderRadius = BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              );
-            } else if (index == basicDataList.length - 1) {
-              borderRadius = BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
-              );
-            }
-          }
+          final item = displayItem[index];
           return Container(
             decoration: BoxDecoration(
               color: appTheme.secondaryBackgroundColor,
-              borderRadius: borderRadius,
             ),
             child: DesktopBasicInfoWidget(
               data: item.data,
@@ -335,20 +329,9 @@ class _DesktopProfileBasicInfoPageState
               },
               showMenu: widget.isEditable,
             ),
-            // child: item.data.extension != null
-            //     ? DesktopMediaItemWidget(
-            //         data: item.data,
-            //       )
-            //     : DesktopBasicDetailItemWidget(
-            //         title: item.data.accountName ?? '',
-            //         description: item.data.value ?? '',
-            //       ),
           );
         },
         separatorBuilder: (context, index) {
-          if (basicDataList[index].data.isPrivate) {
-            return Container();
-          }
           return Container(
             padding:
                 EdgeInsets.symmetric(horizontal: DesktopDimens.paddingNormal),
@@ -359,7 +342,7 @@ class _DesktopProfileBasicInfoPageState
             ),
           );
         },
-        itemCount: basicDataList.length,
+        itemCount: displayItem.length,
       ),
     );
   }
@@ -369,56 +352,6 @@ class _DesktopProfileBasicInfoPageState
     BasicData? locationData,
     BasicData? locationNicknameData,
   }) {
-    // User? user;
-    // if (widget.isMyProfile && widget.isEditable == false) {
-    //   user = Provider.of<UserProvider>(context).user;
-    // } else {
-    //   user = Provider.of<UserPreview>(context).user();
-    // }
-    // List<BasicDataModel> basicDataList = [];
-    // BasicData? locationData;
-    // BasicData? locationNicknameData;
-    // var userMap = User.toJson(user);
-    // List<BasicData>? customFields = user?.customFields[widget.atCategory.name] ?? [];
-    //
-    // var fields = <String>[];
-    // fields = [...FieldNames().getFieldList(widget.atCategory, isPreview: true)];
-    //
-    // for (int i = 0; i < fields.length; i++) {
-    //   bool isCustomField = false;
-    //   BasicData basicData = BasicData();
-    //
-    //   if (userMap.containsKey(fields[i])) {
-    //     basicData = userMap[fields[i]];
-    //     if (basicData.accountName == null) basicData.accountName = fields[i];
-    //     if (basicData.value == null) basicData.value = '';
-    //   } else {
-    //     var index =
-    //     customFields.indexWhere((el) => el.accountName == fields[i]);
-    //     if (index != -1) {
-    //       basicData = customFields[index];
-    //       isCustomField = true;
-    //     }
-    //   }
-    //
-    //   if (basicData.accountName == null) {
-    //     continue;
-    //   }
-    //   basicDataList.add(BasicDataModel(
-    //     data: basicData,
-    //     isCustomField: isCustomField,
-    //   ));
-    // }
-    // //
-    // if (widget.atCategory == AtCategory.LOCATION) {
-    //   locationNicknameData = user?.locationNickName;
-    //   locationData = user?.location;
-    //   basicDataList.removeWhere((element) {
-    //     return element.data.accountName == locationNicknameData?.accountName ||
-    //         element.data.accountName == locationData?.accountName;
-    //   });
-    // }
-
     final appTheme = AppTheme.of(context);
     return ListView.separated(
       controller: _scrollController,
@@ -459,6 +392,10 @@ class _DesktopProfileBasicInfoPageState
                 );
               },
               showMenu: widget.isEditable,
+              onPreviewPressed: (location) {
+                _showLocationPreview(
+                    locationNicknameData?.value ?? '', location);
+              },
             ),
           );
         }
@@ -484,6 +421,9 @@ class _DesktopProfileBasicInfoPageState
               );
             },
             showMenu: widget.isEditable,
+            onPreviewPressed: (location) {
+              _showLocationPreview(item.data.accountName, location);
+            },
           ),
         );
       },
@@ -505,7 +445,7 @@ class _DesktopProfileBasicInfoPageState
           color: appTheme.secondaryBackgroundColor,
           child: Container(
             color: appTheme.separatorColor,
-            height: 2,
+            height: DesktopDimens.dividerHeight,
           ),
         );
       },
@@ -603,6 +543,25 @@ class _DesktopProfileBasicInfoPageState
     // if (result != null) {
     //   _model.fetchBasicData();
     // }
+  }
+
+  void _showLocationPreview(String? title, OsmLocationModel location) {
+    final latLng = location.latLng;
+    final radius = location.radius ?? 10;
+    final zoom = location.zoom ?? 14;
+    if (latLng != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DesktopLocationPreviewPage(
+            latLng: latLng,
+            diameterOfCircle: radius,
+            zoom: zoom,
+            title: title ?? '',
+          ),
+        ),
+      );
+    }
   }
 
   void _handleSaveAndNext() async {
