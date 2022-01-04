@@ -183,7 +183,10 @@ class DesktopBasicInfoWidget extends StatelessWidget {
           Expanded(
             child: Container(
               padding: EdgeInsets.all(DesktopDimens.paddingSmall),
-              child: HtmlWidget(data.value),
+              child: HtmlWidget(
+                data.value,
+                hyperlinkColor: Colors.blue,
+              ),
               decoration: BoxDecoration(
                 border: Border.all(color: appTheme.primaryTextColor, width: 1),
               ),
