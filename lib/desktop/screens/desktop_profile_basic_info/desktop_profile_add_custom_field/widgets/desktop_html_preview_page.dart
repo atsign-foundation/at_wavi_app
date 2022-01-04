@@ -23,7 +23,10 @@ class DesktopHtmlPreviewPage extends StatelessWidget {
             padding: EdgeInsets.all(12),
             child: SingleChildScrollView(
               child: Container(
-                child: HtmlWidget(html),
+                child: HtmlWidget(
+                  html,
+                  hyperlinkColor: Colors.blue,
+                ),
               ),
             ),
             decoration: BoxDecoration(

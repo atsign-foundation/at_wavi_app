@@ -23,12 +23,19 @@ class DesktopProfilePicturePage extends StatefulWidget {
 }
 
 class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
+  bool _isPickingFile = false;
+
   @override
   void initState() {
     super.initState();
   }
 
   void _onSelectMedia() async {
+    if(_isPickingFile) {
+      return;
+    } else {
+      _isPickingFile = true;
+    }
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.media,
     );
@@ -41,6 +48,7 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
       Provider.of<UserPreview>(context, listen: false).user()!.image = image;
       Provider.of<UserPreview>(context, listen: false).notify();
     }
+    _isPickingFile = false;
   }
 
   void _handleSaveAndNext(BuildContext context) async {
@@ -143,10 +151,13 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
       return AspectRatio(
         aspectRatio: 1,
         child: Container(
-          child: false
-              ? Image.memory(
-                  data,
-                  fit: BoxFit.cover,
+          child: data is Uint8List
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(1000),
+                  child: Image.memory(
+                    data,
+                    fit: BoxFit.cover,
+                  ),
                 )
               : Container(
                   child: FittedBox(
