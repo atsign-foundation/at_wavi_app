@@ -46,6 +46,17 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
 
+            <!-- <meta-data android:name="flutter_deeplinking_enabled" android:value="true" /> -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with https://YOUR_HOST -->
+                <data
+                android:scheme="atprotocol"
+                android:host="persona" />
+            </intent-filter>
+
              <!--TODO: Add this filter, if you want to support sharing videos into your app-->
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
