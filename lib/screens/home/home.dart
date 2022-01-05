@@ -227,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
       print('Incoming text Value in home  is $value');
-      if (value != null) {
+      if ((value != null) && (!value.contains('atprotocol://persona'))) {
         SetupRoutes.push(NavService.navKey.currentContext!, Routes.ADD_LINK,
             arguments: {'url': value});
       }
@@ -237,7 +237,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     // For sharing or opening urls/text coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialText().then((String? value) {
-      if (value != null) {
+      if ((value != null) && (!value.contains('atprotocol://persona'))) {
         SetupRoutes.push(NavService.navKey.currentContext!, Routes.ADD_LINK,
             arguments: {'url': value});
       }
