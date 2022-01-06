@@ -32,7 +32,7 @@ class AddCustomContentButton extends StatelessWidget {
               color: ColorConstants.orange,
             ),
             Text(
-              text ?? 'Add custom content',
+              text ?? 'Add Custom Content',
               style: CustomTextStyles.customTextStyle(ColorConstants.orange),
             )
           ],
