@@ -13,12 +13,10 @@ import 'package:latlong2/latlong.dart';
 class DesktopSelectLocationPage extends StatefulWidget {
   final LatLng? point;
   final String? displayName;
-  final Function(OsmLocationModel)? onLocationPicked;
 
-  DesktopSelectLocationPage(
+  DesktopSelectLocationPage({
     this.displayName,
-    this.point, {
-    this.onLocationPicked,
+    this.point,
   });
 
   @override
@@ -332,11 +330,6 @@ class _DesktopSelectLocationPageState extends State<DesktopSelectLocationPage> {
       longitude: center?.longitude,
       diameter: diameterOfCircle,
     );
-    if (widget.onLocationPicked != null) {
-      widget.onLocationPicked?.call(_finalData);
-    } else {
-      LocationWidgetData().update(_finalData);
-    }
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(_finalData);
   }
 }
