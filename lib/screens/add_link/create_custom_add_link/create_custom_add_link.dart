@@ -71,7 +71,7 @@ class _CreateCustomAddLinkState extends State<CreateCustomAddLink> {
       appBar: AppBar(
         toolbarHeight: 40,
         title: Text(
-          'Add custom content',
+          'Add Custom Content',
           style: CustomTextStyles.customBoldTextStyle(
               Theme.of(context).primaryColor,
               size: 16),
