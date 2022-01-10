@@ -24,7 +24,7 @@ class Themes {
       ThemeColor themeColor = ThemeColor.Dark}) {
     return ThemeData(
       brightness: Brightness.dark,
-      canvasColor: Colors.white,
+      canvasColor: Colors.black,
       primaryColor: ColorConstants.white,
       primaryColorDark: getPrimaryColorDark(highlightColor, themeColor),
       backgroundColor: getBackgroundColor(highlightColor, themeColor),
