@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:at_wavi_app/model/here_result.dart';
+import 'package:at_wavi_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
@@ -21,10 +22,10 @@ class DesktopSearchLocationModel extends ChangeNotifier {
     // ignore: unnecessary_null_comparison
     if (currentLocation != null) {
       url =
-          'https://geocode.search.hereapi.com/v1/geocode?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${'yRCeKfJDPQDTp11YI1db67J_fww80QP6R3Llckg-REw'}&at=${currentLocation.latitude},${currentLocation.longitude}';
+          'https://geocode.search.hereapi.com/v1/geocode?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${MixedConstants.API_KEY}&at=${currentLocation.latitude},${currentLocation.longitude}';
     } else {
       url =
-          'https://geocode.search.hereapi.com/v1/geocode?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${'yRCeKfJDPQDTp11YI1db67J_fww80QP6R3Llckg-REw'}';
+          'https://geocode.search.hereapi.com/v1/geocode?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${MixedConstants.API_KEY}';
     }
     print(url);
     try {
