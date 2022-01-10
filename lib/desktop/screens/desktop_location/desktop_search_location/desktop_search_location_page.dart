@@ -170,18 +170,18 @@ class _DesktopSearchLocationPageState extends State<DesktopSearchLocationPage> {
     double? lat = location.position?.lat;
     double? lng = location.position?.lng;
     if (lat != null && lng != null) {
-      openSelectLocation(latLng: LatLng(lat, lng));
+      openSelectLocation(latLng: LatLng(lat, lng), title: location.title);
     }
   }
 
-  void openSelectLocation({LatLng? latLng}) async {
+  void openSelectLocation({LatLng? latLng, String? title}) async {
     final currentLocation = await getMyLocation();
     final result = await showDialog(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
         child: DesktopSelectLocationPage(
-          displayName: '',
+          displayName: title ?? '',
           point: latLng ?? currentLocation,
         ),
       ),

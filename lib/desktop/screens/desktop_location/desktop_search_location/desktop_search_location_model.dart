@@ -21,10 +21,10 @@ class DesktopSearchLocationModel extends ChangeNotifier {
     // ignore: unnecessary_null_comparison
     if (currentLocation != null) {
       url =
-          'https://geocode.search.hereapi.com/v1/geocode?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${'So1j-XpfOQSlNQh69cigKZ7O5tgz8Fau4kaUXD-LHxc'}&at=${currentLocation.latitude},${currentLocation.longitude}';
+          'https://geocode.search.hereapi.com/v1/geocode?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${'yRCeKfJDPQDTp11YI1db67J_fww80QP6R3Llckg-REw'}&at=${currentLocation.latitude},${currentLocation.longitude}';
     } else {
       url =
-          'https://geocode.search.hereapi.com/v1/geocode?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${'So1j-XpfOQSlNQh69cigKZ7O5tgz8Fau4kaUXD-LHxc'}';
+          'https://geocode.search.hereapi.com/v1/geocode?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${'yRCeKfJDPQDTp11YI1db67J_fww80QP6R3Llckg-REw'}';
     }
     print(url);
     try {
