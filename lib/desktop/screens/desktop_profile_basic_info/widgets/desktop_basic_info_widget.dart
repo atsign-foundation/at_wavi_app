@@ -36,7 +36,9 @@ class DesktopBasicInfoWidget extends StatelessWidget {
       return _youtubeContent(context);
     } else if (data.type == CustomContentType.Image.name) {
       return _imageContent(context);
-    } else if (data.type == CustomContentType.Html.name) {
+    } else if (data.type == CustomContentType.Html.name ||
+        data.type == CustomContentType.Number.name ||
+        data.type == CustomContentType.Text.name) {
       return _htmlContent(context);
     } else {
       return _textContent(context);
@@ -182,14 +184,18 @@ class DesktopBasicInfoWidget extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.all(DesktopDimens.paddingSmall),
+              padding: EdgeInsets.only(
+                top: DesktopDimens.paddingSmall,
+                bottom: DesktopDimens.paddingSmall,
+                right: DesktopDimens.paddingSmall,
+              ),
               child: HtmlWidget(
                 data.value,
                 hyperlinkColor: Colors.blue,
               ),
               decoration: BoxDecoration(
-                border: Border.all(color: appTheme.primaryTextColor, width: 1),
-              ),
+                  // border: Border.all(color: appTheme.primaryTextColor, width: 1),
+                  ),
             ),
           ),
           _buildMenuWidget(context),
