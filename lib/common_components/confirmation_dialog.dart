@@ -37,6 +37,10 @@ Future<bool?> confirmationDialog(String atsign) async {
                       Navigator.pop(NavService.navKey.currentContext!, _choice);
                     },
                     bgColor: Theme.of(context).primaryColor,
+                    highlightColor:
+                        Theme.of(context).brightness == Brightness.light
+                            ? Colors.white
+                            : ColorConstants.darkGrey,
                     width: 164.toWidth,
                     height: 48.toHeight,
                     child: Text(
@@ -55,6 +59,10 @@ Future<bool?> confirmationDialog(String atsign) async {
                     bgColor: Theme.of(context).brightness == Brightness.light
                         ? Theme.of(context).scaffoldBackgroundColor
                         : ColorConstants.darkGrey,
+                    highlightColor:
+                        Theme.of(context).brightness == Brightness.light
+                            ? Theme.of(context).scaffoldBackgroundColor
+                            : ColorConstants.darkGrey,
                     width: 164.toWidth,
                     height: 48.toHeight,
                     child: Text(
