@@ -869,7 +869,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Widget getEmptyWidget(ThemeData themeData) {
-    return _isSearchScreen ? EmptyWidget(themeData) : HomeEmptyDetails();
+    return _isSearchScreen ? EmptyWidget(themeData) : HomeEmptyDetails(themeData: _themeData,);
   }
 
   shareProfile() {
