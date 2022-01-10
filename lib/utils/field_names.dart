@@ -236,7 +236,7 @@ class FieldNames {
         listen: false);
     Map<dynamic, dynamic> userMap = User.toJson(userPreview.user());
     List<BasicData>? customFields =
-        userPreview.user()!.customFields[category.name];
+        userPreview.user()!.customFields[category.name] ?? [];
 
     for (int index = 0; index < fields.length; index++) {
       BasicData basicData = BasicData();
@@ -245,7 +245,7 @@ class FieldNames {
         basicData = userMap[fields[index]];
       } else {
         var i =
-            customFields!.indexWhere((el) => el.accountName == fields[index]);
+            customFields.indexWhere((el) => el.accountName == fields[index]);
         if (i != -1) basicData = customFields[i];
       }
 
