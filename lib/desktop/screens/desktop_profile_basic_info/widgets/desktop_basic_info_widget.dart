@@ -191,7 +191,7 @@ class DesktopBasicInfoWidget extends StatelessWidget {
               ),
               child: HtmlWidget(
                 data.value,
-                hyperlinkColor: Colors.blue,
+                // hyperlinkColor: Colors.blue, //Todo
               ),
               decoration: BoxDecoration(
                   // border: Border.all(color: appTheme.primaryTextColor, width: 1),

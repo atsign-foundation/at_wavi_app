@@ -44,6 +44,7 @@ class ColorConstants {
   static const Color lightPurpleText = Color(0xFF9789C2);
   static const Color lightGrey = Color(0xFFF5F4F9);
   static const Color greyText = Color(0xFF98A0B1);
+  static const Color darkGrey = Color(0xFF484848);
 
   /// Opacity color
   static Color dullColor({Color color = Colors.black, double opacity = 0.5}) =>

@@ -115,7 +115,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
                           child: Icon(Icons.arrow_back)),
                       SizedBox(width: 5),
                       Text(
-                        'Add custom content',
+                        'Add Custom Content',
                         style: TextStyles.boldText(_themeData!.primaryColor,
                             size: 16),
                       ),
@@ -578,7 +578,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Html',
+                        Text('HTML',
                             style: TextStyles.lightText(
                                 Theme.of(context).primaryColor,
                                 size: 16)),

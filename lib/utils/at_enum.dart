@@ -416,6 +416,8 @@ extension values on CustomContentType {
   String get label {
     if (this == CustomContentType.Youtube) {
       return 'YouTube';
+    } else if (this == CustomContentType.Html) {
+      return 'HTML';
     } else {
       return this.name;
     }
