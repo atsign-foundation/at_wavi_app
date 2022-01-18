@@ -24,6 +24,7 @@ class DesktopAvatarWidget extends StatelessWidget {
           imageData!,
           width: size,
           height: size,
+          fit: BoxFit.cover,
         ),
       );
     }
