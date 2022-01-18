@@ -9,6 +9,7 @@ import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_show_hide_radio_button.dart';
 import 'package:at_wavi_app/desktop/widgets/textfields/desktop_textfield.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
@@ -169,8 +170,9 @@ class _DesktopProfileAddCustomFieldState
               _model.changeField(newValue);
             }
           },
-          items: widget.allowContentType.map<DropdownMenuItem<CustomContentType>>(
-              (CustomContentType value) {
+          items: widget.allowContentType
+              .map<DropdownMenuItem<CustomContentType>>(
+                  (CustomContentType value) {
             return DropdownMenuItem<CustomContentType>(
               value: value,
               child: Text(value.label),
@@ -265,19 +267,14 @@ class _DesktopProfileAddCustomFieldState
   }
 
   void _onSelectMedia() async {
-    if(_isPickingFile) {
+    if (_isPickingFile) {
       return;
     } else {
       _isPickingFile = true;
     }
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-    );
-    if (result?.files.single.path != null) {
-      File file = File(result!.files.single.path!);
-      await _model.didSelectMedia(file);
-    } else {
-      // User canceled the picker
+    final data = await ImagePicker().desktopPickImage(context);
+    if (data != null) {
+      await _model.didSelectMedia(data);
     }
     _isPickingFile = false;
   }
