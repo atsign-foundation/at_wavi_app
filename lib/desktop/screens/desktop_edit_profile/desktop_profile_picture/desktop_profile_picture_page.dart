@@ -16,6 +16,8 @@ import '../../../services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:flutter/material.dart';
 
+import '../desktop_edit_profile_model.dart';
+
 class DesktopProfilePicturePage extends StatefulWidget {
   DesktopProfilePicturePage({Key? key}) : super(key: key);
 
@@ -63,7 +65,8 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
       text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,
       onSuccess: (provider) async {
-        Navigator.pop(context);
+        // Navigator.pop(context);
+        Provider.of<DesktopEditProfileModel>(context, listen: false).jumpNextPage();
       },
     );
   }

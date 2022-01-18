@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/common_components/provider_callback.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_edit_profile/desktop_edit_profile_model.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_edit_basic_detail/desktop_edit_basic_detail_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_add_custom_field/desktop_profile_add_custom_field.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_media/widgets/desktop_media_item.dart';
@@ -303,8 +304,9 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
       text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,
       onSuccess: (provider) async {
-        Navigator.pop(context, 'saved');
+        // Navigator.pop(context, 'saved');
         // await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
+        Provider.of<DesktopEditProfileModel>(context, listen: false).jumpNextPage();
       },
     );
   }
