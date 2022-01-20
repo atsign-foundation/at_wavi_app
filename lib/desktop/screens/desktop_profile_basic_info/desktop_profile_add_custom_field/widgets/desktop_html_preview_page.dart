@@ -25,7 +25,7 @@ class DesktopHtmlPreviewPage extends StatelessWidget {
               child: Container(
                 child: HtmlWidget(
                   html,
-                  hyperlinkColor: Colors.blue,
+                  // hyperlinkColor: Colors.blue, //Todo
                 ),
               ),
             ),

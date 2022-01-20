@@ -117,7 +117,17 @@ class _DesktopSearchLocationPageState extends State<DesktopSearchLocationPage> {
                           padding: EdgeInsets.symmetric(
                             vertical: DesktopDimens.paddingSmall,
                           ),
-                          child: Text(item.title ?? ''),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(item.title ?? ''),
+                              ),
+                              Icon(
+                                Icons.keyboard_arrow_right_rounded,
+                                color: appTheme.separatorColor,
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -151,18 +161,14 @@ class _DesktopSearchLocationPageState extends State<DesktopSearchLocationPage> {
 
   void _searchLocation() async {
     final keyword = keywordTextController.text;
-    if (keyword.isEmpty) {
-      return;
+    final currentLocation = await getMyLocation();
+    if (!_isNear) {
+      // ignore: await_only_futures
+      // SearchLocationService().getAddressLatLng(keyword, null);
+      _model.getAddressLatLng(keyword, null);
     } else {
-      final currentLocation = await getMyLocation();
-      if (!_isNear) {
-        // ignore: await_only_futures
-        // SearchLocationService().getAddressLatLng(keyword, null);
-        _model.getAddressLatLng(keyword, null);
-      } else {
-        // ignore: await_only_futures
-        _model.getAddressLatLng(keyword, currentLocation);
-      }
+      // ignore: await_only_futures
+      _model.getAddressLatLng(keyword, currentLocation);
     }
   }
 

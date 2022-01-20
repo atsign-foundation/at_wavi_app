@@ -1,4 +1,5 @@
 import 'package:at_wavi_app/common_components/provider_callback.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_edit_profile/desktop_edit_profile_model.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_location/desktop_location_preview_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_user_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
@@ -139,10 +140,10 @@ class _DesktopProfileBasicInfoPageState
     basicDataList.forEach((element) {
       final value = element.data.value;
       if (value is String) {
-        if (value.isNotEmpty) {
+        if (value.isNotEmpty && !element.data.isPrivate) {
           isEmptyData = false;
         }
-      } else if (value != null) {
+      } else if (value != null && !element.data.isPrivate) {
         isEmptyData = false;
       }
     });
@@ -301,6 +302,9 @@ class _DesktopProfileBasicInfoPageState
     final displayItem = basicDataList.where((element) {
       if (element.data.value is String &&
           element.data.value.toString().trim().isEmpty) {
+        return false;
+      }
+      if (element.data.isPrivate) {
         return false;
       }
       return element.data.value != null;
@@ -576,8 +580,10 @@ class _DesktopProfileBasicInfoPageState
       text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,
       onSuccess: (provider) async {
-        Navigator.pop(context, 'saved');
+        // Navigator.pop(context, 'saved');
         // await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
+        Provider.of<DesktopEditProfileModel>(context, listen: false)
+            .jumpNextPage();
       },
     );
   }

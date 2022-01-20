@@ -153,7 +153,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: AddCustomContentButton(
-                  text: 'Add custom content',
+                  text: 'Add Custom Content',
                   onTap: () {
                     SetupRoutes.push(context, Routes.ADD_CUSTOM_FIELD,
                         arguments: {

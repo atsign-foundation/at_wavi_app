@@ -17,7 +17,12 @@ class DesktopSearchLocationModel extends ChangeNotifier {
 
   void getAddressLatLng(String address, LatLng? currentLocation) async {
     _isSearching = true;
+    _resultList = null;
     notifyListeners();
+    if (address.isEmpty) {
+      _isSearching = false;
+      notifyListeners();
+    }
     var url;
     // ignore: unnecessary_null_comparison
     if (currentLocation != null) {
@@ -29,8 +34,9 @@ class DesktopSearchLocationModel extends ChangeNotifier {
     }
     print(url);
     try {
-      var response = await http.get(Uri.parse(url));
-      var addresses = jsonDecode(response.body);
+      var response = await http
+          .get(Uri.parse(url), headers: {'Content-Type': 'application/json'});
+      var addresses = jsonDecode(utf8.decode(response.bodyBytes));
       print(response.body);
       final result = HereResultList.fromJson(addresses);
       _resultList = result;
@@ -40,14 +46,5 @@ class DesktopSearchLocationModel extends ChangeNotifier {
       _isSearching = false;
       notifyListeners();
     }
-    // List data = addresses['items'];
-    // var share = <LocationModal>[];
-    // //// Removed because of nulls safety
-    // // for (Map ad in data ?? []) {
-    // for (Map ad in data) {
-    //   share.add(LocationModal.fromJson(ad));
-    // }
-    //
-    // atLocationSink.add(share);
   }
 }

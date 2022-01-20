@@ -66,8 +66,8 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future didSelectMedia(File selectedMedia) async {
-    _selectedMedia = await selectedMedia.readAsBytes();
+  Future didSelectMedia(Uint8List selectedMedia) async {
+    _selectedMedia = selectedMedia;
     notifyListeners();
   }
 

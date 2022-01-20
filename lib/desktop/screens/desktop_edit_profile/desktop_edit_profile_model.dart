@@ -11,4 +11,17 @@ class DesktopEditProfileModel extends ChangeNotifier {
     _selectedMenu = menu;
     notifyListeners();
   }
+
+  /// Jump to next page
+  /// return true if jump success
+  /// return false if can't jump
+  bool jumpNextPage() {
+    if (DesktopSideMenu.values.length == _selectedMenu.index - 1) {
+      return false;
+    } else {
+      _selectedMenu = DesktopSideMenu.values[_selectedMenu.index + 1];
+      notifyListeners();
+      return true;
+    }
+  }
 }

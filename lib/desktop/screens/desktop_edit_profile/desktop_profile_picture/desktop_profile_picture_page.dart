@@ -5,6 +5,8 @@ import 'package:at_wavi_app/common_components/provider_callback.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/image_picker.dart';
+import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:file_picker/file_picker.dart';
@@ -13,6 +15,8 @@ import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import '../../../services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:flutter/material.dart';
+
+import '../desktop_edit_profile_model.dart';
 
 class DesktopProfilePicturePage extends StatefulWidget {
   DesktopProfilePicturePage({Key? key}) : super(key: key);
@@ -31,24 +35,22 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
   }
 
   void _onSelectMedia() async {
-    if(_isPickingFile) {
+    if (_isPickingFile) {
       return;
     } else {
       _isPickingFile = true;
     }
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.media,
-    );
-    if (result?.files.single.path != null) {
-      var _file = File(result!.files.single.path!);
-      final data = await _file.readAsBytes();
-      final image =
-          Provider.of<UserPreview>(context, listen: false).user()!.image;
-      image.value = data;
-      Provider.of<UserPreview>(context, listen: false).user()!.image = image;
-      Provider.of<UserPreview>(context, listen: false).notify();
-    }
-    _isPickingFile = false;
+
+    ImagePicker().desktopPickImage(context).then((data) {
+      if (data != null) {
+        final image =
+            Provider.of<UserPreview>(context, listen: false).user()!.image;
+        image.value = data;
+        Provider.of<UserPreview>(context, listen: false).user()!.image = image;
+        Provider.of<UserPreview>(context, listen: false).notify();
+      }
+      _isPickingFile = false;
+    });
   }
 
   void _handleSaveAndNext(BuildContext context) async {
@@ -63,7 +65,8 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
       text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,
       onSuccess: (provider) async {
-        Navigator.pop(context);
+        // Navigator.pop(context);
+        Provider.of<DesktopEditProfileModel>(context, listen: false).jumpNextPage();
       },
     );
   }

@@ -9,6 +9,7 @@ class CustomButton extends StatelessWidget {
   final Function onTap;
   final Color bgColor;
   final Border? border;
+  final Color? highlightColor;
 
   CustomButton({
     required this.child,
@@ -19,6 +20,7 @@ class CustomButton extends StatelessWidget {
     required this.bgColor,
     this.radius,
     this.border,
+    this.highlightColor,
   });
 
   @override
@@ -27,6 +29,7 @@ class CustomButton extends StatelessWidget {
       onTap: () async {
         await onTap();
       },
+      highlightColor: highlightColor ?? Colors.transparent,
       child: Container(
         alignment: Alignment.center,
         width: width.toWidth,
