@@ -42,7 +42,7 @@ dependencies:
   validators: ^3.0.0
   latlong2: ^0.8.0
   image_cropper: ^1.4.1
-  extended_image: ^5.1.0
+  extended_image: ^6.0.1
   image: ^3.1.1
   showcaseview: ^1.1.1
   desktop_window: ^0.4.0
@@ -61,7 +61,7 @@ dependencies:
   at_client: ^3.0.8
   at_contact: ^3.0.2
   at_lookup: ^3.0.5
-  at_contacts_flutter: ^3.1.1
+  at_contacts_flutter: ^4.0.0
   at_commons: ^3.0.2
   at_follows_flutter: ^3.0.4
   at_location_flutter: ^3.0.1
