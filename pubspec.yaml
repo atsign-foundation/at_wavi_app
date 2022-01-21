@@ -61,6 +61,8 @@ dependencies:
   at_location_flutter: ^3.0.1
   uni_links: ^0.5.1
 
+  flutter_dotenv: ^5.0.2
+
 dependency_overrides:
   flutter_colorpicker: ^0.6.0 #because html_editor_enhanced uses 0.4.0, which gives flutter event errors
   
@@ -81,6 +83,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - .env
     - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
