@@ -134,6 +134,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  at_sync_ui_flutter:
+    dependency: "direct main"
+    description:
+      path: at_sync_ui_flutter
+      ref: "feature/at-sync-ui"
+      resolved-ref: "97762b4d11f4cb7c7496539bdb438132dfe36d11"
+      url: "https://github.com/atsign-foundation/at_widgets.git"
+    source: git
+    version: "1.0.0"
   at_utf7:
     dependency: transitive
     description:
@@ -547,7 +556,7 @@ packages:
       name: flutter_widget_from_html
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.4"
+    version: "0.8.3"
   flutter_widget_from_html_core:
     dependency: transitive
     description:
@@ -583,13 +592,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.2+2"
-  fwfh_selectable_text:
-    dependency: transitive
-    description:
-      name: fwfh_selectable_text
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.8.3+1"
   fwfh_svg:
     dependency: transitive
     description:
@@ -603,7 +605,7 @@ packages:
       name: fwfh_text_style
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.7.2"
+    version: "2.5.1"
   fwfh_url_launcher:
     dependency: transitive
     description:
@@ -1175,7 +1177,7 @@ packages:
       name: sqflite_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.0"
+    version: "2.0.1+1"
   stack_trace:
     dependency: transitive
     description:
@@ -1499,5 +1501,5 @@ packages:
     source: hosted
     version: "0.1.0"
 sdks:
-  dart: ">=2.15.0 <3.0.0"
+  dart: ">=2.14.0 <3.0.0"
   flutter: ">=2.8.0"

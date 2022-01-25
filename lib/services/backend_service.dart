@@ -4,6 +4,7 @@ import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_commons/at_commons.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
+import 'package:at_sync_ui_flutter/at_sync_ui.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
@@ -126,12 +127,14 @@ class BackendService {
   }
 
   sync() async {
+    AtSyncUI.instance.showDialog();
     syncService = AtClientManager.getInstance().syncService;
     syncService.sync(onDone: _onSuccessCallback);
     syncService.setOnDone(_onSuccessCallback);
   }
 
   _onSuccessCallback(SyncResult syncStatus) async {
+    AtSyncUI.instance.hideDialog();
     print(
         'syncStatus type : $syncStatus, datachanged : ${syncStatus.dataChange}');
     var userProvider = Provider.of<UserProvider>(

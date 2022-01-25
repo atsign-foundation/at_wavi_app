@@ -65,6 +65,12 @@ dependencies:
   at_commons: ^3.0.2
   at_follows_flutter: ^3.0.4
   at_location_flutter: ^3.0.1
+  at_sync_ui_flutter:
+    git:
+      url: https://github.com/atsign-foundation/at_widgets.git
+      ref: feature/at-sync-ui
+      path: at_sync_ui_flutter
+
   uni_links: ^0.5.1
 
 dependency_overrides:
