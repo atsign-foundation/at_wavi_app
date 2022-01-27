@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:at_location_flutter/at_location_flutter.dart';
 import 'package:at_wavi_app/model/here_result.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,22 @@ class DesktopSearchLocationModel extends ChangeNotifier {
 
   List<HereResult> get resultList => _resultList?.items ?? [];
 
+  bool _isNear = false;
+
+  bool get isNear => _isNear;
+
+  void initialSetup() async {
+    final currentLocation = await getMyLocation();
+    print("SonLT $currentLocation");
+    _isNear = currentLocation != null;
+    notifyListeners();
+  }
+
+  void changeNearSearching(bool isNear) {
+    _isNear = isNear;
+    notifyListeners();
+  }
+
   void getAddressLatLng(String address, LatLng? currentLocation) async {
     _isSearching = true;
     _resultList = null;
@@ -27,7 +44,7 @@ class DesktopSearchLocationModel extends ChangeNotifier {
     // ignore: unnecessary_null_comparison
     if (currentLocation != null) {
       url =
-          'https://geocode.search.hereapi.com/v1/geocode?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${MixedConstants.API_KEY}&at=${currentLocation.latitude},${currentLocation.longitude}';
+          'https://discover.search.hereapi.com/v1/discover?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${MixedConstants.API_KEY}&at=${currentLocation.latitude},${currentLocation.longitude}';
     } else {
       url =
           'https://geocode.search.hereapi.com/v1/geocode?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${MixedConstants.API_KEY}';
@@ -42,7 +59,9 @@ class DesktopSearchLocationModel extends ChangeNotifier {
       _resultList = result;
       _isSearching = false;
       notifyListeners();
-    } catch (e) {
+    } catch (e, s) {
+      print(e);
+      print(s);
       _isSearching = false;
       notifyListeners();
     }

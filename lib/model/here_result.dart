@@ -26,7 +26,6 @@ class HereResult {
     this.address,
     this.position,
     this.mapView,
-    this.scoring,
   });
 
   String? title;
@@ -36,7 +35,6 @@ class HereResult {
   Address? address;
   Position? position;
   MapView? mapView;
-  Scoring? scoring;
 
   factory HereResult.fromJson(Map<String, dynamic> json) => HereResult(
         title: json["title"],
@@ -46,7 +44,6 @@ class HereResult {
         address: Address.fromJson(json["address"]),
         position: Position.fromJson(json["position"]),
         mapView: MapView.fromJson(json["mapView"]),
-        scoring: Scoring.fromJson(json["scoring"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -57,7 +54,6 @@ class HereResult {
         "address": address?.toJson(),
         "position": position?.toJson(),
         "mapView": mapView?.toJson(),
-        "scoring": scoring?.toJson(),
       };
 }
 
@@ -146,26 +142,6 @@ class Position {
   Map<String, dynamic> toJson() => {
         "lat": lat,
         "lng": lng,
-      };
-}
-
-class Scoring {
-  Scoring({
-    this.queryScore,
-    this.fieldScore,
-  });
-
-  double? queryScore;
-  FieldScore? fieldScore;
-
-  factory Scoring.fromJson(Map<String, dynamic> json) => Scoring(
-        queryScore: json["queryScore"],
-        fieldScore: FieldScore.fromJson(json["fieldScore"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "queryScore": queryScore,
-        "fieldScore": fieldScore?.toJson(),
       };
 }
 
