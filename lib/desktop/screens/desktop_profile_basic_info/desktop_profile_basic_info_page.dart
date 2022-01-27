@@ -27,6 +27,7 @@ import 'desktop_reorder_basic_info/desktop_reorder_basic_info_page.dart';
 import 'widgets/desktop_basic_info_widget.dart';
 import 'widgets/desktop_empty_category_widget.dart';
 import 'widgets/desktop_location_item_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DesktopProfileBasicInfoPage extends StatefulWidget {
   final AtCategory atCategory;
@@ -565,6 +566,10 @@ class _DesktopProfileBasicInfoPageState
           ),
         ),
       );
+    } else if ((title ?? '').isNotEmpty) {
+      try {
+        launch('https://www.google.com/maps/place/$title');
+      } catch (e) {}
     }
   }
 

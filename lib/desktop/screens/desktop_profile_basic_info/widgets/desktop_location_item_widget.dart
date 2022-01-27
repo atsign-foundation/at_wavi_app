@@ -4,7 +4,6 @@ import 'package:at_location_flutter/map_content/flutter_map/flutter_map.dart';
 import 'package:at_wavi_app/common_components/create_marker.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
-import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +39,8 @@ class DesktopLocationItemWidget extends StatelessWidget {
     } catch (e) {
       print(e);
     }
+    final isValidData =
+        osmLocationModel != null && osmLocationModel.latLng != null;
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -48,7 +49,7 @@ class DesktopLocationItemWidget extends StatelessWidget {
         }
       },
       child: Container(
-        height: 200,
+        height: isValidData ? 200 : 60,
         padding: EdgeInsets.symmetric(vertical: DesktopDimens.paddingNormal),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +65,7 @@ class DesktopLocationItemWidget extends StatelessWidget {
             ),
             SizedBox(width: 20),
             Expanded(
-              child: osmLocationModel != null
+              child: isValidData
                   ? Stack(
                       children: [
                         AbsorbPointer(
@@ -73,7 +74,7 @@ class DesktopLocationItemWidget extends StatelessWidget {
                             options: MapOptions(
                               boundsOptions:
                                   FitBoundsOptions(padding: EdgeInsets.all(0)),
-                              center: osmLocationModel.latLng,
+                              center: osmLocationModel!.latLng,
                               zoom: osmLocationModel.zoom ?? 14.0,
                             ),
                             layers: [
@@ -117,7 +118,16 @@ class DesktopLocationItemWidget extends StatelessWidget {
                         ),
                       ],
                     )
-                  : Container(),
+                  : Container(
+                      child: Text(
+                        '${title ?? ''}',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 16,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
