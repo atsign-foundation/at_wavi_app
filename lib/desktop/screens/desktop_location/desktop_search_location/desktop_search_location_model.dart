@@ -14,7 +14,7 @@ class DesktopSearchLocationModel extends ChangeNotifier {
 
   HereResultList? _resultList;
 
-  List<HereResult> get resultList => _resultList?.items ?? [];
+  List<HereResult> get resultList => _resultList?.results ?? [];
 
   bool _isNear = false;
 
@@ -40,16 +40,8 @@ class DesktopSearchLocationModel extends ChangeNotifier {
       _isSearching = false;
       notifyListeners();
     }
-    var url;
-    // ignore: unnecessary_null_comparison
-    if (currentLocation != null) {
-      url =
-          'https://discover.search.hereapi.com/v1/discover?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${MixedConstants.API_KEY}&at=${currentLocation.latitude},${currentLocation.longitude}';
-    } else {
-      url =
-          'https://geocode.search.hereapi.com/v1/geocode?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${MixedConstants.API_KEY}';
-    }
-    print(url);
+    var url =
+        'https://places.ls.hereapi.com/places/v1/autosuggest?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${MixedConstants.API_KEY}&at=${currentLocation?.latitude ?? 0},${currentLocation?.longitude ?? 0}';
     try {
       var response = await http
           .get(Uri.parse(url), headers: {'Content-Type': 'application/json'});

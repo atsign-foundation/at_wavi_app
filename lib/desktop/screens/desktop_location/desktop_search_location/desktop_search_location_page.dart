@@ -242,8 +242,8 @@ class _DesktopSearchLocationPageState extends State<DesktopSearchLocationPage> {
   }
 
   void _onSelectLocation(HereResult location) {
-    double? lat = location.position?.lat;
-    double? lng = location.position?.lng;
+    double? lat = location.position?.first;
+    double? lng = location.position?.last;
     if (lat != null && lng != null) {
       openSelectLocation(latLng: LatLng(lat, lng), title: location.title);
     }
