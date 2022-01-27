@@ -66,6 +66,11 @@ dependencies:
   at_follows_flutter: ^3.0.4
   at_location_flutter: ^3.0.1
   uni_links: ^0.5.1
+  at_sync_ui_flutter:
+    git:
+      url: https://github.com/atsign-foundation/at_widgets.git
+      ref: feature/at-sync-ui
+      path: at_sync_ui_flutter
 
 dependency_overrides:
   flutter_colorpicker: ^0.6.0 #because html_editor_enhanced uses 0.4.0, which gives flutter event errors

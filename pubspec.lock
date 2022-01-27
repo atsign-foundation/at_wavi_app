@@ -134,6 +134,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  at_sync_ui_flutter:
+    dependency: "direct main"
+    description:
+      path: at_sync_ui_flutter
+      ref: "feature/at-sync-ui"
+      resolved-ref: c77b1a41fa5a7437c8dd5cfff5a53432bea7d7cd
+      url: "https://github.com/atsign-foundation/at_widgets.git"
+    source: git
+    version: "1.0.0"
   at_utf7:
     dependency: transitive
     description:

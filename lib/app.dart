@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:at_sync_ui_flutter/at_sync_ui.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
@@ -82,6 +83,8 @@ class MaterialAppClass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AtSyncUI.instance.setAppNavigatorKey(NavService.navKey);
+
     var brightness = SchedulerBinding.instance!.window.platformBrightness;
     /// MaterialApp for desktop
     if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
@@ -111,6 +114,10 @@ class MaterialAppClass extends StatelessWidget {
                 : Brightness.light,
             primaryColor: themeProvider.currentAtsignThemeData?.highlightColor ??
                 ColorConstants.green,
+          );
+          AtSyncUI.instance.configTheme(
+            primaryColor: appTheme.primaryColor,
+            backgroundColor: appTheme.backgroundColor,
           );
           return InheritedAppTheme(
             theme: appTheme,
