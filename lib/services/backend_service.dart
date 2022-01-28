@@ -61,6 +61,18 @@ class BackendService {
       },
       onError: (error) {
         print('Onboarding throws $error error');
+        ScaffoldMessenger.of(NavService.navKey.currentContext!)
+            .showSnackBar(SnackBar(
+          backgroundColor: ColorConstants.RED,
+          content: Text(
+            '$error',
+            style: TextStyle(
+                color: ColorConstants.white,
+                fontSize: 16,
+                letterSpacing: 0.1,
+                fontWeight: FontWeight.normal),
+          ),
+        ));
       },
     );
   }
