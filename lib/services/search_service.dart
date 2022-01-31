@@ -18,8 +18,9 @@ class SearchService {
 
   Map<String, SearchInstance> _searchData = {};
 
-  Future<SearchInstance?> getAtsignDetails(String atsign) async {
-    if (_searchData[atsign] != null) {
+  Future<SearchInstance?> getAtsignDetails(String atsign,
+      {bool serverLookup = false}) async {
+    if ((!serverLookup) && (_searchData[atsign] != null)) {
       return _searchData[atsign]!;
     }
 

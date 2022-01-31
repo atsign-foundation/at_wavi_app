@@ -281,7 +281,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             child: RefreshIndicator(
               onRefresh: () async {
                 if (_isSearchScreen) {
-                  await SearchService().getAtsignDetails(_currentUser.atsign);
+                  var _searchRes = await SearchService().getAtsignDetails(
+                      _currentUser.atsign,
+                      serverLookup: true);
+                  if (_searchRes != null) {
+                    Provider.of<UserPreview>(context, listen: false).setUser =
+                        _searchRes.user;
+                    FieldOrderService().setPreviewOrder =
+                        _searchRes.fieldOrders;
+                    _currentUser =
+                        Provider.of<UserPreview>(context, listen: false)
+                            .user()!;
+                  }
                 } else {
                   await BackendService().sync();
                 }
@@ -300,6 +311,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     // content
                     Consumer<UserProvider>(
                       builder: (context, _provider, _) {
+                        if ((!widget.isPreview) && (_provider.user != null)) {
+                          _currentUser = _provider.user!;
+                        } // for image
+
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
