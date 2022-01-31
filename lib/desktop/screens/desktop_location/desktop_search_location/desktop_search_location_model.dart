@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:at_location_flutter/at_location_flutter.dart';
 import 'package:at_wavi_app/model/here_result.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,23 @@ class DesktopSearchLocationModel extends ChangeNotifier {
 
   HereResultList? _resultList;
 
-  List<HereResult> get resultList => _resultList?.items ?? [];
+  List<HereResult> get resultList => _resultList?.results ?? [];
+
+  bool _isNear = false;
+
+  bool get isNear => _isNear;
+
+  void initialSetup() async {
+    final currentLocation = await getMyLocation();
+    print("SonLT $currentLocation");
+    _isNear = currentLocation != null;
+    notifyListeners();
+  }
+
+  void changeNearSearching(bool isNear) {
+    _isNear = isNear;
+    notifyListeners();
+  }
 
   void getAddressLatLng(String address, LatLng? currentLocation) async {
     _isSearching = true;
@@ -23,16 +40,8 @@ class DesktopSearchLocationModel extends ChangeNotifier {
       _isSearching = false;
       notifyListeners();
     }
-    var url;
-    // ignore: unnecessary_null_comparison
-    if (currentLocation != null) {
-      url =
-          'https://geocode.search.hereapi.com/v1/geocode?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${MixedConstants.API_KEY}&at=${currentLocation.latitude},${currentLocation.longitude}';
-    } else {
-      url =
-          'https://geocode.search.hereapi.com/v1/geocode?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${MixedConstants.API_KEY}';
-    }
-    print(url);
+    var url =
+        'https://places.ls.hereapi.com/places/v1/autosuggest?q=${address.replaceAll(RegExp(' '), '+')}&apiKey=${MixedConstants.API_KEY}&at=${currentLocation?.latitude ?? 0},${currentLocation?.longitude ?? 0}';
     try {
       var response = await http
           .get(Uri.parse(url), headers: {'Content-Type': 'application/json'});
@@ -42,7 +51,9 @@ class DesktopSearchLocationModel extends ChangeNotifier {
       _resultList = result;
       _isSearching = false;
       notifyListeners();
-    } catch (e) {
+    } catch (e, s) {
+      print(e);
+      print(s);
       _isSearching = false;
       notifyListeners();
     }
