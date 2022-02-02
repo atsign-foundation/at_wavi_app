@@ -57,7 +57,8 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
   Widget _buildBodyWidget() {
     final appTheme = AppTheme.of(context);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: DesktopDimens.paddingExtraLarge),
+      padding:
+          EdgeInsets.symmetric(horizontal: DesktopDimens.paddingExtraLarge),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,53 +91,53 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                   ),
                 ),
                 SizedBox(height: DesktopDimens.paddingLarge),
-                Text(
-                  Strings.desktop_sign,
-                  style: appTheme.textTheme.bodyText1,
-                ),
-                SizedBox(height: DesktopDimens.paddingSmall),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: _showOnBoardScreen,
-                  child: Form(
-                    key: _formKey,
-                    child: DesktopTextField(
-                      controller: atSignTextEditingController,
-                      hint: Strings.desktop_enter_sign,
-                      backgroundColor: appTheme.secondaryBackgroundColor,
-                      borderRadius: 10,
-                      readOnly: true,
-                      enabled: false,
-                      style: appTheme.textTheme.bodyText1,
-                      hasUnderlineBorder: false,
-                      contentPadding: 20,
-                      validator: (value) {
-                        if ((value ?? '').trim().isEmpty) {
-                          return 'Please enter your @sign';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(height: DesktopDimens.paddingNormal),
+                // Text(
+                //   Strings.desktop_sign,
+                //   style: appTheme.textTheme.bodyText1,
+                // ),
+                // SizedBox(height: DesktopDimens.paddingSmall),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: _showOnBoardScreen,
+                //   child: Form(
+                //     key: _formKey,
+                //     child: DesktopTextField(
+                //       controller: atSignTextEditingController,
+                //       hint: Strings.desktop_enter_sign,
+                //       backgroundColor: appTheme.secondaryBackgroundColor,
+                //       borderRadius: 10,
+                //       readOnly: true,
+                //       enabled: false,
+                //       style: appTheme.textTheme.bodyText1,
+                //       hasUnderlineBorder: false,
+                //       contentPadding: 20,
+                //       validator: (value) {
+                //         if ((value ?? '').trim().isEmpty) {
+                //           return 'Please enter your @sign';
+                //         }
+                //         return null;
+                //       },
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(height: DesktopDimens.paddingNormal),
                 DesktopButton(
                   width: double.infinity,
                   backgroundColor: appTheme.primaryColor,
-                  title: Strings.desktop_send,
+                  title: Strings.desktop_create,
                   borderRadius: 10,
                   height: 54,
                   onPressed: _showOnBoardScreen,
                 ),
                 SizedBox(height: DesktopDimens.paddingNormal),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: _showOnBoardScreen,
-                  child: Text(
-                    Strings.desktop_get_sign,
-                    style: appTheme.textTheme.overline,
-                  ),
-                ),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: _showOnBoardScreen,
+                //   child: Text(
+                //     Strings.desktop_get_sign,
+                //     style: appTheme.textTheme.overline,
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -174,7 +175,7 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
   }
 
   void _showOnBoardScreen() async {
-    if(_model.isAuthorizing == true) {
+    if (_model.isAuthorizing == true) {
       return;
     }
     print("SonLT");

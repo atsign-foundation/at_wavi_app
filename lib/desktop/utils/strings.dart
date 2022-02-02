@@ -55,14 +55,19 @@ class Strings {
   static const String desktop_twitch = 'Twitch';
   static const String desktop_facebook = 'Facebook';
   static const String desktop_done = 'Done';
-  static const String desktop_private_profile= 'Private Profile';
-  static const String desktop_follow_user = 'Follow the user to know their details';
-  static const String desktop_edit_feature = 'Edit, reorder, or add new content.';
-  static const String desktop_find_more_privacy = 'Settings for privacy, search, and more.';
-  static const String desktop_search_user = 'Quickly find people and businesses on @wavi.';
+  static const String desktop_private_profile = 'Private Profile';
+  static const String desktop_follow_user =
+      'Follow the user to know their details';
+  static const String desktop_edit_feature =
+      'Edit, reorder, or add new content.';
+  static const String desktop_find_more_privacy =
+      'Settings for privacy, search, and more.';
+  static const String desktop_search_user =
+      'Quickly find people and businesses on @wavi.';
 
   static const String desktop_all_links_in_one = 'Say Hello with @wavi';
-  static const String desktop_create_persona = 'Create your very own, free personal microsite.';
+  static const String desktop_create_persona =
+      'Create your very own, free personal microsite.';
   static const String desktop_get_sign = 'Don’t have an @sign? Get one now';
   static const String desktop_sign = '@sign';
   static const String desktop_enter_sign = 'Enter @sign';
@@ -76,6 +81,7 @@ class Strings {
   static const String desktop_notifications = 'Notifications';
   static const String desktop_new_request = 'New Request';
   static const String desktop_send = 'SEND';
+  static const String desktop_create = 'Create my microsite';
   static const String desktop_delete = 'Delete';
   static const String desktop_confirm = 'Confirm';
   //static const String desktop_wavi = '@Wavi';

@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.1+11
+version: 1.0.1+13
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -42,7 +42,7 @@ dependencies:
   validators: ^3.0.0
   latlong2: ^0.8.0
   image_cropper: ^1.4.1
-  extended_image: ^5.1.0
+  extended_image: ^6.0.1
   image: ^3.1.1
   showcaseview: ^1.1.1
   desktop_window: ^0.4.0
@@ -69,7 +69,12 @@ dependencies:
 
 dependency_overrides:
   flutter_colorpicker: ^0.6.0 #because html_editor_enhanced uses 0.4.0, which gives flutter event errors
-  
+  at_utils:  
+    git:
+      url: git@github.com:atsign-foundation/at_tools.git
+      ref: git-386
+      path: at_utils
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
