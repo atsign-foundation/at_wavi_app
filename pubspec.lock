@@ -144,12 +144,10 @@ packages:
   at_utils:
     dependency: "direct overridden"
     description:
-      path: at_utils
-      ref: git-386
-      resolved-ref: b1fac2e027dd4786f6096a5fbc3ac40eb417980a
-      url: "git@github.com:atsign-foundation/at_tools.git"
-    source: git
-    version: "3.0.4"
+      name: at_utils
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.5"
   audio_session:
     dependency: transitive
     description:

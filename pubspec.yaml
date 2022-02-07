@@ -69,11 +69,7 @@ dependencies:
 
 dependency_overrides:
   flutter_colorpicker: ^0.6.0 #because html_editor_enhanced uses 0.4.0, which gives flutter event errors
-  at_utils:  
-    git:
-      url: git@github.com:atsign-foundation/at_tools.git
-      ref: git-386
-      path: at_utils
+  at_utils: ^3.0.5
 
 dev_dependencies:
   flutter_test:

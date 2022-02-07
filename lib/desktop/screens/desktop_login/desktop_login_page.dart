@@ -1,3 +1,4 @@
+import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_login/desktop_login_model.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_login/desktop_login_otp/desktop_login_otp_page.dart';
@@ -130,6 +131,20 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                   onPressed: _showOnBoardScreen,
                 ),
                 SizedBox(height: DesktopDimens.paddingNormal),
+                Container(
+                  alignment: Alignment.center,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      _showResetAtSignDialog(context);
+                    },
+                    child: Text(
+                      'Reset',
+                      style: appTheme.textTheme.bodyText2,
+                    ),
+                  ),
+                ),
+                SizedBox(height: DesktopDimens.paddingNormal),
                 // GestureDetector(
                 //   behavior: HitTestBehavior.translucent,
                 //   onTap: _showOnBoardScreen,
@@ -210,5 +225,147 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
       Navigator.of(context).pushNamedAndRemoveUntil(
           DesktopRoutes.DESKTOP_MY_PROFILE, (Route<dynamic> route) => false);
     }
+  }
+
+  _showResetAtSignDialog(BuildContext context) async {
+    bool isSelectAtSign = false;
+    bool isSelectAll = false;
+    var atSignsList = await KeychainUtil.getAtsignList();
+    if (atSignsList == null) {
+      atSignsList = [];
+    }
+    Map atSignMap = {};
+    for (String atSign in atSignsList) {
+      atSignMap[atSign] = false;
+    }
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, stateSet) {
+            return AlertDialog(
+                title: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                        'This will remove the selected @sign and its details from this app only.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 15)),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Divider(
+                      thickness: 0.8,
+                    )
+                  ],
+                ),
+                content: (atSignsList ?? []).isEmpty
+                    ? Column(mainAxisSize: MainAxisSize.min, children: [
+                        Text('No @signs are paired to reset.',
+                            style: TextStyle(fontSize: 15)),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'Close',
+                              style: TextStyle(
+                                fontSize: 15,
+                                // color: AtTheme.themecolor,
+                              ),
+                            ),
+                          ),
+                        )
+                      ])
+                    : SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CheckboxListTile(
+                              onChanged: (value) {
+                                isSelectAll = value ?? false;
+                                atSignMap
+                                    .updateAll((key, value1) => value1 = value);
+                                // atsignMap[atsign] = value;
+                                stateSet(() {});
+                              },
+                              value: isSelectAll,
+                              checkColor: Colors.white,
+                              title: Text('Select All',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            ),
+                            for (var atsign in (atSignsList ?? []))
+                              CheckboxListTile(
+                                onChanged: (value) {
+                                  atSignMap[atsign] = value;
+                                  stateSet(() {});
+                                },
+                                value: atSignMap[atsign],
+                                checkColor: Colors.white,
+                                title: Text('$atsign'),
+                              ),
+                            Divider(thickness: 0.8),
+                            if (isSelectAtSign)
+                              Text('Please select at least one @sign to reset',
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 14)),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text('Warning: This action cannot be undone',
+                                style: TextStyle(fontSize: 14)),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(children: [
+                              TextButton(
+                                onPressed: () async {
+                                  var tempAtSignMap = {};
+                                  tempAtSignMap.addAll(atSignMap);
+                                  tempAtSignMap.removeWhere(
+                                      (key, value) => value == false);
+                                  if (tempAtSignMap.keys.toList().isEmpty) {
+                                    isSelectAtSign = true;
+                                    stateSet(() {});
+                                  } else {
+                                    isSelectAtSign = false;
+                                    await _resetDevice(
+                                        tempAtSignMap.keys.toList());
+                                    // await _onboardNextAtsign();
+                                  }
+                                },
+                                child: Text('Remove',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                    )),
+                              ),
+                              Spacer(),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Cancel',
+                                      style: TextStyle(
+                                          fontSize: 15, color: Colors.black)))
+                            ])
+                          ],
+                        ),
+                      ));
+          });
+        });
+  }
+
+  _resetDevice(List checkedAtSigns) async {
+    Navigator.of(context).pop();
+    await BackendService().resetAtsigns(checkedAtSigns).then((value) async {
+      print('reset done');
+    }).catchError((e) {
+      print('error in reset: $e');
+    });
   }
 }
