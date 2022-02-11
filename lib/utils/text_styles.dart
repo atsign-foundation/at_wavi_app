@@ -45,6 +45,9 @@ class TextStyles {
   static TextStyle black18bold = TextStyle(
       fontSize: 18.toFont, color: Colors.black, fontWeight: FontWeight.bold);
 
+  static TextStyle white18bold = TextStyle(
+      fontSize: 18.toFont, color: Colors.white, fontWeight: FontWeight.bold);
+
   static TextStyle grey15 =
       TextStyle(fontSize: 15.toFont, color: ColorConstants.greyText);
 
