@@ -4,6 +4,7 @@ import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_commons/at_commons.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
+import 'package:at_sync_ui_flutter/at_sync_ui.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
@@ -23,6 +24,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:at_client/src/service/sync_service.dart';
 import 'package:at_client/src/service/sync_service_impl.dart';
+import 'package:at_sync_ui_flutter/at_sync_ui_flutter.dart';
 
 class BackendService {
   static final BackendService _singleton = BackendService._internal();
@@ -63,18 +65,7 @@ class BackendService {
       },
       onError: (error) {
         print('Onboarding throws $error error');
-        ScaffoldMessenger.of(NavService.navKey.currentContext!)
-            .showSnackBar(SnackBar(
-          backgroundColor: ColorConstants.RED,
-          content: Text(
-            '$error',
-            style: TextStyle(
-                color: ColorConstants.white,
-                fontSize: 16,
-                letterSpacing: 0.1,
-                fontWeight: FontWeight.normal),
-          ),
-        ));
+        showErrorSnackBar(error);
       },
     );
   }
@@ -108,12 +99,21 @@ class BackendService {
     await Provider.of<FollowService>(NavService.navKey.currentContext!,
             listen: false)
         .init();
-    await sync();
-    Provider.of<ThemeProvider>(NavService.navKey.currentContext!, listen: false)
-        .resetThemeData();
-    await Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
-            listen: false)
-        .checkThemeFromSecondary();
+
+    var _themeProvider = Provider.of<ThemeProvider>(
+        NavService.navKey.currentContext!,
+        listen: false);
+
+    AtSyncUIService().init(
+      appNavigator: NavService.navKey,
+      onSuccessCallback: _onSuccessCallback,
+      onErrorCallback: _onErrorCallback,
+      primaryColor: (_themeProvider.highlightColor ?? ColorConstants.green),
+    );
+    await AtSyncUIService().sync();
+
+    _themeProvider.resetThemeData();
+    await _themeProvider.checkThemeFromSecondary();
 
     AtKeyGetService().init();
     await Provider.of<UserProvider>(NavService.navKey.currentContext!,
@@ -142,9 +142,7 @@ class BackendService {
   }
 
   sync() async {
-    syncService = AtClientManager.getInstance().syncService;
-    syncService.sync(onDone: _onSuccessCallback);
-    syncService.setOnDone(_onSuccessCallback);
+    AtSyncUIService().sync(atSyncUIOverlay: AtSyncUIOverlay.snackbar);
   }
 
   _onSuccessCallback(SyncResult syncStatus) async {
@@ -158,6 +156,10 @@ class BackendService {
         userProvider.status[userProvider.FETCH_USER] != Status.Loading) {
       await userProvider.fetchUserData(BackendService().currentAtSign!);
     }
+  }
+
+  _onErrorCallback(SyncResult syncStatus) async {
+    showErrorSnackBar('Sync failed');
   }
 
   ///Fetches privatekey for [atsign] from device keychain.
@@ -261,6 +263,25 @@ class BackendService {
         Duration(seconds: MixedConstants.responseTimeLimit), onTimeout: () {
       print('time out in put service ');
     }());
+  }
+
+  showErrorSnackBar(dynamic error) {
+    try {
+      ScaffoldMessenger.of(NavService.navKey.currentContext!)
+          .showSnackBar(SnackBar(
+        backgroundColor: ColorConstants.RED,
+        content: Text(
+          '$error',
+          style: TextStyle(
+              color: ColorConstants.white,
+              fontSize: 16,
+              letterSpacing: 0.1,
+              fontWeight: FontWeight.normal),
+        ),
+      ));
+    } catch (e) {
+      print('Error while showing error snackbar $e');
+    }
   }
 
   resetDevice(List checkedAtsigns) async {

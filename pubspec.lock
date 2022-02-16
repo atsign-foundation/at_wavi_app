@@ -153,6 +153,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  at_sync_ui_flutter:
+    dependency: "direct overridden"
+    description:
+      path: at_sync_ui_flutter
+      ref: "feature/at-sync-ui"
+      resolved-ref: "4b5f3ea8a92c9d4941bbe3afb43d653944f2d4db"
+      url: "https://github.com/atsign-foundation/at_widgets.git"
+    source: git
+    version: "1.0.0"
   at_utf7:
     dependency: transitive
     description:
@@ -472,7 +481,7 @@ packages:
       name: flutter_keyboard_visibility
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.1.1"
+    version: "5.2.0"
   flutter_keyboard_visibility_platform_interface:
     dependency: transitive
     description:
@@ -1063,7 +1072,7 @@ packages:
       name: share_plus
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.4"
+    version: "3.0.5"
   share_plus_linux:
     dependency: transitive
     description:
@@ -1453,7 +1462,7 @@ packages:
       name: webview_flutter_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.8.2"
+    version: "2.8.3"
   webview_flutter_platform_interface:
     dependency: transitive
     description:
