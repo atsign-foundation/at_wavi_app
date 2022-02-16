@@ -118,7 +118,7 @@ free personal microsite.''',
                           fontSize: 15.toFont, fontWeight: FontWeight.bold)),
                 ),
                 SizedBox(height: 50),
-                Text('© 2021 The @ Company',
+                Text('© 2022 The @ Company',
                     style: TextStyle(
                         color: ColorConstants.greyText, fontSize: 13.toFont)),
               ],
