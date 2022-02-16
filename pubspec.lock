@@ -46,16 +46,20 @@ packages:
   at_client:
     dependency: "direct main"
     description:
-      name: at_client
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: at_client
+      ref: switch_atsign_bug
+      resolved-ref: e954470d82846ff90b516171d2249e99c691c352
+      url: "git@github.com:atsign-foundation/at_client_sdk.git"
+    source: git
     version: "3.0.9"
   at_client_mobile:
     dependency: "direct main"
     description:
-      name: at_client_mobile
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: at_client_mobile
+      ref: switch_atsign_bug
+      resolved-ref: e954470d82846ff90b516171d2249e99c691c352
+      url: "git@github.com:atsign-foundation/at_client_sdk.git"
+    source: git
     version: "3.1.5"
   at_common_flutter:
     dependency: "direct main"
@@ -74,16 +78,29 @@ packages:
   at_contact:
     dependency: "direct main"
     description:
-      name: at_contact
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: at_contact
+      ref: fix_create_group
+      resolved-ref: "3f04d0bbded86834d3085ba03887dfb5df84bdec"
+      url: "git@github.com:atsign-foundation/at_libraries.git"
+    source: git
     version: "3.0.3"
   at_contacts_flutter:
     dependency: "direct main"
     description:
-      name: at_contacts_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: at_contacts_flutter
+      ref: trunk
+      resolved-ref: e20a236cb9ac563e2320bbea2ec346db909c0150
+      url: "git@github.com:atsign-foundation/at_widgets.git"
+    source: git
+    version: "4.0.0"
+  at_contacts_group_flutter:
+    dependency: "direct overridden"
+    description:
+      path: at_contacts_group_flutter
+      ref: trunk
+      resolved-ref: e20a236cb9ac563e2320bbea2ec346db909c0150
+      url: "git@github.com:atsign-foundation/at_widgets.git"
+    source: git
     version: "4.0.0"
   at_follows_flutter:
     dependency: "direct main"
@@ -98,7 +115,7 @@ packages:
       name: at_location_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.1"
+    version: "3.1.2"
   at_lookup:
     dependency: "direct main"
     description:
@@ -109,9 +126,11 @@ packages:
   at_onboarding_flutter:
     dependency: "direct main"
     description:
-      name: at_onboarding_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: at_onboarding_flutter
+      ref: trunk
+      resolved-ref: e20a236cb9ac563e2320bbea2ec346db909c0150
+      url: "git@github.com:atsign-foundation/at_widgets.git"
+    source: git
     version: "4.0.0"
   at_persistence_secondary_server:
     dependency: transitive
@@ -165,12 +184,12 @@ packages:
     source: hosted
     version: "0.1.6+1"
   biometric_storage:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: biometric_storage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
+    version: "4.0.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -297,6 +316,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2+1"
+  emoji_picker_flutter:
+    dependency: transitive
+    description:
+      name: emoji_picker_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
   encrypt:
     dependency: transitive
     description:
@@ -531,6 +557,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_toastr:
+    dependency: transitive
+    description:
+      name: flutter_toastr
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -1075,6 +1108,62 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
+  shared_preferences:
+    dependency: transitive
+    description:
+      name: shared_preferences
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.13"
+  shared_preferences_android:
+    dependency: transitive
+    description:
+      name: shared_preferences_android
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.11"
+  shared_preferences_ios:
+    dependency: transitive
+    description:
+      name: shared_preferences_ios
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.10"
+  shared_preferences_linux:
+    dependency: transitive
+    description:
+      name: shared_preferences_linux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
+  shared_preferences_macos:
+    dependency: transitive
+    description:
+      name: shared_preferences_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
+  shared_preferences_platform_interface:
+    dependency: transitive
+    description:
+      name: shared_preferences_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  shared_preferences_web:
+    dependency: transitive
+    description:
+      name: shared_preferences_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
+  shared_preferences_windows:
+    dependency: transitive
+    description:
+      name: shared_preferences_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -1296,21 +1385,21 @@ packages:
       name: video_player_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.0"
+    version: "2.2.17"
   video_player_avfoundation:
     dependency: transitive
     description:
       name: video_player_avfoundation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.0"
+    version: "2.2.18"
   video_player_platform_interface:
     dependency: transitive
     description:
       name: video_player_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.1.0"
+    version: "5.0.2"
   video_player_web:
     dependency: transitive
     description:

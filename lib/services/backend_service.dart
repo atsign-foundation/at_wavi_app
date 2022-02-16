@@ -20,6 +20,7 @@ import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:at_client/src/service/sync_service.dart';
 import 'package:at_client/src/service/sync_service_impl.dart';
@@ -42,6 +43,7 @@ class BackendService {
   Map<String?, AtClientService> atClientServiceMap = {};
 
   onboard(String atSign, {AtClientPreference? atClientPreference}) async {
+    await _checkForPermissionStatus();
     var atClientPrefernce;
     await getAtClientPreference()
         .then((value) => atClientPrefernce = value)
@@ -66,6 +68,17 @@ class BackendService {
         showErrorSnackBar(error);
       },
     );
+  }
+
+  Future<void> _checkForPermissionStatus() async {
+    final existingCameraStatus = await Permission.camera.status;
+    if (existingCameraStatus != PermissionStatus.granted) {
+      await Permission.camera.request();
+    }
+    final existingStorageStatus = await Permission.storage.status;
+    if (existingStorageStatus != PermissionStatus.granted) {
+      await Permission.storage.request();
+    }
   }
 
   onSuccessOnboard(Map<String?, AtClientService> atClientServiceMap,
