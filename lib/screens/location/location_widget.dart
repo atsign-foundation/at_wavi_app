@@ -449,6 +449,23 @@ class _LocationWidgetState extends State<LocationWidget> {
                                           },
                                           icon: Icon(Icons.fullscreen)),
                                     ),
+                                  ),
+                                  Positioned(
+                                    right: 10,
+                                    top: 70,
+                                    child: Container(
+                                      height: 40,
+                                      width: 40,
+                                      decoration: BoxDecoration(
+                                        color: ColorConstants.LIGHT_GREY,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: IconButton(
+                                          onPressed: () {
+                                            _confirmationDialog();
+                                          },
+                                          icon: Icon(Icons.delete)),
+                                    ),
                                   )
                                 ],
                               ),
@@ -623,39 +640,6 @@ class _LocationWidgetState extends State<LocationWidget> {
     );
   }
 
-  /// not used currently
-  _updateLocation(OsmLocationModel _data) async {
-    LoadingDialog().show(text: 'Adding custom content');
-
-    if (_locationNickname !=
-        Provider.of<UserProvider>(context, listen: false)
-            .user!
-            .locationNickName
-            .value) {
-      print('update nickname');
-      await AtKeySetService().update(
-          BasicData(
-            value: _locationNickname,
-          ),
-          FieldsEnum.LOCATIONNICKNAME.name);
-    }
-
-    if (_data.toJson() !=
-        Provider.of<UserProvider>(context, listen: false)
-            .user!
-            .location
-            .value) {
-      print('update location');
-      await AtKeySetService().update(
-          BasicData(
-            value: _data.toJson(),
-          ),
-          FieldsEnum.LOCATION.name);
-    }
-
-    LoadingDialog().hide();
-  }
-
   _deleteKey(BasicData _basicData) async {
     Provider.of<UserPreview>(context, listen: false)
         .deletCustomField(AtCategory.LOCATION, _basicData);
@@ -667,16 +651,86 @@ class _LocationWidgetState extends State<LocationWidget> {
     // LoadingDialog().hide();
   }
 
-  _showToast(String _text, {bool isError = false, Color? bgColor}) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      backgroundColor:
-          isError ? ColorConstants.RED : bgColor ?? ColorConstants.black,
-      content: Text(
-        _text,
-        textAlign: TextAlign.center,
-      ),
-      duration: Duration(seconds: 1),
-    ));
+  Future<bool?> _confirmationDialog() async {
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Container(
+          width: SizeConfig().screenWidth * 0.8,
+          child: AlertDialog(
+            contentPadding: EdgeInsets.fromLTRB(15, 30, 15, 20),
+            content: SingleChildScrollView(
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      'Do you want to remove ${Provider.of<UserPreview>(context, listen: false).user()!.locationNickName.value ?? 'Location'}?',
+                      style: CustomTextStyles.customTextStyle(
+                          _themeData!.primaryColor),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 30),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  _themeData!.scaffoldBackgroundColor),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              'No',
+                              style: TextStyles.lightText(
+                                  _themeData!.primaryColor,
+                                  size: 16),
+                            ),
+                          ),
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  _themeData!.primaryColor),
+                            ),
+                            onPressed: () {
+                              Provider.of<UserPreview>(context, listen: false)
+                                  .user()!
+                                  .locationNickName
+                                  .value = '';
+
+                              Provider.of<UserPreview>(context, listen: false)
+                                  .user()!
+                                  .location
+                                  .value = '';
+
+                              _locationNickname = '';
+                              LocationWidgetData().removeData();
+                              setState(() {});
+
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              'Yes',
+                              style: TextStyles.lightText(
+                                  _themeData!.scaffoldBackgroundColor,
+                                  size: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -702,5 +756,9 @@ class LocationWidgetData {
 
   update(OsmLocationModel _data) {
     osmLocationModelNotifier!.value = _data;
+  }
+
+  removeData() {
+    osmLocationModelNotifier!.value = null;
   }
 }

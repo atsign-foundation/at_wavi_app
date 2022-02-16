@@ -14,7 +14,9 @@ import 'package:at_wavi_app/services/change_privacy_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 // import 'package:at_wavi_app/services/size_config.dart' as SizeConfigWavi;
 import 'package:at_wavi_app/utils/colors.dart' as WaviColors;
+import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
+import 'package:at_wavi_app/utils/text_constants.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
@@ -22,7 +24,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:at_follows_flutter/services/size_config.dart';
-import 'package:at_follows_flutter/utils/color_constants.dart';
+import 'package:at_follows_flutter/utils/color_constants.dart'
+    as follows_color_constants;
 
 class Options extends StatefulWidget {
   final String? name;
@@ -41,8 +44,9 @@ class _OptionsState extends State<Options> {
   @override
   void initState() {
     // for follows package
-    ColorConstants.appColor = Color.fromARGB(255, 0, 183, 184);
-    ColorConstants.darkTheme = false;
+    follows_color_constants.ColorConstants.appColor =
+        Color.fromARGB(255, 0, 183, 184);
+    follows_color_constants.ColorConstants.darkTheme = false;
     //
 
     getUser();
@@ -118,7 +122,7 @@ class _OptionsState extends State<Options> {
             InkWell(
               onTap: () async {
                 BackupKeyWidget(
-                  atClientService: AtClientManager.getInstance().atClient,
+                  // atClientService: AtClientManager.getInstance().atClient,
                   atsign: AtClientManager.getInstance()
                       .atClient
                       .getCurrentAtSign()!,
@@ -243,8 +247,7 @@ class _OptionsState extends State<Options> {
             SizedBox(height: 15.toHeight),
             InkWell(
               onTap: () {
-                _deleteAtSign(
-                    AtClientManager.getInstance().atClient.getCurrentAtSign()!);
+                _showResetDialog();
               },
               child: Row(
                 children: <Widget>[
@@ -308,117 +311,133 @@ class _OptionsState extends State<Options> {
     );
   }
 
-  _deleteAtSign(String atsign) async {
-    final _formKey = GlobalKey<FormState>();
+  _showResetDialog() async {
+    var isSelectAtsign = false;
+    var isSelectAll = false;
+    var atsignsList = await KeychainUtil.getAtsignList();
+    atsignsList ??= [];
+
+    var atsignMap = {};
+    for (var atsign in atsignsList) {
+      atsignMap[atsign] = false;
+    }
     await showDialog(
-        context: context,
+        barrierDismissible: true,
+        context: NavService.navKey.currentContext!,
         builder: (BuildContext context) {
-          return AlertDialog(
-            scrollable: true,
-            title: Center(
-              child: Text(
-                'Delete @sign',
-                style: TextStyle(
-                    color: Colors.black,
-                    letterSpacing: 0.1,
-                    fontSize: 20.toFont,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Are you sure you want to delete all data associated with',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    letterSpacing: 0.1,
-                    color: Colors.grey[700],
-                    fontSize: 15.toFont,
-                  ),
-                ),
-                SizedBox(height: 20),
-                Text('$atsign',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 20.toFont,
-                        letterSpacing: 0.1,
-                        fontWeight: FontWeight.bold)),
-                SizedBox(height: 20),
-                Text(
-                  'Type the @sign above to proceed',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.grey[700],
-                    letterSpacing: 0.1,
-                    fontSize: 12.toFont,
-                  ),
-                ),
-                SizedBox(height: 5),
-                Form(
-                  key: _formKey,
-                  child: TextFormField(
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 15.toFont),
-                    validator: (value) {
-                      if (value != atsign) {
-                        return "The @sign doesn't match.";
-                      } else {
-                        return null;
-                      }
-                    },
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: WaviColors.ColorConstants.DARK_GREY)),
-                        filled: true,
-                        fillColor: Colors.white),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  "Caution: this action can't be undone",
-                  style: TextStyle(
-                    fontSize: 13.toFont,
-                    letterSpacing: 0.1,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          return StatefulBuilder(builder: (context, stateSet) {
+            return AlertDialog(
+                title: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    TextButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          await BackendService()
-                              .deleteAtSignFromKeyChain(atsign);
-                        }
-                      },
-                      child: Text(
-                        'DELETE',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
+                    Text(Strings.resetDescription,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 15)),
+                    SizedBox(
+                      height: 10,
                     ),
-                    Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                    ),
+                    Divider(
+                      thickness: 0.8,
+                    )
                   ],
-                )
-              ],
-            ),
-          );
+                ),
+                content: atsignsList!.isEmpty
+                    ? Column(mainAxisSize: MainAxisSize.min, children: [
+                        Text(Strings.noAtsignToReset,
+                            style: TextStyle(fontSize: 15)),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              Strings.close,
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        )
+                      ])
+                    : SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CheckboxListTile(
+                              onChanged: (value) {
+                                value ??= false;
+                                isSelectAll = value;
+                                atsignMap
+                                    .updateAll((key, value1) => value1 = value);
+                                stateSet(() {});
+                              },
+                              value: isSelectAll,
+                              checkColor: Colors.white,
+                              title: Text(Strings.selectAll,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            ),
+                            for (var atsign in atsignsList)
+                              CheckboxListTile(
+                                onChanged: (value) {
+                                  atsignMap[atsign] = value;
+                                  stateSet(() {});
+                                },
+                                value: atsignMap[atsign],
+                                checkColor: Colors.white,
+                                title: Text('$atsign'),
+                              ),
+                            Divider(thickness: 0.8),
+                            if (isSelectAtsign)
+                              Text(Strings.resetErrorText,
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 14)),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(Strings.resetWarningText,
+                                style: TextStyle(fontSize: 14)),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(children: [
+                              TextButton(
+                                onPressed: () async {
+                                  var tempAtsignMap = {};
+                                  tempAtsignMap.addAll(atsignMap);
+                                  tempAtsignMap.removeWhere(
+                                      (key, value) => value == false);
+                                  if (tempAtsignMap.keys.toList().isEmpty) {
+                                    isSelectAtsign = true;
+                                    stateSet(() {});
+                                  } else {
+                                    isSelectAtsign = false;
+                                    await BackendService().resetDevice(
+                                        tempAtsignMap.keys.toList());
+                                    await BackendService().onboardNextAtsign();
+                                  }
+                                },
+                                child: Text(Strings.remove,
+                                    style: TextStyle(
+                                      color: ColorConstants.FONT_PRIMARY,
+                                      fontSize: 15,
+                                    )),
+                              ),
+                              Spacer(),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(Strings.cancel,
+                                      style: TextStyle(
+                                          fontSize: 15, color: Colors.black)))
+                            ])
+                          ],
+                        ),
+                      ));
+          });
         });
   }
 }

@@ -270,4 +270,26 @@ class BackendService {
       print('Error while showing error snackbar $e');
     }
   }
+
+  resetDevice(List checkedAtsigns) async {
+    Navigator.of(NavService.navKey.currentContext!).pop();
+    await resetAtsigns(checkedAtsigns).then((value) async {
+      print('reset done');
+    }).catchError((e) {
+      print('error in reset: $e');
+    });
+  }
+
+  onboardNextAtsign() async {
+    var atSignList = await KeychainUtil.getAtsignList();
+    if (atSignList != null &&
+        atSignList.isNotEmpty &&
+        currentAtSign != atSignList.first) {
+      await Navigator.pushNamedAndRemoveUntil(NavService.navKey.currentContext!,
+          Routes.WELCOME_SCREEN, (Route<dynamic> route) => false);
+    } else if (atSignList == null || atSignList.isEmpty) {
+      await Navigator.pushNamedAndRemoveUntil(NavService.navKey.currentContext!,
+          Routes.WELCOME_SCREEN, (Route<dynamic> route) => false);
+    }
+  }
 }

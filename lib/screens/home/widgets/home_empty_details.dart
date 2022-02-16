@@ -18,7 +18,12 @@ class _HomeEmptyDetailsState extends State<HomeEmptyDetails> {
         padding: const EdgeInsets.all(25),
         child: Column(
           children: <Widget>[
-            Text('Edit your profile', style: TextStyles.black18bold),
+            Text(
+              'Edit your profile',
+              style: Theme.of(context).brightness == Brightness.light
+                  ? TextStyles.black18bold
+                  : TextStyles.white18bold,
+            ),
             SizedBox(height: 10.toHeight),
             Text(
               '''
