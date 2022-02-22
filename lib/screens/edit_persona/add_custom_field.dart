@@ -182,8 +182,9 @@ class _AddCustomFieldState extends State<AddCustomField> {
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.white),
                             )),
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.multiline,
+                        textInputAction: TextInputAction.newline,
+                        maxLines: null,
                       ),
                       Divider(thickness: 1, height: 1),
                       SizedBox(
@@ -286,8 +287,9 @@ class _AddCustomFieldState extends State<AddCustomField> {
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.white),
                                   )),
-                              keyboardType: TextInputType.text,
-                              textInputAction: TextInputAction.done,
+                              keyboardType: TextInputType.multiline,
+                              textInputAction: TextInputAction.newline,
+                              maxLines: null,
                             ),
                       _fieldType == CustomContentType.Html
                           ? Divider(thickness: 1, height: 1)
