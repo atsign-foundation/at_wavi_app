@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
@@ -40,9 +41,15 @@ class MaterialAppClass extends StatelessWidget {
     return MaterialApp(
       builder: (BuildContext context, Widget? child) {
         final data = MediaQuery.of(context);
-        return MediaQuery(
-          data: data.copyWith(textScaleFactor: 1),
-          child: child!,
+        return GestureDetector(
+          onVerticalDragDown: (__) {
+            // When running in iOS, dismiss the keyboard when when user scrolls
+            if (Platform.isIOS) hideKeyboard(context);
+          },
+          child: MediaQuery(
+            data: data.copyWith(textScaleFactor: 1),
+            child: child!,
+          ),
         );
       },
       title: 'AtSign wavi',
@@ -59,5 +66,12 @@ class MaterialAppClass extends StatelessWidget {
       // theme: Themes.lightTheme(highlightColor: Colors.transparent),
       routes: SetupRoutes.routes,
     );
+  }
+
+  void hideKeyboard(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
   }
 }
