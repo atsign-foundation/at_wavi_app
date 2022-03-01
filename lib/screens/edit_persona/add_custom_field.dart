@@ -14,6 +14,7 @@ import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:html_character_entities/html_character_entities.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:provider/provider.dart';
 import 'package:html_editor_enhanced/utils/options.dart';
@@ -308,7 +309,7 @@ class _AddCustomFieldState extends State<AddCustomField> {
                                 textColor: AllColors().Black,
                                 initialValue:
                                     ('Preview (non editable)' + '\n\n') +
-                                        (basicData.valueDescription ?? ''),
+                                        (HtmlCharacterEntities.decode(basicData.valueDescription ?? '')),
                                 baseOffset:
                                     (basicData.valueDescription ?? '').length,
                                 height: 250,

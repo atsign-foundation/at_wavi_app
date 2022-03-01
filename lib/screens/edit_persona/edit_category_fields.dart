@@ -15,6 +15,7 @@ import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:html_character_entities/html_character_entities.dart';
 import 'package:provider/provider.dart';
 
 class EditCategoryFields extends StatefulWidget {
@@ -492,7 +493,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                   }
                   return null;
                 },
-                initialValue: basicData.value,
+                initialValue: basicData.type == CustomContentType.Html.name ? HtmlCharacterEntities.decode(basicData.value) : basicData.value,
                 onChanged: (String value) {
                   basicData.value = value;
                   if (!isCustomField) {

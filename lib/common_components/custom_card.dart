@@ -5,6 +5,7 @@ import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:html_character_entities/html_character_entities.dart';
 
 class CustomCard extends StatelessWidget {
   final String? title, subtitle;
@@ -50,7 +51,7 @@ class CustomCard extends StatelessWidget {
                           arguments: {'title': title, 'url': subtitle});
                     },
                     child: HtmlWidget(
-                      subtitle!,
+                      HtmlCharacterEntities.decode(subtitle!),
                       textStyle: TextStyle(
                         color: isUrl
                             ? ColorConstants.orange
