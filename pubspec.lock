@@ -46,21 +46,17 @@ packages:
   at_client:
     dependency: "direct main"
     description:
-      path: at_client
-      ref: switch_atsign_bug
-      resolved-ref: e954470d82846ff90b516171d2249e99c691c352
-      url: "git@github.com:atsign-foundation/at_client_sdk.git"
-    source: git
-    version: "3.0.9"
+      name: at_client
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.12"
   at_client_mobile:
     dependency: "direct main"
     description:
-      path: at_client_mobile
-      ref: switch_atsign_bug
-      resolved-ref: e954470d82846ff90b516171d2249e99c691c352
-      url: "git@github.com:atsign-foundation/at_client_sdk.git"
-    source: git
-    version: "3.1.5"
+      name: at_client_mobile
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.8"
   at_common_flutter:
     dependency: "direct main"
     description:
@@ -78,36 +74,25 @@ packages:
   at_contact:
     dependency: "direct main"
     description:
-      path: at_contact
-      ref: fix_create_group
-      resolved-ref: "3f04d0bbded86834d3085ba03887dfb5df84bdec"
-      url: "git@github.com:atsign-foundation/at_libraries.git"
-    source: git
-    version: "3.0.3"
+      name: at_contact
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.5"
   at_contacts_flutter:
     dependency: "direct main"
     description:
-      path: at_contacts_flutter
-      ref: trunk
-      resolved-ref: e20a236cb9ac563e2320bbea2ec346db909c0150
-      url: "git@github.com:atsign-foundation/at_widgets.git"
-    source: git
-    version: "4.0.0"
-  at_contacts_group_flutter:
-    dependency: "direct overridden"
-    description:
-      path: at_contacts_group_flutter
-      ref: trunk
-      resolved-ref: e20a236cb9ac563e2320bbea2ec346db909c0150
-      url: "git@github.com:atsign-foundation/at_widgets.git"
-    source: git
-    version: "4.0.0"
+      name: at_contacts_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.1"
   at_follows_flutter:
     dependency: "direct main"
     description:
-      name: at_follows_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: at_follows_flutter
+      ref: "fix/at_follows_flutter_example"
+      resolved-ref: "4831bb7841df57486fd84c3228746510b95dc718"
+      url: "git@github.com:atsign-foundation/at_widgets.git"
+    source: git
     version: "3.0.5"
   at_location_flutter:
     dependency: "direct main"
@@ -122,15 +107,13 @@ packages:
       name: at_lookup
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.7"
+    version: "3.0.10"
   at_onboarding_flutter:
     dependency: "direct main"
     description:
-      path: at_onboarding_flutter
-      ref: trunk
-      resolved-ref: e20a236cb9ac563e2320bbea2ec346db909c0150
-      url: "git@github.com:atsign-foundation/at_widgets.git"
-    source: git
+      name: at_onboarding_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "4.0.0"
   at_persistence_secondary_server:
     dependency: transitive
@@ -138,7 +121,7 @@ packages:
       name: at_persistence_secondary_server
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.15"
+    version: "3.0.16"
   at_persistence_spec:
     dependency: transitive
     description:
@@ -158,10 +141,10 @@ packages:
     description:
       path: at_sync_ui_flutter
       ref: "feature/at-sync-ui"
-      resolved-ref: "4b5f3ea8a92c9d4941bbe3afb43d653944f2d4db"
+      resolved-ref: "2b1a2bff0927cf8442a7db769181c57bd6d12388"
       url: "https://github.com/atsign-foundation/at_widgets.git"
     source: git
-    version: "1.0.0"
+    version: "1.0.1"
   at_utf7:
     dependency: transitive
     description:
@@ -175,7 +158,7 @@ packages:
       name: at_utils
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.5"
+    version: "3.0.6"
   audio_session:
     dependency: transitive
     description:
@@ -296,7 +279,7 @@ packages:
     source: hosted
     version: "0.17.1"
   cupertino_icons:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: cupertino_icons
       url: "https://pub.dartlang.org"
@@ -316,13 +299,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2+1"
-  emoji_picker_flutter:
-    dependency: transitive
-    description:
-      name: emoji_picker_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.1"
   encrypt:
     dependency: transitive
     description:
@@ -357,7 +333,7 @@ packages:
       name: file_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.4.0"
+    version: "4.5.0"
   file_saver:
     dependency: transitive
     description:
@@ -440,13 +416,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.3.0"
-  flutter_colorpicker:
-    dependency: "direct overridden"
-    description:
-      name: flutter_colorpicker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.1"
   flutter_dotenv:
     dependency: "direct main"
     description:
@@ -557,13 +526,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_toastr:
-    dependency: transitive
-    description:
-      name: flutter_toastr
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.3"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -646,13 +608,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.2+2"
-  geocoder:
-    dependency: "direct main"
-    description:
-      name: geocoder
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.1"
   geolocator:
     dependency: transitive
     description:
@@ -695,27 +650,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.0"
-  google_fonts:
-    dependency: "direct main"
-    description:
-      name: google_fonts
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.3.0"
   hive:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: hive
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
-  hive_flutter:
-    dependency: "direct main"
-    description:
-      name: hive_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
   html:
     dependency: transitive
     description:
@@ -757,7 +698,7 @@ packages:
       name: image_cropper
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.1"
+    version: "1.5.0"
   infinite_listview:
     dependency: transitive
     description:
@@ -842,6 +783,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.11"
+  material_color_utilities:
+    dependency: transitive
+    description:
+      name: material_color_utilities
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.3"
   meta:
     dependency: transitive
     description:
@@ -863,6 +811,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  mutex:
+    dependency: transitive
+    description:
+      name: mutex
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   nested:
     dependency: transitive
     description:
@@ -967,7 +922,21 @@ packages:
       name: permission_handler
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "8.3.0"
+    version: "9.2.0"
+  permission_handler_android:
+    dependency: transitive
+    description:
+      name: permission_handler_android
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "9.0.2"
+  permission_handler_apple:
+    dependency: transitive
+    description:
+      name: permission_handler_apple
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "9.0.3"
   permission_handler_platform_interface:
     dependency: transitive
     description:
@@ -975,6 +944,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.7.0"
+  permission_handler_windows:
+    dependency: transitive
+    description:
+      name: permission_handler_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   petitparser:
     dependency: transitive
     description:
@@ -1108,62 +1084,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
-  shared_preferences:
-    dependency: transitive
-    description:
-      name: shared_preferences
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.13"
-  shared_preferences_android:
-    dependency: transitive
-    description:
-      name: shared_preferences_android
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.11"
-  shared_preferences_ios:
-    dependency: transitive
-    description:
-      name: shared_preferences_ios
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.10"
-  shared_preferences_linux:
-    dependency: transitive
-    description:
-      name: shared_preferences_linux
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.0"
-  shared_preferences_macos:
-    dependency: transitive
-    description:
-      name: shared_preferences_macos
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.3"
-  shared_preferences_platform_interface:
-    dependency: transitive
-    description:
-      name: shared_preferences_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
-  shared_preferences_web:
-    dependency: transitive
-    description:
-      name: shared_preferences_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.3"
-  shared_preferences_windows:
-    dependency: transitive
-    description:
-      name: shared_preferences_windows
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -1238,7 +1158,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.3"
+    version: "0.4.8"
   timezone:
     dependency: transitive
     description:
@@ -1450,7 +1370,7 @@ packages:
     source: hosted
     version: "0.2.0"
   webview_flutter:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: webview_flutter
       url: "https://pub.dartlang.org"
@@ -1483,7 +1403,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.4.0"
+    version: "2.4.1"
   wkt_parser:
     dependency: transitive
     description:
