@@ -61,7 +61,7 @@ dependency_overrides:
   biometric_storage: ^4.0.1
   at_follows_flutter:
     git:
-      url: git@github.com:atsign-foundation/at_widgets.git
+      url: https://github.com/atsign-foundation/at_widgets.git
       ref: fix/at_follows_flutter_example
       path: at_follows_flutter
   at_sync_ui_flutter:
