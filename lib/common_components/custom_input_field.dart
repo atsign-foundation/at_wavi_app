@@ -77,6 +77,10 @@ class CustomInputField extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: TextField(
+                autocorrect: false, // textfield autocorrect off
+                enableSuggestions: false,
+                keyboardType: TextInputType
+                    .visiblePassword, // Tweak, if the device's keyboard's autocorrect is on
                 readOnly: isReadOnly,
                 style: TextStyle(
                     fontSize: 15.toFont, color: textColor ?? Colors.white),
