@@ -34,6 +34,7 @@ class SetupRoutes {
           return HomeScreen(
             themeData: args['themeData'],
             isPreview: args['isPreview'],
+            key: args['key'],
           );
         }
 

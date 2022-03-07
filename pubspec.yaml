@@ -69,13 +69,15 @@ dependency_overrides:
       url: git@github.com:atsign-foundation/at_widgets.git
       ref: fix/at_follows_flutter_example
       path: at_follows_flutter
-  flutter_colorpicker: ^0.6.0 #because html_editor_enhanced uses 0.4.0, which gives flutter event errors
-  at_sync_ui_flutter:
-    git:  
-      url: https://github.com/atsign-foundation/at_widgets.git
-      path: at_sync_ui_flutter
-      ref: feature/at-sync-ui
       
+  flutter_colorpicker: ^0.6.0 #because html_editor_enhanced uses 0.4.0, which gives flutter event errors
+  
+  at_sync_ui_flutter:
+    git:
+      url: git@github.com:atsign-foundation/at_widgets.git
+      ref: fix/at_sync_ui_flutter
+      path: at_sync_ui_flutter
+
   webview_flutter: ^3.0.0
   biometric_storage: ^4.0.1
 
