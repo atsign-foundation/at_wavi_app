@@ -64,8 +64,8 @@ class _HomeFeaturedState extends State<HomeFeatured> {
       return Container(
         child: Column(
           children: <Widget>[
-            if (!widget.isPrivateInstagram) _buildInstagramContent(),
-            if (!widget.isPrivateTwitter) _buildTwitterContent(),
+            !widget.isPrivateInstagram && widget.instagramUsername != null ? _buildInstagramContent() : SizedBox(),
+            !widget.isPrivateTwitter && widget.twitterUsername != null ? _buildTwitterContent() : SizedBox(),
           ],
         ),
       );
