@@ -90,6 +90,7 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
 
   Widget _buildContentWidget() {
     User? user;
+    User? myProfile = Provider.of<UserProvider>(context).user;;
     if (widget.isMyProfile && widget.isEditable == false) {
       user = Provider.of<UserProvider>(context).user;
     } else {
@@ -102,9 +103,21 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
             element.accountName?.contains(AtText.IS_DELETED) == false)
         .toList();
 
+    //Fix: app don't show save button after delete all images
+    List<BasicData> myCustomFields =
+        myProfile?.customFields[AtCategory.IMAGE.name] ?? [];
+    final myItems = myCustomFields
+        .where((element) =>
+    element.accountName?.contains(AtText.IS_DELETED) == false)
+        .toList();
+
     bool isEmptyData = (items).isEmpty;
 
-    if (isEmptyData) {
+    if (isEmptyData && widget.isEditable == false) {
+      return _buildEmptyWidget();
+    }
+
+    if (isEmptyData && widget.isEditable && myItems.isEmpty) {
       return _buildEmptyWidget();
     }
 
