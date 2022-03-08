@@ -14,10 +14,12 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runZoned<Future<void>>(() async {
     print(await path_provider.getApplicationDocumentsDirectory());
-    if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    if (Platform.isLinux || Platform.isMacOS) {
       await DesktopWindow.setWindowSize(Size(1024, 576));
       await DesktopWindow.setMinWindowSize(Size(1024, 576));
       // DartVLC.initialize();
+    } else if (Platform.isWindows) {
+      await DesktopWindow.setMinWindowSize(Size(1024, 576));
     }
     // ignore: unawaited_futures
     SystemChrome.setPreferredOrientations([
