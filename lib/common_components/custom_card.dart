@@ -61,7 +61,14 @@ class CustomCard extends StatelessWidget {
                                     'Select email app to compose',
                                 emailContent: emailContent);
                         if (!result.didOpen && !result.canOpen) {
-                          // No Email App
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text(
+                              "No Email applications found",
+                              textAlign: TextAlign.center,
+                            ),
+                            duration: Duration(seconds: 1),
+                          ));
                         } else if (!result.didOpen && result.canOpen) {
                           showDialog(
                             context: context,
