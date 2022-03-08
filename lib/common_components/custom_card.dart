@@ -44,39 +44,36 @@ class CustomCard extends StatelessWidget {
             subtitle != null
                 ? GestureDetector(
                     onTap: () async {
-                      // if (!isUrl) {
-                      //   return;
-                      // }
-                      // SetupRoutes.push(context, Routes.WEB_VIEW,
-                      //     arguments: {'title': title, 'url': subtitle});
-
+                      print(title);
                       if (subtitle != null) {
-                        EmailContent emailContent = EmailContent(to: [
-                          subtitle!,
-                        ]);
+                        if (title == "Email Address") {
+                          EmailContent emailContent = EmailContent(to: [
+                            subtitle!,
+                          ]);
 
-                        OpenMailAppResult result =
-                            await OpenMailApp.composeNewEmailInMailApp(
-                                nativePickerTitle:
-                                    'Select email app to compose',
-                                emailContent: emailContent);
-                        if (!result.didOpen && !result.canOpen) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            backgroundColor: Colors.red,
-                            content: Text(
-                              "No Email applications found",
-                              textAlign: TextAlign.center,
-                            ),
-                            duration: Duration(seconds: 1),
-                          ));
-                        } else if (!result.didOpen && result.canOpen) {
-                          showDialog(
-                            context: context,
-                            builder: (_) => MailAppPickerDialog(
-                              mailApps: result.options,
-                              emailContent: emailContent,
-                            ),
-                          );
+                          OpenMailAppResult result =
+                              await OpenMailApp.composeNewEmailInMailApp(
+                                  nativePickerTitle:
+                                      'Select email app to compose',
+                                  emailContent: emailContent);
+                          if (!result.didOpen && !result.canOpen) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text(
+                                "No Email applications found",
+                                textAlign: TextAlign.center,
+                              ),
+                              duration: Duration(seconds: 1),
+                            ));
+                          } else if (!result.didOpen && result.canOpen) {
+                            showDialog(
+                              context: context,
+                              builder: (_) => MailAppPickerDialog(
+                                mailApps: result.options,
+                                emailContent: emailContent,
+                              ),
+                            );
+                          }
                         }
                       }
                     },
