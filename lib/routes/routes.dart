@@ -11,6 +11,7 @@ import 'package:at_wavi_app/screens/location/location_widget.dart';
 import 'package:at_wavi_app/screens/location/widgets/create_custom_location.dart';
 import 'package:at_wavi_app/screens/location/widgets/preview_location.dart';
 import 'package:at_wavi_app/screens/location/widgets/selected_location.dart';
+import 'package:at_wavi_app/screens/qr_screen.dart';
 import 'package:at_wavi_app/screens/search.dart';
 import 'package:at_wavi_app/screens/website_webview/website_webview.dart';
 import 'package:at_wavi_app/screens/welcome.dart';
@@ -171,6 +172,17 @@ class SetupRoutes {
         } else
           return SizedBox();
       },
+      Routes.QR_SCREEN: (context) {
+        if ((ModalRoute.of(context) != null) &&
+            (ModalRoute.of(context)!.settings.arguments != null)) {
+          Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return QrScreen(
+            atSign: args['atSign'],
+          );
+        } else
+          return SizedBox();
+      }
     };
   }
 
