@@ -52,9 +52,9 @@ dependencies:
   at_follows_flutter: ^3.0.5
   at_location_flutter: ^3.1.2
   uni_links: ^0.5.1
-  
-  flutter_dotenv: ^5.0.2  
-  open_mail_app:
+
+  flutter_dotenv: ^5.0.2 
+  url_launcher:
 
 dependency_overrides:
   permission_handler: ^9.2.0
@@ -62,7 +62,7 @@ dependency_overrides:
   biometric_storage: ^4.0.1
   at_follows_flutter:
     git:
-      url: https://github.com/atsign-foundation/at_widgets.git
+      url: git@github.com:atsign-foundation/at_widgets.git
       ref: fix/at_follows_flutter_example
       path: at_follows_flutter
   at_sync_ui_flutter:
