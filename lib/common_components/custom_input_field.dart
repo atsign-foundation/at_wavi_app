@@ -83,7 +83,7 @@ class CustomInputField extends StatelessWidget {
                 enableSuggestions: false,
                 keyboardType: textInputType ??
                     TextInputType
-                        .visiblePassword, // Tweak, if the device's keyboard's autocorrect is on
+                        .text, // Tweak, if the device's keyboard's autocorrect is on
                 readOnly: isReadOnly,
                 style: TextStyle(
                     fontSize: 15.toFont, color: textColor ?? Colors.white),
