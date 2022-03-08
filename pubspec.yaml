@@ -55,6 +55,8 @@ dependencies:
   
   flutter_dotenv: ^5.0.2  
   open_mail_app:
+  get_it: 
+  url_launcher:
 
 dependency_overrides:
   permission_handler: ^9.2.0

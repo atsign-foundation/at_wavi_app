@@ -5,7 +5,9 @@ import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:get_it/get_it.dart';
 import 'package:open_mail_app/open_mail_app.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomCard extends StatelessWidget {
   final String? title, subtitle;
@@ -44,32 +46,67 @@ class CustomCard extends StatelessWidget {
             subtitle != null
                 ? GestureDetector(
                     onTap: () async {
-                      // if (!isUrl) {
-                      //   return;
-                      // }
-                      // SetupRoutes.push(context, Routes.WEB_VIEW,
-                      //     arguments: {'title': title, 'url': subtitle});
-
                       if (subtitle != null) {
-                        EmailContent emailContent = EmailContent(to: [
-                          subtitle!,
-                        ]);
-
-                        OpenMailAppResult result =
-                            await OpenMailApp.composeNewEmailInMailApp(
-                                nativePickerTitle:
-                                    'Select email app to compose',
-                                emailContent: emailContent);
-                        if (!result.didOpen && !result.canOpen) {
-                          // No Email App
-                        } else if (!result.didOpen && result.canOpen) {
-                          showDialog(
-                            context: context,
-                            builder: (_) => MailAppPickerDialog(
-                              mailApps: result.options,
-                              emailContent: emailContent,
-                            ),
-                          );
+                        if (title == "Phone Number") {
+                          showBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return Container(
+                                  height: 120,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      const SizedBox(height: 5),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 10),
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Select Action",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const SizedBox(width: 5),
+                                          IconButton(
+                                              onPressed: () async {
+                                                await launch("tel:$subtitle")
+                                                    .catchError((val) {
+                                                  // Error handling
+                                                });
+                                              },
+                                              icon: Icon(
+                                                Icons.phone,
+                                                size: 30,
+                                                color: Colors.green,
+                                              )),
+                                          const SizedBox(width: 10),
+                                          IconButton(
+                                              onPressed: () async {
+                                                await launch("sms:$subtitle")
+                                                    .catchError((val) {
+                                                  // Error handling
+                                                });
+                                              },
+                                              icon: Icon(
+                                                Icons.message,
+                                                size: 30,
+                                                color: Colors.lightBlue,
+                                              )),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 5),
+                                    ],
+                                  ),
+                                );
+                              });
                         }
                       }
                     },
@@ -90,4 +127,10 @@ class CustomCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class CallsAndMessagesService {
+  void call(String number) => launch("tel:$number");
+  void sendSms(String number) => launch("sms:$number");
+  void sendEmail(String email) => launch("mailto:$email");
 }
