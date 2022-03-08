@@ -37,6 +37,25 @@ class DesktopLoginModel extends ChangeNotifier {
   }) async {
     isAuthorizing = true;
     notifyListeners();
+    //Check if device paired with an account before
+    String? currentAtSign = await BackendService().getAtSign();
+    AtClientPreference? atClientPreference =
+        await BackendService().getAtClientPreference();
+
+    if (currentAtSign != null && currentAtSign != '') {
+      await BackendService().onboard(
+        currentAtSign,
+        atClientPreference: atClientPreference,
+        appColor: onBoardingColor,
+        onSuccess: openHomePage,
+      );
+
+      isAuthorizing = false;
+      notifyListeners();
+      return;
+    }
+
+    //Onboard with new account
     await BackendService().onboard(
       '',
       appColor: onBoardingColor,
