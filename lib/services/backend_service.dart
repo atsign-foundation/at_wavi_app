@@ -61,7 +61,11 @@ class BackendService {
         await onSuccessOnboard(atClientServiceMap, onboardedAtsign);
         LoadingDialog().hide();
         SetupRoutes.pushAndRemoveAll(
-            NavService.navKey.currentContext!, Routes.HOME);
+            NavService.navKey.currentContext!, Routes.HOME,
+            arguments: {
+              'key': Key(onboardedAtsign!),
+              'isPreview': false,
+            });
       },
       onError: (error) {
         print('Onboarding throws $error error');
@@ -145,7 +149,7 @@ class BackendService {
     AtSyncUIService().sync(atSyncUIOverlay: AtSyncUIOverlay.snackbar);
   }
 
-  _onSuccessCallback(SyncResult syncStatus) async {
+  _onSuccessCallback(syncStatus) async {
     print(
         'syncStatus type : $syncStatus, datachanged : ${syncStatus.dataChange}');
     var userProvider = Provider.of<UserProvider>(
@@ -158,7 +162,7 @@ class BackendService {
     }
   }
 
-  _onErrorCallback(SyncResult syncStatus) async {
+  _onErrorCallback(syncStatus) async {
     showErrorSnackBar('Sync failed');
   }
 

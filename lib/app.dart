@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/view_models/deep_link_provider.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
-import 'package:at_wavi_app/services/at_key_set_service.dart';
 // import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
@@ -31,6 +31,8 @@ class _MyAppState extends State<MyApp> {
       ChangeNotifierProvider<UserPreview>(create: (context) => UserPreview()),
       ChangeNotifierProvider<SetPrivateState>(
           create: (context) => SetPrivateState()),
+      ChangeNotifierProvider<DeepLinkProvider>(
+          create: (context) => DeepLinkProvider()),
     ], child: MaterialAppClass());
   }
 }
