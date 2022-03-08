@@ -42,13 +42,13 @@ enum HOME_TABS { DETAILS, CHANNELS, FEATURED }
 class HomeScreen extends StatefulWidget {
   final ThemeData? themeData;
   final bool isPreview;
-  HomeScreen({this.themeData, this.isPreview = false});
+  HomeScreen({this.themeData, this.isPreview = false, Key? key})
+      : super(key: key);
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  int _selectedIndex = 0;
   HOME_TABS _currentTab = HOME_TABS.DETAILS;
   bool _isDark = false;
   ThemeData? _themeData;
@@ -64,10 +64,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    _receiveIntent();
-    _initialLink();
     _inputBoxController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+
+    if (!widget.isPreview) {
+      // not for preview/searched screen
+      _receiveIntent();
+      _initialLink();
+    }
 
     if (widget.isPreview) {
       _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
@@ -128,12 +132,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     location_package_constants.MixedConstants.setApiKey(MixedConstants.API_KEY);
   }
 
-  _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   _getThemeData() async {
     if (widget.themeData != null) {
       _themeData = widget.themeData!;
@@ -176,7 +174,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         print('uni link data: $link');
         if (link != null) {
           if (mounted) {
-            _animate();
+            if (!_inputBoxController.isCompleted) {
+              _animate(); // only animate if not already open
+            }
             setState(() {
               searchedAtsign = link.replaceAll('atprotocol://persona/@', '');
             });
@@ -191,12 +191,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       if (initialLink != null) {
         WidgetsBinding.instance!.addPersistentFrameCallback((timeStamp) {
           if (mounted) {
-            _animate();
-            setState(() {
-              searchedAtsign =
-                  initialLink.replaceAll('atprotocol://persona/@', '');
-            });
-            _searchProfile();
+            searchedAtsign =
+                initialLink.replaceAll('atprotocol://persona/@', '');
+            hideHeader = true;
+            _inputBoxController.value = _inputBoxController.upperBound;
+
+            _searchProfile(); // setState() will happen here
           }
         });
       }
@@ -281,7 +281,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             child: RefreshIndicator(
               onRefresh: () async {
                 if (_isSearchScreen) {
-                  await SearchService().getAtsignDetails(_currentUser.atsign);
+                  var _searchRes = await SearchService().getAtsignDetails(
+                      _currentUser.atsign,
+                      serverLookup: true);
+                  if (_searchRes != null) {
+                    Provider.of<UserPreview>(context, listen: false).setUser =
+                        _searchRes.user;
+                    FieldOrderService().setPreviewOrder =
+                        _searchRes.fieldOrders;
+                    _currentUser =
+                        Provider.of<UserPreview>(context, listen: false)
+                            .user()!;
+                  }
                 } else {
                   await BackendService().sync();
                 }
@@ -300,6 +311,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     // content
                     Consumer<UserProvider>(
                       builder: (context, _provider, _) {
+                        if ((!widget.isPreview) && (_provider.user != null)) {
+                          _currentUser = _provider.user!;
+                        } // for image
+
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
@@ -886,9 +901,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     if (loadingSearchedAtsign) {
       return;
     }
-    setState(() {
-      loadingSearchedAtsign = true;
-    });
+    if (mounted) {
+      setState(() {
+        loadingSearchedAtsign = true;
+      });
+    }
 
     var _searchedAtsignData =
         SearchService().getAlreadySearchedAtsignDetails(searchedAtsign);

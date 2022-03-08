@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:at_wavi_app/app.dart';
 // import 'package:dart_vlc/dart_vlc.dart';
 import 'package:desktop_window/desktop_window.dart';
+import 'package:at_wavi_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -21,6 +22,7 @@ void main() {
     } else if (Platform.isWindows) {
       await DesktopWindow.setMinWindowSize(Size(1024, 576));
     }
+    await MixedConstants.load();
     // ignore: unawaited_futures
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,

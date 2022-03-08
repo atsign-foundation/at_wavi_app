@@ -54,6 +54,7 @@ class ColorConstants {
   static const Color LIGHT_GREY = Color(0xFFF0F1F3);
   static const Color DARK_GREY = Color(0xFF6D6D79);
   static const Color MILD_GREY = Color(0xFFE4E4E4);
+  static const Color FONT_PRIMARY = Color(0xff131219);
 
   static const Color RED = Color(0xFFe34040);
 

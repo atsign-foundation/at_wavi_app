@@ -1,3 +1,7 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
+
 class MixedConstants {
   // static const String WEBSITE_URL = 'https://staging.atsign.wtf/';
   static const String WEBSITE_URL = 'https://atsign.com/';
@@ -35,9 +39,14 @@ class MixedConstants {
   static const String FOLLOWING_KEY = 'following_by_self';
   static const String FOLLOWERS_KEY = 'followers_of_self';
 
-  static const String MAP_KEY = 'B3Wus46C2WZFhwZKQkEx';
-  static const String API_KEY = 'yRCeKfJDPQDTp11YI1db67J_fww80QP6R3Llckg-REw';
+  static String MAP_KEY = dotenv.get('MAP_KEY');
+  static String API_KEY = dotenv.get('API_KEY');
+
   static final String twitterBearerToken = '';
   static const int responseTimeLimit = 30;
   static const String fieldOrderKey = 'field_order_of_self';
+
+  /// Load the environment variables from the .env file.
+  /// Directly calls load from the dotenv package.
+  static Future<void> load() => dotenv.load();
 }

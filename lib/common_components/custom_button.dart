@@ -25,11 +25,10 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () async {
         await onTap();
       },
-      highlightColor: highlightColor ?? Colors.transparent,
       child: Container(
         alignment: Alignment.center,
         width: width.toWidth,
