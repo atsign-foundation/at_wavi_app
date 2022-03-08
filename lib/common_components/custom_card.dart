@@ -5,6 +5,7 @@ import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:open_mail_app/open_mail_app.dart';
 
 class CustomCard extends StatelessWidget {
   final String? title, subtitle;
@@ -42,12 +43,35 @@ class CustomCard extends StatelessWidget {
             SizedBox(height: 6),
             subtitle != null
                 ? GestureDetector(
-                    onTap: () {
-                      if (!isUrl) {
-                        return;
+                    onTap: () async {
+                      // if (!isUrl) {
+                      //   return;
+                      // }
+                      // SetupRoutes.push(context, Routes.WEB_VIEW,
+                      //     arguments: {'title': title, 'url': subtitle});
+
+                      if (subtitle != null) {
+                        EmailContent emailContent = EmailContent(to: [
+                          subtitle!,
+                        ]);
+
+                        OpenMailAppResult result =
+                            await OpenMailApp.composeNewEmailInMailApp(
+                                nativePickerTitle:
+                                    'Select email app to compose',
+                                emailContent: emailContent);
+                        if (!result.didOpen && !result.canOpen) {
+                          // No Email App
+                        } else if (!result.didOpen && result.canOpen) {
+                          showDialog(
+                            context: context,
+                            builder: (_) => MailAppPickerDialog(
+                              mailApps: result.options,
+                              emailContent: emailContent,
+                            ),
+                          );
+                        }
                       }
-                      SetupRoutes.push(context, Routes.WEB_VIEW,
-                          arguments: {'title': title, 'url': subtitle});
                     },
                     child: HtmlWidget(
                       subtitle!,
