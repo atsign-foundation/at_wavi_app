@@ -7,4 +7,8 @@ class Strings {
       'Please select atleast one @sign to reset';
   static const String resetWarningText =
       'Warning: This action cannot be undone';
+  static const close = 'Close';
+  static const selectAll = 'Select All';
+  static const remove = 'Remove';
+  static const cancel = 'Cancel';
 }

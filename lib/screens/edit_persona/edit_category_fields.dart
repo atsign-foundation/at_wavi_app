@@ -508,8 +508,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     )),
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                textInputAction: TextInputAction.newline,
               ),
             ),
             GestureDetector(

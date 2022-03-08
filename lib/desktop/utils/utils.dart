@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
@@ -32,10 +33,12 @@ void showSnackBar(BuildContext context, String message, Color color) {
 }
 
 Future<Uint8List?> getVideoThumbnail(String path) async {
-  final uInt8list = await VideoCompress.getByteThumbnail(
-    path,
-    quality: 50,
-  );
+  final uInt8list = (Platform.isMacOS)
+      ? await VideoCompress.getByteThumbnail(
+          path,
+          quality: 50,
+        )
+      : Uint8List(0);
   return uInt8list;
 }
 

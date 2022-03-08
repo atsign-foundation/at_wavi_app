@@ -83,6 +83,7 @@ class MaterialAppClass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var brightness = SchedulerBinding.instance!.window.platformBrightness;
+
     /// MaterialApp for desktop
     if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
       /// Mock data
@@ -109,8 +110,9 @@ class MaterialAppClass extends StatelessWidget {
                     ColorConstants.black)
                 ? Brightness.dark
                 : Brightness.light,
-            primaryColor: themeProvider.currentAtsignThemeData?.highlightColor ??
-                ColorConstants.green,
+            primaryColor:
+                themeProvider.currentAtsignThemeData?.highlightColor ??
+                    ColorConstants.green,
           );
           return InheritedAppTheme(
             theme: appTheme,
@@ -138,9 +140,15 @@ class MaterialAppClass extends StatelessWidget {
     return MaterialApp(
       builder: (BuildContext context, Widget? child) {
         final data = MediaQuery.of(context);
-        return MediaQuery(
-          data: data.copyWith(textScaleFactor: 1),
-          child: child!,
+        return GestureDetector(
+          onVerticalDragDown: (__) {
+            // When running in iOS, dismiss the keyboard when when user scrolls
+            if (Platform.isIOS) hideKeyboard(context);
+          },
+          child: MediaQuery(
+            data: data.copyWith(textScaleFactor: 1),
+            child: child!,
+          ),
         );
       },
       title: 'AtSign wavi',
@@ -157,5 +165,12 @@ class MaterialAppClass extends StatelessWidget {
       // theme: Themes.lightTheme(highlightColor: Colors.transparent),
       routes: routes,
     );
+  }
+
+  void hideKeyboard(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
   }
 }
