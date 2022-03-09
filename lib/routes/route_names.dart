@@ -16,5 +16,4 @@ class Routes {
   static const String ADD_CUSTOM_FIELD = 'add_custom_fleid';
   static const String REORDER_FIELDS = 'reorder_fields';
   static const String WEB_VIEW = 'web_view';
-  static const String QR_SCREEN = 'qr_screen';
 }
