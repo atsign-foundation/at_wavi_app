@@ -44,8 +44,7 @@ class CustomCard extends StatelessWidget {
             subtitle != null
                 ? GestureDetector(
                     onTap: () async {
-                      if (subtitle != null) {
-                        
+                         
                     },
                     child: HtmlWidget(
                       subtitle!,
