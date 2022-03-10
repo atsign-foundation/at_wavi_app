@@ -45,12 +45,7 @@ class CustomCard extends StatelessWidget {
                 ? GestureDetector(
                     onTap: () async {
                       if (subtitle != null) {
-                        if (title == "Email Address") {
-                          await launch("mailto:$subtitle").catchError((val) {
-                            // Error Handling
-                          });
-                        }
-                      }
+                        
                     },
                     child: HtmlWidget(
                       subtitle!,
