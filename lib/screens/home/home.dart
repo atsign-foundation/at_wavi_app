@@ -656,6 +656,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     end: Offset.zero,
                   ).animate(_inputBoxController),
                   child: CustomInputField(
+                    textInputType: TextInputType.visiblePassword,
+                    blankSpacesAllowed: false,
+                    autoCorrectAllowed: false,
                     padding: EdgeInsets.only(right: 10),
                     width: 343.toWidth,
                     // height: 60.toHeight,

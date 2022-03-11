@@ -53,7 +53,7 @@ dependencies:
   at_location_flutter: ^3.1.2
   uni_links: ^0.5.1
 
-  flutter_dotenv: ^5.0.2  
+  flutter_dotenv: ^5.0.2 
 
 dependency_overrides:
   permission_handler: ^9.2.0
