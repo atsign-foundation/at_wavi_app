@@ -5,8 +5,6 @@ import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:get_it/get_it.dart';
-import 'package:open_mail_app/open_mail_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomCard extends StatelessWidget {
@@ -47,7 +45,7 @@ class CustomCard extends StatelessWidget {
                 ? GestureDetector(
                     onTap: () async {
                       if (subtitle != null) {
-                        if (title == "Phone Number") {
+                        if (title!.contains("Phone")) {
                           showBottomSheet(
                               context: context,
                               builder: (context) {
@@ -107,6 +105,13 @@ class CustomCard extends StatelessWidget {
                                   ),
                                 );
                               });
+                        } else if (title!.contains("Email")) {
+                          await launch("mailto:$subtitle").catchError((val) {
+                            // Error handling
+                          });
+                        } else {
+                          SetupRoutes.push(context, Routes.WEB_VIEW,
+                              arguments: {'title': title, 'url': subtitle});
                         }
                       }
                     },
