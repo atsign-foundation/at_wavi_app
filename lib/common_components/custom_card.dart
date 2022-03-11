@@ -113,7 +113,6 @@ class CustomCard extends StatelessWidget {
                           SetupRoutes.push(context, Routes.WEB_VIEW,
                               arguments: {'title': title, 'url': subtitle});
                         }
-                      }
                     },
                     child: HtmlWidget(
                       subtitle!,

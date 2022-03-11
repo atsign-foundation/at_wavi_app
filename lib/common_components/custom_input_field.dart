@@ -20,6 +20,7 @@ class CustomInputField extends StatelessWidget {
   final int baseOffset;
   final EdgeInsets? padding;
   final TextInputType? textInputType;
+  final bool? blankSpacesAllowed, autoCorrectAllowed;
 
   var textController = TextEditingController();
 
@@ -47,6 +48,8 @@ class CustomInputField extends StatelessWidget {
     this.baseOffset = 0,
     this.padding,
     this.textInputType,
+    this.blankSpacesAllowed,
+    this.autoCorrectAllowed,
   });
 
   @override
@@ -79,8 +82,8 @@ class CustomInputField extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: TextField(
-                autocorrect: false, // textfield autocorrect off
-                enableSuggestions: false,
+                autocorrect:
+                    autoCorrectAllowed ?? true, // textfield autocorrect off
                 keyboardType: textInputType ??
                     TextInputType
                         .text, // Tweak, if the device's keyboard's autocorrect is on
@@ -109,7 +112,11 @@ class CustomInputField extends StatelessWidget {
                 maxLines: expands ? null : maxLines,
                 expands: expands,
                 onChanged: (val) {
-                  if (value != null) value!(val.replaceAll(' ', ''));
+                  if (value != null) {
+                    value!((blankSpacesAllowed ?? true)
+                        ? val
+                        : val.replaceAll(' ', ''));
+                  }
                 },
                 controller: textController,
                 onSubmitted: (str) {

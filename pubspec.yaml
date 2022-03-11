@@ -57,6 +57,7 @@ dependencies:
   open_mail_app:
   url_launcher:
 
+
 dependency_overrides:
   permission_handler: ^9.2.0
   at_contacts_flutter: ^4.0.1
@@ -67,10 +68,10 @@ dependency_overrides:
       ref: fix/at_follows_flutter_example
       path: at_follows_flutter
   at_sync_ui_flutter:
-    git:  
-      url: https://github.com/atsign-foundation/at_widgets.git
+    git:
+      url: git@github.com:atsign-foundation/at_widgets.git
+      ref: fix/at_sync_ui_flutter
       path: at_sync_ui_flutter
-      ref: feature/at-sync-ui
   
 dev_dependencies:
   flutter_test:
