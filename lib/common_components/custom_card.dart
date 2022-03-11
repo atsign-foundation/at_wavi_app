@@ -44,7 +44,11 @@ class CustomCard extends StatelessWidget {
             subtitle != null
                 ? GestureDetector(
                     onTap: () async {
-                         
+                      if (!isUrl) {
+                        return;
+                      }
+                      SetupRoutes.push(context, Routes.WEB_VIEW,
+                          arguments: {'title': title, 'url': subtitle});
                     },
                     child: HtmlWidget(
                       subtitle!,
