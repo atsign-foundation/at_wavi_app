@@ -31,6 +31,7 @@ import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:at_location_flutter/utils/constants/constants.dart'
     as location_package_constants;
@@ -65,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _inputBoxController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
 
+    checkForUpdate();
     startDeepLinkProviderListener();
 
     if (widget.isPreview) {
@@ -98,6 +100,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     });
 
     super.initState();
+  }
+
+  Future<void> checkForUpdate() async {
+    final newVersion = NewVersion();
+    final status = await newVersion.getVersionStatus();
+
+    //// for forced version update
+    // newVersion.showUpdateDialog(
+    //   context: context,
+    //   versionStatus: status,
+    //   allowDismissal: false,
+    // );
+
+    newVersion.showAlertIfNecessary(context: context);
   }
 
   getCurrentUserName() {
