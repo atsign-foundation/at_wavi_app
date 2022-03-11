@@ -5,6 +5,7 @@ import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomCard extends StatelessWidget {
   final String? title, subtitle;
@@ -42,7 +43,7 @@ class CustomCard extends StatelessWidget {
             SizedBox(height: 6),
             subtitle != null
                 ? GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       if (!isUrl) {
                         return;
                       }

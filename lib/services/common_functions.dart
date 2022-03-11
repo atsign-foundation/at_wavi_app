@@ -293,6 +293,7 @@ class CommonFunctions {
           ],
         );
       }
+
       allFieldsWidget.add(widget);
     }
 
