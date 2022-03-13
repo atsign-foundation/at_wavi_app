@@ -89,8 +89,6 @@ The @ Foundation produces several widgets and libraries that the app developer
 can make use of to develop apps on @‎protocol. These libraries are developed in
 Dart & Flutter and published to [pub.dev](https://pub.dev/publishers/atsign.org/packages).
 
-![alt_text](images/image1.png "Version flow")
-
 ## Following the changes
 
 The @ Foundation publishes libraries and widgets to
@@ -98,12 +96,8 @@ The @ Foundation publishes libraries and widgets to
 Each of these libraries contains a tab called “Changelog” that shows various
 published versions and a short description of what changes that went in.
 
-![alt_text](images/image2.png "Changelog screenshot")
-
 Also the “Versions” tab shows the versions published in the reverse
 chronological order.
-
-![alt_text](images/image3.png "Versions screenshot")
 
 ## Reporting a bug
 
@@ -111,24 +105,16 @@ The best place to start reporting bugs on the libraries published by
 @‎protocol would be the “View/report issues” link available on
 [pub.dev](https://pub.dev/publishers/atsign.org/packages).
 
-![alt_text](images/image4.png "View/report issues highlight")
-
 Once the link is clicked, one should be redirected to GitHub repo where the
 issue can be reported by clicking on the “New issue” button.
 
-![alt_text](images/image5.png "Issues list")
-
 Clicking on the  “New issue” button should take you to the screen to choose
 where the issue is a Bug or an Enhancement.
-
-![alt_text](images/image6.png "Choose Bug report")
 
 Upon clicking on the “Get started” button against the “Bug Report” you should
 be directed to a page with a bug template provided by the @company. Filling
 out all of the fields in the template gives the @company a better chance to
 reproduce and fix the bug.
-
-![alt_text](images/image7.png "Filling a Bug report")
 
 ## Bug fix and delivery process
 
