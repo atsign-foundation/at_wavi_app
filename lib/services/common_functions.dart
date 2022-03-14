@@ -656,19 +656,19 @@ class CommonFunctions {
     String urlAppleMaps = '';
     if (Platform.isAndroid) {
       url = 'https://www.google.com/maps/search/?api=1&query=$lat,$lang';
+      await launch(url);
     } else if (Platform.isIOS) {
       urlAppleMaps = 'https://maps.apple.com/?q=$lat,$lang';
       url = 'comgooglemaps://?saddr=&daddr=$lat,$lang&directionsmode=driving';
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else if (await canLaunch(urlAppleMaps)) {
+        await launch(urlAppleMaps);
+      } else {
+        throw 'Could not launch $url';
+      }
     } else {
-      throw 'Could not launch $url';
-    }
-
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else if (await canLaunch(urlAppleMaps)) {
-      await launch(urlAppleMaps);
-    } else {
-      throw 'Could not launch $url';
+      throw 'Could not launch : $url';
     }
   }
 }
