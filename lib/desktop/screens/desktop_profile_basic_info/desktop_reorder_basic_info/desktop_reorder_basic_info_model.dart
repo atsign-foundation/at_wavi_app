@@ -18,7 +18,6 @@ class DesktopReorderBasicDetailModel extends ChangeNotifier {
     required this.userPreview,
     required this.atCategory,
   }) {
-    //  FieldOrderService().initCategoryFields(atCategory);
     fetchBasicData(atCategory);
   }
 

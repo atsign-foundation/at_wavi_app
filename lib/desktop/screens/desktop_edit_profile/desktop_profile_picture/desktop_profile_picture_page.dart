@@ -1,15 +1,11 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:at_wavi_app/common_components/provider_callback.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
-import 'package:at_wavi_app/model/user.dart';
-import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import '../../../services/theme/app_theme.dart';
@@ -148,7 +144,6 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
   }
 
   Widget _buildAvatarWidget() {
-    final appTheme = AppTheme.of(context);
     return Consumer<UserPreview>(builder: (context, provider, child) {
       dynamic data = provider.user()?.image.value;
       return AspectRatio(

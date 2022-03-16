@@ -46,7 +46,6 @@ dependencies:
   image: ^3.1.1
   showcaseview: ^1.1.1
   desktop_window: ^0.4.0
-  video_compress: ^3.1.0
   shared_preferences: ^2.0.7
 
   html_editor_enhanced: ^2.4.0+1

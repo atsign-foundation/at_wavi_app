@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
@@ -13,7 +12,6 @@ import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -72,7 +70,6 @@ class _DesktopProfileAddCustomFieldState
           originBasicData: widget.data,
           allowContentType: widget.allowContentType,
         );
-        // _model.setIsOnlyAddMedia(widget.isOnlyAddImage);
         return _model;
       },
       child: Consumer<DesktopAddBasicDetailModel>(
@@ -258,12 +255,6 @@ class _DesktopProfileAddCustomFieldState
       decoration: BoxDecoration(
           border: Border.all(color: appTheme.secondaryTextColor, width: 1)),
     );
-    // } else {
-    //   return DesktopVideoThumbnailWidget(
-    //     path: path,
-    //     extension: extension ?? '',
-    //   );
-    // }
   }
 
   void _onSelectMedia() async {

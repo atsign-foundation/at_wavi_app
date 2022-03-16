@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
@@ -23,14 +22,11 @@ class DesktopAddLocationModel extends ChangeNotifier {
   BasicData? originBasicData;
 
   BasicData? get data => _data;
-  late bool _isPrivate;
 
   var tagTextController = TextEditingController();
 
   bool _isEditing = false;
   bool _isCustomField = false;
-  BasicData? _location;
-  BasicData? _locationNickname;
 
   DesktopAddLocationModel({
     required this.userPreview,
@@ -40,12 +36,9 @@ class DesktopAddLocationModel extends ChangeNotifier {
     BasicData? locationNickname,
   }) {
     _data = userPreview.user()!.location;
-    _isPrivate = userPreview.user()!.location.isPrivate;
 
     _isEditing = isEditing;
     _isCustomField = isCustomField;
-    _location = location;
-    _locationNickname = locationNickname;
 
     if (_isEditing) {
       if (_isCustomField) {

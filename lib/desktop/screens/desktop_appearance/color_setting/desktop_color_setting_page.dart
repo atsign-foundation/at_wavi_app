@@ -1,7 +1,4 @@
-import 'package:at_wavi_app/app.dart';
-import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
-import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +17,6 @@ class _DesktopColorSettingPageState extends State<DesktopColorSettingPage>
     with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -57,13 +53,6 @@ class _DesktopColorSettingPageState extends State<DesktopColorSettingPage>
                         onPressed: () {
                           desktopAppearanceModel
                               .changeHighlightColor(primaryColors[index]);
-                          // setState(() {
-                          //   final newTheme = AppTheme.from(
-                          //     primaryColor: primaryColors[index],
-                          //     brightness: appTheme.brightness,
-                          //   );
-                          //   appThemeController.sink.add(newTheme);
-                          // });
                         },
                       ),
                     );
@@ -78,6 +67,5 @@ class _DesktopColorSettingPageState extends State<DesktopColorSettingPage>
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

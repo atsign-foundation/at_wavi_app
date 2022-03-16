@@ -232,11 +232,8 @@ class _DesktopSearchLocationPageState extends State<DesktopSearchLocationPage> {
     final keyword = keywordTextController.text;
     final currentLocation = await getMyLocation();
     if (!_model.isNear) {
-      // ignore: await_only_futures
-      // SearchLocationService().getAddressLatLng(keyword, null);
       _model.getAddressLatLng(keyword, null);
     } else {
-      // ignore: await_only_futures
       _model.getAddressLatLng(keyword, currentLocation);
     }
   }

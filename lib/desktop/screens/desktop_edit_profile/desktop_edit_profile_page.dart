@@ -1,5 +1,4 @@
 import 'package:at_wavi_app/desktop/screens/desktop_appearance/desktop_appearance_page.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_profile_details/desktop_media/desktop_media_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_basic_info_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_edit_profile/desktop_profile_picture/desktop_profile_picture_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_media/desktop_profile_media_page.dart';
@@ -122,7 +121,6 @@ class _DesktopEditProfilePageState extends State<DesktopEditProfilePage> {
   }
 
   Widget buildContentPage() {
-    final appTheme = AppTheme.of(context);
     return Container(
       child: PageView(
         controller: _pageController,

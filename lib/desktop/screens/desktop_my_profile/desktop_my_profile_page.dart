@@ -57,22 +57,12 @@ class _DesktopMyProfilePageState extends State<DesktopMyProfilePage> {
               child: DesktopProfileInfoPage(
                 atSign: '',
                 onFollowerPressed: () {
-                  print('on follower pressed');
                   _globalKey.currentState?.openDrawer();
                 },
                 onFollowingPressed: () {
-                  print('on following pressed');
                   _globalKey.currentState?.openDrawer();
                 },
                 isPreview: false,
-                //Todo
-                // isMyProfile: true,
-                // onClickFollow: (title) {
-                //   drawerType = DrawerType.Follow;
-                //   isFollower = title == Strings.desktop_followers;
-                //   setState(() {});
-                //   Scaffold.of(context).openEndDrawer();
-                // },
               ),
             ),
             Container(
@@ -88,9 +78,6 @@ class _DesktopMyProfilePageState extends State<DesktopMyProfilePage> {
                 },
                 onSettingPressed: () {
                   _parentScaffoldKey.currentState?.openEndDrawer();
-                  // drawerType = DrawerType.Search;
-                  // setState(() {});
-                  // Scaffold.of(context).openEndDrawer();
                 },
               ),
             ),

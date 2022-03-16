@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:at_wavi_app/desktop/utils/strings.dart';
@@ -18,10 +17,6 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
 
   CustomContentType get fieldType => _fieldType;
 
-  // BasicData? _basicData;
-  //
-  // BasicData? get basicData => _basicData;
-  //
   Uint8List? _selectedMedia;
 
   Uint8List? get selectedMedia => _selectedMedia;
@@ -55,12 +50,6 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // void setIsOnlyAddMedia(bool isOnlyAddMedia) {
-  //   this.isOnlyAddMedia = isOnlyAddMedia;
-  //   _fieldType =
-  //       this.isOnlyAddMedia ? CustomContentType.Image : CustomContentType.Text;
-  // }
-
   void changeField(CustomContentType fieldType) {
     _fieldType = fieldType;
     notifyListeners();
@@ -85,11 +74,6 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
       _basicData.value = selectedMedia;
     }
     _basicData.type = fieldType.name;
-    // await updateDefinedFields(
-    //   context,
-    //   _basicData!,
-    //   isCustomData: true,
-    // );
 
     List<BasicData>? customFields =
         userPreview.user()!.customFields[atCategory.name];

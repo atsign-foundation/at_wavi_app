@@ -2,20 +2,12 @@ import 'package:at_wavi_app/desktop/screens/desktop_edit_profile/desktop_edit_pr
 import 'package:at_wavi_app/desktop/screens/desktop_login/desktop_login_landing_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_my_profile/desktop_my_profile_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_user_profile_page.dart';
-import 'package:at_wavi_app/services/nav_service.dart';
-import 'package:at_wavi_app/view_models/base_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'desktop_route_names.dart';
 
 class DesktopSetupRoutes {
   static String initialRoute = DesktopRoutes.DESKTOP_LOGIN;
-
-  // static String initialRoute = DesktopRoutes.DESKTOP_WELCOME;
-  static var _provider = Provider.of<NestedRouteProvider>(
-      NavService.navKey.currentContext!,
-      listen: false);
 
   static Map<String, WidgetBuilder> get routes {
     return {
@@ -25,16 +17,6 @@ class DesktopSetupRoutes {
       DesktopRoutes.DESKTOP_MY_PROFILE: (context) => DesktopMyProfilePage(),
     };
   }
-
-  // static Map<String, WidgetBuilder> routeBuilders(
-  //     BuildContext context, RouteSettings routeSettings) {
-  //   return {
-  //     DesktopRoutes.DESKTOP_HOME: (context) => DesktopHomePage(),
-  //     DesktopRoutes.DESKTOP_PROFILE: (context) => DesktopProfilePage(),
-  //     DesktopRoutes.DESKTOP_LOGIN: (context) => DesktopLoginLandingPage(),
-  //     DesktopRoutes.DESKTOP_MAIN: (context) => DesktopMainPage(),
-  //   };
-  // }
 
   static Future push(BuildContext context, String value,
       {Object? arguments, Function? callbackAfterNavigation}) {
@@ -73,22 +55,5 @@ class DesktopSetupRoutes {
         callbackAfterNavigation();
       }
     });
-  }
-}
-
-class NestedRouteProvider extends BaseModel {
-  String Routes = 'routes';
-
-  NestedRouteProvider();
-
-  String current_route = "";
-
-  init() {
-    setStatus(Routes, Status.Done);
-  }
-
-  update(String value) {
-    current_route = value;
-    setStatus(Routes, Status.Done);
   }
 }

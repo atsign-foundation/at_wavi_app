@@ -3,7 +3,6 @@ import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:flutter/material.dart';
-import 'package:showcaseview/showcaseview.dart';
 
 import 'widgets/desktop_tutorial_popup.dart';
 

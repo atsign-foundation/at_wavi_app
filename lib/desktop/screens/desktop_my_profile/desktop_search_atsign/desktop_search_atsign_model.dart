@@ -26,14 +26,4 @@ class DesktopSearchAtSignModel extends ChangeNotifier {
     _searchStatus = LoadStatus.success;
     notifyListeners();
   }
-
-// void searchUser(String text) {
-//   _searchUsers.clear();
-//   for (int i = 0; i < _users.length; i++) {
-//     if (_users[i].atsign.toLowerCase().contains(text)) {
-//       _searchUsers.add(_users[i]);
-//     }
-//   }
-//   notifyListeners();
-// }
 }

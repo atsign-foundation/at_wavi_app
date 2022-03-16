@@ -1,10 +1,6 @@
-import 'dart:typed_data';
-
-import 'package:at_wavi_app/desktop/screens/desktop_common/crop_editor_helper.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 class DesktopDialogPage extends StatefulWidget {

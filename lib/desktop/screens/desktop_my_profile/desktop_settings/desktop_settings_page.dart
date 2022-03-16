@@ -1,9 +1,6 @@
 import 'package:at_client_mobile/at_client_mobile.dart';
-import 'package:at_wavi_app/common_components/switch_at_sign.dart';
-import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
-import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/change_privacy_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
