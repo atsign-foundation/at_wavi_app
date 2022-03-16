@@ -142,7 +142,7 @@ packages:
       path: at_sync_ui_flutter
       ref: "fix/at_sync_ui_flutter"
       resolved-ref: cb8f6e8bbcfd7b167ac21d0219e5d3944e8112f8
-      url: "git@github.com:atsign-foundation/at_widgets.git"
+      url: "https://github.com/atsign-foundation/at_widgets.git"
     source: git
     version: "1.0.1"
   at_utf7:
@@ -1230,7 +1230,7 @@ packages:
     source: hosted
     version: "0.3.1"
   url_launcher:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: url_launcher
       url: "https://pub.dartlang.org"
