@@ -44,11 +44,75 @@ class CustomCard extends StatelessWidget {
             subtitle != null
                 ? GestureDetector(
                     onTap: () async {
-                      if (!isUrl) {
-                        return;
-                      }
-                      SetupRoutes.push(context, Routes.WEB_VIEW,
-                          arguments: {'title': title, 'url': subtitle});
+                      if (subtitle != null) {
+                        if (title!.contains("Phone")) {
+                          showBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return Container(
+                                  height: 120,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      const SizedBox(height: 5),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 10),
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Select Action",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const SizedBox(width: 5),
+                                          IconButton(
+                                              onPressed: () async {
+                                                await launch("tel:$subtitle")
+                                                    .catchError((val) {
+                                                  // Error handling
+                                                });
+                                              },
+                                              icon: Icon(
+                                                Icons.phone,
+                                                size: 30,
+                                                color: Colors.green,
+                                              )),
+                                          const SizedBox(width: 10),
+                                          IconButton(
+                                              onPressed: () async {
+                                                await launch("sms:$subtitle")
+                                                    .catchError((val) {
+                                                  // Error handling
+                                                });
+                                              },
+                                              icon: Icon(
+                                                Icons.message,
+                                                size: 30,
+                                                color: Colors.lightBlue,
+                                              )),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 5),
+                                    ],
+                                  ),
+                                );
+                              });
+                        } else if (title!.contains("Email")) {
+                          await launch("mailto:$subtitle").catchError((val) {
+                            // Error handling
+                          });
+                        } else {
+                          SetupRoutes.push(context, Routes.WEB_VIEW,
+                              arguments: {'title': title, 'url': subtitle});
+                        }
                     },
                     child: HtmlWidget(
                       subtitle!,
@@ -67,4 +131,10 @@ class CustomCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class CallsAndMessagesService {
+  void call(String number) => launch("tel:$number");
+  void sendSms(String number) => launch("sms:$number");
+  void sendEmail(String email) => launch("mailto:$email");
 }
