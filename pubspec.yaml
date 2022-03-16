@@ -58,6 +58,7 @@ dependencies:
   uni_links: ^0.5.1
 
   flutter_dotenv: ^5.0.2 
+  new_version: ^0.3.0
 
 dependency_overrides:
   permission_handler: ^9.2.0
