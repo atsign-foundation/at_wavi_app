@@ -1,5 +1,3 @@
-import 'package:at_wavi_app/app.dart';
-import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +22,6 @@ class _DesktopThemeSettingPageState extends State<DesktopThemeSettingPage>
 
   @override
   Widget build(BuildContext context) {
-    // final appTheme = AppTheme.of(context);
     final desktopAppearanceModel = Provider.of<DesktopAppearanceModel>(
       context,
     );
@@ -45,13 +42,6 @@ class _DesktopThemeSettingPageState extends State<DesktopThemeSettingPage>
                   isSelected: !desktopAppearanceModel.isDarkMode,
                   onPressed: () {
                     desktopAppearanceModel.changeDarkMode(false);
-                    // setState(() {
-                    //   final newTheme = AppTheme.from(
-                    //     primaryColor: appTheme.primaryColor,
-                    //     brightness: Brightness.light,
-                    //   );
-                    //   appThemeController.sink.add(newTheme);
-                    // });
                   },
                 ),
               ),
@@ -64,13 +54,6 @@ class _DesktopThemeSettingPageState extends State<DesktopThemeSettingPage>
                   isSelected: desktopAppearanceModel.isDarkMode,
                   onPressed: () {
                     desktopAppearanceModel.changeDarkMode(true);
-                    // setState(() {
-                    //   final newTheme = AppTheme.from(
-                    //     primaryColor: appTheme.primaryColor,
-                    //     brightness: Brightness.dark,
-                    //   );
-                    //   appThemeController.sink.add(newTheme);
-                    // });
                   },
                 ),
               ),
@@ -82,6 +65,5 @@ class _DesktopThemeSettingPageState extends State<DesktopThemeSettingPage>
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

@@ -22,7 +22,6 @@ class DesktopSearchLocationModel extends ChangeNotifier {
 
   void initialSetup() async {
     final currentLocation = await getMyLocation();
-    print("SonLT $currentLocation");
     _isNear = currentLocation != null;
     notifyListeners();
   }

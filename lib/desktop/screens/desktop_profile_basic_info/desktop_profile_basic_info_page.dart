@@ -12,7 +12,6 @@ import 'package:at_wavi_app/desktop/widgets/desktop_welcome_widget.dart';
 import 'package:at_wavi_app/model/basic_data_model.dart';
 import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/model/user.dart';
-import 'package:at_wavi_app/screens/location/widgets/preview_location.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
@@ -468,9 +467,6 @@ class _DesktopProfileBasicInfoPageState
         ),
       ),
     );
-    // if (result == 'saved') {
-    //   _model.fetchBasicData();
-    // }
   }
 
   void _showUserPreview() async {
@@ -491,9 +487,6 @@ class _DesktopProfileBasicInfoPageState
         ),
       ),
     );
-    // if (result == 'saved') {
-    //   _model.fetchBasicData();
-    // }
   }
 
   void _showEditCustomContent(BasicData data) async {
@@ -507,9 +500,6 @@ class _DesktopProfileBasicInfoPageState
         ),
       ),
     );
-    // if (result == 'saved') {
-    //   _model.fetchBasicData();
-    // }
   }
 
   void _showAddLocation({
@@ -530,9 +520,6 @@ class _DesktopProfileBasicInfoPageState
         ),
       ),
     );
-    // if (result == 'saved') {
-    //   _model.fetchBasicData();
-    // }
   }
 
   void _showReorderDetailPopup() async {
@@ -545,9 +532,6 @@ class _DesktopProfileBasicInfoPageState
         ),
       ),
     );
-    // if (result != null) {
-    //   _model.fetchBasicData();
-    // }
   }
 
   void _showLocationPreview(String? title, OsmLocationModel location) {
@@ -585,8 +569,6 @@ class _DesktopProfileBasicInfoPageState
       text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,
       onSuccess: (provider) async {
-        // Navigator.pop(context, 'saved');
-        // await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
         Provider.of<DesktopEditProfileModel>(context, listen: false)
             .jumpNextPage();
       },

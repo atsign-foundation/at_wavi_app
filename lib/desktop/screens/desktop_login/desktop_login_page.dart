@@ -20,7 +20,6 @@ class DesktopLoginPage extends StatefulWidget {
 class _DesktopLoginPageState extends State<DesktopLoginPage> {
   late TextEditingController atSignTextEditingController;
   late DesktopLoginModel _model;
-  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -85,36 +84,6 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                   ),
                 ),
                 SizedBox(height: DesktopDimens.paddingLarge),
-                // Text(
-                //   Strings.desktop_sign,
-                //   style: appTheme.textTheme.bodyText1,
-                // ),
-                // SizedBox(height: DesktopDimens.paddingSmall),
-                // GestureDetector(
-                //   behavior: HitTestBehavior.translucent,
-                //   onTap: _showOnBoardScreen,
-                //   child: Form(
-                //     key: _formKey,
-                //     child: DesktopTextField(
-                //       controller: atSignTextEditingController,
-                //       hint: Strings.desktop_enter_sign,
-                //       backgroundColor: appTheme.secondaryBackgroundColor,
-                //       borderRadius: 10,
-                //       readOnly: true,
-                //       enabled: false,
-                //       style: appTheme.textTheme.bodyText1,
-                //       hasUnderlineBorder: false,
-                //       contentPadding: 20,
-                //       validator: (value) {
-                //         if ((value ?? '').trim().isEmpty) {
-                //           return 'Please enter your @sign';
-                //         }
-                //         return null;
-                //       },
-                //     ),
-                //   ),
-                // ),
-                // SizedBox(height: DesktopDimens.paddingNormal),
                 DesktopButton(
                   width: double.infinity,
                   backgroundColor: appTheme.primaryColor,
@@ -138,14 +107,6 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                   ),
                 ),
                 SizedBox(height: DesktopDimens.paddingNormal),
-                // GestureDetector(
-                //   behavior: HitTestBehavior.translucent,
-                //   onTap: _showOnBoardScreen,
-                //   child: Text(
-                //     Strings.desktop_get_sign,
-                //     style: appTheme.textTheme.overline,
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -177,7 +138,6 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
     if (_model.isAuthorizing == true) {
       return;
     }
-    final user = atSignTextEditingController.text;
     final appTheme = AppTheme.of(context);
     _model.openOnboard(onBoardingColor: appTheme.primaryColor);
   }

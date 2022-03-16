@@ -72,16 +72,6 @@ class _DesktopLoginOTPPageState extends State<DesktopLoginOTPPage> {
               ),
             ],
           ),
-          // PassCodeWidget(
-          //   controller: passCodeTextEditingController,
-          //   maxLength: 6,
-          //   isSecured: false,
-          //   textWarning: Strings.desktop_wrong_passcode,
-          //   onDone: (text) async {
-          //     //Todo: verify passcode
-          //     Navigator.pop(context, 'success');
-          //   },
-          // ),
           Container(
             child: DesktopOTPTextField(
               length: 6,

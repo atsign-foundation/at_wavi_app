@@ -244,7 +244,6 @@ class _DesktopAddLocationPageState extends State<DesktopAddLocationPage> {
   }
 
   void openSearchLocation() async {
-    final latLng = _model.osmLocationModel?.latLng;
     final result = await showDialog(
       context: context,
       builder: (BuildContext context) => Dialog(

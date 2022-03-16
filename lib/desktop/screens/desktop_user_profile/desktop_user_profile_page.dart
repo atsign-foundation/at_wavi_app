@@ -5,7 +5,6 @@ import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 import 'desktop_profile_info_page.dart';
-import 'desktop_profile_private_page.dart';
 
 class DesktopUserProfilePage extends StatefulWidget {
   const DesktopUserProfilePage({Key? key}) : super(key: key);

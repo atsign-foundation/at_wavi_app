@@ -279,7 +279,6 @@ class BasicData {
   Icon? icon;
   String? accountName, valueDescription;
   var type;
-  String? extension;
 
   BasicData({
     this.value,
@@ -288,7 +287,6 @@ class BasicData {
     this.accountName,
     this.type,
     this.valueDescription,
-    this.extension,
   });
 
   String? get displayingAccountName {
@@ -343,7 +341,6 @@ class BasicData {
       'accountName': accountName.toString(),
       'valueDescription': valueDescription?.toString(),
       'type': type.toString(),
-      'extension': extension.toString(),
     });
   }
 

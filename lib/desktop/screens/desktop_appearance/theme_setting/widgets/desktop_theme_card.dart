@@ -87,7 +87,6 @@ class DesktopThemeCard extends StatelessWidget {
           ),
         ),
         backgroundColor: MaterialStateProperty.all<Color>(theme.backgroundColor),
-        // backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
         padding: MaterialStateProperty.all(EdgeInsets.zero),
       ),
     );

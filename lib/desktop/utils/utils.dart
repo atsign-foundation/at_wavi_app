@@ -1,15 +1,5 @@
-import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
-import 'package:at_wavi_app/desktop/utils/strings.dart';
-import 'package:at_wavi_app/model/user.dart';
-import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
-import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:video_compress/video_compress.dart';
 
 void showSnackBar(BuildContext context, String message, Color color) {
   ScaffoldMessenger.of(context).showSnackBar(
@@ -30,16 +20,6 @@ void showSnackBar(BuildContext context, String message, Color color) {
       ),
     ),
   );
-}
-
-Future<Uint8List?> getVideoThumbnail(String path) async {
-  final uInt8list = (Platform.isMacOS)
-      ? await VideoCompress.getByteThumbnail(
-          path,
-          quality: 50,
-        )
-      : Uint8List(0);
-  return uInt8list;
 }
 
 String getTitle(String title) {
@@ -82,101 +62,3 @@ String getTitle(String title) {
       return title;
   }
 }
-
-// Future updateCustomFields(
-//   BuildContext context,
-//   List<BasicData> listBasicData, {
-//   bool isCustomData = false,
-// }) async {
-//   var currentScreen = await getStringFromSharedPreferences(
-//     key: Strings.desktop_current_screen,
-//   );
-//   Provider.of<UserPreview>(context, listen: false)
-//       .user()!
-//       .customFields[currentScreen!] = listBasicData;
-// }
-
-// /// [updateDefinedFields]can be used to either update or delete value
-// /// when deleting send [BasicData] with just accountname
-// /// when updating send complete [BasicData].
-// Future updateDefinedFields(
-//   BuildContext context,
-//   BasicData basicData, {
-//   bool isCustomData = false,
-// }) async {
-//   if (isCustomData) {
-//     var currentScreen = await getStringFromSharedPreferences(
-//       key: Strings.desktop_current_screen,
-//     );
-//     var customFields = Provider.of<UserPreview>(context, listen: false)
-//             .user()!
-//             .customFields[currentScreen] ??
-//         [];
-//     customFields.add(basicData);
-//
-//     Provider.of<UserPreview>(context, listen: false)
-//         .user()!
-//         .customFields[currentScreen!] = customFields;
-//   } else {
-//     if (basicData.accountName == FieldsEnum.IMAGE.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.image =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.LASTNAME.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.lastname =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.FIRSTNAME.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.firstname =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.PHONE.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.phone =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.EMAIL.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.email =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.ABOUT.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.about =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.LOCATION.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.location =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.LOCATIONNICKNAME.name) {
-//       Provider.of<UserPreview>(context, listen: false)
-//           .user()!
-//           .locationNickName = basicData;
-//     } else if (basicData.accountName == FieldsEnum.PRONOUN.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.pronoun =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.TWITTER.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.twitter =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.FACEBOOK.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.facebook =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.LINKEDIN.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.linkedin =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.INSTAGRAM.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.instagram =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.YOUTUBE.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.youtube =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.TUMBLR.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.tumbler =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.MEDIUM.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.medium =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.PS4.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.ps4 = basicData;
-//     } else if (basicData.accountName == FieldsEnum.XBOX.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.xbox = basicData;
-//     } else if (basicData.accountName == FieldsEnum.STEAM.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.steam =
-//           basicData;
-//     } else if (basicData.accountName == FieldsEnum.DISCORD.name) {
-//       Provider.of<UserPreview>(context, listen: false).user()!.discord =
-//           basicData;
-//     }
-//   }
-// }
