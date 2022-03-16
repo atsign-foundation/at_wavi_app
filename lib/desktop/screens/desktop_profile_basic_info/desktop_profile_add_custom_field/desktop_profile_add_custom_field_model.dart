@@ -41,7 +41,7 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
     required this.allowContentType,
     this.originBasicData,
   }) {
-    titleTextController.text = originBasicData?.accountName ?? '';
+    titleTextController.text = originBasicData?.accountName?.trim() ?? '';
     if (originBasicData?.type != null) {
       _fieldType = customContentNameToType(originBasicData?.type);
     } else {
@@ -77,7 +77,7 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
       CommonFunctions().showSnackBar(Strings.desktop_please_add_image);
       return;
     }
-    _basicData.accountName = titleTextController.text;
+    _basicData.accountName = titleTextController.text.trim();
     _basicData.isPrivate = showHideController.isShow == false;
     if (_fieldType != CustomContentType.Image) {
       _basicData.value = valueContentTextController.text;
@@ -108,7 +108,7 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
       CommonFunctions().showSnackBar(Strings.desktop_please_add_image);
       return;
     }
-    _basicData.accountName = titleTextController.text;
+    _basicData.accountName = titleTextController.text.trim();
     _basicData.isPrivate = showHideController.isShow == false;
     if (_fieldType != CustomContentType.Image) {
       _basicData.value = valueContentTextController.text;
