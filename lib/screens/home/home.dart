@@ -35,6 +35,8 @@ import 'package:provider/provider.dart';
 import 'package:at_location_flutter/utils/constants/constants.dart'
     as location_package_constants;
 
+import '../qr_screen.dart';
+
 enum HOME_TABS { DETAILS, CHANNELS, FEATURED }
 
 class HomeScreen extends StatefulWidget {
@@ -951,12 +953,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => WebsiteScreen(
-          title: 'Wavi',
-          url: 'https://wavi.ng/${_currentUser.atsign}',
-          isShareProfileScreen: true,
-        ),
-      ),
+          builder: (context) => QrScreen(atSign: _currentUser.atsign)),
     );
   }
 
