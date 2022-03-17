@@ -15,7 +15,11 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+
+# For mobile version
 version: 1.0.5+16
+# For desktop version
+# version: 1.0.2+15
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -38,9 +42,15 @@ dependencies:
   validators: ^3.0.0
   latlong2: ^0.8.1
   image_cropper: ^1.5.0
+  extended_image: ^6.0.1
+  image: ^3.1.1
+  showcaseview: ^1.1.1
+  desktop_window: ^0.4.0
+  shared_preferences: ^2.0.7
+
   html_editor_enhanced: ^2.4.0+1
   flutter_widget_from_html: ^0.8.5
-  
+
   at_common_flutter: ^2.0.5
   at_onboarding_flutter: ^4.0.0
   at_client_mobile: ^3.1.8
@@ -53,7 +63,7 @@ dependencies:
   at_location_flutter: ^3.1.2
   uni_links: ^0.5.1
 
-  flutter_dotenv: ^5.0.2  
+  flutter_dotenv: ^5.0.2
 
 dependency_overrides:
   permission_handler: ^9.2.0
@@ -69,7 +79,6 @@ dependency_overrides:
       url: https://github.com/atsign-foundation/at_widgets.git
       path: at_sync_ui_flutter
       ref: feature/at-sync-ui
-  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -106,7 +115,27 @@ flutter:
       fonts:
         - asset: assets/fonts/PlayfairDisplay-Bold.ttf
           weight: 500
-      
+
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/inter/Inter-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/inter/Inter-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/inter/Inter-Light.ttf
+          weight: 300
+        - asset: assets/fonts/inter/Inter-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/inter/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/inter/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/inter/Inter-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/inter/Inter-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/inter/Inter-Black.ttf
+          weight: 900
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

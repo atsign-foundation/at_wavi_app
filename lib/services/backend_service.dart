@@ -42,8 +42,15 @@ class BackendService {
   Directory? downloadDirectory;
   Map<String?, AtClientService> atClientServiceMap = {};
 
-  onboard(String atSign, {AtClientPreference? atClientPreference}) async {
-    await _checkForPermissionStatus();
+  onboard(
+    String atSign, {
+    AtClientPreference? atClientPreference,
+    Color appColor = ColorConstants.green,
+    VoidCallback? onSuccess,
+  }) async {
+    if (Platform.isAndroid || Platform.isIOS) {
+      await _checkForPermissionStatus();
+    }
     var atClientPrefernce;
     await getAtClientPreference()
         .then((value) => atClientPrefernce = value)
@@ -54,14 +61,18 @@ class BackendService {
       atClientPreference: atClientPrefernce,
       domain: MixedConstants.ROOT_DOMAIN,
       appAPIKey: MixedConstants.devAPIKey,
-      appColor: ColorConstants.green,
+      appColor: appColor,
       rootEnvironment: RootEnvironment.Production,
       onboard: (atClientServiceMap, onboardedAtsign) async {
         LoadingDialog().show(text: '$onboardedAtsign', heading: 'Loading');
         await onSuccessOnboard(atClientServiceMap, onboardedAtsign);
         LoadingDialog().hide();
-        SetupRoutes.pushAndRemoveAll(
-            NavService.navKey.currentContext!, Routes.HOME);
+        if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+          onSuccess?.call();
+        } else {
+          SetupRoutes.pushAndRemoveAll(
+              NavService.navKey.currentContext!, Routes.HOME);
+        }
       },
       onError: (error) {
         print('Onboarding throws $error error');
@@ -122,7 +133,7 @@ class BackendService {
   }
 
   Future<AtClientPreference> getAtClientPreference() async {
-    if (Platform.isIOS) {
+    if (Platform.isIOS || Platform.isMacOS) {
       downloadDirectory =
           await path_provider.getApplicationDocumentsDirectory();
     } else {
