@@ -691,7 +691,8 @@ class _AddCustomFieldState extends State<AddCustomField> {
 
     // when custom field is being updated and title is getting changed
     if (widget.basicData != null &&
-        widget.basicData!.accountName != basicData.accountName) {
+        widget.basicData!.accountName?.trim() !=
+            basicData.accountName?.trim()) {
       FieldOrderService().updateSingleField(widget.category!,
           widget.basicData!.accountName!, basicData.accountName!);
       if (UserPreview().iskeyNameTaken(basicData)) {
