@@ -114,9 +114,8 @@ class SearchInstance {
             Map<String, dynamic> fielsOrder =
                 jsonDecode(_keyValuePair[field.key]);
             for (var field in fielsOrder.entries) {
-              fieldOrders[field.key] = [
-                ...jsonDecode(fielsOrder[field.key]).cast<String>()
-              ];
+              fieldOrders[field.key] =
+                  _removeDuplicatesInFieldOrder(fielsOrder[field.key]);
             }
             continue;
           }
@@ -168,6 +167,18 @@ class SearchInstance {
     } catch (e) {
       print('Error in $e');
     }
+  }
+
+  /// function to remove duplicate entries in 'field_order_of_self.wavi'
+  List<String> _removeDuplicatesInFieldOrder(String data) {
+    List<String> _result = [];
+    var _temp = jsonDecode(data);
+    for (var _str in (_temp as List)) {
+      if (_result.indexOf(_str) == -1) {
+        _result.add(_str);
+      }
+    }
+    return _result;
   }
 
   void _setCustomField(String response, isPrivate) {
