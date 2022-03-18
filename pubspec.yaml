@@ -17,9 +17,9 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 # For mobile version
-version: 1.0.5+16
+version: 1.0.6+17
 # For desktop version
-# version: 1.0.2+15
+# version: 1.0.2+16
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -51,7 +51,7 @@ dependencies:
   html_editor_enhanced: ^2.4.0+1
   flutter_widget_from_html: ^0.8.5
   qr_flutter: ^4.0.0
-  share_plus: ^3.1.0
+  share_plus: ^4.0.1
   url_launcher: ^6.0.20
 
   
@@ -72,8 +72,32 @@ dependencies:
 
 dependency_overrides:
   permission_handler: ^9.2.0
-  at_contacts_flutter: ^4.0.1
   biometric_storage: ^4.0.1
+  at_client_mobile:
+    git:
+      url: git@github.com:atsign-foundation/at_client_sdk.git
+      ref: trunk
+      path: at_client_mobile
+  at_client:
+    git:
+      url: git@github.com:atsign-foundation/at_client_sdk.git
+      ref: trunk
+      path: at_client
+  at_onboarding_flutter:
+    git:
+      url: git@github.com:atsign-foundation/at_widgets.git
+      ref: trunk
+      path: at_onboarding_flutter
+  at_backupkey_flutter:
+    git:
+      url: git@github.com:atsign-foundation/at_widgets.git
+      ref: trunk
+      path: at_backupkey_flutter
+  at_contacts_flutter:
+    git:
+      url: git@github.com:atsign-foundation/at_widgets.git
+      ref: welcome_message
+      path: at_contacts_flutter
   at_follows_flutter:
     git:
       url: https://github.com/atsign-foundation/at_widgets.git
