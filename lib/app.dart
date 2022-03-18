@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/view_models/deep_link_provider.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
-import 'package:at_wavi_app/services/at_key_set_service.dart';
 
 // import 'package:at_wavi_app/services/follow_service.dart';
 import 'package:at_wavi_app/screens/options.dart';
@@ -20,8 +20,6 @@ import 'package:provider/provider.dart';
 import 'desktop/routes/desktop_routes.dart';
 import 'desktop/services/theme/app_theme.dart';
 import 'desktop/services/theme/inherited_app_theme.dart';
-import 'desktop/utils/mock_data.dart';
-import 'services/field_order_service.dart';
 
 class MyApp extends StatefulWidget {
   MyApp();
@@ -60,6 +58,8 @@ class _MyAppState extends State<MyApp> {
               create: (context) => UserPreview()),
           ChangeNotifierProvider<SetPrivateState>(
               create: (context) => SetPrivateState()),
+          ChangeNotifierProvider<DeepLinkProvider>(
+              create: (context) => DeepLinkProvider()),
         ],
         child: MaterialAppClass(
           initialRoute: initialRoute,

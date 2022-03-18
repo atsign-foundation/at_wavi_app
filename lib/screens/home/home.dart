@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/empty_widget.dart';
@@ -18,6 +16,8 @@ import 'package:at_wavi_app/screens/website_webview/website_webview.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
+import 'package:at_wavi_app/view_models/base_model.dart';
+import 'package:at_wavi_app/view_models/deep_link_provider.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/services/search_service.dart';
@@ -31,11 +31,12 @@ import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:at_location_flutter/utils/constants/constants.dart'
     as location_package_constants;
-import 'package:receive_sharing_intent/receive_sharing_intent.dart';
-import 'package:uni_links/uni_links.dart';
+
+import '../qr_screen.dart';
 
 enum HOME_TABS { DETAILS, CHANNELS, FEATURED }
 
@@ -54,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   ThemeData? _themeData;
   late String _name;
   late User _currentUser;
-  late StreamSubscription<dynamic> _intentDataStreamSubscription;
+  late var deepLinkProviderListener;
 
   bool _isSearchScreen = false;
 
@@ -67,11 +68,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _inputBoxController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
 
-    if (!widget.isPreview) {
-      // not for preview/searched screen
-      _receiveIntent();
-      _initialLink();
-    }
+    checkForUpdate();
+    startDeepLinkProviderListener();
 
     if (widget.isPreview) {
       _currentUser = Provider.of<UserPreview>(context, listen: false).user()!;
@@ -104,6 +102,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     });
 
     super.initState();
+  }
+
+  Future<void> checkForUpdate() async {
+    final newVersion = NewVersion();
+    final status = await newVersion.getVersionStatus();
+
+    //// for forced version update
+    // newVersion.showUpdateDialog(
+    //   context: context,
+    //   versionStatus: status,
+    //   allowDismissal: false,
+    // );
+
+    newVersion.showAlertIfNecessary(context: context);
   }
 
   getCurrentUserName() {
@@ -167,82 +179,45 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _inputBoxController.forward();
   }
 
-  _initialLink() async {
-    try {
-      //when app is in background.
-      linkStream.listen((String? link) {
-        print('uni link data: $link');
-        if (link != null) {
-          if (mounted) {
-            if (!_inputBoxController.isCompleted) {
-              _animate(); // only animate if not already open
-            }
-            setState(() {
-              searchedAtsign = link.replaceAll('atprotocol://persona/@', '');
-            });
-          }
-          _searchProfile();
-        }
-      });
+  startDeepLinkProviderListener() async {
+    Provider.of<DeepLinkProvider>(context, listen: false).init();
 
-      //when app is opened with deep link.
-      String? initialLink = await getInitialLink();
-
-      if (initialLink != null) {
-        WidgetsBinding.instance!.addPersistentFrameCallback((timeStamp) {
-          if (mounted) {
-            searchedAtsign =
-                initialLink.replaceAll('atprotocol://persona/@', '');
-            hideHeader = true;
-            _inputBoxController.value = _inputBoxController.upperBound;
-
-            _searchProfile(); // setState() will happen here
-          }
-        });
+    deepLinkProviderListener = context.read<DeepLinkProvider>();
+    deepLinkProviderListener.addListener(() {
+      var provider = Provider.of<DeepLinkProvider>(context, listen: false);
+      if (provider.status[provider.INITIAL_DATA] == Status.Done) {
+        _initialDeepLinkData(provider.searchedAtsign);
       }
-    } catch (e) {
-      print('error in uni link');
+
+      if (provider.status[provider.NEW_DATA] == Status.Done) {
+        _newDeepLinkData(provider.searchedAtsign);
+      }
+    });
+  }
+
+  _newDeepLinkData(String searchedAtsign) async {
+    if (mounted) {
+      if (!_inputBoxController.isCompleted) {
+        _animate(); // only animate if not already open
+      }
+      this.searchedAtsign = searchedAtsign;
+      _searchProfile();
     }
   }
 
-  _receiveIntent() async {
-    // For sharing images coming from outside the app while the app is in the memory
-    _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
-        .listen((List<SharedMediaFile> value) {
-      print("Incoming Shared file in home :" +
-          (value.map((f) => f.path).join(",")));
+  _initialDeepLinkData(String searchedAtsign) async {
+    if (mounted) {
+      this.searchedAtsign = searchedAtsign;
+      hideHeader = true;
+      _inputBoxController.value = _inputBoxController.upperBound;
+      _searchProfile(); // setState() will happen here
+    }
+  }
 
-      if (value != null) {}
-    }, onError: (err) {
-      print("getIntentDataStream error: $err");
-    });
-
-    // For sharing images coming from outside the app while the app is closed
-    ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
-      print('Incoming images Value in home  is $value');
-      if (value != null) {}
-    });
-
-    // For sharing or opening urls/text coming from outside the app while the app is in the memory
-    _intentDataStreamSubscription =
-        ReceiveSharingIntent.getTextStream().listen((String value) {
-      print('Incoming text Value in home  is $value');
-      if ((value != null) && (!value.contains('atprotocol://persona'))) {
-        SetupRoutes.push(NavService.navKey.currentContext!, Routes.ADD_LINK,
-            arguments: {'url': value});
-      }
-    }, onError: (err) {
-      print("getLinkStream error: $err");
-    });
-
-    // For sharing or opening urls/text coming from outside the app while the app is closed
-    ReceiveSharingIntent.getInitialText().then((String? value) {
-      if ((value != null) && (!value.contains('atprotocol://persona'))) {
-        SetupRoutes.push(NavService.navKey.currentContext!, Routes.ADD_LINK,
-            arguments: {'url': value});
-      }
-      print('Incoming text in home  when app is closed $value');
-    });
+  @override
+  void dispose() {
+    deepLinkProviderListener.removeListener(() {});
+    super.dispose();
   }
 
   @override
@@ -699,6 +674,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     end: Offset.zero,
                   ).animate(_inputBoxController),
                   child: CustomInputField(
+                    textInputType: TextInputType.visiblePassword,
+                    blankSpacesAllowed: false,
+                    autoCorrectAllowed: false,
                     padding: EdgeInsets.only(right: 10),
                     width: 343.toWidth,
                     // height: 60.toHeight,
@@ -946,10 +924,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
         Provider.of<UserPreview>(context, listen: false).setUser = _res;
         FieldOrderService().setPreviewOrder = _searchService.fieldOrders;
-        await SetupRoutes.push(context, Routes.HOME, arguments: {
-          'themeData': _searchService.currentAtsignThemeData,
-          'isPreview': true,
-        });
+
+        // if already in searched screen then replace
+        if (widget.isPreview) {
+          await SetupRoutes.replace(context, Routes.HOME, arguments: {
+            'key': Key(searchedAtsign),
+            'themeData': _searchService.currentAtsignThemeData,
+            'isPreview': true,
+          });
+        } else {
+          await SetupRoutes.push(context, Routes.HOME, arguments: {
+            'key': Key(searchedAtsign),
+            'themeData': _searchService.currentAtsignThemeData,
+            'isPreview': true,
+          });
+        }
+
         setState(() {
           loadingSearchedAtsign = false;
         });
@@ -978,12 +968,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => WebsiteScreen(
-          title: 'Wavi',
-          url: 'https://wavi.ng/${_currentUser.atsign}',
-          isShareProfileScreen: true,
-        ),
-      ),
+          builder: (context) => QrScreen(atSign: _currentUser.atsign)),
     );
   }
 

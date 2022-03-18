@@ -50,7 +50,11 @@ dependencies:
 
   html_editor_enhanced: ^2.4.0+1
   flutter_widget_from_html: ^0.8.5
+  qr_flutter: ^4.0.0
+  share_plus: ^3.1.0
+  url_launcher: ^6.0.20
 
+  
   at_common_flutter: ^2.0.5
   at_onboarding_flutter: ^4.0.0
   at_client_mobile: ^3.1.8
@@ -63,7 +67,8 @@ dependencies:
   at_location_flutter: ^3.1.2
   uni_links: ^0.5.1
 
-  flutter_dotenv: ^5.0.2
+  flutter_dotenv: ^5.0.2 
+  new_version: ^0.3.0
 
 dependency_overrides:
   permission_handler: ^9.2.0
@@ -71,14 +76,15 @@ dependency_overrides:
   biometric_storage: ^4.0.1
   at_follows_flutter:
     git:
-      url: git@github.com:atsign-foundation/at_widgets.git
-      ref: fix/at_follows_flutter_example
+      url: https://github.com/atsign-foundation/at_widgets.git
+      ref: trunk
       path: at_follows_flutter
   at_sync_ui_flutter:
-    git:  
+    git:
       url: https://github.com/atsign-foundation/at_widgets.git
+      ref: trunk
       path: at_sync_ui_flutter
-      ref: feature/at-sync-ui
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

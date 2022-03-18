@@ -82,99 +82,107 @@ class _HtmlEditorScreenState extends State<HtmlEditorScreen> {
               )),
         ),
         body: SafeArea(
-          child: HtmlEditor(
-            controller: _controller,
-            htmlToolbarOptions: HtmlToolbarOptions(
-              toolbarType: ToolbarType.nativeGrid,
-              dropdownBackgroundColor:
-                  Theme.of(context).scaffoldBackgroundColor,
-              mediaUploadInterceptor: (file, InsertFileType type) async {
-                if (type == InsertFileType.image) {
-                  await imageCompressor(file.path!);
-                  return false;
-                }
-                return true;
-              },
-            ),
-            htmlEditorOptions: HtmlEditorOptions(
-              hint: "Your text here...",
-              initialText: widget.initialText,
-              shouldEnsureVisible: true,
-            ),
-            otherOptions: OtherOptions(
-              height: 450,
-            ),
-            callbacks: Callbacks(
-                onBeforeCommand: (String? currentHtml) {},
-                onChangeContent: (String? changed) {
-                  _value = changed;
-                },
-                onPaste: () {
-                  if (_showHtmlToast) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      duration: Duration(seconds: 3),
-                      backgroundColor: ColorConstants.DARK_GREY,
-                      dismissDirection: DismissDirection.horizontal,
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            // "Paste not allowed here. Use the 'Paste html' button in the previous page.",
-                            "Use the 'Paste html' button in the previous page to paste html content.",
-                            style: CustomTextStyles.customTextStyle(
-                              ColorConstants.white,
-                              size: 14,
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: ListView(
+            children: [
+              HtmlEditor(
+                controller: _controller,
+                htmlToolbarOptions: HtmlToolbarOptions(
+                  toolbarType: ToolbarType.nativeGrid,
+                  dropdownBackgroundColor:
+                      Theme.of(context).scaffoldBackgroundColor,
+                  mediaUploadInterceptor: (file, InsertFileType type) async {
+                    if (type == InsertFileType.image) {
+                      await imageCompressor(file.path!);
+                      return false;
+                    }
+                    return true;
+                  },
+                ),
+                htmlEditorOptions: HtmlEditorOptions(
+                  hint: "Your text here...",
+                  initialText: widget.initialText,
+                  autoAdjustHeight: false,
+                  adjustHeightForKeyboard: false,
+                ),
+                otherOptions: OtherOptions(
+                  height: 450,
+                ),
+                callbacks: Callbacks(
+                    onBeforeCommand: (String? currentHtml) {},
+                    onChangeContent: (String? changed) {
+                      _value = changed;
+                    },
+                    onPaste: () {
+                      if (_showHtmlToast) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          duration: Duration(seconds: 3),
+                          backgroundColor: ColorConstants.DARK_GREY,
+                          dismissDirection: DismissDirection.horizontal,
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              InkWell(
-                                onTap: () {
-                                  _controller.undo();
-                                  ScaffoldMessenger.of(context)
-                                      .clearSnackBars();
-                                },
-                                child: Text(
-                                  "Undo Paste",
-                                  style: CustomTextStyles.customBoldTextStyle(
-                                    ColorConstants.red,
-                                    size: 16,
-                                  ),
+                              Text(
+                                // "Paste not allowed here. Use the 'Paste html' button in the previous page.",
+                                "Use the 'Paste html' button in the previous page to paste html content.",
+                                style: CustomTextStyles.customTextStyle(
+                                  ColorConstants.white,
+                                  size: 14,
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  AtKeySetService().update(
-                                    BasicData(value: 'false'),
-                                    FieldsEnum.HTMLTOASTVIEW.name,
-                                    isCheck: null,
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                      .clearSnackBars();
-
-                                  _showHtmlToast = false;
-                                  Provider.of<UserProvider>(context,
-                                          listen: false)
-                                      .user
-                                      ?.htmlToastView
-                                      .value = 'false';
-                                },
-                                child: Text(
-                                  "Don't show again",
-                                  style: CustomTextStyles.customTextStyle(
-                                    ColorConstants.black,
-                                    size: 16,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      _controller.undo();
+                                      ScaffoldMessenger.of(context)
+                                          .clearSnackBars();
+                                    },
+                                    child: Text(
+                                      "Undo Paste",
+                                      style:
+                                          CustomTextStyles.customBoldTextStyle(
+                                        ColorConstants.red,
+                                        size: 16,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  InkWell(
+                                    onTap: () {
+                                      AtKeySetService().update(
+                                        BasicData(value: 'false'),
+                                        FieldsEnum.HTMLTOASTVIEW.name,
+                                        isCheck: null,
+                                      );
+                                      ScaffoldMessenger.of(context)
+                                          .clearSnackBars();
+
+                                      _showHtmlToast = false;
+                                      Provider.of<UserProvider>(context,
+                                              listen: false)
+                                          .user
+                                          ?.htmlToastView
+                                          .value = 'false';
+                                    },
+                                    child: Text(
+                                      "Don't show again",
+                                      style: CustomTextStyles.customTextStyle(
+                                        ColorConstants.black,
+                                        size: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ));
-                  }
-                }),
+                        ));
+                      }
+                    }),
+              ),
+              SizedBox(height: 100), // extra space for scrolling
+            ],
           ),
         ),
       ),
