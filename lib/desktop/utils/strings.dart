@@ -85,7 +85,7 @@ class Strings {
   static const String desktop_delete = 'Delete';
   static const String desktop_confirm = 'Confirm';
   //static const String desktop_wavi = '@Wavi';
-  static const String desktop_company_copyrights = ' © 2021 The @ Company';
+  static const String desktop_company_copyrights = ' © 2022 The @ Company';
 
   static const List<String> desktop_login_title_page = [
     'Secure & Private',
