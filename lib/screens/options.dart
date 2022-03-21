@@ -5,6 +5,7 @@ import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_follows_flutter/screens/qrscan.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/common_components/person_horizontal_tile.dart';
+import 'package:at_wavi_app/common_components/qr_scanner.dart';
 import 'package:at_wavi_app/common_components/switch_at_sign.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
@@ -22,6 +23,7 @@ import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_qr_reader/flutter_qr_reader.dart';
 import 'package:provider/provider.dart';
 import 'package:at_follows_flutter/services/size_config.dart';
 import 'package:at_follows_flutter/utils/color_constants.dart'
@@ -98,8 +100,8 @@ class _OptionsState extends State<Options> {
             SizedBox(height: 15.toHeight),
             InkWell(
               onTap: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => QrScan()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => QRScanner()));
               },
               child: Row(
                 children: <Widget>[

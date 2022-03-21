@@ -54,6 +54,8 @@ dependencies:
   uni_links: ^0.5.1
 
   flutter_dotenv: ^5.0.2 
+  flutter_qr_reader: ^1.0.5
+
 
 dependency_overrides:
   permission_handler: ^9.2.0

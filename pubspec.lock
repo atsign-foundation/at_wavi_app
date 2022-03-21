@@ -501,7 +501,7 @@ packages:
     source: hosted
     version: "2.0.5"
   flutter_qr_reader:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_qr_reader
       url: "https://pub.dartlang.org"
