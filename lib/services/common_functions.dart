@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:at_contact/at_contact.dart';
@@ -25,6 +26,7 @@ import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CommonFunctions {
   CommonFunctions._internal();
@@ -607,25 +609,39 @@ class CommonFunctions {
                 right: 10,
                 top: 10,
                 child: Container(
-                  height: 40,
+                  height: 100,
                   width: 40,
                   decoration: BoxDecoration(
                     color: ColorConstants.LIGHT_GREY,
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: IconButton(
-                      onPressed: () {
-                        SetupRoutes.push(NavService.navKey.currentContext!,
-                            Routes.PREVIEW_LOCATION,
-                            arguments: {
-                              'title': _locationNickname,
-                              'latLng': _osmLocationModel.latLng!,
-                              'zoom': _osmLocationModel.zoom ?? 16,
-                              'diameterOfCircle':
-                                  _osmLocationModel.radius ?? 100,
-                            });
-                      },
-                      icon: Icon(Icons.fullscreen)),
+                  child: Column(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            SetupRoutes.push(NavService.navKey.currentContext!,
+                                Routes.PREVIEW_LOCATION,
+                                arguments: {
+                                  'title': _locationNickname,
+                                  'latLng': _osmLocationModel.latLng!,
+                                  'zoom': _osmLocationModel.zoom ?? 16,
+                                  'diameterOfCircle':
+                                      _osmLocationModel.radius ?? 100,
+                                });
+                          },
+                          icon: Icon(Icons.fullscreen)),
+                      IconButton(
+                          onPressed: () async {
+                            try {
+                              await openMaps(_osmLocationModel.latLng!.latitude,
+                                  _osmLocationModel.latLng!.longitude);
+                            } catch (e) {
+                              print(e);
+                            }
+                          },
+                          icon: Icon(Icons.location_on_sharp)),
+                    ],
+                  ),
                 ),
               )
             ],
@@ -635,12 +651,33 @@ class CommonFunctions {
     );
   }
 
-  getTitle(String value) {
-    var _valueOf = valueOf(value);
-    if (_valueOf is FieldsEnum) {
-      return _valueOf.hintText;
+  Future<void> openMaps(double lat, double lang) async {
+    String url = '';
+    String urlAppleMaps = '';
+    if (Platform.isAndroid) {
+      url = 'https://www.google.com/maps/search/?api=1&query=$lat,$lang';
+      await launch(url);
+    } else if (Platform.isIOS) {
+      urlAppleMaps = 'https://maps.apple.com/?q=$lat,$lang';
+      url = 'comgooglemaps://?saddr=&daddr=$lat,$lang&directionsmode=driving';
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else if (await canLaunch(urlAppleMaps)) {
+        await launch(urlAppleMaps);
+      } else {
+        throw 'Could not launch $url';
+      }
     } else {
-      return value;
+      throw 'Could not launch : $url';
     }
+  }
+}
+
+getTitle(String value) {
+  var _valueOf = valueOf(value);
+  if (_valueOf is FieldsEnum) {
+    return _valueOf.hintText;
+  } else {
+    return value;
   }
 }

@@ -19,6 +19,8 @@ import 'package:at_wavi_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../screens/qr_screen.dart';
+
 class SetupRoutes {
   static String initialRoute = Routes.WELCOME_SCREEN;
   // static String initialRoute = Routes.ADD_LINK;
@@ -172,6 +174,17 @@ class SetupRoutes {
         } else
           return SizedBox();
       },
+      Routes.QR_SCREEN: (context) {
+        if ((ModalRoute.of(context) != null) &&
+            (ModalRoute.of(context)!.settings.arguments != null)) {
+          Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return QrScreen(
+            atSign: args['atSign'],
+          );
+        } else
+          return SizedBox();
+      }
     };
   }
 
