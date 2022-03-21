@@ -1,3 +1,4 @@
+import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
@@ -53,6 +54,8 @@ class _QRScannerState extends State<QRScanner> {
 
   Future<void> onScan(
       String searchedAtsign, List<Offset> offsets, context) async {
+    LoadingDialog().show(text: '$searchedAtsign', heading: 'Fetching');
+
     var _searchedAtsignData =
         SearchService().getAlreadySearchedAtsignDetails(searchedAtsign);
 
@@ -67,6 +70,8 @@ class _QRScannerState extends State<QRScanner> {
       SearchInstance? _searchService =
           await SearchService().getAtsignDetails(searchedAtsign);
       User? _res = _searchService?.user;
+
+      LoadingDialog().hide();
 
       /// in case the search is cancelled, dont do anything
       if (_searchService == null) {
@@ -91,6 +96,8 @@ class _QRScannerState extends State<QRScanner> {
         'isPreview': true,
       });
     } else {
+      LoadingDialog().hide();
+
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: ColorConstants.RED,
         content: Text(
@@ -117,17 +124,26 @@ class _QRScannerState extends State<QRScanner> {
           children: [
             SizedBox(height: MediaQuery.of(context).size.height * 0.10),
             Expanded(
-              child: QrReaderView(
-                width: 300.toWidth,
-                height: 350.toHeight,
-                callback: (container) async {
-                  this._controller = container;
-                  await _controller!.startCamera((data, offsets) async {
-                    _controller?.stopCamera();
-
-                    await onScan(data, offsets, context);
-                  });
-                },
+              child: Center(
+                child: Builder(
+                  builder: (context) => Container(
+                    alignment: Alignment.center,
+                    width: 300.toWidth,
+                    height: 350.toHeight,
+                    color: Colors.black,
+                    child: QrReaderView(
+                      width: 300.toWidth,
+                      height: 350.toHeight,
+                      callback: (container) async {
+                        this._controller = container;
+                        await _controller!.startCamera((data, offsets) async {
+                          _controller?.stopCamera();
+                          await onScan(data, offsets, context);
+                        });
+                      },
+                    ),
+                  ),
+                ),
               ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.10),
