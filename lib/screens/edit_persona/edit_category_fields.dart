@@ -9,6 +9,7 @@ import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/custom_text_validator.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
@@ -461,7 +462,6 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
       //             Provider.of<UserPreview>(context, listen: false)
       //                 .user()!
       //                 .customFields[widget.category.name];
-
       //         var index = customFields!.indexOf(basicData);
       //         customFields[index] = BasicData(
       //             accountName:
@@ -487,11 +487,12 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                         : AutovalidateMode.onUserInteraction
                     : AutovalidateMode.disabled,
                 validator: (value) {
-                  if (value == null || value == '' && isCustomField) {
-                    return 'Body is required';
-                  }
-                  return null;
+                  return TextValidator()
+                      .validate(value, isCustomField, basicData);
                 },
+                // onFieldSubmitted: (String value) {
+                //   print("done $value");
+                // },
                 initialValue: basicData.value,
                 onChanged: (String value) {
                   basicData.value = value;
