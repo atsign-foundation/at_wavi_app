@@ -875,7 +875,7 @@ packages:
     source: hosted
     version: "1.0.2"
   package_info_plus_web:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: package_info_plus_web
       url: "https://pub.dartlang.org"
