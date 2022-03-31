@@ -71,6 +71,7 @@ dependencies:
 
   flutter_dotenv: ^5.0.2 
   new_version: ^0.3.0
+  another_flushbar: ^1.10.28
 
 dependency_overrides:
   permission_handler: ^9.2.0
