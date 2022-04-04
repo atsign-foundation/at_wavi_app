@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:at_wavi_app/common_components/provider_callback.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
+import 'package:at_wavi_app/desktop/utils/snackbar_utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
@@ -61,8 +62,11 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
       text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,
       onSuccess: (provider) async {
-        // Navigator.pop(context);
-        Provider.of<DesktopEditProfileModel>(context, listen: false).jumpNextPage();
+        // Provider.of<DesktopEditProfileModel>(context, listen: false).jumpNextPage();
+        SnackBarUtils.show(
+          context: context,
+          message: 'Your changes have been saved!',
+        );
       },
     );
   }
@@ -132,7 +136,7 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
               children: [
                 Spacer(),
                 DesktopButton(
-                  title: 'Save & Next',
+                  title: 'Save',
                   onPressed: () => _handleSaveAndNext(context),
                 ),
               ],

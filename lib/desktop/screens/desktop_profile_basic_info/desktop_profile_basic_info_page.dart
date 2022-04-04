@@ -4,6 +4,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_location/desktop_location_pr
 import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_user_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
+import 'package:at_wavi_app/desktop/utils/snackbar_utils.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart';
@@ -275,7 +276,7 @@ class _DesktopProfileBasicInfoPageState
                   ),
                 SizedBox(width: 12),
                 DesktopButton(
-                  title: 'Save & Next',
+                  title: 'Save',
                   onPressed: _handleSaveAndNext,
                 ),
               ],
@@ -569,8 +570,12 @@ class _DesktopProfileBasicInfoPageState
       text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,
       onSuccess: (provider) async {
-        Provider.of<DesktopEditProfileModel>(context, listen: false)
-            .jumpNextPage();
+        // Provider.of<DesktopEditProfileModel>(context, listen: false)
+        //     .jumpNextPage();
+        SnackBarUtils.show(
+          context: context,
+          message: 'Your changes have been saved!',
+        );
       },
     );
   }

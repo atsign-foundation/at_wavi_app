@@ -6,6 +6,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/widgets/d
 import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_user_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
+import 'package:at_wavi_app/desktop/utils/snackbar_utils.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_preview_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
@@ -41,6 +42,7 @@ class DesktopProfileMediaPage extends StatefulWidget {
 class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
     with AutomaticKeepAliveClientMixin {
   final _scrollController = ScrollController();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   bool get wantKeepAlive => true;
@@ -54,6 +56,7 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
   Widget build(BuildContext context) {
     AppTheme appTheme = AppTheme.of(context);
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: appTheme.backgroundColor,
       body: _buildContentWidget(),
     );
@@ -163,7 +166,7 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 DesktopButton(
-                  title: 'Save & Next',
+                  title: 'Save',
                   onPressed: _handleSaveAndNext,
                 ),
               ],
@@ -253,7 +256,11 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
       text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,
       onSuccess: (provider) async {
-        Provider.of<DesktopEditProfileModel>(context, listen: false).jumpNextPage();
+        // Provider.of<DesktopEditProfileModel>(context, listen: false).jumpNextPage();
+        SnackBarUtils.show(
+          context: context,
+          message: 'Your changes have been saved!',
+        );
       },
     );
   }
