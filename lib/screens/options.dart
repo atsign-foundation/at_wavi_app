@@ -118,7 +118,7 @@ class _OptionsState extends State<Options> {
             ),
             SizedBox(height: 15.toHeight),
             Divider(height: 1),
-            SizedBox(height: 5.toHeight),
+            SizedBox(height: 15.toHeight),
             InkWell(
               onTap: () async {
                 BackupKeyWidget(
@@ -129,7 +129,7 @@ class _OptionsState extends State<Options> {
               },
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.file_copy, size: 25),
+                  Icon(Icons.file_copy, size: 23),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0),
@@ -145,21 +145,27 @@ class _OptionsState extends State<Options> {
             SizedBox(height: 15.toHeight),
             Divider(height: 1),
             SizedBox(
-              height: 40,
+              height: 38,
               width: SizeConfig().screenWidth,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Icon(Icons.lock, size: 25),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0.0, 13.0, 0.0, 0.0),
+                    child: Icon(Icons.lock, size: 25),
+                  ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
+                      padding: EdgeInsets.fromLTRB(8.0, 15.0, 0.0, 0.0),
                       child: Text(
                         'Private Account',
                         style: TextStyles.lightText(_themeData!.primaryColor),
                       ),
                     ),
                   ),
-                  Provider.of<SetPrivateState>(context).isLoading
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(8.0, 15.0, 0.0, 0.0),
+                      child: Provider.of<SetPrivateState>(context).isLoading
                       ? LoadingDialog().onlyText(
                           'Updating',
                           style: TextStyle(
@@ -169,6 +175,7 @@ class _OptionsState extends State<Options> {
                               decoration: TextDecoration.none),
                         )
                       : Transform.scale(
+                          alignment: Alignment.center,
                           scale: 0.7,
                           child: CupertinoSwitch(
                             activeColor: WaviColors.ColorConstants.black,
@@ -180,12 +187,13 @@ class _OptionsState extends State<Options> {
                             },
                           ),
                         ),
+                  ),
                 ],
               ),
             ),
             SizedBox(height: 15.toHeight),
             Divider(height: 1),
-            SizedBox(height: 5.toHeight),
+            SizedBox(height: 15.toHeight),
             InkWell(
               onTap: () {
                 SetupRoutes.push(context, Routes.TERMS_CONDITIONS_SCREEN);
@@ -214,7 +222,7 @@ class _OptionsState extends State<Options> {
             ),
             SizedBox(height: 15.toHeight),
             Divider(height: 1),
-            SizedBox(height: 15.toHeight),
+            SizedBox(height: 14.toHeight),
             InkWell(
               onTap: () {
                 SetupRoutes.push(context, Routes.FAQS);
@@ -241,9 +249,9 @@ class _OptionsState extends State<Options> {
                 ],
               ),
             ),
-            SizedBox(height: 15.toHeight),
+            SizedBox(height: 14.toHeight),
             Divider(height: 1),
-            SizedBox(height: 15.toHeight),
+            SizedBox(height: 14.toHeight),
             InkWell(
               onTap: () {
                 _showResetDialog();
@@ -267,9 +275,9 @@ class _OptionsState extends State<Options> {
                 ],
               ),
             ),
-            SizedBox(height: 15.toHeight),
+            SizedBox(height: 14.toHeight),
             Divider(height: 1),
-            SizedBox(height: 15.toHeight),
+            SizedBox(height: 14.toHeight),
             InkWell(
               onTap: () async {
                 var atSignList = await KeychainUtil.getAtsignList();
