@@ -5,22 +5,21 @@ class TextValidator {
     if (value == null || value == '' && isCustomField) {
       return 'Body is required';
     }
+
+    if (value.isEmpty && !isCustomField) return null;
     // print(basicData.accountName);
     value = value.toString().toLowerCase();
     switch (basicData.accountName) {
       case 'twitter':
         {
-          if (!(value.startsWith('https://www.twitter.com/') ||
-              value.startsWith('@'))) {
+          if (value.startsWith('https://') &&
+              !value.startsWith('https://www.twitter.com/')) {
             return 'Please enter a valid Username or URL';
-          } else if (!value.startsWith('https://') && !value.startsWith('@')) {
-            return 'Please enter username starting with @';
           }
           return null;
         }
       case 'facebook':
         {
-          if (value.isEmpty) return null;
           if (value.startsWith('https://') &&
               !value.startsWith('https://www.facebook.com/')) {
             return 'Please enter a valid username or URL';
@@ -30,7 +29,6 @@ class TextValidator {
         }
       case 'linkedin':
         {
-          if (value.isEmpty) return null;
           if (!value.startsWith('https://www.linkedin.com/')) {
             return 'Please enter a valid username or URL';
           } else {
@@ -39,7 +37,6 @@ class TextValidator {
         }
       case 'instagram':
         {
-          if (value.isEmpty) return null;
           if (value.startsWith('https://') &&
               !value.startsWith('https://www.instagram.com/')) {
             return 'Please enter a valid username or URL';
@@ -49,7 +46,6 @@ class TextValidator {
         }
       case 'youtube':
         {
-          if (value.isEmpty) return null;
           if (!value.startsWith('https://www.youtube.com/')) {
             return 'Please enter a valid username or URL';
           } else {
@@ -58,7 +54,6 @@ class TextValidator {
         }
       case 'tumblr':
         {
-          if (value.isEmpty) return null;
           if (value.startsWith('https://') &&
               !value.startsWith('https://www.tumblr.com/blog/view/')) {
             return 'Please enter a valid username or URL';
@@ -68,7 +63,6 @@ class TextValidator {
         }
       case 'medium':
         {
-          if (value.isEmpty) return null;
           if ((value.startsWith('https://') && !(value.contains('medium')))) {
             return 'Please enter a valid username or URL';
           } else if (!value.startsWith('https://') && value.startsWith('@')) {
@@ -79,7 +73,6 @@ class TextValidator {
         }
       case 'tiktok':
         {
-          if (value.isEmpty) return null;
           if (value.startsWith('https://') &&
               !value.startsWith('https://www.tiktok.com/')) {
             return 'Please enter a valid username or URL';
@@ -91,7 +84,6 @@ class TextValidator {
         }
       case 'snapchat':
         {
-          if (value.isEmpty) return null;
           if (!value.startsWith('https://www.snapchat.com/')) {
             return 'Please enter a valid username or URL';
           } else {
@@ -100,7 +92,6 @@ class TextValidator {
         }
       case 'pinterest':
         {
-          if (value.isEmpty) return null;
           if (value.startsWith('https://') &&
               !value.startsWith('https://pin.it/')) {
             return 'Please enter a valid username or URL';
@@ -112,7 +103,6 @@ class TextValidator {
         }
       case 'github':
         {
-          if (value.isEmpty) return null;
           if (value.startsWith('https://www.github.com/')) {
             return 'Please enter a valid username or URL';
           } else {
@@ -122,7 +112,6 @@ class TextValidator {
 
       case 'steam':
         {
-          if (value.isEmpty) return null;
           if (value.startsWith('https://') &&
               !value.startsWith('https://steamcommunity.com/')) {
             return 'Please enter a valid username or URL';
@@ -132,7 +121,6 @@ class TextValidator {
         }
       case 'discord':
         {
-          if (value.isEmpty) return null;
           if (value.startsWith('https://') &&
               !value.startsWith('https://www.discord.com/users/')) {
             return 'Please enter a valid username or URL';
@@ -144,7 +132,6 @@ class TextValidator {
         }
       case 'twitch':
         {
-          if (value.isEmpty) return null;
           if (value.startsWith('https://') &&
               !value.startsWith('https://www.twitch.tv/')) {
             return 'Please enter a valid username or URL';
