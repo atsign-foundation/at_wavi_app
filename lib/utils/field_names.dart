@@ -119,6 +119,8 @@ class FieldNames {
       fields = [..._gameFields];
     } else if (category == AtCategory.LOCATION) {
       fields = [..._locationFields];
+    } else if (category == AtCategory.FEATURED) {
+      fields = [..._socialAccounts];
     }
 
     var sortedFields = [...fields];
@@ -235,7 +237,7 @@ class FieldNames {
         NavService.navKey.currentContext!,
         listen: false);
     Map<dynamic, dynamic> userMap = User.toJson(userPreview.user());
-    List<BasicData>? customFields =
+    List<BasicData> customFields =
         userPreview.user()!.customFields[category.name] ?? [];
 
     for (int index = 0; index < fields.length; index++) {

@@ -279,13 +279,15 @@ class BasicData {
   Icon? icon;
   String? accountName, valueDescription;
   var type;
-  BasicData(
-      {this.value,
-      this.isPrivate = false,
-      this.icon,
-      this.accountName,
-      this.type,
-      this.valueDescription});
+
+  BasicData({
+    this.value,
+    this.isPrivate = false,
+    this.icon,
+    this.accountName,
+    this.type,
+    this.valueDescription,
+  });
 
   String? get displayingAccountName {
     if (FieldNames().basicDetailsFields.contains(accountName) ||

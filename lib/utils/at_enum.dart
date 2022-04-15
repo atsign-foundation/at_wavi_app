@@ -97,7 +97,7 @@ extension FieldsEnumValues on FieldsEnum {
 
   String get title {
     return this == FieldsEnum.ABOUT
-        ? 'about me'
+        ? 'About Me'
         : this.toString().split('.').last.toLowerCase();
   }
 
@@ -107,10 +107,10 @@ extension FieldsEnumValues on FieldsEnum {
         return 'Private Account';
 
       case FieldsEnum.FIRSTNAME:
-        return 'First name';
+        return 'First Name';
 
       case FieldsEnum.LASTNAME:
-        return 'Last name';
+        return 'Last Name';
 
       case FieldsEnum.PHONE:
         return 'Phone Number';
@@ -149,7 +149,7 @@ extension FieldsEnumValues on FieldsEnum {
         return 'PS4';
 
       case FieldsEnum.XBOX:
-        return 'XBOX';
+        return 'XBox';
 
       case FieldsEnum.STEAM:
         return 'Steam (PC)';
@@ -225,6 +225,27 @@ extension AtCategoryValues on AtCategory {
       case AtCategory.ADDITIONAL_DETAILS:
         return 'Additional_Details';
 
+      default:
+        return '';
+    }
+  }
+
+  String get newLabel {
+    switch (this) {
+      case AtCategory.IMAGE:
+        return 'Image';
+      case AtCategory.DETAILS:
+        return 'Contact';
+      case AtCategory.SOCIAL:
+        return 'Social';
+      case AtCategory.GAMER:
+        return 'Gaming';
+      case AtCategory.LOCATION:
+        return 'Location';
+      case AtCategory.FEATURED:
+        return 'Featured';
+      case AtCategory.ADDITIONAL_DETAILS:
+        return 'About';
       default:
         return '';
     }
