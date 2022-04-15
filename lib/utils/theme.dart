@@ -3,9 +3,11 @@ import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:flutter/material.dart';
 
 class Themes {
-  static ThemeData lightTheme(
-      {Color highlightColor = ColorConstants.green,
-      ThemeColor themeColor = ThemeColor.Light}) {
+  static ThemeData lightTheme({
+    Color highlightColor = ColorConstants.green,
+    ThemeColor themeColor = ThemeColor.Light,
+    String? fontFamily,
+  }) {
     return ThemeData(
       brightness: Brightness.light,
       primaryColor: ColorConstants.black,
@@ -14,14 +16,16 @@ class Themes {
       canvasColor: Colors.white,
       highlightColor: highlightColor,
       scaffoldBackgroundColor: ColorConstants.white,
-      fontFamily: 'HelveticaNeu',
+      fontFamily: fontFamily ?? 'HelveticaNeu',
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );
   }
 
-  static ThemeData darkTheme(
-      {Color highlightColor = ColorConstants.green,
-      ThemeColor themeColor = ThemeColor.Dark}) {
+  static ThemeData darkTheme({
+    Color highlightColor = ColorConstants.green,
+    ThemeColor themeColor = ThemeColor.Dark,
+    String? fontFamily,
+  }) {
     return ThemeData(
       brightness: Brightness.dark,
       canvasColor: Colors.black,
@@ -30,7 +34,7 @@ class Themes {
       backgroundColor: getBackgroundColor(highlightColor, themeColor),
       highlightColor: highlightColor,
       scaffoldBackgroundColor: ColorConstants.black,
-      fontFamily: 'HelveticaNeu',
+      fontFamily: fontFamily ?? 'HelveticaNeu',
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );
   }

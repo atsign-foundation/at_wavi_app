@@ -122,7 +122,6 @@ class _OptionsState extends State<Options> {
             InkWell(
               onTap: () async {
                 BackupKeyWidget(
-                  // atClientService: AtClientManager.getInstance().atClient,
                   atsign: AtClientManager.getInstance()
                       .atClient
                       .getCurrentAtSign()!,
