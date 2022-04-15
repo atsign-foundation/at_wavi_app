@@ -49,4 +49,11 @@ class MixedConstants {
   /// Load the environment variables from the .env file.
   /// Directly calls load from the dotenv package.
   static Future<void> load() => dotenv.load();
+
+  /// release tags
+  static const MACOS_STORE_LINK = 'https://apps.apple.com/app/id1583231748';
+  static const WINDOWS_STORE_LINK = 'https://www.microsoft.com/en-in/p/wavi/9pnfnw1mqqwc?activetab=pivot:overviewtab';
+  static const RELEASE_TAG_API =
+      'https://atsign-foundation.github.io/wavi/version.html';
+  static const LINUX_STORE_LINK = 'https://atsign.com/apps/';
 }

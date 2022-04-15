@@ -11,4 +11,13 @@ class Strings {
   static const selectAll = 'Select All';
   static const remove = 'Remove';
   static const cancel = 'Cancel';
+
+  // version_service
+  static const releaseTagError = 'Error in fetching release tag.';
+  static const upgradeDialogShowError =
+      'Error in showing app upgrade dialog box.';
+  static const appVersionFetchError =
+      'Could not fetch latest app version details.';
+  static const update = 'Update';
+  static const mayBeLater = 'Maybe later';
 }
