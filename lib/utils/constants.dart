@@ -51,10 +51,9 @@ class MixedConstants {
   static Future<void> load() => dotenv.load();
 
   /// release tags
-  static const MACOS_STORE_LINK = 'https://apps.apple.com/app/id1550936444';
-  static const WINDOWS_STORE_LINK =
-      'https://www.microsoft.com/en-in/p/mospherepro/9nk4dhfxdnm1?cid=msft_web_chart&activetab=pivot:overviewtab';
+  static const MACOS_STORE_LINK = 'https://apps.apple.com/app/id1583231748';
+  static const WINDOWS_STORE_LINK = '';
   static const RELEASE_TAG_API =
-      'https://atsign-foundation.github.io/atmosphere-pro/version.html';
+      'https://atsign-foundation.github.io/wavi/version.html';
   static const LINUX_STORE_LINK = 'https://atsign.com/apps/';
 }
