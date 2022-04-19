@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:at_client/at_client.dart';
 import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
+import 'package:at_wavi_app/desktop/screens/desktop_share_profile/desktop_share_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
@@ -341,8 +342,13 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   }
 
   void shareProfile() {
-    try {
-      launch('https://wavi.ng/${_currentUser.atsign}');
-    } catch (e) {}
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => DesktopShareProfilePage(atSign: _currentUser.atsign),
+      ),
+    );
+    // try {
+    //   launch('https://wavi.ng/${_currentUser.atsign}');
+    // } catch (e) {}
   }
 }

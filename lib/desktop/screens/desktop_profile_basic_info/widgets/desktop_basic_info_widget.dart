@@ -12,22 +12,28 @@ import 'package:url_launcher/url_launcher.dart';
 class DesktopBasicInfoWidget extends StatelessWidget {
   final BasicData data;
   final bool isCustomField;
+  final bool isEditingMode;
   final bool showMenu;
   final VoidCallback? onEditPressed;
   final VoidCallback? onDeletePressed;
+  final VoidCallback? onPubicPressed;
+  final VoidCallback? onPrivatePressed;
 
   const DesktopBasicInfoWidget({
     Key? key,
     required this.data,
     required this.isCustomField,
+    required this.isEditingMode,
     required this.showMenu,
     this.onEditPressed,
     this.onDeletePressed,
+    this.onPubicPressed,
+    this.onPrivatePressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (data.isPrivate) {
+    if (data.isPrivate && !isEditingMode) {
       return Container();
     }
 
@@ -73,6 +79,7 @@ class DesktopBasicInfoWidget extends StatelessWidget {
               ),
             ),
           ),
+          _buildVisibleWidget(context),
           _buildMenuWidget(context),
         ],
       ),
@@ -114,6 +121,7 @@ class DesktopBasicInfoWidget extends StatelessWidget {
               ),
             ),
           ),
+          _buildVisibleWidget(context),
           _buildMenuWidget(context),
         ],
       ),
@@ -159,6 +167,7 @@ class DesktopBasicInfoWidget extends StatelessWidget {
               ),
             ),
           ),
+          _buildVisibleWidget(context),
           _buildMenuWidget(context),
         ],
       ),
@@ -198,18 +207,71 @@ class DesktopBasicInfoWidget extends StatelessWidget {
                   ),
             ),
           ),
+          _buildVisibleWidget(context),
           _buildMenuWidget(context),
         ],
       ),
     );
   }
 
-  Widget _buildMenuWidget(BuildContext context) {
+  Widget _buildVisibleWidget(BuildContext context) {
+    final appTheme = AppTheme.of(context);
     if (!showMenu) {
       return SizedBox();
     }
+    return PopupMenuButton(
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          child: SizedBox(
+            child: Text(
+              "Public",
+              style: appTheme.textTheme.bodyText2,
+            ),
+          ),
+          value: 0,
+        ),
+        PopupMenuItem(
+          child: SizedBox(
+            child: Text(
+              "Private",
+              style: appTheme.textTheme.bodyText2,
+            ),
+          ),
+          value: 1,
+        ),
+      ],
+      tooltip: '',
+      child: SizedBox(
+        width: 48,
+        height: 52,
+        child: data.isPrivate
+            ? Icon(
+                Icons.lock_outline_rounded,
+                size: 18,
+                color: appTheme.primaryTextColor,
+              )
+            : Icon(
+                Icons.public_rounded,
+                size: 18,
+                color: appTheme.primaryTextColor,
+              ),
+      ),
+      onSelected: (index) {
+        if (index == 0 && data.isPrivate) {
+          onPubicPressed?.call();
+        } else if (index == 1 && !data.isPrivate) {
+          onPrivatePressed?.call();
+        }
+      },
+    );
+  }
+
+  Widget _buildMenuWidget(BuildContext context) {
+    if (!showMenu) {
+      return SizedBox(width: 48);
+    }
     if (!isCustomField) {
-      return Container();
+      return SizedBox(width: 48);
     }
     final appTheme = AppTheme.of(context);
     return PopupMenuButton(

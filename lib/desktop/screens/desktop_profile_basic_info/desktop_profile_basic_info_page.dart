@@ -301,6 +301,9 @@ class _DesktopProfileBasicInfoPageState
     }
 
     final displayItem = basicDataList.where((element) {
+      if (widget.isEditable) {
+        return true;
+      }
       if (element.data.value is String &&
           element.data.value.toString().trim().isEmpty) {
         return false;
@@ -326,11 +329,18 @@ class _DesktopProfileBasicInfoPageState
             child: DesktopBasicInfoWidget(
               data: item.data,
               isCustomField: item.isCustomField,
+              isEditingMode: widget.isEditable,
               onDeletePressed: () {
                 deleteData(item.data, widget.atCategory);
               },
               onEditPressed: () {
                 _showEditCustomContent(item.data);
+              },
+              onPubicPressed: () {
+                setPublicData(item.data, widget.atCategory);
+              },
+              onPrivatePressed: () {
+                setPrivateData(item.data, widget.atCategory);
               },
               showMenu: widget.isEditable,
             ),
@@ -582,6 +592,16 @@ class _DesktopProfileBasicInfoPageState
 
   void deleteData(BasicData basicData, AtCategory atCategory) {
     UserPreview().deletCustomField(atCategory, basicData);
+    setState(() {});
+  }
+
+  void setPublicData(BasicData basicData, AtCategory atCategory) {
+    basicData.isPrivate = false;
+    setState(() {});
+  }
+
+  void setPrivateData(BasicData basicData, AtCategory atCategory) {
+    basicData.isPrivate = true;
     setState(() {});
   }
 }
