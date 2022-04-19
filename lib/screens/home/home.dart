@@ -292,6 +292,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         if ((!widget.isPreview) && (_provider.user != null)) {
                           _currentUser = _provider.user!;
                         } // for image
+                        String _loggedInUserName = getName(_provider.user);
 
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -323,11 +324,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(_name,
-                                      style: TextStyle(
-                                          fontSize: 18.toFont,
-                                          color: _themeData!.primaryColor,
-                                          fontWeight: FontWeight.w600)),
+                                  Text(
+                                    _isSearchScreen ? _name : _loggedInUserName,
+                                    style: TextStyle(
+                                        fontSize: 18.toFont,
+                                        color: _themeData!.primaryColor,
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                   SizedBox(height: 8.toHeight),
                                   Text(
                                     _currentUser.atsign,
@@ -343,10 +346,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     color: _themeData!.highlightColor,
                                   ),
                                   SizedBox(height: 18.5.toHeight),
-                                  Consumer<UserProvider>(
-                                      builder: (context, _provider, _) {
-                                    return followersFollowingRow();
-                                  })
+                                  followersFollowingRow()
                                 ],
                               ),
                             )
@@ -743,7 +743,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     _isSearchScreen
                         ? (SearchService()
                                     .getAlreadySearchedAtsignDetails(
-                                        _currentUser.atsign)?.following_count ??
+                                        _currentUser.atsign)
+                                    ?.following_count ??
                                 '-')
                             .toString()
                         : '${followsCount()}',
@@ -973,6 +974,27 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       MaterialPageRoute(
           builder: (context) => QrScreen(atSign: _currentUser.atsign)),
     );
+  }
+
+  String getName(User? _user) {
+    if (_user == null) return '';
+
+    String _name = '';
+    if (_user.firstname.value != null) {
+      _name = _user.firstname.value;
+    }
+
+    if (_user.lastname.value != null) {
+      _name = _user.firstname.value +
+          (_user.firstname.value == '' ? '' : ' ') +
+          _user.lastname.value;
+    }
+
+    if (_name == '') {
+      _name = _user.atsign;
+    }
+
+    return _name;
   }
 
   String followsCount({bool isFollowers: false}) {
