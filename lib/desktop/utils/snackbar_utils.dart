@@ -9,11 +9,11 @@ enum SnackBarType {
 }
 
 class SnackBarUtils {
-  static void show({
+  static Future<void> show({
     required BuildContext context,
     required String message,
     SnackBarType type = SnackBarType.info,
-  }) {
+  }) async {
     final appTheme = AppTheme.of(context);
     Color backgroundColor = appTheme.primaryColor;
     switch (type) {
@@ -27,7 +27,7 @@ class SnackBarUtils {
         backgroundColor = Colors.yellow;
         break;
     }
-    Flushbar(
+    await Flushbar(
       titleColor: Colors.white,
       message: message,
       flushbarPosition: FlushbarPosition.TOP,
