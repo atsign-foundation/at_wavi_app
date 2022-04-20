@@ -78,7 +78,8 @@ class _EditPersonaState extends State<EditPersona>
   Widget build(BuildContext context) {
     var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
-    if (_themeProvider.currentAtsignThemeData != null) {
+    if ((!_updateTheme && !_updateHighlightColor) &&
+        (_themeProvider.currentAtsignThemeData != null)) {
       _themeData = _themeProvider.currentAtsignThemeData;
       _highlightColor = _themeProvider.highlightColor!;
       _theme = _themeData!.brightness == Brightness.dark
