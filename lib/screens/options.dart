@@ -68,252 +68,252 @@ class _OptionsState extends State<Options> {
   Widget build(BuildContext context) {
     SizeConfig().init(context); // for follows package
 
-    return Consumer<ThemeProvider>(builder: (context, _provider, _) {
-      if (_provider.currentAtsignThemeData != null) {
-        _themeData = _provider.currentAtsignThemeData;
-      }
+    var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
-      if (_themeData == null) {
-        return CircularProgressIndicator();
-      }
+    if (_themeProvider.currentAtsignThemeData != null) {
+      _themeData = _themeProvider.currentAtsignThemeData;
+    }
 
-      return Container(
-        color: _themeData!.scaffoldBackgroundColor,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              CustomPersonHorizontalTile(
-                title: widget.name ??
-                    BackendService().atClientInstance.getCurrentAtSign(),
-                subTitle: BackendService().atClientInstance.getCurrentAtSign(),
-                textColor: _themeData!.primaryColor,
-                image: widget.image?.toList(),
-              ),
-              SizedBox(height: 15.toHeight),
-              Divider(height: 1),
-              SizedBox(height: 15.toHeight),
-              InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => QRScanner()));
-                },
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.qr_code_scanner, size: 25),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          'Scan QR Code',
-                          style: TextStyles.lightText(_themeData!.primaryColor),
-                        ),
+    if (_themeData == null) {
+      return CircularProgressIndicator();
+    }
+
+    return Container(
+      color: _themeData!.scaffoldBackgroundColor,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CustomPersonHorizontalTile(
+              title: widget.name ??
+                  BackendService().atClientInstance.getCurrentAtSign(),
+              subTitle: BackendService().atClientInstance.getCurrentAtSign(),
+              textColor: _themeData!.primaryColor,
+              image: widget.image?.toList(),
+            ),
+            SizedBox(height: 15.toHeight),
+            Divider(height: 1),
+            SizedBox(height: 15.toHeight),
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => QRScanner()));
+              },
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.qr_code_scanner, size: 25),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Scan QR Code',
+                        style: TextStyles.lightText(_themeData!.primaryColor),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              SizedBox(height: 15.toHeight),
-              Divider(height: 1),
-              SizedBox(height: 15.toHeight),
-              InkWell(
-                onTap: () async {
-                  BackupKeyWidget(
-                    atsign: AtClientManager.getInstance()
-                        .atClient
-                        .getCurrentAtSign()!,
-                  ).showBackupDialog(context);
-                },
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.file_copy, size: 23),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          'Backup your keys',
-                          style: TextStyles.lightText(_themeData!.primaryColor),
-                        ),
+            ),
+            SizedBox(height: 15.toHeight),
+            Divider(height: 1),
+            SizedBox(height: 15.toHeight),
+            InkWell(
+              onTap: () async {
+                BackupKeyWidget(
+                  atsign: AtClientManager.getInstance()
+                      .atClient
+                      .getCurrentAtSign()!,
+                ).showBackupDialog(context);
+              },
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.file_copy, size: 23),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Backup your keys',
+                        style: TextStyles.lightText(_themeData!.primaryColor),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              SizedBox(height: 15.toHeight),
-              Divider(height: 1),
-              SizedBox(
-                height: 38,
-                width: SizeConfig().screenWidth,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 13.0, 0.0, 0.0),
-                      child: Icon(Icons.lock, size: 25),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(8.0, 15.0, 0.0, 0.0),
-                        child: Text(
-                          'Private Account',
-                          style: TextStyles.lightText(_themeData!.primaryColor),
-                        ),
-                      ),
-                    ),
-                    Padding(
+            ),
+            SizedBox(height: 15.toHeight),
+            Divider(height: 1),
+            SizedBox(
+              height: 38,
+              width: SizeConfig().screenWidth,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0.0, 13.0, 0.0, 0.0),
+                    child: Icon(Icons.lock, size: 25),
+                  ),
+                  Expanded(
+                    child: Padding(
                       padding: EdgeInsets.fromLTRB(8.0, 15.0, 0.0, 0.0),
-                      child: Provider.of<SetPrivateState>(context).isLoading
-                          ? LoadingDialog().onlyText(
-                              'Updating',
-                              style: TextStyle(
-                                  color: WaviColors.ColorConstants.DARK_GREY,
-                                  fontSize: 16.toFont,
-                                  fontWeight: FontWeight.w400,
-                                  decoration: TextDecoration.none),
-                            )
-                          : Transform.scale(
-                              alignment: Alignment.center,
-                              scale: 0.7,
-                              child: CupertinoSwitch(
-                                activeColor: WaviColors.ColorConstants.black,
-                                value: _allPrivate,
-                                onChanged: (value) async {
-                                  await ChangePrivacyService()
-                                      .setAllPrivate(value, _user);
-                                  getUser();
-                                },
-                              ),
+                      child: Text(
+                        'Private Account',
+                        style: TextStyles.lightText(_themeData!.primaryColor),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(8.0, 15.0, 0.0, 0.0),
+                    child: Provider.of<SetPrivateState>(context).isLoading
+                        ? LoadingDialog().onlyText(
+                            'Updating',
+                            style: TextStyle(
+                                color: WaviColors.ColorConstants.DARK_GREY,
+                                fontSize: 16.toFont,
+                                fontWeight: FontWeight.w400,
+                                decoration: TextDecoration.none),
+                          )
+                        : Transform.scale(
+                            alignment: Alignment.center,
+                            scale: 0.7,
+                            child: CupertinoSwitch(
+                              activeColor: WaviColors.ColorConstants.black,
+                              value: _allPrivate,
+                              onChanged: (value) async {
+                                await ChangePrivacyService()
+                                    .setAllPrivate(value, _user);
+                                getUser();
+                              },
                             ),
-                    ),
-                  ],
-                ),
+                          ),
+                  ),
+                ],
               ),
-              SizedBox(height: 15.toHeight),
-              Divider(height: 1),
-              SizedBox(height: 15.toHeight),
-              InkWell(
-                onTap: () {
-                  SetupRoutes.push(context, Routes.TERMS_CONDITIONS_SCREEN);
-                },
-                child: Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 25,
-                      height: 25,
-                      child: Image.asset(
-                        Images.termsAndConditionConditions,
-                        color: _themeData!.primaryColor,
+            ),
+            SizedBox(height: 15.toHeight),
+            Divider(height: 1),
+            SizedBox(height: 15.toHeight),
+            InkWell(
+              onTap: () {
+                SetupRoutes.push(context, Routes.TERMS_CONDITIONS_SCREEN);
+              },
+              child: Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: Image.asset(
+                      Images.termsAndConditionConditions,
+                      color: _themeData!.primaryColor,
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Terms and Conditions',
+                        style: TextStyles.lightText(_themeData!.primaryColor),
                       ),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          'Terms and Conditions',
-                          style: TextStyles.lightText(_themeData!.primaryColor),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              SizedBox(height: 15.toHeight),
-              Divider(height: 1),
-              SizedBox(height: 14.toHeight),
-              InkWell(
-                onTap: () {
-                  SetupRoutes.push(context, Routes.FAQS);
-                },
-                child: Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 25,
-                      height: 25,
-                      child: Image.asset(
-                        Images.faqs,
-                        color: _themeData!.primaryColor,
+            ),
+            SizedBox(height: 15.toHeight),
+            Divider(height: 1),
+            SizedBox(height: 14.toHeight),
+            InkWell(
+              onTap: () {
+                SetupRoutes.push(context, Routes.FAQS);
+              },
+              child: Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: Image.asset(
+                      Images.faqs,
+                      color: _themeData!.primaryColor,
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'FAQs',
+                        style: TextStyles.lightText(_themeData!.primaryColor),
                       ),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          'FAQs',
-                          style: TextStyles.lightText(_themeData!.primaryColor),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              SizedBox(height: 14.toHeight),
-              Divider(height: 1),
-              SizedBox(height: 14.toHeight),
-              InkWell(
-                onTap: () {
-                  _showResetDialog();
-                },
-                child: Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 25,
-                      height: 25,
-                      child: Icon(Icons.delete),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          'Delete @sign',
-                          style: TextStyles.lightText(_themeData!.primaryColor),
-                        ),
+            ),
+            SizedBox(height: 14.toHeight),
+            Divider(height: 1),
+            SizedBox(height: 14.toHeight),
+            InkWell(
+              onTap: () {
+                _showResetDialog();
+              },
+              child: Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: Icon(Icons.delete),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Delete @sign',
+                        style: TextStyles.lightText(_themeData!.primaryColor),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              SizedBox(height: 14.toHeight),
-              Divider(height: 1),
-              SizedBox(height: 14.toHeight),
-              InkWell(
-                onTap: () async {
-                  var atSignList = await KeychainUtil.getAtsignList();
+            ),
+            SizedBox(height: 14.toHeight),
+            Divider(height: 1),
+            SizedBox(height: 14.toHeight),
+            InkWell(
+              onTap: () async {
+                var atSignList = await KeychainUtil.getAtsignList();
 
-                  await showModalBottomSheet(
-                    context: NavService.navKey.currentContext!,
-                    backgroundColor: Colors.transparent,
-                    builder: (context) => AtSignBottomSheet(
-                      atSignList: atSignList ?? [],
+                await showModalBottomSheet(
+                  context: NavService.navKey.currentContext!,
+                  backgroundColor: Colors.transparent,
+                  builder: (context) => AtSignBottomSheet(
+                    atSignList: atSignList ?? [],
+                  ),
+                );
+              },
+              child: Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: Image.asset(
+                      Images.logout,
+                      color: _themeData!.primaryColor,
                     ),
-                  );
-                },
-                child: Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 25,
-                      height: 25,
-                      child: Image.asset(
-                        Images.logout,
-                        color: _themeData!.primaryColor,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Switch @sign',
+                        style: TextStyles.lightText(_themeData!.primaryColor),
                       ),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          'Switch @sign',
-                          style: TextStyles.lightText(_themeData!.primaryColor),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 
   _showResetDialog() async {

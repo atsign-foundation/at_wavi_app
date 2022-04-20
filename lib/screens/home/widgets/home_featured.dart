@@ -34,33 +34,31 @@ class _HomeFeaturedState extends State<HomeFeatured> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(builder: (context, _provider, _) {
-      if (_provider.currentAtsignThemeData != null) {
-        _themeData = _provider.currentAtsignThemeData;
+    var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    if (_themeProvider.currentAtsignThemeData != null) {
+      _themeData = _themeProvider.currentAtsignThemeData;
 
-        if (_themeData!.scaffoldBackgroundColor ==
-            Themes.darkTheme().scaffoldBackgroundColor) {
-          _isDark = true;
-        }
+      if (_themeData!.scaffoldBackgroundColor ==
+          Themes.darkTheme().scaffoldBackgroundColor) {
+        _isDark = true;
       }
+    }
 
-      if (_themeData == null) {
-        return CircularProgressIndicator();
-      } else {
-        return Container(
-          child: Column(
-            children: <Widget>[
-              if ((!widget.isPrivateInstagram) &&
-                  (widget.instagramUsername != null))
-                _buildInstagramContent(),
-              if ((!widget.isPrivateTwitter) &&
-                  (widget.twitterUsername != null))
-                _buildTwitterContent(),
-            ],
-          ),
-        );
-      }
-    });
+    if (_themeData == null) {
+      return CircularProgressIndicator();
+    } else {
+      return Container(
+        child: Column(
+          children: <Widget>[
+            if ((!widget.isPrivateInstagram) &&
+                (widget.instagramUsername != null))
+              _buildInstagramContent(),
+            if ((!widget.isPrivateTwitter) && (widget.twitterUsername != null))
+              _buildTwitterContent(),
+          ],
+        ),
+      );
+    }
   }
 
   Widget _buildInstagramContent() {

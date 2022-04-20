@@ -21,138 +21,138 @@ class _QrScreenState extends State<QrScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(builder: (context, _provider, _) {
-      if (_provider.currentAtsignThemeData != null) {
-        _themeData = _provider.currentAtsignThemeData;
-      }
+    var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
-      _highlightColor = _provider.highlightColor!;
+    if (_themeProvider.currentAtsignThemeData != null) {
+      _themeData = _themeProvider.currentAtsignThemeData;
+    }
 
-      if (_themeData == null) {
-        return CircularProgressIndicator();
-      }
-      return GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
+    _highlightColor = _themeProvider.highlightColor!;
 
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        },
-        child: Scaffold(
-            appBar: AppBar(
-              iconTheme: IconThemeData(color: _themeData!.primaryColor),
-              toolbarHeight: 55,
-              title: Text(
-                'Share Profile',
-                style: CustomTextStyles.customBoldTextStyle(
-                    _themeData!.primaryColor,
-                    size: 16),
-              ),
-              centerTitle: false,
-              backgroundColor: _themeData!.scaffoldBackgroundColor,
-              elevation: 0,
+    if (_themeData == null) {
+      return CircularProgressIndicator();
+    }
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            iconTheme: IconThemeData(color: _themeData!.primaryColor),
+            toolbarHeight: 55,
+            title: Text(
+              'Share Profile',
+              style: CustomTextStyles.customBoldTextStyle(
+                  _themeData!.primaryColor,
+                  size: 16),
             ),
-            body: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Center(
-                      child: Text(
-                    "Scan the QR Code with Wavi App",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                  )),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  QrImage(
-                    data: widget.atSign,
-                    size: 180,
-                    foregroundColor: _themeData!.brightness == Brightness.dark
-                        ? Colors.white
-                        : Colors.black,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          indent: 20.0,
-                          endIndent: 10.0,
-                          thickness: 1.5,
-                          color: _themeData!.brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
-                        ),
+            centerTitle: false,
+            backgroundColor: _themeData!.scaffoldBackgroundColor,
+            elevation: 0,
+          ),
+          body: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 30,
+                ),
+                Center(
+                    child: Text(
+                  "Scan the QR Code with Wavi App",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                )),
+                SizedBox(
+                  height: 30,
+                ),
+                QrImage(
+                  data: widget.atSign,
+                  size: 180,
+                  foregroundColor: _themeData!.brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        indent: 20.0,
+                        endIndent: 10.0,
+                        thickness: 1.5,
+                        color: _themeData!.brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black,
                       ),
-                      Text(
-                        "OR",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          indent: 10.0,
-                          endIndent: 20.0,
-                          thickness: 1.5,
-                          color: _themeData!.brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20.0, right: 20.0, bottom: 15.0),
-                    child: TextField(
-                      controller: _commentController,
-                      decoration: InputDecoration(
-                        label: Text("Comment"),
-                        labelStyle: TextStyle(color: _highlightColor),
-                        focusColor: _highlightColor,
-                        fillColor: _highlightColor,
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: _highlightColor, width: 2.0),
-                        ),
-                        border: const OutlineInputBorder(
-                          borderSide:
-                              const BorderSide(color: Colors.white, width: 1.5),
-                        ),
-                      ),
-                      minLines: 3,
-                      maxLines: 3,
                     ),
+                    Text(
+                      "OR",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        indent: 10.0,
+                        endIndent: 20.0,
+                        thickness: 1.5,
+                        color: _themeData!.brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20.0, right: 20.0, bottom: 15.0),
+                  child: TextField(
+                    controller: _commentController,
+                    decoration: InputDecoration(
+                      label: Text("Comment"),
+                      labelStyle: TextStyle(color: _highlightColor),
+                      focusColor: _highlightColor,
+                      fillColor: _highlightColor,
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: _highlightColor, width: 2.0),
+                      ),
+                      border: const OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: Colors.white, width: 1.5),
+                      ),
+                    ),
+                    minLines: 3,
+                    maxLines: 3,
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        textStyle: const TextStyle(fontSize: 20),
-                        primary: _highlightColor),
-                    onPressed: () {
-                      // print(_commentController.text.length);
-                      Share.share("https://wavi.ng/" + widget.atSign.toString(),
-                          subject: _commentController.text);
-                      _commentController.clear();
-                    },
-                    child: Text('Share Via App'),
-                  )
-                ],
-              ),
-            )),
-      );
-    });
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 20),
+                      primary: _highlightColor),
+                  onPressed: () {
+                    // print(_commentController.text.length);
+                    Share.share("https://wavi.ng/" + widget.atSign.toString(),
+                        subject: _commentController.text);
+                    _commentController.clear();
+                  },
+                  child: Text('Share Via App'),
+                )
+              ],
+            ),
+          )),
+    );
   }
 }

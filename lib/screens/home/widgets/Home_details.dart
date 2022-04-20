@@ -29,77 +29,77 @@ class _HomeDetailsState extends State<HomeDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(builder: (context, _provider, _) {
-      if (_provider.currentAtsignThemeData != null) {
-        _themeData = _provider.currentAtsignThemeData;
-      }
+    var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
-      if (_themeData!.scaffoldBackgroundColor ==
-          Themes.darkTheme().scaffoldBackgroundColor) {
-        _isDark = true;
-      }
+    if (_themeProvider.currentAtsignThemeData != null) {
+      _themeData = _themeProvider.currentAtsignThemeData;
+    }
 
-      if (_themeData == null) {
-        return CircularProgressIndicator();
-      } else {
-        return Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              CommonFunctions().isFieldsPresentForCategory(AtCategory.DETAILS,
-                      isPreview: widget.isPreview)
-                  ? Text(
-                      'Basic Details',
-                      style: TextStyles.boldText(_themeData!.primaryColor,
-                          size: 18),
-                    )
-                  : SizedBox(),
-              SizedBox(height: 15.toHeight),
-              Column(
-                children: CommonFunctions().getCustomCardForFields(
-                    _themeData!, AtCategory.DETAILS,
-                    isPreview: widget.isPreview),
-              ),
-              SizedBox(
-                  height: CommonFunctions().isFieldsPresentForCategory(
-                          AtCategory.DETAILS,
-                          isPreview: widget.isPreview)
-                      ? 40.toHeight
-                      : 0),
-              CommonFunctions().isFieldsPresentForCategory(
-                      AtCategory.ADDITIONAL_DETAILS,
-                      isPreview: widget.isPreview)
-                  ? Text('Additional Details',
-                      style: TextStyles.boldText(_themeData!.primaryColor,
-                          size: 18))
-                  : SizedBox(),
-              SizedBox(height: 15.toHeight),
-              Column(
-                children: CommonFunctions().getCustomCardForFields(
-                    _themeData!, AtCategory.ADDITIONAL_DETAILS,
-                    isPreview: widget.isPreview),
-              ),
-              SizedBox(
-                  height: CommonFunctions().isFieldsPresentForCategory(
-                          AtCategory.ADDITIONAL_DETAILS,
-                          isPreview: widget.isPreview)
-                      ? 40.toHeight
-                      : 0),
-              CommonFunctions().isFieldsPresentForCategory(AtCategory.LOCATION,
-                      isPreview: widget.isPreview)
-                  ? Text('Location',
-                      style: TextStyles.boldText(_themeData!.primaryColor,
-                          size: 18))
-                  : SizedBox(),
-              SizedBox(height: 15.toHeight),
-              Column(
-                children: CommonFunctions().getAllLocationCards(_themeData!,
-                    isPreview: widget.isPreview),
-              ),
-            ],
-          ),
-        );
-      }
-    });
+    if (_themeData!.scaffoldBackgroundColor ==
+        Themes.darkTheme().scaffoldBackgroundColor) {
+      _isDark = true;
+    }
+
+    if (_themeData == null) {
+      return CircularProgressIndicator();
+    } else {
+      return Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CommonFunctions().isFieldsPresentForCategory(AtCategory.DETAILS,
+                    isPreview: widget.isPreview)
+                ? Text(
+                    'Basic Details',
+                    style:
+                        TextStyles.boldText(_themeData!.primaryColor, size: 18),
+                  )
+                : SizedBox(),
+            SizedBox(height: 15.toHeight),
+            Column(
+              children: CommonFunctions().getCustomCardForFields(
+                  _themeData!, AtCategory.DETAILS,
+                  isPreview: widget.isPreview),
+            ),
+            SizedBox(
+                height: CommonFunctions().isFieldsPresentForCategory(
+                        AtCategory.DETAILS,
+                        isPreview: widget.isPreview)
+                    ? 40.toHeight
+                    : 0),
+            CommonFunctions().isFieldsPresentForCategory(
+                    AtCategory.ADDITIONAL_DETAILS,
+                    isPreview: widget.isPreview)
+                ? Text('Additional Details',
+                    style:
+                        TextStyles.boldText(_themeData!.primaryColor, size: 18))
+                : SizedBox(),
+            SizedBox(height: 15.toHeight),
+            Column(
+              children: CommonFunctions().getCustomCardForFields(
+                  _themeData!, AtCategory.ADDITIONAL_DETAILS,
+                  isPreview: widget.isPreview),
+            ),
+            SizedBox(
+                height: CommonFunctions().isFieldsPresentForCategory(
+                        AtCategory.ADDITIONAL_DETAILS,
+                        isPreview: widget.isPreview)
+                    ? 40.toHeight
+                    : 0),
+            CommonFunctions().isFieldsPresentForCategory(AtCategory.LOCATION,
+                    isPreview: widget.isPreview)
+                ? Text('Location',
+                    style:
+                        TextStyles.boldText(_themeData!.primaryColor, size: 18))
+                : SizedBox(),
+            SizedBox(height: 15.toHeight),
+            Column(
+              children: CommonFunctions().getAllLocationCards(_themeData!,
+                  isPreview: widget.isPreview),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

@@ -130,525 +130,510 @@ class _LocationWidgetState extends State<LocationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(builder: (context, _provider, _) {
-      if (_provider.currentAtsignThemeData != null) {
-        _themeData = _provider.currentAtsignThemeData;
-      }
+    var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
-      if (_themeData == null) {
-        return CircularProgressIndicator();
-      }
+    if (_themeProvider.currentAtsignThemeData != null) {
+      _themeData = _themeProvider.currentAtsignThemeData;
+    }
 
-      _locationString =
-          (_data != null && (_data!.value != null) && (_data!.value != ''))
-              ? jsonDecode(_data!.value)['location']
-              : '';
+    if (_themeData == null) {
+      return CircularProgressIndicator();
+    }
 
-      return WillPopScope(
-        onWillPop: () async {
-          if (_locationNickname.isNotEmpty &&
-              ((LocationWidgetData().osmLocationModelNotifier == null) ||
-                  (LocationWidgetData().osmLocationModelNotifier!.value ==
-                      null) ||
-                  (LocationWidgetData()
-                          .osmLocationModelNotifier!
-                          .value!
-                          .latLng ==
-                      null))) {
-            Provider.of<UserPreview>(context, listen: false)
-                .user()!
-                .locationNickName
-                .value = '';
-          }
+    _locationString =
+        (_data != null && (_data!.value != null) && (_data!.value != ''))
+            ? jsonDecode(_data!.value)['location']
+            : '';
 
-          if (_locationNickname.isEmpty) {
-            Provider.of<UserPreview>(context, listen: false)
-                .user()!
-                .location
-                .value = '';
-          }
+    return WillPopScope(
+      onWillPop: () async {
+        if (_locationNickname.isNotEmpty &&
+            ((LocationWidgetData().osmLocationModelNotifier == null) ||
+                (LocationWidgetData().osmLocationModelNotifier!.value ==
+                    null) ||
+                (LocationWidgetData().osmLocationModelNotifier!.value!.latLng ==
+                    null))) {
+          Provider.of<UserPreview>(context, listen: false)
+              .user()!
+              .locationNickName
+              .value = '';
+        }
 
-          Navigator.of(context).pop();
-          return true;
-        },
-        child: ValueListenableBuilder(
-            valueListenable: LocationWidgetData().osmLocationModelNotifier!,
-            builder: (BuildContext context, OsmLocationModel? _osmLocationModel,
-                Widget? child) {
-              // store location
-              Provider.of<UserPreview>(context, listen: false)
-                  .user()!
-                  .location = BasicData(
-                value: _osmLocationModel != null
-                    ? _osmLocationModel.toJson()
-                    : null,
-                accountName: FieldsEnum.LOCATION.name,
-                isPrivate: _isPrivate,
-              );
+        if (_locationNickname.isEmpty) {
+          Provider.of<UserPreview>(context, listen: false)
+              .user()!
+              .location
+              .value = '';
+        }
 
-              return Scaffold(
-                // bottomSheet: InkWell(
-                //   onTap: () {
-                //     if (_osmLocationModel != null) {
-                //       _updateLocation(_osmLocationModel);
-                //     } else {
-                //       if (_locationNickname.isEmpty) {
-                //         return _showToast('Enter Location tag', isError: true);
-                //       }
-                //       _showToast('Enter Location', isError: true);
-                //     }
-                //   },
-                //   child: Container(
-                //       alignment: Alignment.center,
-                //       height: 70.toHeight,
-                //       width: SizeConfig().screenWidth,
-                //       color: (_osmLocationModel != null)
-                //           ? ColorConstants.black
-                //           : ColorConstants.dullColor(
-                //               color: ColorConstants.black, opacity: 0.5),
-                //       child: Text(
-                //         'Done',
-                //         style: CustomTextStyles.customTextStyle(
-                //             ColorConstants.white,
-                //             size: 18),
-                //       )),
-                // ),
-                appBar: AppBar(
-                    toolbarHeight: 40,
-                    title: Text(
-                      'Location',
-                      style: CustomTextStyles.customBoldTextStyle(
-                          Theme.of(context).primaryColor,
-                          size: 16),
-                    ),
-                    iconTheme:
-                        IconThemeData(color: Theme.of(context).primaryColor),
-                    centerTitle: false,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    elevation: 0,
-                    actions: [
-                      InkWell(
-                        onTap: () {
-                          showPublicPrivateBottomSheet(
-                              onPublicClicked: () {
-                                updateIsPrivate(false);
-                              },
-                              onPrivateClicked: () {
-                                updateIsPrivate(true);
-                              },
-                              height: 200.toHeight);
-                        },
-                        child: Row(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                SetupRoutes.push(
-                                  context,
-                                  Routes.REORDER_FIELDS,
-                                  arguments: {
-                                    'category': AtCategory.LOCATION,
-                                    'onSave': () {
-                                      getFieldOrder();
-                                      setState(() {});
-                                    }
-                                  },
-                                );
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.only(right: 10),
-                                child: Icon(Icons.reorder),
-                              ),
-                            ),
-                            Padding(
-                                padding: EdgeInsets.only(right: 15),
-                                child: _isPrivate
-                                    ? Icon(Icons.lock)
-                                    : Icon(Icons.public)),
-                          ],
-                        ),
-                      )
-                    ]),
-                body: SizedBox(
-                  height: SizeConfig().screenHeight - 80.toHeight - 55,
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 15.toHeight,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
-                          child: Text('Title',
-                              style: TextStyles.lightText(
-                                  _themeData!.primaryColor.withOpacity(0.5),
-                                  size: 16)),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.toWidth, vertical: 0.toHeight),
-                          child: CustomInputField(
-                            borderColor: Colors.transparent,
-                            focusedBorderColor: Colors.transparent,
-                            width: double.infinity,
-                            // hintText: 'Enter the tag',
-                            hintTextColor:
-                                _themeData!.primaryColor.withOpacity(0.5),
-                            bgColor: Colors.transparent,
-                            textColor: _themeData!.primaryColor,
-                            initialValue: _locationNickname,
-                            baseOffset: _locationNickname.length,
-                            height: 70,
-                            expands: false,
-                            maxLines: 1,
-                            value: (str) => setState(() {
-                              _locationNickname = str;
-                              // store location nickname
-                              Provider.of<UserPreview>(context, listen: false)
-                                  .user()!
-                                  .locationNickName = BasicData(
-                                value: _locationNickname,
-                                accountName: FieldsEnum.LOCATIONNICKNAME.name,
-                                isPrivate: _isPrivate,
-                              );
-                            }),
-                          ),
-                        ),
-                        Divider(
-                          thickness: 1,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
-                          child: Text('Location',
-                              style: TextStyles.lightText(
-                                  _themeData!.primaryColor.withOpacity(0.5),
-                                  size: 16)),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.toWidth, vertical: 12.toHeight),
-                          child: CustomInputField(
-                            isReadOnly: true,
-                            borderColor: Colors.transparent,
-                            focusedBorderColor: Colors.transparent,
-                            width: double.infinity,
-                            hintText: 'Search',
-                            hintTextColor:
-                                _themeData!.primaryColor.withOpacity(0.5),
-                            bgColor: Colors.transparent,
-                            textColor: _themeData!.primaryColor,
-                            // initialValue: _locationString,
-                            // baseOffset: _locationString.length,
-                            height: 70,
-                            expands: false,
-                            maxLines: 1,
-                            onTap: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  shape: StadiumBorder(),
-                                  builder: (BuildContext context) {
-                                    return Container(
-                                      height: SizeConfig().screenHeight * 0.9,
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 20, horizontal: 0),
-                                      decoration: BoxDecoration(
-                                        color:
-                                            _themeData!.scaffoldBackgroundColor,
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: const Radius.circular(12.0),
-                                          topRight: const Radius.circular(12.0),
-                                        ),
-                                      ),
-                                      child: SelectLocation(
-                                        callbackFunction: (_finalData) {
-                                          print(
-                                              '_finalData $_finalData ${_finalData.latLng}');
-                                          LocationWidgetData()
-                                              .update(_finalData);
-                                        },
-                                      ),
-                                    );
-                                  }).then((value) => _mapKey = UniqueKey());
+        Navigator.of(context).pop();
+        return true;
+      },
+      child: ValueListenableBuilder(
+          valueListenable: LocationWidgetData().osmLocationModelNotifier!,
+          builder: (BuildContext context, OsmLocationModel? _osmLocationModel,
+              Widget? child) {
+            // store location
+            Provider.of<UserPreview>(context, listen: false).user()!.location =
+                BasicData(
+              value:
+                  _osmLocationModel != null ? _osmLocationModel.toJson() : null,
+              accountName: FieldsEnum.LOCATION.name,
+              isPrivate: _isPrivate,
+            );
+
+            return Scaffold(
+              // bottomSheet: InkWell(
+              //   onTap: () {
+              //     if (_osmLocationModel != null) {
+              //       _updateLocation(_osmLocationModel);
+              //     } else {
+              //       if (_locationNickname.isEmpty) {
+              //         return _showToast('Enter Location tag', isError: true);
+              //       }
+              //       _showToast('Enter Location', isError: true);
+              //     }
+              //   },
+              //   child: Container(
+              //       alignment: Alignment.center,
+              //       height: 70.toHeight,
+              //       width: SizeConfig().screenWidth,
+              //       color: (_osmLocationModel != null)
+              //           ? ColorConstants.black
+              //           : ColorConstants.dullColor(
+              //               color: ColorConstants.black, opacity: 0.5),
+              //       child: Text(
+              //         'Done',
+              //         style: CustomTextStyles.customTextStyle(
+              //             ColorConstants.white,
+              //             size: 18),
+              //       )),
+              // ),
+              appBar: AppBar(
+                  toolbarHeight: 40,
+                  title: Text(
+                    'Location',
+                    style: CustomTextStyles.customBoldTextStyle(
+                        Theme.of(context).primaryColor,
+                        size: 16),
+                  ),
+                  iconTheme:
+                      IconThemeData(color: Theme.of(context).primaryColor),
+                  centerTitle: false,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  elevation: 0,
+                  actions: [
+                    InkWell(
+                      onTap: () {
+                        showPublicPrivateBottomSheet(
+                            onPublicClicked: () {
+                              updateIsPrivate(false);
                             },
-                            value: (str) => setState(() {
-                              _data!.value = str;
-                            }),
-                          ),
-                        ),
-                        ((_osmLocationModel != null) &&
-                                (_osmLocationModel.latLng != null))
-                            ? Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                height: 300,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Stack(
-                                  children: [
-                                    AbsorbPointer(
-                                      absorbing: true,
-                                      child: FlutterMap(
-                                        key: _mapKey,
-                                        options: MapOptions(
-                                          boundsOptions: FitBoundsOptions(
-                                              padding: EdgeInsets.all(0)),
-                                          center: _osmLocationModel.latLng!,
-                                          zoom: _osmLocationModel.zoom!,
-                                        ),
-                                        layers: [
-                                          TileLayerOptions(
-                                            urlTemplate:
-                                                'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=${MixedConstants.MAP_KEY}',
-                                            subdomains: ['a', 'b', 'c'],
-                                            minNativeZoom: 2,
-                                            maxNativeZoom: 18,
-                                            minZoom: 1,
-                                            tileProvider:
-                                                NonCachingNetworkTileProvider(),
-                                          ),
-                                          MarkerLayerOptions(markers: [
-                                            Marker(
-                                              width: 40,
-                                              height: 50,
-                                              point: _osmLocationModel.latLng!,
-                                              builder: (ctx) => Container(
-                                                  child: createMarker(
-                                                      diameterOfCircle:
-                                                          _osmLocationModel
-                                                              .radius!)),
-                                            )
-                                          ])
-                                        ],
-                                      ),
-                                    ),
-                                    Positioned(
-                                      right: 10,
-                                      top: 10,
-                                      child: Container(
-                                        height: 40,
-                                        width: 40,
-                                        decoration: BoxDecoration(
-                                          color: ColorConstants.LIGHT_GREY,
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                        child: IconButton(
-                                            onPressed: () {
-                                              SetupRoutes.push(context,
-                                                  Routes.PREVIEW_LOCATION,
-                                                  arguments: {
-                                                    'title': _locationNickname,
-                                                    'latLng': _osmLocationModel
-                                                        .latLng!,
-                                                    'zoom':
-                                                        _osmLocationModel.zoom!,
-                                                    'diameterOfCircle':
-                                                        _osmLocationModel
-                                                            .radius!,
-                                                  });
-                                            },
-                                            icon: Icon(Icons.fullscreen)),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      right: 10,
-                                      top: 70,
-                                      child: Container(
-                                        height: 40,
-                                        width: 40,
-                                        decoration: BoxDecoration(
-                                          color: ColorConstants.LIGHT_GREY,
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                        child: IconButton(
-                                            onPressed: () {
-                                              _confirmationDialog();
-                                            },
-                                            icon: Icon(Icons.delete)),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            : SizedBox(),
-                        ((Provider.of<UserPreview>(context, listen: false)
-                                        .user()!
-                                        .customFields['LOCATION'] !=
-                                    null) &&
-                                (Provider.of<UserPreview>(context,
-                                            listen: false)
-                                        .user()!
-                                        .customFields['LOCATION']!
-                                        .length !=
-                                    0))
-                            ? Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 16.toWidth,
-                                    vertical: 12.toHeight),
-                                child: Text('More Locations',
-                                    style: TextStyles.lightText(
-                                        _themeData!.primaryColor
-                                            .withOpacity(0.5),
-                                        size: 16)),
-                              )
-                            : SizedBox(),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.toWidth, vertical: 12.toHeight),
-                          child: ListView.separated(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: fieldOrder.length,
-                            itemBuilder: (_context, _int) {
-                              var customFields = Provider.of<UserPreview>(
-                                      context,
-                                      listen: false)
-                                  .user()!
-                                  .customFields[AtCategory.LOCATION.name];
-
-                              if (customFields == null) {
-                                customFields = [];
-                              }
-
-                              var index = customFields.indexWhere((element) =>
-                                  element.accountName == fieldOrder[_int]);
-
-                              if (index == -1) {
-                                return SizedBox();
-                              }
-
-                              if (customFields[index]
-                                  .accountName!
-                                  .contains(AtText.IS_DELETED)) {
-                                return SizedBox();
-                              }
-
-                              return InkWell(
-                                onTap: () async {
-                                  await SetupRoutes.push(
-                                      context, Routes.CREATE_CUSTOM_LOCATION,
-                                      arguments: {
-                                        'basicData': Provider.of<UserPreview>(
-                                                context,
-                                                listen: false)
-                                            .user()!
-                                            .customFields['LOCATION']?[index],
-                                        'onSave': () {
-                                          getFieldOrder();
-                                          setState(() {});
-                                        }
-                                      });
-                                  setState(() {});
+                            onPrivateClicked: () {
+                              updateIsPrivate(true);
+                            },
+                            height: 200.toHeight);
+                      },
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              SetupRoutes.push(
+                                context,
+                                Routes.REORDER_FIELDS,
+                                arguments: {
+                                  'category': AtCategory.LOCATION,
+                                  'onSave': () {
+                                    getFieldOrder();
+                                    setState(() {});
+                                  }
                                 },
-                                child: Slidable(
-                                  actionPane: SlidableDrawerActionPane(),
-                                  actionExtentRatio: 0.15,
-                                  secondaryActions: <Widget>[
-                                    IconSlideAction(
-                                      caption: '',
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 10),
+                              child: Icon(Icons.reorder),
+                            ),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(right: 15),
+                              child: _isPrivate
+                                  ? Icon(Icons.lock)
+                                  : Icon(Icons.public)),
+                        ],
+                      ),
+                    )
+                  ]),
+              body: SizedBox(
+                height: SizeConfig().screenHeight - 80.toHeight - 55,
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 15.toHeight,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
+                        child: Text('Title',
+                            style: TextStyles.lightText(
+                                _themeData!.primaryColor.withOpacity(0.5),
+                                size: 16)),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.toWidth, vertical: 0.toHeight),
+                        child: CustomInputField(
+                          borderColor: Colors.transparent,
+                          focusedBorderColor: Colors.transparent,
+                          width: double.infinity,
+                          // hintText: 'Enter the tag',
+                          hintTextColor:
+                              _themeData!.primaryColor.withOpacity(0.5),
+                          bgColor: Colors.transparent,
+                          textColor: _themeData!.primaryColor,
+                          initialValue: _locationNickname,
+                          baseOffset: _locationNickname.length,
+                          height: 70,
+                          expands: false,
+                          maxLines: 1,
+                          value: (str) => setState(() {
+                            _locationNickname = str;
+                            // store location nickname
+                            Provider.of<UserPreview>(context, listen: false)
+                                .user()!
+                                .locationNickName = BasicData(
+                              value: _locationNickname,
+                              accountName: FieldsEnum.LOCATIONNICKNAME.name,
+                              isPrivate: _isPrivate,
+                            );
+                          }),
+                        ),
+                      ),
+                      Divider(
+                        thickness: 1,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
+                        child: Text('Location',
+                            style: TextStyles.lightText(
+                                _themeData!.primaryColor.withOpacity(0.5),
+                                size: 16)),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.toWidth, vertical: 12.toHeight),
+                        child: CustomInputField(
+                          isReadOnly: true,
+                          borderColor: Colors.transparent,
+                          focusedBorderColor: Colors.transparent,
+                          width: double.infinity,
+                          hintText: 'Search',
+                          hintTextColor:
+                              _themeData!.primaryColor.withOpacity(0.5),
+                          bgColor: Colors.transparent,
+                          textColor: _themeData!.primaryColor,
+                          // initialValue: _locationString,
+                          // baseOffset: _locationString.length,
+                          height: 70,
+                          expands: false,
+                          maxLines: 1,
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                shape: StadiumBorder(),
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    height: SizeConfig().screenHeight * 0.9,
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 20, horizontal: 0),
+                                    decoration: BoxDecoration(
                                       color:
                                           _themeData!.scaffoldBackgroundColor,
-                                      icon: Icons.delete,
-                                      onTap: () {
-                                        _deleteKey(Provider.of<UserPreview>(
-                                                context,
-                                                listen: false)
-                                            .user()!
-                                            .customFields['LOCATION']![index]);
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: const Radius.circular(12.0),
+                                        topRight: const Radius.circular(12.0),
+                                      ),
+                                    ),
+                                    child: SelectLocation(
+                                      callbackFunction: (_finalData) {
+                                        print(
+                                            '_finalData $_finalData ${_finalData.latLng}');
+                                        LocationWidgetData().update(_finalData);
                                       },
                                     ),
-                                  ],
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Flexible(
-                                        child: Text(
-                                            // '${(_int + 1).toString()}. ' +
-                                            '-  ' +
-                                                (Provider.of<UserPreview>(
-                                                            context)
-                                                        .user()!
-                                                        .customFields[
-                                                            'LOCATION']?[index]
-                                                        .accountName ??
-                                                    ''),
-                                            style: TextStyles.lightText(
-                                                _themeData!.primaryColor,
-                                                size: 16)),
+                                  );
+                                }).then((value) => _mapKey = UniqueKey());
+                          },
+                          value: (str) => setState(() {
+                            _data!.value = str;
+                          }),
+                        ),
+                      ),
+                      ((_osmLocationModel != null) &&
+                              (_osmLocationModel.latLng != null))
+                          ? Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              height: 300,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Stack(
+                                children: [
+                                  AbsorbPointer(
+                                    absorbing: true,
+                                    child: FlutterMap(
+                                      key: _mapKey,
+                                      options: MapOptions(
+                                        boundsOptions: FitBoundsOptions(
+                                            padding: EdgeInsets.all(0)),
+                                        center: _osmLocationModel.latLng!,
+                                        zoom: _osmLocationModel.zoom!,
                                       ),
-                                      Provider.of<UserPreview>(context)
-                                                  .user()!
-                                                  .customFields['LOCATION']
-                                                      ?[index]
-                                                  .isPrivate ??
-                                              false
-                                          ? Icon(Icons.lock)
-                                          : Icon(Icons.public)
-                                    ],
+                                      layers: [
+                                        TileLayerOptions(
+                                          urlTemplate:
+                                              'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=${MixedConstants.MAP_KEY}',
+                                          subdomains: ['a', 'b', 'c'],
+                                          minNativeZoom: 2,
+                                          maxNativeZoom: 18,
+                                          minZoom: 1,
+                                          tileProvider:
+                                              NonCachingNetworkTileProvider(),
+                                        ),
+                                        MarkerLayerOptions(markers: [
+                                          Marker(
+                                            width: 40,
+                                            height: 50,
+                                            point: _osmLocationModel.latLng!,
+                                            builder: (ctx) => Container(
+                                                child: createMarker(
+                                                    diameterOfCircle:
+                                                        _osmLocationModel
+                                                            .radius!)),
+                                          )
+                                        ])
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                            separatorBuilder: (_context, _int) {
-                              var customFields = Provider.of<UserPreview>(
-                                      context,
-                                      listen: false)
-                                  .user()!
-                                  .customFields[AtCategory.LOCATION.name];
-                              if (customFields == null) {
-                                customFields = [];
-                              }
+                                  Positioned(
+                                    right: 10,
+                                    top: 10,
+                                    child: Container(
+                                      height: 40,
+                                      width: 40,
+                                      decoration: BoxDecoration(
+                                        color: ColorConstants.LIGHT_GREY,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: IconButton(
+                                          onPressed: () {
+                                            SetupRoutes.push(context,
+                                                Routes.PREVIEW_LOCATION,
+                                                arguments: {
+                                                  'title': _locationNickname,
+                                                  'latLng':
+                                                      _osmLocationModel.latLng!,
+                                                  'zoom':
+                                                      _osmLocationModel.zoom!,
+                                                  'diameterOfCircle':
+                                                      _osmLocationModel.radius!,
+                                                });
+                                          },
+                                          icon: Icon(Icons.fullscreen)),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 10,
+                                    top: 70,
+                                    child: Container(
+                                      height: 40,
+                                      width: 40,
+                                      decoration: BoxDecoration(
+                                        color: ColorConstants.LIGHT_GREY,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: IconButton(
+                                          onPressed: () {
+                                            _confirmationDialog();
+                                          },
+                                          icon: Icon(Icons.delete)),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          : SizedBox(),
+                      ((Provider.of<UserPreview>(context, listen: false)
+                                      .user()!
+                                      .customFields['LOCATION'] !=
+                                  null) &&
+                              (Provider.of<UserPreview>(context, listen: false)
+                                      .user()!
+                                      .customFields['LOCATION']!
+                                      .length !=
+                                  0))
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 16.toWidth,
+                                  vertical: 12.toHeight),
+                              child: Text('More Locations',
+                                  style: TextStyles.lightText(
+                                      _themeData!.primaryColor.withOpacity(0.5),
+                                      size: 16)),
+                            )
+                          : SizedBox(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.toWidth, vertical: 12.toHeight),
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: fieldOrder.length,
+                          itemBuilder: (_context, _int) {
+                            var customFields =
+                                Provider.of<UserPreview>(context, listen: false)
+                                    .user()!
+                                    .customFields[AtCategory.LOCATION.name];
 
-                              var index = customFields.indexWhere((element) =>
-                                  element.accountName == fieldOrder[_int]);
+                            if (customFields == null) {
+                              customFields = [];
+                            }
 
-                              if (index == -1) {
-                                return SizedBox();
-                              }
+                            var index = customFields.indexWhere((element) =>
+                                element.accountName == fieldOrder[_int]);
 
-                              if (customFields[index]
-                                  .accountName!
-                                  .contains(AtText.IS_DELETED)) {
-                                return SizedBox();
-                              }
+                            if (index == -1) {
+                              return SizedBox();
+                            }
 
-                              return Divider();
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
-                          child: AddCustomContentButton(
-                            text: 'Add more location',
-                            onTap: () async {
-                              await SetupRoutes.push(
-                                  context, Routes.CREATE_CUSTOM_LOCATION,
-                                  arguments: {
-                                    'onSave': () {
-                                      getFieldOrder();
-                                      setState(() {});
+                            if (customFields[index]
+                                .accountName!
+                                .contains(AtText.IS_DELETED)) {
+                              return SizedBox();
+                            }
+
+                            return InkWell(
+                              onTap: () async {
+                                await SetupRoutes.push(
+                                    context, Routes.CREATE_CUSTOM_LOCATION,
+                                    arguments: {
+                                      'basicData': Provider.of<UserPreview>(
+                                              context,
+                                              listen: false)
+                                          .user()!
+                                          .customFields['LOCATION']?[index],
+                                      'onSave': () {
+                                        getFieldOrder();
+                                        setState(() {});
+                                      }
+                                    });
+                                setState(() {});
+                              },
+                              child: Slidable(
+                                actionPane: SlidableDrawerActionPane(),
+                                actionExtentRatio: 0.15,
+                                secondaryActions: <Widget>[
+                                  IconSlideAction(
+                                    caption: '',
+                                    color: _themeData!.scaffoldBackgroundColor,
+                                    icon: Icons.delete,
+                                    onTap: () {
+                                      _deleteKey(Provider.of<UserPreview>(
+                                              context,
+                                              listen: false)
+                                          .user()!
+                                          .customFields['LOCATION']![index]);
                                     },
-                                  });
-                              setState(() {});
-                            },
-                          ),
-                        )
-                      ],
-                    ),
+                                  ),
+                                ],
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                          // '${(_int + 1).toString()}. ' +
+                                          '-  ' +
+                                              (Provider.of<UserPreview>(context)
+                                                      .user()!
+                                                      .customFields['LOCATION']
+                                                          ?[index]
+                                                      .accountName ??
+                                                  ''),
+                                          style: TextStyles.lightText(
+                                              _themeData!.primaryColor,
+                                              size: 16)),
+                                    ),
+                                    Provider.of<UserPreview>(context)
+                                                .user()!
+                                                .customFields['LOCATION']
+                                                    ?[index]
+                                                .isPrivate ??
+                                            false
+                                        ? Icon(Icons.lock)
+                                        : Icon(Icons.public)
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          separatorBuilder: (_context, _int) {
+                            var customFields =
+                                Provider.of<UserPreview>(context, listen: false)
+                                    .user()!
+                                    .customFields[AtCategory.LOCATION.name];
+                            if (customFields == null) {
+                              customFields = [];
+                            }
+
+                            var index = customFields.indexWhere((element) =>
+                                element.accountName == fieldOrder[_int]);
+
+                            if (index == -1) {
+                              return SizedBox();
+                            }
+
+                            if (customFields[index]
+                                .accountName!
+                                .contains(AtText.IS_DELETED)) {
+                              return SizedBox();
+                            }
+
+                            return Divider();
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
+                        child: AddCustomContentButton(
+                          text: 'Add more location',
+                          onTap: () async {
+                            await SetupRoutes.push(
+                                context, Routes.CREATE_CUSTOM_LOCATION,
+                                arguments: {
+                                  'onSave': () {
+                                    getFieldOrder();
+                                    setState(() {});
+                                  },
+                                });
+                            setState(() {});
+                          },
+                        ),
+                      )
+                    ],
                   ),
                 ),
-              );
-            }),
-      );
-    });
+              ),
+            );
+          }),
+    );
   }
 
   _deleteKey(BasicData _basicData) async {
