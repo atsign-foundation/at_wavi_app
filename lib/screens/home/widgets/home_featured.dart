@@ -33,46 +33,34 @@ class _HomeFeaturedState extends State<HomeFeatured> {
   ThemeData? _themeData;
 
   @override
-  void initState() {
-    _getThemeData();
-    super.initState();
-  }
-
-  _getThemeData() async {
-    if (widget.themeData != null) {
-      _themeData = widget.themeData!;
-    } else {
-      _themeData =
-          await Provider.of<ThemeProvider>(context, listen: false).getTheme();
-    }
-
-    if (_themeData!.scaffoldBackgroundColor ==
-        Themes.darkTheme().scaffoldBackgroundColor) {
-      _isDark = true;
-    }
-
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (_themeData == null) {
-      return CircularProgressIndicator();
-    } else {
-      return Container(
-        child: Column(
-          children: <Widget>[
-            if ((!widget.isPrivateInstagram) &&
-                (widget.instagramUsername != null))
-              _buildInstagramContent(),
-            if ((!widget.isPrivateTwitter) && (widget.twitterUsername != null))
-              _buildTwitterContent(),
-          ],
-        ),
-      );
-    }
+    return Consumer<ThemeProvider>(builder: (context, _provider, _) {
+      if (_provider.currentAtsignThemeData != null) {
+        _themeData = _provider.currentAtsignThemeData;
+
+        if (_themeData!.scaffoldBackgroundColor ==
+            Themes.darkTheme().scaffoldBackgroundColor) {
+          _isDark = true;
+        }
+      }
+
+      if (_themeData == null) {
+        return CircularProgressIndicator();
+      } else {
+        return Container(
+          child: Column(
+            children: <Widget>[
+              if ((!widget.isPrivateInstagram) &&
+                  (widget.instagramUsername != null))
+                _buildInstagramContent(),
+              if ((!widget.isPrivateTwitter) &&
+                  (widget.twitterUsername != null))
+                _buildTwitterContent(),
+            ],
+          ),
+        );
+      }
+    });
   }
 
   Widget _buildInstagramContent() {

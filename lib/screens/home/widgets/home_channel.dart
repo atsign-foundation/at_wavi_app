@@ -26,79 +26,71 @@ class _HomeChannelsState extends State<HomeChannels> {
     if (widget.themeData != null) {
       _themeData = widget.themeData!;
     }
-    _getThemeData();
     super.initState();
-  }
-
-  _getThemeData() async {
-    if (widget.themeData != null) {
-      _themeData = widget.themeData!;
-    } else {
-      _themeData =
-          await Provider.of<ThemeProvider>(context, listen: false).getTheme();
-    }
-
-    if (_themeData!.scaffoldBackgroundColor ==
-        Themes.darkTheme().scaffoldBackgroundColor) {
-      _isDark = true;
-    }
-
-    if (mounted) {
-      setState(() {});
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_themeData == null) {
-      return CircularProgressIndicator();
-    } else {
-      return Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            CommonFunctions().isFieldsPresentForCategory(AtCategory.SOCIAL,
-                    isPreview: widget.isPreview)
-                ? Text(
-                    'Social Accounts',
-                    style:
-                        TextStyles.boldText(_themeData!.primaryColor, size: 18),
-                  )
-                : SizedBox(),
-            SizedBox(
-                height: CommonFunctions().isFieldsPresentForCategory(
-                        AtCategory.SOCIAL,
-                        isPreview: widget.isPreview)
-                    ? 15.toHeight
-                    : 0),
-            Column(
-              children: CommonFunctions().getCustomCardForFields(
-                  _themeData!, AtCategory.SOCIAL,
-                  isPreview: widget.isPreview),
-            ),
-            SizedBox(
-                height: CommonFunctions()
-                        .isFieldsPresentForCategory(AtCategory.SOCIAL)
-                    ? 40.toHeight
-                    : 0),
-            CommonFunctions().isFieldsPresentForCategory(AtCategory.GAMER,
-                    isPreview: widget.isPreview)
-                ? Text(
-                    'Game Accounts',
-                    style:
-                        TextStyles.boldText(_themeData!.primaryColor, size: 18),
-                  )
-                : SizedBox(),
-            SizedBox(height: 15.toHeight),
-            Column(
-              children: CommonFunctions().getCustomCardForFields(
-                  _themeData!, AtCategory.GAMER,
-                  isPreview: widget.isPreview),
-            ),
-            SizedBox(height: 15.toHeight),
-          ],
-        ),
-      );
-    }
+    return Consumer<ThemeProvider>(builder: (context, _provider, _) {
+      if (_provider.currentAtsignThemeData != null) {
+        _themeData = _provider.currentAtsignThemeData;
+
+        if (_themeData!.scaffoldBackgroundColor ==
+            Themes.darkTheme().scaffoldBackgroundColor) {
+          _isDark = true;
+        }
+      }
+
+      if (_themeData == null) {
+        return CircularProgressIndicator();
+      } else {
+        return Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              CommonFunctions().isFieldsPresentForCategory(AtCategory.SOCIAL,
+                      isPreview: widget.isPreview)
+                  ? Text(
+                      'Social Accounts',
+                      style: TextStyles.boldText(_themeData!.primaryColor,
+                          size: 18),
+                    )
+                  : SizedBox(),
+              SizedBox(
+                  height: CommonFunctions().isFieldsPresentForCategory(
+                          AtCategory.SOCIAL,
+                          isPreview: widget.isPreview)
+                      ? 15.toHeight
+                      : 0),
+              Column(
+                children: CommonFunctions().getCustomCardForFields(
+                    _themeData!, AtCategory.SOCIAL,
+                    isPreview: widget.isPreview),
+              ),
+              SizedBox(
+                  height: CommonFunctions()
+                          .isFieldsPresentForCategory(AtCategory.SOCIAL)
+                      ? 40.toHeight
+                      : 0),
+              CommonFunctions().isFieldsPresentForCategory(AtCategory.GAMER,
+                      isPreview: widget.isPreview)
+                  ? Text(
+                      'Game Accounts',
+                      style: TextStyles.boldText(_themeData!.primaryColor,
+                          size: 18),
+                    )
+                  : SizedBox(),
+              SizedBox(height: 15.toHeight),
+              Column(
+                children: CommonFunctions().getCustomCardForFields(
+                    _themeData!, AtCategory.GAMER,
+                    isPreview: widget.isPreview),
+              ),
+              SizedBox(height: 15.toHeight),
+            ],
+          ),
+        );
+      }
+    });
   }
 }

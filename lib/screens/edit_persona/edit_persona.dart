@@ -49,8 +49,6 @@ class _EditPersonaState extends State<EditPersona>
 
   @override
   void initState() {
-    _getThemeData();
-
     _controller =
         TabController(length: 2, vsync: this, initialIndex: _tabIndex);
     FieldOrderService().setPreviewOrder = {...FieldOrderService().fieldOrders};
@@ -59,20 +57,6 @@ class _EditPersonaState extends State<EditPersona>
     User previewUser = User.fromJson(json.decode(json.encode(userJson)));
     Provider.of<UserPreview>(context, listen: false).setUser = previewUser;
     super.initState();
-  }
-
-  _getThemeData() async {
-    _themeData =
-        await Provider.of<ThemeProvider>(context, listen: false).getTheme();
-    _highlightColor =
-        Provider.of<ThemeProvider>(context, listen: false).highlightColor!;
-    _theme = _themeData!.brightness == Brightness.dark
-        ? ThemeColor.Dark
-        : ThemeColor.Light;
-
-    if (mounted) {
-      setState(() {});
-    }
   }
 
   // returns [true] if changes exist
@@ -92,185 +76,197 @@ class _EditPersonaState extends State<EditPersona>
 
   @override
   Widget build(BuildContext context) {
-    if (_themeData == null) {
-      return CircularProgressIndicator();
-    }
+    return Consumer<ThemeProvider>(builder: (context, _provider, _) {
+      if (_provider.currentAtsignThemeData != null) {
+        _themeData = _provider.currentAtsignThemeData;
+        _highlightColor = _provider.highlightColor!;
+        _theme = _themeData!.brightness == Brightness.dark
+            ? ThemeColor.Dark
+            : ThemeColor.Light;
+      }
 
-    _themeColor = Provider.of<ThemeProvider>(context, listen: false).themeColor;
+      if (_themeData == null) {
+        return CircularProgressIndicator();
+      }
 
-    return WillPopScope(
-      onWillPop: () async {
-        var _changes = _calculateChanges();
-        if (_changes) {
-          var _res = await _confirmationDialog();
-          if (_res == null) {
-            return false;
-          }
+      _themeColor =
+          Provider.of<ThemeProvider>(context, listen: false).themeColor;
 
-          if (_res == true) {
-            await _saveButtonCall();
-            return false;
+      return WillPopScope(
+        onWillPop: () async {
+          var _changes = _calculateChanges();
+          if (_changes) {
+            var _res = await _confirmationDialog();
+            if (_res == null) {
+              return false;
+            }
+
+            if (_res == true) {
+              await _saveButtonCall();
+              return false;
+            } else {
+              Navigator.of(context).pop();
+              return true;
+            }
           } else {
             Navigator.of(context).pop();
             return true;
           }
-        } else {
-          Navigator.of(context).pop();
-          return true;
-        }
-      },
-      child: Scaffold(
-          key: scaffoldKey,
-          bottomSheet: _bottomSheet(),
-          backgroundColor: _themeData!.scaffoldBackgroundColor,
-          appBar: AppBar(
-            iconTheme: IconThemeData(color: _themeData!.primaryColor),
-            toolbarHeight: 55,
-            title: Text(
-              'Edit',
-              style: CustomTextStyles.customBoldTextStyle(
-                  _themeData!.primaryColor,
-                  size: 16),
-            ),
-            centerTitle: false,
+        },
+        child: Scaffold(
+            key: scaffoldKey,
+            bottomSheet: _bottomSheet(),
             backgroundColor: _themeData!.scaffoldBackgroundColor,
-            elevation: 0,
-            // ),
-            // centerTitle: false,
-            // backgroundColor: _themeData!.scaffoldBackgroundColor,
-            // elevation: 0,
-          ),
-          body: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 20.toHeight),
-                  TabBar(
-                    onTap: (index) async {},
-                    labelColor: _themeData!.primaryColor,
-                    indicatorWeight: 5.toHeight,
-                    indicatorColor: ColorConstants.green,
-                    indicatorSize: TabBarIndicatorSize.label,
-                    unselectedLabelColor:
-                        _themeData!.primaryColor.withOpacity(0.5),
-                    controller: _controller,
-                    tabs: [
-                      Text(
-                        'Content',
-                        style:
-                            TextStyle(letterSpacing: 0.1, fontSize: 18.toFont),
-                      ),
-                      Text(
-                        'Appearance',
-                        style:
-                            TextStyle(letterSpacing: 0.1, fontSize: 18.toFont),
-                      )
-                    ],
-                  ),
-                  Divider(height: 1),
-                  Expanded(
-                      child: TabBarView(
-                    physics: BouncingScrollPhysics(),
-                    controller: _controller,
-                    children: [
-                      CotentEdit(
-                        themeData: _themeData!,
-                      ),
-                      SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 10),
-                            Text(
-                              'Theme',
-                              style: CustomTextStyles.customBoldTextStyle(
-                                  _themeData!.primaryColor,
-                                  size: 18),
-                            ),
-                            SizedBox(height: 15.toHeight),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
-                                    _themeCard(),
-                                    SizedBox(height: 13.toHeight),
-                                    Text(
-                                      'Light',
-                                      style: CustomTextStyles.black(size: 18),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    _themeCard(isDark: true),
-                                    SizedBox(height: 13.toHeight),
-                                    Text(
-                                      'Dark',
-                                      style: CustomTextStyles.black(size: 18),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 30.toHeight),
-                            Text(
-                              'Colour',
-                              style: CustomTextStyles.customBoldTextStyle(
-                                  _themeData!.primaryColor,
-                                  size: 18),
-                            ),
-                            SizedBox(height: 15.toHeight),
-                            Wrap(
-                              alignment: WrapAlignment.start,
-                              runAlignment: WrapAlignment.start,
-                              runSpacing: 10.0,
-                              spacing: 10.0,
-                              children: _colors.map((_color) {
-                                return InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _highlightColor = _color;
-                                      _updateHighlightColor = true;
-                                    });
-                                  },
-                                  child: Stack(
-                                    alignment: Alignment.center,
+            appBar: AppBar(
+              iconTheme: IconThemeData(color: _themeData!.primaryColor),
+              toolbarHeight: 55,
+              title: Text(
+                'Edit',
+                style: CustomTextStyles.customBoldTextStyle(
+                    _themeData!.primaryColor,
+                    size: 16),
+              ),
+              centerTitle: false,
+              backgroundColor: _themeData!.scaffoldBackgroundColor,
+              elevation: 0,
+              // ),
+              // centerTitle: false,
+              // backgroundColor: _themeData!.scaffoldBackgroundColor,
+              // elevation: 0,
+            ),
+            body: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.toWidth),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20.toHeight),
+                    TabBar(
+                      onTap: (index) async {},
+                      labelColor: _themeData!.primaryColor,
+                      indicatorWeight: 5.toHeight,
+                      indicatorColor: ColorConstants.green,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      unselectedLabelColor:
+                          _themeData!.primaryColor.withOpacity(0.5),
+                      controller: _controller,
+                      tabs: [
+                        Text(
+                          'Content',
+                          style: TextStyle(
+                              letterSpacing: 0.1, fontSize: 18.toFont),
+                        ),
+                        Text(
+                          'Appearance',
+                          style: TextStyle(
+                              letterSpacing: 0.1, fontSize: 18.toFont),
+                        )
+                      ],
+                    ),
+                    Divider(height: 1),
+                    Expanded(
+                        child: TabBarView(
+                      physics: BouncingScrollPhysics(),
+                      controller: _controller,
+                      children: [
+                        CotentEdit(
+                          themeData: _themeData!,
+                        ),
+                        SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 10),
+                              Text(
+                                'Theme',
+                                style: CustomTextStyles.customBoldTextStyle(
+                                    _themeData!.primaryColor,
+                                    size: 18),
+                              ),
+                              SizedBox(height: 15.toHeight),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
                                     children: [
-                                      _rectangle(
-                                          width: 78.toWidth,
-                                          height: 78.toWidth,
-                                          color: _color,
-                                          roundedCorner: 10),
-                                      (_updateHighlightColor
-                                              ? (_color == _highlightColor)
-                                              : isColorSelected(_color))
-                                          ? Positioned(
-                                              child: _circularDoneIcon(
-                                                  isDark: true,
-                                                  size: 35.toWidth))
-                                          : SizedBox()
+                                      _themeCard(),
+                                      SizedBox(height: 13.toHeight),
+                                      Text(
+                                        'Light',
+                                        style: CustomTextStyles.black(size: 18),
+                                      ),
                                     ],
                                   ),
-                                );
-                              }).toList(),
-                            ),
-                            SizedBox(
-                                height: 80.toHeight +
-                                    10.toHeight), // bottomsheet height
-                          ],
-                        ),
-                      )
-                    ],
-                  )),
-                ],
+                                  Column(
+                                    children: [
+                                      _themeCard(isDark: true),
+                                      SizedBox(height: 13.toHeight),
+                                      Text(
+                                        'Dark',
+                                        style: CustomTextStyles.black(size: 18),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 30.toHeight),
+                              Text(
+                                'Colour',
+                                style: CustomTextStyles.customBoldTextStyle(
+                                    _themeData!.primaryColor,
+                                    size: 18),
+                              ),
+                              SizedBox(height: 15.toHeight),
+                              Wrap(
+                                alignment: WrapAlignment.start,
+                                runAlignment: WrapAlignment.start,
+                                runSpacing: 10.0,
+                                spacing: 10.0,
+                                children: _colors.map((_color) {
+                                  return InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _highlightColor = _color;
+                                        _updateHighlightColor = true;
+                                      });
+                                    },
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        _rectangle(
+                                            width: 78.toWidth,
+                                            height: 78.toWidth,
+                                            color: _color,
+                                            roundedCorner: 10),
+                                        (_updateHighlightColor
+                                                ? (_color == _highlightColor)
+                                                : isColorSelected(_color))
+                                            ? Positioned(
+                                                child: _circularDoneIcon(
+                                                    isDark: true,
+                                                    size: 35.toWidth))
+                                            : SizedBox()
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                              SizedBox(
+                                  height: 80.toHeight +
+                                      10.toHeight), // bottomsheet height
+                            ],
+                          ),
+                        )
+                      ],
+                    )),
+                  ],
+                ),
               ),
-            ),
-          )),
-    );
+            )),
+      );
+    });
   }
 
   Future<bool?> _confirmationDialog() async {

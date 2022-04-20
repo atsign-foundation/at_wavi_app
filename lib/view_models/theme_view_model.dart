@@ -13,7 +13,7 @@ class ThemeProvider extends BaseModel {
   ThemeData darktheme = Themes.darkTheme();
   ThemeData lighttheme = Themes.lightTheme();
   ThemeData? currentAtsignThemeData;
-  Color? highlightColor;
+  Color? highlightColor = ColorConstants.green;
 
   ThemeProvider();
 
@@ -31,14 +31,17 @@ class ThemeProvider extends BaseModel {
         (themeColor == ThemeColor.Light) ? lighttheme : darktheme;
   }
 
-  Future<ThemeData> getTheme() async {
-    await checkThemeFromSecondary(notifyListener: false);
+  Future<ThemeData> getTheme(
+      {bool notifyListener = false, bool fetchFromSecondary = false}) async {
+    await checkThemeFromSecondary(
+        notifyListener: notifyListener, fetchFromSecondary: fetchFromSecondary);
     return currentAtsignThemeData!;
   }
 
   // ignore: always_declare_return_types
-  checkThemeFromSecondary({bool notifyListener = true}) async {
-    if (currentAtsignThemeData == null) {
+  checkThemeFromSecondary(
+      {bool notifyListener = true, bool fetchFromSecondary = false}) async {
+    if (currentAtsignThemeData == null || fetchFromSecondary) {
       var _themePreference = await ThemeService().getThemePreference(
           BackendService().atClientInstance.getCurrentAtSign()!);
 
@@ -51,7 +54,7 @@ class ThemeProvider extends BaseModel {
       }
     }
 
-    if (highlightColor == null) {
+    if (highlightColor == null || fetchFromSecondary) {
       var _highlightColorPreference = await ThemeService().getThemePreference(
           BackendService().atClientInstance.getCurrentAtSign()!,
           returnHighlightColorPreference: true);

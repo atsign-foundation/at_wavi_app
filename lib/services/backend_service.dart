@@ -151,6 +151,7 @@ class BackendService {
       ..namespace = MixedConstants.appNamespace
       ..rootDomain = MixedConstants.ROOT_DOMAIN
       ..syncRegex = MixedConstants.regex
+      ..monitorHeartbeatInterval = Duration(seconds: 30)
       ..outboundConnectionTimeout = MixedConstants.TIME_OUT
       ..hiveStoragePath = downloadDirectory!.path;
     return _atClientPreference;
@@ -170,6 +171,9 @@ class BackendService {
     if (syncStatus.dataChange &&
         userProvider.status[userProvider.FETCH_USER] != Status.Loading) {
       await userProvider.fetchUserData(BackendService().currentAtSign!);
+      await Provider.of<ThemeProvider>(NavService.navKey.currentContext!,
+              listen: false)
+          .getTheme(notifyListener: true, fetchFromSecondary: true);
     }
   }
 

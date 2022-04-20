@@ -30,7 +30,6 @@ class _ReorderFieldsState extends State<ReorderFields> {
 
   @override
   void initState() {
-    _getThemeData();
     if (FieldOrderService().previewOrders[widget.category.name] != null) {
       fields = [...FieldOrderService().previewOrders[widget.category.name]!];
     }
@@ -52,15 +51,6 @@ class _ReorderFieldsState extends State<ReorderFields> {
         .customFields[widget.category.name];
   }
 
-  _getThemeData() async {
-    _themeData =
-        await Provider.of<ThemeProvider>(context, listen: false).getTheme();
-
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
   @override
   void dispose() {
     super.dispose();
@@ -68,76 +58,82 @@ class _ReorderFieldsState extends State<ReorderFields> {
 
   @override
   Widget build(BuildContext context) {
-    if (_themeData == null) {
-      return CircularProgressIndicator();
-    }
+    return Consumer<ThemeProvider>(builder: (context, _provider, _) {
+      if (_provider.currentAtsignThemeData != null) {
+        _themeData = _provider.currentAtsignThemeData;
+      }
 
-    return Scaffold(
-      bottomNavigationBar: CustomButton(
-        width: double.infinity,
-        height: 60,
-        buttonText: 'Save',
-        fontColor: ColorConstants.white,
-        borderRadius: 0,
-        onPressed: _saveFieldOrder,
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () {},
-                    child: Row(
-                      children: [
-                        SizedBox(width: 5),
-                        Text(
-                          'Reorder',
-                          style: TextStyles.boldText(_themeData!.primaryColor,
-                              size: 16),
-                        ),
-                      ],
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      'Cancel',
-                      style: TextStyles.lightText(_themeData!.primaryColor,
-                          size: 14),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: 30),
-            Container(
-              height: SizeConfig().screenHeight - 180,
-              child: ReorderableListView(
-                children: [
-                  ...getRowTitle(),
-                ],
-                onReorder: (int oldIndex, int newIndex) {
-                  setState(() {
-                    if (oldIndex < newIndex) {
-                      newIndex -= 1;
-                    }
-                    final String item = fields.removeAt(oldIndex);
-                    fields.insert(newIndex, item);
-                  });
-                },
-              ),
-            ),
-          ],
+      if (_themeData == null) {
+        return CircularProgressIndicator();
+      }
+
+      return Scaffold(
+        bottomNavigationBar: CustomButton(
+          width: double.infinity,
+          height: 60,
+          buttonText: 'Save',
+          fontColor: ColorConstants.white,
+          borderRadius: 0,
+          onPressed: _saveFieldOrder,
         ),
-      ),
-    );
+        body: SafeArea(
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {},
+                      child: Row(
+                        children: [
+                          SizedBox(width: 5),
+                          Text(
+                            'Reorder',
+                            style: TextStyles.boldText(_themeData!.primaryColor,
+                                size: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        'Cancel',
+                        style: TextStyles.lightText(_themeData!.primaryColor,
+                            size: 14),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 30),
+              Container(
+                height: SizeConfig().screenHeight - 180,
+                child: ReorderableListView(
+                  children: [
+                    ...getRowTitle(),
+                  ],
+                  onReorder: (int oldIndex, int newIndex) {
+                    setState(() {
+                      if (oldIndex < newIndex) {
+                        newIndex -= 1;
+                      }
+                      final String item = fields.removeAt(oldIndex);
+                      fields.insert(newIndex, item);
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
   }
 
   List<Widget> getRowTitle() {
