@@ -126,7 +126,7 @@ packages:
       name: at_lookup
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.18"
+    version: "3.0.19"
   at_onboarding_flutter:
     dependency: "direct main"
     description:
@@ -184,12 +184,12 @@ packages:
     source: hosted
     version: "0.1.6+1"
   biometric_storage:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: biometric_storage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
+    version: "4.1.1"
   boolean_selector:
     dependency: transitive
     description:
