@@ -22,6 +22,18 @@ void showSnackBar(BuildContext context, String message, Color color) {
   );
 }
 
+String? toAccountNameWithAtsign(String? atsign) {
+  if (atsign != null) {
+    if (atsign.startsWith("@")) {
+      return atsign;
+    } else {
+      return "@" + atsign;
+    }
+  } else {
+    return null;
+  }
+}
+
 String getTitle(String title) {
   switch (title) {
     case 'firstname':

@@ -1,8 +1,10 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
+import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_avatar_widget.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +26,9 @@ class DesktopUserWidget extends StatelessWidget {
     bool isFollowingThisAtSign =
         Provider.of<FollowService>(context, listen: false)
             .isFollowing(user.atsign);
+    bool isMine = toAccountNameWithAtsign(user.atsign) ==
+        toAccountNameWithAtsign(
+            Provider.of<UserProvider>(context, listen: false).user?.atsign);
     return InkWell(
       onTap: onPressed,
       child: Container(
@@ -59,18 +64,19 @@ class DesktopUserWidget extends StatelessWidget {
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: onFollowPressed,
-              behavior: HitTestBehavior.translucent,
-              child: Container(
-                child: Center(
-                  child: Text(
-                    isFollowingThisAtSign ? 'Unfollow' : 'Follow',
-                    style: appTheme.textTheme.subtitle2,
+            if (!isMine)
+              GestureDetector(
+                onTap: onFollowPressed,
+                behavior: HitTestBehavior.translucent,
+                child: Container(
+                  child: Center(
+                    child: Text(
+                      isFollowingThisAtSign ? 'Unfollow' : 'Follow1',
+                      style: appTheme.textTheme.subtitle2,
+                    ),
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ),

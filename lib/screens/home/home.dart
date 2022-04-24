@@ -37,6 +37,7 @@ import 'package:provider/provider.dart';
 import 'package:at_location_flutter/utils/constants/constants.dart'
     as location_package_constants;
 
+import '../../desktop/utils/utils.dart';
 import '../qr_screen.dart';
 
 enum HOME_TABS { DETAILS, CHANNELS, FEATURED }
@@ -59,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late var deepLinkProviderListener;
 
   bool _isSearchScreen = false;
+  bool _isMine = false;
 
   bool hideHeader = false, loadingSearchedAtsign = false;
   String searchedAtsign = '';
@@ -103,6 +105,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       //         listen: false)
       //     .init();
     });
+
+    String? previewUserName =
+        Provider.of<UserPreview>(context, listen: false).user()?.atsign;
+    String? currentUserName =
+        Provider.of<UserProvider>(context, listen: false).user?.atsign;
+    _isMine = widget.isPreview &&
+        (toAccountNameWithAtsign(previewUserName) ==
+            toAccountNameWithAtsign(currentUserName));
 
     super.initState();
   }
@@ -363,6 +373,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             height: 55.toHeight,
                             child: Consumer<FollowService>(
                                 builder: (context, _provider, _) {
+                              if (_isMine && _isSearchScreen) {
+                                return Container();
+                              }
                               return TextButton(
                                 style: ButtonStyle(
                                   backgroundColor:
