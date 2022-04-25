@@ -27,7 +27,15 @@ class FieldNames {
     'pinterest',
     'github'
   ];
-  static const _gameFields = ['ps4', 'xbox', 'steam', 'discord', 'twitch'];
+  static const _gameFields = [
+    'ps4',
+    'xbox',
+    'steam',
+    'discord',
+    'twitch',
+    'switch',
+    'epic',
+  ];
   static const _locationFields = [
     'locationnickname',
     'location',
@@ -53,7 +61,10 @@ class FieldNames {
     FieldsEnum.PS4,
     FieldsEnum.XBOX,
     FieldsEnum.STEAM,
-    FieldsEnum.DISCORD
+    FieldsEnum.DISCORD,
+    FieldsEnum.TWITCH,
+    FieldsEnum.SWITCH,
+    FieldsEnum.EPIC,
   ];
 
   List<String> get basicDetailsFields {

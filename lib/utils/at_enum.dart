@@ -29,6 +29,8 @@ enum FieldsEnum {
   DISCORD,
   TWITCH,
   HTMLTOASTVIEW,
+  SWITCH,
+  EPIC,
 }
 
 extension FieldsEnumValues on FieldsEnum {
@@ -86,6 +88,10 @@ extension FieldsEnumValues on FieldsEnum {
         return 'GITHUB';
       case FieldsEnum.TWITCH:
         return 'TWITCH';
+      case FieldsEnum.SWITCH:
+        return 'SWITCH';
+      case FieldsEnum.EPIC:
+        return 'EPIC';
       default:
         return '';
     }
@@ -167,6 +173,10 @@ extension FieldsEnumValues on FieldsEnum {
         return 'Github';
       case FieldsEnum.TWITCH:
         return 'Twitch';
+      case FieldsEnum.SWITCH:
+        return 'Switch';
+      case FieldsEnum.EPIC:
+        return 'Epic';
 
       default:
         return '';

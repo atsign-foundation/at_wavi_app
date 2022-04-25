@@ -36,39 +36,43 @@ class User {
   BasicData discord;
   BasicData twitch;
   BasicData htmlToastView;
+  BasicData switchField;
+  BasicData epic;
   Map<String, List<BasicData>> customFields;
 
-  User(
-      {allPrivate,
-      atsign,
-      image,
-      firstname,
-      lastname,
-      location,
-      locationNickName,
-      pronoun,
-      phone,
-      email,
-      about,
-      twitter,
-      facebook,
-      linkedin,
-      instagram,
-      youtube,
-      tumbler,
-      medium,
-      tiktok,
-      snapchat,
-      pinterest,
-      github,
-      ps4,
-      xbox,
-      steam,
-      discord,
-      twitch,
-      htmlToastView,
-      customFields})
-      : this.allPrivate = allPrivate,
+  User({
+    allPrivate,
+    atsign,
+    image,
+    firstname,
+    lastname,
+    location,
+    locationNickName,
+    pronoun,
+    phone,
+    email,
+    about,
+    twitter,
+    facebook,
+    linkedin,
+    instagram,
+    youtube,
+    tumbler,
+    medium,
+    tiktok,
+    snapchat,
+    pinterest,
+    github,
+    ps4,
+    xbox,
+    steam,
+    discord,
+    twitch,
+    htmlToastView,
+    switchField,
+    epic,
+    customFields,
+  })  : this.allPrivate = allPrivate,
         this.atsign = atsign,
         this.image = image ?? BasicData(),
         this.firstname = firstname ?? BasicData(),
@@ -96,6 +100,8 @@ class User {
         this.discord = discord ?? BasicData(),
         this.twitch = twitch ?? BasicData(),
         this.htmlToastView = htmlToastView ?? BasicData(),
+        this.switchField = switchField ?? BasicData(),
+        this.epic = epic ?? BasicData(),
         this.customFields = customFields ?? {};
 
   static Map<dynamic, dynamic> toJson(User? user) {
@@ -128,6 +134,8 @@ class User {
       FieldsEnum.STEAM.name: user?.steam,
       FieldsEnum.DISCORD.name: user?.discord,
       FieldsEnum.HTMLTOASTVIEW.name: user?.htmlToastView,
+      FieldsEnum.SWITCH.name: user?.switchField,
+      FieldsEnum.EPIC.name: user?.epic,
       'customFields': user?.customFields
     };
   }
@@ -262,6 +270,10 @@ class User {
             BasicData.fromJson(json.decode(userMap[FieldsEnum.DISCORD.name])),
         htmlToastView: BasicData.fromJson(
             json.decode(userMap[FieldsEnum.HTMLTOASTVIEW.name])),
+        switchField: BasicData.fromJson(
+            json.decode(userMap[FieldsEnum.SWITCH.name])),
+        epic: BasicData.fromJson(
+            json.decode(userMap[FieldsEnum.EPIC.name])),
         customFields: customFields,
       );
     } catch (e) {
