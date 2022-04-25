@@ -6,6 +6,7 @@ import 'package:at_wavi_app/desktop/screens/desktop_share_profile/desktop_share_
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
+import 'package:at_wavi_app/desktop/utils/utils.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_logo.dart';
@@ -68,6 +69,14 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
             BackendService().atClientInstance.getCurrentAtSign())) {
       _isSearchScreen = true;
     }
+    String? previewUserName =
+        Provider.of<UserPreview>(context, listen: false).user()?.atsign;
+    String? currentUserName =
+        Provider.of<UserProvider>(context, listen: false).user?.atsign;
+    bool isMine = widget.isPreview &&
+        (toAccountNameWithAtsign(previewUserName) ==
+            toAccountNameWithAtsign(currentUserName));
+    print(isMine);
     final appTheme = AppTheme.of(context);
     return Container(
       color: appTheme.primaryLighterColor,
@@ -174,17 +183,21 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
                           builder: (context, provider, _) {
                           final isFollowing =
                               provider.isFollowing(_currentUser.atsign);
-                          return DesktopButton(
-                            width: double.infinity,
-                            height: DesktopDimens.buttonHeight,
-                            backgroundColor: appTheme.primaryColor,
-                            title: isFollowing
-                                ? Strings.desktop_unfollow
-                                : Strings.desktop_follow,
-                            onPressed: () async {
-                              unfollowAtSign(_currentUser.atsign);
-                            },
-                          );
+                          if (!isMine) {
+                            return DesktopButton(
+                              width: double.infinity,
+                              height: DesktopDimens.buttonHeight,
+                              backgroundColor: appTheme.primaryColor,
+                              title: isFollowing
+                                  ? Strings.desktop_unfollow
+                                  : Strings.desktop_follow,
+                              onPressed: () async {
+                                unfollowAtSign(_currentUser.atsign);
+                              },
+                            );
+                          } else {
+                            return Container();
+                          }
                         }),
                 ],
               ),
@@ -344,7 +357,8 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   void shareProfile() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => DesktopShareProfilePage(atSign: _currentUser.atsign),
+        builder: (context) =>
+            DesktopShareProfilePage(atSign: _currentUser.atsign),
       ),
     );
     // try {
