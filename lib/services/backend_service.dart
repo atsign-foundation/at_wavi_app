@@ -137,11 +137,11 @@ class BackendService {
   }
 
   Future<AtClientPreference> getAtClientPreference() async {
-    if (Platform.isIOS || Platform.isMacOS || Platform.isWindows) {
+    if (Platform.isAndroid) {
+      downloadDirectory = await path_provider.getExternalStorageDirectory();
+    } else {
       downloadDirectory =
           await path_provider.getApplicationDocumentsDirectory();
-    } else {
-      downloadDirectory = await path_provider.getExternalStorageDirectory();
     }
 
     var _atClientPreference = AtClientPreference()
