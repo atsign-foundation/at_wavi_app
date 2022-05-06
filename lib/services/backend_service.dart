@@ -56,34 +56,67 @@ class BackendService {
     await getAtClientPreference()
         .then((value) => atClientPrefernce = value)
         .catchError((e) => print(e));
-    Onboarding(
-      atsign: atSign,
+    final result = await AtOnboarding.onboard(
       context: NavService.navKey.currentContext!,
-      atClientPreference: atClientPrefernce,
-      domain: MixedConstants.ROOT_DOMAIN,
-      appAPIKey: MixedConstants.devAPIKey,
-      appColor: appColor,
-      rootEnvironment: RootEnvironment.Production,
-      onboard: (atClientServiceMap, onboardedAtsign) async {
-        LoadingDialog().show(text: '$onboardedAtsign', heading: 'Loading');
-        await onSuccessOnboard(atClientServiceMap, onboardedAtsign);
-        LoadingDialog().hide();
+      config: AtOnboardingConfig(
+        atClientPreference: atClientPrefernce!,
+        domain: MixedConstants.ROOT_DOMAIN,
+        rootEnvironment: RootEnvironment.Production,
+        appAPIKey: MixedConstants.devAPIKey,
+      ),
+    );
+    switch (result) {
+      case AtOnboardingResult.success:
+        // LoadingDialog().show(text: '$onboardedAtsign', heading: 'Loading');
+        // await onSuccessOnboard(atClientServiceMap, onboardedAtsign);
+        // LoadingDialog().hide();
         if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
           onSuccess?.call();
         } else {
           SetupRoutes.pushAndRemoveAll(
               NavService.navKey.currentContext!, Routes.HOME,
               arguments: {
-                'key': Key(onboardedAtsign!),
+                // 'key': Key(onboardedAtsign!),
                 'isPreview': false,
               });
         }
-      },
-      onError: (error) {
-        print('Onboarding throws $error error');
-        showErrorSnackBar(error);
-      },
-    );
+        break;
+      case AtOnboardingResult.error:
+      // TODO: Handle this case.
+        showErrorSnackBar("error");
+        break;
+      case AtOnboardingResult.cancel:
+      // TODO: Handle this case.
+        break;
+    }
+    // Onboarding(
+    //   atsign: atSign,
+    //   context: NavService.navKey.currentContext!,
+    //   atClientPreference: atClientPrefernce,
+    //   domain: MixedConstants.ROOT_DOMAIN,
+    //   appAPIKey: MixedConstants.devAPIKey,
+    //   appColor: appColor,
+    //   rootEnvironment: RootEnvironment.Production,
+    //   onboard: (atClientServiceMap, onboardedAtsign) async {
+    //     LoadingDialog().show(text: '$onboardedAtsign', heading: 'Loading');
+    //     await onSuccessOnboard(atClientServiceMap, onboardedAtsign);
+    //     LoadingDialog().hide();
+    //     if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+    //       onSuccess?.call();
+    //     } else {
+    //       SetupRoutes.pushAndRemoveAll(
+    //           NavService.navKey.currentContext!, Routes.HOME,
+    //           arguments: {
+    //             'key': Key(onboardedAtsign!),
+    //             'isPreview': false,
+    //           });
+    //     }
+    //   },
+    //   onError: (error) {
+    //     print('Onboarding throws $error error');
+    //     showErrorSnackBar(error);
+    //   },
+    // );
   }
 
   Future<void> _checkForPermissionStatus() async {

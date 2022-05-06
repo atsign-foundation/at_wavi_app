@@ -70,28 +70,28 @@ packages:
       name: at_client
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.22"
+    version: "3.0.18"
   at_client_mobile:
     dependency: "direct main"
     description:
       name: at_client_mobile
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.14"
+    version: "3.1.13"
   at_common_flutter:
     dependency: "direct main"
     description:
       name: at_common_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.7"
+    version: "2.0.6"
   at_commons:
     dependency: "direct main"
     description:
       name: at_commons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.14"
+    version: "3.0.13"
   at_contact:
     dependency: "direct main"
     description:
@@ -105,7 +105,7 @@ packages:
       name: at_contacts_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.4"
+    version: "4.0.3"
   at_follows_flutter:
     dependency: "direct main"
     description:
@@ -126,21 +126,23 @@ packages:
       name: at_lookup
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.22"
+    version: "3.0.19"
   at_onboarding_flutter:
     dependency: "direct main"
     description:
-      name: at_onboarding_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.2"
+      path: at_onboarding_flutter
+      ref: "feature/on-boarding-2.0"
+      resolved-ref: "70073331b6650e965a851d1e15e91ee833922936"
+      url: "https://github.com/atsign-foundation/at_widgets.git"
+    source: git
+    version: "4.0.1"
   at_persistence_secondary_server:
     dependency: transitive
     description:
       name: at_persistence_secondary_server
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.24"
+    version: "3.0.23"
   at_persistence_spec:
     dependency: transitive
     description:
@@ -1220,6 +1222,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  qr_code_scanner:
+    dependency: transitive
+    description:
+      name: qr_code_scanner
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0"
   qr_flutter:
     dependency: "direct main"
     description:
