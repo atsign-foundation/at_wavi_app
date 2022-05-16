@@ -69,11 +69,11 @@ class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
             title: "FAQs",
             onTapped: onFAQTapped,
           ),
-          // DesktopSettingWidget(
-          //   prefixIcon: Icons.delete,
-          //   title: "Delete @sign",
-          //   onPressed: onSwitchAccountTapped,
-          // ),
+          DesktopSettingWidget(
+            prefixIcon: Icons.delete,
+            title: "Delete @sign",
+            onTapped: onDeleteAccountTapped,
+          ),
           DesktopSettingWidget(
             prefixIcon: Icons.logout,
             title: "Switch @sign",
@@ -110,4 +110,25 @@ class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
       Navigator.pop(context);
     }
   }
+
+  void onDeleteAccountTapped() async {
+    var atSignList = await KeychainUtil.getAtsignList();
+
+    final result = await showModalBottomSheet(
+      context: NavService.navKey.currentContext!,
+      backgroundColor: Colors.transparent,
+      builder: (context) => DesktopSwitchAccountPage(
+        isCheckDeleteAccount: true,
+        atSignList: atSignList ?? [],
+        onSuccess: () {
+          Navigator.pop(context, 'atSign_delete');
+        },
+      ),
+    );
+    if (result == 'atSign_delete') {
+      Navigator.pop(context);
+    }
+  }
+
+
 }
