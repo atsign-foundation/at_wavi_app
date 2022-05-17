@@ -238,6 +238,14 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                             ),
                             Row(children: [
                               TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Cancel',
+                                      style: TextStyle(
+                                          fontSize: 15, color: Colors.black))),
+                              Spacer(),
+                              TextButton(
                                 onPressed: () async {
                                   var tempAtSignMap = {};
                                   tempAtSignMap.addAll(atSignMap);
@@ -259,14 +267,6 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                                       fontSize: 15,
                                     )),
                               ),
-                              Spacer(),
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text('Cancel',
-                                      style: TextStyle(
-                                          fontSize: 15, color: Colors.black)))
                             ])
                           ],
                         ),

@@ -166,29 +166,29 @@ class _OptionsState extends State<Options> {
                     ),
                   ),
                   Padding(
-                      padding: EdgeInsets.fromLTRB(8.0, 15.0, 0.0, 0.0),
-                      child: Provider.of<SetPrivateState>(context).isLoading
-                      ? LoadingDialog().onlyText(
-                          'Updating',
-                          style: TextStyle(
-                              color: WaviColors.ColorConstants.DARK_GREY,
-                              fontSize: 16.toFont,
-                              fontWeight: FontWeight.w400,
-                              decoration: TextDecoration.none),
-                        )
-                      : Transform.scale(
-                          alignment: Alignment.center,
-                          scale: 0.7,
-                          child: CupertinoSwitch(
-                            activeColor: WaviColors.ColorConstants.black,
-                            value: _allPrivate,
-                            onChanged: (value) async {
-                              await ChangePrivacyService()
-                                  .setAllPrivate(value, _user);
-                              getUser();
-                            },
+                    padding: EdgeInsets.fromLTRB(8.0, 15.0, 0.0, 0.0),
+                    child: Provider.of<SetPrivateState>(context).isLoading
+                        ? LoadingDialog().onlyText(
+                            'Updating',
+                            style: TextStyle(
+                                color: WaviColors.ColorConstants.DARK_GREY,
+                                fontSize: 16.toFont,
+                                fontWeight: FontWeight.w400,
+                                decoration: TextDecoration.none),
+                          )
+                        : Transform.scale(
+                            alignment: Alignment.center,
+                            scale: 0.7,
+                            child: CupertinoSwitch(
+                              activeColor: WaviColors.ColorConstants.black,
+                              value: _allPrivate,
+                              onChanged: (value) async {
+                                await ChangePrivacyService()
+                                    .setAllPrivate(value, _user);
+                                getUser();
+                              },
+                            ),
                           ),
-                        ),
                   ),
                 ],
               ),
@@ -383,6 +383,7 @@ class _OptionsState extends State<Options> {
                               },
                               value: isSelectAll,
                               checkColor: Colors.white,
+                              activeColor: _themeData!.highlightColor,
                               title: Text(Strings.selectAll,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -396,6 +397,7 @@ class _OptionsState extends State<Options> {
                                 },
                                 value: atsignMap[atsign],
                                 checkColor: Colors.white,
+                                activeColor: _themeData!.highlightColor,
                                 title: Text('$atsign'),
                               ),
                             Divider(thickness: 0.8),
@@ -413,6 +415,19 @@ class _OptionsState extends State<Options> {
                             ),
                             Row(children: [
                               TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(Strings.cancel,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color:
+                                              Theme.of(context).primaryColor))),
+                              Spacer(),
+                              TextButton(
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Theme.of(context).primaryColor)),
                                 onPressed: () async {
                                   var tempAtsignMap = {};
                                   tempAtsignMap.addAll(atsignMap);
@@ -430,18 +445,11 @@ class _OptionsState extends State<Options> {
                                 },
                                 child: Text(Strings.remove,
                                     style: TextStyle(
-                                      color: ColorConstants.FONT_PRIMARY,
+                                      color: Theme.of(context)
+                                          .scaffoldBackgroundColor,
                                       fontSize: 15,
                                     )),
                               ),
-                              Spacer(),
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(Strings.cancel,
-                                      style: TextStyle(
-                                          fontSize: 15, color: Colors.black)))
                             ])
                           ],
                         ),
