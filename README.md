@@ -1,6 +1,4 @@
-<img src="https://atsign.dev/assets/img/@dev.png?sanitize=true">
-
-### Now for a little internet optimism
+<img width=250px src="https://atsign.dev/assets/img/@platform_logo_grey.svg?sanitize=true">
 
 # @‎wavi
 
@@ -45,4 +43,6 @@ pull request.
 
 ## Maintainers
 
-Created by @sarika01, @sachins-geekyants and @nitesh2599
+Created by [@sarika01](https://github.com/sarika01),
+[@sachins-geekyants](https://github.com/sachins-geekyants)
+and [@nitesh2599](https://github.com/nitesh2599)
