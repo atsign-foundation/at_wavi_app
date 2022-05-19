@@ -138,11 +138,15 @@ class AppTheme {
 
   ThemeData toThemeData() {
     return ThemeData(
+      colorScheme: ThemeData().colorScheme.copyWith(
+          primary: ColorConstants.green,
+          secondary: ColorConstants.green,
+          brightness: brightness),
       brightness: brightness,
       primaryColor: primaryColor,
       backgroundColor: backgroundColor,
       scaffoldBackgroundColor: backgroundColor,
-      accentColor: accentColor,
+      // accentColor: accentColor,
       fontFamily: 'Inter',
       textTheme: textTheme,
     );

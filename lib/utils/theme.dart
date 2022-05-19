@@ -9,6 +9,10 @@ class Themes {
     String? fontFamily,
   }) {
     return ThemeData(
+      colorScheme: ThemeData().colorScheme.copyWith(
+          primary: ColorConstants.green,
+          secondary: ColorConstants.green,
+          brightness: Brightness.light),
       brightness: Brightness.light,
       primaryColor: ColorConstants.black,
       primaryColorDark: getPrimaryColorDark(highlightColor, themeColor),
@@ -27,6 +31,10 @@ class Themes {
     String? fontFamily,
   }) {
     return ThemeData(
+      colorScheme: ThemeData().colorScheme.copyWith(
+          primary: ColorConstants.green,
+          secondary: ColorConstants.green,
+          brightness: Brightness.dark),
       brightness: Brightness.dark,
       canvasColor: Colors.black,
       primaryColor: ColorConstants.white,
