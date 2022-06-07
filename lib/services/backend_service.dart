@@ -66,6 +66,11 @@ class BackendService {
         .catchError((e) => print(e));
     AtOnboardingResult result;
 
+    ///switch account from avatar
+    if (atSign.isNotEmpty) {
+      _onboardingService.setAtsign = atSign;
+    }
+
     if (isSwitchAccount) {
       result = await AtOnboarding.start(
         context: NavService.navKey.currentContext!,
