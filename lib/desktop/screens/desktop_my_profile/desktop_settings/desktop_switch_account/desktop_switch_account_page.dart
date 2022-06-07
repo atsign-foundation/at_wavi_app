@@ -2,9 +2,14 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'package:at_common_flutter/services/size_config.dart';
 import 'package:at_contacts_flutter/widgets/custom_circle_avatar.dart';
+import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
 import 'package:at_wavi_app/common_components/contact_initial.dart';
+import 'package:at_wavi_app/routes/route_names.dart';
+import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
+import 'package:at_wavi_app/services/nav_service.dart';
+import 'package:at_wavi_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class DesktopSwitchAccountPage extends StatefulWidget {
@@ -119,7 +124,10 @@ class _DesktopSwitchAccountPageState extends State<DesktopSwitchAccountPage> {
                             Navigator.pop(context);
                           });
                           setState(() {});
-                          await backendService.onboard('');
+                          await backendService.onboard(
+                            '',
+                            isSwitchAccount: true,
+                          );
 
                           setState(() {
                             isLoading = false;

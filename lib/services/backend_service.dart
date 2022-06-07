@@ -30,6 +30,7 @@ import 'package:at_sync_ui_flutter/at_sync_ui_flutter.dart';
 
 class BackendService {
   static final BackendService _singleton = BackendService._internal();
+
   BackendService._internal();
 
   factory BackendService() {
@@ -49,27 +50,44 @@ class BackendService {
     AtClientPreference? atClientPreference,
     Color appColor = ColorConstants.green,
     VoidCallback? onSuccess,
+    bool isSwitchAccount = false,
   }) async {
     if (Platform.isAndroid || Platform.isIOS) {
       await _checkForPermissionStatus();
     }
 
-    final OnboardingService _onboardingService = OnboardingService.getInstance();
+    final OnboardingService _onboardingService =
+        OnboardingService.getInstance();
     atClientServiceMap = _onboardingService.atClientServiceMap;
 
     var atClientPrefernce;
     await getAtClientPreference()
         .then((value) => atClientPrefernce = value)
         .catchError((e) => print(e));
-    final result = await AtOnboarding.onboard(
-      context: NavService.navKey.currentContext!,
-      config: AtOnboardingConfig(
-        atClientPreference: atClientPrefernce!,
-        domain: MixedConstants.ROOT_DOMAIN,
-        rootEnvironment: RootEnvironment.Production,
-        appAPIKey: MixedConstants.devAPIKey,
-      ),
-    );
+    AtOnboardingResult result;
+
+    if (isSwitchAccount) {
+      result = await AtOnboarding.start(
+        context: NavService.navKey.currentContext!,
+        config: AtOnboardingConfig(
+          atClientPreference: atClientPrefernce!,
+          domain: MixedConstants.ROOT_DOMAIN,
+          rootEnvironment: RootEnvironment.Production,
+          appAPIKey: MixedConstants.devAPIKey,
+        ),
+      );
+    } else {
+      result = await AtOnboarding.onboard(
+        context: NavService.navKey.currentContext!,
+        config: AtOnboardingConfig(
+          atClientPreference: atClientPrefernce!,
+          domain: MixedConstants.ROOT_DOMAIN,
+          rootEnvironment: RootEnvironment.Production,
+          appAPIKey: MixedConstants.devAPIKey,
+        ),
+      );
+    }
+
     switch (result.status) {
       case AtOnboardingResultStatus.success:
         LoadingDialog().show(text: '$atSign', heading: 'Loading');
@@ -87,11 +105,11 @@ class BackendService {
         }
         break;
       case AtOnboardingResultStatus.error:
-      // TODO: Handle this case.
+        // TODO: Handle this case.
         showErrorSnackBar("error");
         break;
       case AtOnboardingResultStatus.cancel:
-      // TODO: Handle this case.
+        // TODO: Handle this case.
         break;
     }
     // Onboarding(
@@ -135,9 +153,11 @@ class BackendService {
     }
   }
 
-  onSuccessOnboard(Map<String?, AtClientService> atClientServiceMap, String? onboardedAtsign) async {
+  onSuccessOnboard(Map<String?, AtClientService> atClientServiceMap,
+      String? onboardedAtsign) async {
     String? atSign = onboardedAtsign;
-    atClientInstance = atClientServiceMap[onboardedAtsign]!.atClientManager.atClient;
+    atClientInstance =
+        atClientServiceMap[onboardedAtsign]!.atClientManager.atClient;
     atClientServiceMap = atClientServiceMap;
     syncService = AtClientManager.getInstance().syncService;
     currentAtSign = atSign;
