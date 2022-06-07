@@ -130,9 +130,11 @@ packages:
   at_onboarding_flutter:
     dependency: "direct main"
     description:
-      path: "../at_widgets/at_onboarding_flutter"
-      relative: true
-    source: path
+      path: at_onboarding_flutter
+      ref: "feature/on-boarding-2.0"
+      resolved-ref: "6e5c69f999d9f77903c6b1acc826f23ccf6aa3a2"
+      url: "https://github.com/atsign-foundation/at_widgets.git"
+    source: git
     version: "4.0.1"
   at_persistence_secondary_server:
     dependency: transitive
