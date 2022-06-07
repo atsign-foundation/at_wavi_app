@@ -4,6 +4,7 @@ import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_commons/at_commons.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
+import 'package:at_onboarding_flutter/services/onboarding_service.dart';
 import 'package:at_sync_ui_flutter/at_sync_ui.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
@@ -52,6 +53,10 @@ class BackendService {
     if (Platform.isAndroid || Platform.isIOS) {
       await _checkForPermissionStatus();
     }
+
+    final OnboardingService _onboardingService = OnboardingService.getInstance();
+    atClientServiceMap = _onboardingService.atClientServiceMap;
+
     var atClientPrefernce;
     await getAtClientPreference()
         .then((value) => atClientPrefernce = value)
@@ -65,27 +70,27 @@ class BackendService {
         appAPIKey: MixedConstants.devAPIKey,
       ),
     );
-    switch (result) {
-      case AtOnboardingResult.success:
-        // LoadingDialog().show(text: '$onboardedAtsign', heading: 'Loading');
-        // await onSuccessOnboard(atClientServiceMap, onboardedAtsign);
-        // LoadingDialog().hide();
+    switch (result.status) {
+      case AtOnboardingResultStatus.success:
+        LoadingDialog().show(text: '$atSign', heading: 'Loading');
+        await onSuccessOnboard(atClientServiceMap, result.atsign);
+        LoadingDialog().hide();
         if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
           onSuccess?.call();
         } else {
           SetupRoutes.pushAndRemoveAll(
               NavService.navKey.currentContext!, Routes.HOME,
               arguments: {
-                // 'key': Key(onboardedAtsign!),
+                'key': Key(result.atsign!),
                 'isPreview': false,
               });
         }
         break;
-      case AtOnboardingResult.error:
+      case AtOnboardingResultStatus.error:
       // TODO: Handle this case.
         showErrorSnackBar("error");
         break;
-      case AtOnboardingResult.cancel:
+      case AtOnboardingResultStatus.cancel:
       // TODO: Handle this case.
         break;
     }
@@ -130,11 +135,9 @@ class BackendService {
     }
   }
 
-  onSuccessOnboard(Map<String?, AtClientService> atClientServiceMap,
-      String? onboardedAtsign) async {
+  onSuccessOnboard(Map<String?, AtClientService> atClientServiceMap, String? onboardedAtsign) async {
     String? atSign = onboardedAtsign;
-    atClientInstance =
-        atClientServiceMap[onboardedAtsign]!.atClientManager.atClient;
+    atClientInstance = atClientServiceMap[onboardedAtsign]!.atClientManager.atClient;
     atClientServiceMap = atClientServiceMap;
     syncService = AtClientManager.getInstance().syncService;
     currentAtSign = atSign;

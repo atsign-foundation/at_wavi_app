@@ -44,7 +44,7 @@ dependencies:
   validators: ^3.0.0
   latlong2: ^0.8.1
   image_cropper: ^1.5.0
-  extended_image: ^6.0.1
+  extended_image: ^6.2.1
   image: ^3.1.1
   showcaseview: ^1.1.1
   desktop_window: ^0.4.0
@@ -80,10 +80,11 @@ dependency_overrides:
   permission_handler: ^9.2.0
   biometric_storage: ^4.1.0
   at_onboarding_flutter:
-    git:
-      url: https://github.com/atsign-foundation/at_widgets.git
-      path: at_onboarding_flutter
-      ref: feature/on-boarding-2.0
+    path: ../at_widgets/at_onboarding_flutter
+#    git:
+#      url: https://github.com/atsign-foundation/at_widgets.git
+#      path: at_onboarding_flutter
+#      ref: feature/on-boarding-2.0
 
 dev_dependencies:
   flutter_test:
