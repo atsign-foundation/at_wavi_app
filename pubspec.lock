@@ -133,8 +133,8 @@ packages:
     dependency: "direct main"
     description:
       path: at_onboarding_flutter
-      ref: "feature/on-boarding-2.0"
-      resolved-ref: "6e5c69f999d9f77903c6b1acc826f23ccf6aa3a2"
+      ref: "feature/on-boarding-3.0"
+      resolved-ref: fbffd0614d4cb2e8b2d2cef295dd642838e964de
       url: "https://github.com/atsign-foundation/at_widgets.git"
     source: git
     version: "4.0.1"
@@ -1230,7 +1230,7 @@ packages:
       name: qr_code_scanner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.0"
+    version: "1.0.0"
   qr_flutter:
     dependency: "direct main"
     description:
