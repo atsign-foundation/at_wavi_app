@@ -75,7 +75,9 @@ class _DesktopSwitchAccountPageState extends State<DesktopSwitchAccountPage> {
                                   } else {
                                     await backendService.resetDevice(
                                         [widget.atSignList[index]]);
-                                    await backendService.onboardNextAtsign();
+                                    await backendService.onboardNextAtsign(
+                                      isCheckDesktop: true,
+                                    );
                                   }
                                 },
                           child: Padding(

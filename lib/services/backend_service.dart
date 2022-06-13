@@ -374,7 +374,15 @@ class BackendService {
 
   onboardNextAtsign({bool isCheckDesktop = false}) async {
     var atSignList = await KeychainUtil.getAtsignList();
-    if (isCheckDesktop) {
+
+    if ((atSignList ?? []).length == 0) {
+      final OnboardingService _onboardingService =
+          OnboardingService.getInstance();
+
+      _onboardingService.setAtsign = null;
+    }
+
+    if (!isCheckDesktop) {
       if (atSignList != null &&
           atSignList.isNotEmpty &&
           currentAtSign != atSignList.first) {

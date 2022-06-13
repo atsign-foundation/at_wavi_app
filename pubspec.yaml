@@ -56,7 +56,6 @@ dependencies:
   share_plus: ^4.0.3
   url_launcher: ^6.0.20
 
-  
   at_common_flutter: ^2.0.7
   at_onboarding_flutter: ^4.0.2
   at_client_mobile: ^3.1.14
@@ -85,6 +84,11 @@ dependency_overrides:
       url: https://github.com/atsign-foundation/at_widgets.git
       path: at_onboarding_flutter
       ref: feature/on-boarding-2.0
+  at_client_mobile:
+    git:
+      url: https://github.com/atsign-foundation/at_client_sdk.git
+      ref: bugfix/keychain-store-key
+      path: at_client_mobile
 
 dev_dependencies:
   flutter_test:
