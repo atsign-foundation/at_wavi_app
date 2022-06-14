@@ -7,10 +7,10 @@ import 'package:flutter/cupertino.dart';
 class DesktopSearchAtSignModel extends ChangeNotifier {
   final UserPreview userPreview;
 
-  List<User> _users = [];
+  List<SearchInstance> _searchInstance = [];
   LoadStatus _searchStatus = LoadStatus.initial;
 
-  List<User> get users => _users;
+  List<SearchInstance> get searchInstance => _searchInstance;
 
   LoadStatus get searchStatus => _searchStatus;
 
@@ -21,8 +21,8 @@ class DesktopSearchAtSignModel extends ChangeNotifier {
     notifyListeners();
     SearchInstance? _searchService =
         await SearchService().getAtsignDetails(keyword);
-    User? user = _searchService?.user;
-    _users = user == null ? [] : [user];
+    var _newSearchInstance = _searchService;
+    _searchInstance = _newSearchInstance == null ? [] : [_newSearchInstance];
     _searchStatus = LoadStatus.success;
     notifyListeners();
   }
