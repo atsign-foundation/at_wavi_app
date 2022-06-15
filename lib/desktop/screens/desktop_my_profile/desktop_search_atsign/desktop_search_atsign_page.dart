@@ -102,7 +102,7 @@ class _DesktopSearchAtSignPageState extends State<DesktopSearchAtSignPage> {
                       ),
                     );
                   } else if (model.searchStatus == LoadStatus.success) {
-                    if (model.users.isEmpty) {
+                    if (model.searchInstance.isEmpty) {
                       return Center(
                         child: Text(
                           Strings.desktop_empty,
@@ -112,17 +112,18 @@ class _DesktopSearchAtSignPageState extends State<DesktopSearchAtSignPage> {
                     } else {
                       return ListView.builder(
                         shrinkWrap: true,
-                        itemCount: model.users.length,
+                        itemCount: model.searchInstance.length,
                         itemBuilder: (context, index) {
                           return DesktopUserWidget(
-                            user: model.users[index],
+                            user: model.searchInstance[index].user,
                             // title: _displayingName(
                             //   firstname: model.users[index].firstname,
                             //   lastname: model.users[index].lastname,
                             // ),
                             // subTitle: '@${model.users[index].atsign}',
                             onPressed: () {
-                              _openUser(model.users[index]);
+                              _openUser(model.searchInstance[index].user,
+                                  model.searchInstance[index].fieldOrders);
                             },
                           );
                         },
@@ -141,8 +142,8 @@ class _DesktopSearchAtSignPageState extends State<DesktopSearchAtSignPage> {
     );
   }
 
-  void _openUser(User user) {
-    FieldOrderService().setPreviewOrder = {...FieldOrderService().fieldOrders};
+  void _openUser(User user, Map<String, List<String>> fieldOrders) {
+    FieldOrderService().setPreviewOrder = {...fieldOrders};
     Provider.of<UserPreview>(context, listen: false).setUser = user;
     Navigator.of(context).push(
       MaterialPageRoute(
