@@ -76,7 +76,7 @@ packages:
     description:
       path: at_client_mobile
       ref: "bugfix/keychain-store-key"
-      resolved-ref: "37e35ef72a45c873d9b3a2564fc481bad76dcf58"
+      resolved-ref: "3c3136aa568d0477c8a8921b56741bd21a4388bd"
       url: "https://github.com/atsign-foundation/at_client_sdk.git"
     source: git
     version: "3.1.13"
