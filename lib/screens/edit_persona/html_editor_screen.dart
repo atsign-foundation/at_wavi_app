@@ -105,7 +105,7 @@ class _HtmlEditorScreenState extends State<HtmlEditorScreen> {
                   adjustHeightForKeyboard: false,
                 ),
                 otherOptions: OtherOptions(
-                  height: 450,
+                  height: 670,
                 ),
                 callbacks: Callbacks(
                     onBeforeCommand: (String? currentHtml) {},
@@ -181,7 +181,7 @@ class _HtmlEditorScreenState extends State<HtmlEditorScreen> {
                       }
                     }),
               ),
-              SizedBox(height: 100), // extra space for scrolling
+              // SizedBox(height: 100), // extra space for scrolling
             ],
           ),
         ),
