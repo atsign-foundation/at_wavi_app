@@ -11,7 +11,7 @@ what other people see about you.
 
 ## Who is this for?
 
-We have open sourced the @‎wavi mobile and desk app so that you can see how apps on The @ Platform
+We have open sourced the @‎wavi mobile and desk app so that you can see how apps on The atPlatform
 work. We also welcome issues and pull requests so that we can make @‎wavi
 better.
 
