@@ -5,9 +5,11 @@ import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/screens/edit_persona/content_edit.dart';
+import 'package:at_wavi_app/services/exception_service.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/utils/text_constants.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
@@ -606,7 +608,12 @@ class _EditPersonaState extends State<EditPersona>
         await provider.saveUserData(
             Provider.of<UserPreview>(context, listen: false).user()!);
       },
-      onError: (provider) {},
+      onError: (provider) async {
+        ExceptionService.instance.showGenericExceptionOverlay(
+          '${Strings.genericErrorMessage} while saving keys',
+        );
+        await SetupRoutes.pushAndRemoveAll(context, Routes.HOME);
+      },
       showDialog: false,
       text: 'Saving data',
       taskName: (provider) => provider.UPDATE_USER,

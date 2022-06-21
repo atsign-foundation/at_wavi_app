@@ -59,12 +59,12 @@ dependencies:
   
   at_common_flutter: ^2.0.7
   at_onboarding_flutter: ^4.0.2
-  at_client_mobile: ^3.1.14
+  at_client_mobile: ^3.1.17
   at_client: ^3.0.22
   at_contact: ^3.0.5
   at_lookup: ^3.0.22
   at_contacts_flutter: ^4.0.4
-  at_commons: ^3.0.14
+  at_commons: ^3.0.17
   at_follows_flutter: ^3.0.6
   at_location_flutter: ^3.1.3
   at_sync_ui_flutter: ^1.0.2
@@ -79,6 +79,8 @@ dependencies:
 dependency_overrides:
   permission_handler: ^9.2.0
   biometric_storage: ^4.1.0
+  at_follows_flutter:
+    path: /Users/apple/Desktop/client_projects/at_company_github/at_widgets/at_follows_flutter
   
 dev_dependencies:
   flutter_test:

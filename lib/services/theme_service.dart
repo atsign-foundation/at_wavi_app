@@ -1,5 +1,6 @@
 import 'package:at_commons/at_commons.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
+import 'package:at_wavi_app/services/exception_service.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:flutter/material.dart';
@@ -75,6 +76,7 @@ class ThemeService {
 
       var result =
           await BackendService().atClientInstance.get(key).catchError((e) {
+        ExceptionService.instance.showGetExceptionOverlay(e);
         print('error in get ${e.errorCode} ${e.errorMessage}');
       });
 

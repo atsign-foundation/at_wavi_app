@@ -20,4 +20,8 @@ class Strings {
       'Could not fetch latest app version details.';
   static const update = 'Update';
   static const mayBeLater = 'Maybe later';
+
+  // exception_service
+  static const buttonRetry = 'RETRY';
+  static const genericErrorMessage = 'Something went wrong';
 }

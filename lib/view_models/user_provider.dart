@@ -40,11 +40,18 @@ class UserProvider extends BaseModel {
       if (user.twitter.value != this.user!.twitter.value) {
         await TwitetrService().getTweets();
       }
-      await AtKeySetService().updateDefinedFields(user, true, atKeys);
-      await AtKeySetService().updateCustomData(user, true, atKeys);
+      var _definedFieldsResult =
+          await AtKeySetService().updateDefinedFields(user, true, atKeys);
+      var _customFieldsResult =
+          await AtKeySetService().updateCustomData(user, true, atKeys);
       await BackendService().sync();
       this.user = User.fromJson(json.decode(json.encode(User.toJson(user))));
-      setStatus(UPDATE_USER, Status.Done);
+      if (!_definedFieldsResult || !_customFieldsResult) {
+        setError(UPDATE_USER, 'Something went wrong while saving keys');
+        setStatus(UPDATE_USER, Status.Error);
+      } else {
+        setStatus(UPDATE_USER, Status.Done);
+      }
     } catch (e) {
       print('error in saveUserData : $e');
       setError(UPDATE_USER, e.toString());

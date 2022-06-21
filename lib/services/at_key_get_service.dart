@@ -5,11 +5,13 @@ import 'package:at_commons/at_commons.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
+import 'package:at_wavi_app/services/exception_service.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
 import 'package:at_wavi_app/utils/constants.dart';
+import 'package:at_wavi_app/utils/text_constants.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:provider/provider.dart';
 
@@ -69,6 +71,8 @@ class AtKeyGetService {
     } catch (err) {
       // _logger.severe('Fetching ${_sdkService.currentAtsign} throws $err');
       // errorCallBack(err);
+      ExceptionService.instance
+          .showGenericExceptionOverlay(Strings.genericErrorMessage);
       print('Error in getProfile $err');
       return User(atsign: atsign);
     }
@@ -128,6 +132,7 @@ class AtKeyGetService {
       }
       return isSetUserField;
     } catch (e) {
+      ExceptionService.instance.showGetExceptionOverlay(e);
       return false;
     }
   }
