@@ -1,7 +1,9 @@
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/screens/options.dart';
+import 'package:at_wavi_app/services/exception_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
+import 'package:at_wavi_app/utils/text_constants.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -91,6 +93,8 @@ class ChangePrivacyService {
       user.allPrivate = private;
     } catch (e) {
       print('Error in setAllPrivate $e');
+      ExceptionService.instance.showGenericExceptionOverlay(
+          '${Strings.genericErrorMessage} while changing privacy.');
       Provider.of<SetPrivateState>(NavService.navKey.currentContext!,
               listen: false)
           .setLoadingState(false);
