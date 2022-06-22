@@ -4,6 +4,8 @@ import 'package:at_wavi_app/services/search_service.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../../../services/exception_service.dart';
+
 class DesktopSearchAtSignModel extends ChangeNotifier {
   final UserPreview userPreview;
 
@@ -17,13 +19,17 @@ class DesktopSearchAtSignModel extends ChangeNotifier {
   DesktopSearchAtSignModel({required this.userPreview});
 
   void searchAtSignAccount({required String keyword}) async {
-    _searchStatus = LoadStatus.loading;
-    notifyListeners();
-    SearchInstance? _searchService =
-        await SearchService().getAtsignDetails(keyword);
-    var _newSearchInstance = _searchService;
-    _searchInstance = _newSearchInstance == null ? [] : [_newSearchInstance];
-    _searchStatus = LoadStatus.success;
-    notifyListeners();
+    try {
+      _searchStatus = LoadStatus.loading;
+      notifyListeners();
+      SearchInstance? _searchService =
+          await SearchService().getAtsignDetails(keyword);
+      var _newSearchInstance = _searchService;
+      _searchInstance = _newSearchInstance == null ? [] : [_newSearchInstance];
+      _searchStatus = LoadStatus.success;
+      notifyListeners();
+    } catch (e) {
+      ExceptionService.instance.showGetExceptionOverlay('$e');
+    }
   }
 }

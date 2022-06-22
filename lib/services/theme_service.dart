@@ -48,6 +48,7 @@ class ThemeService {
       print('_result $_result');
       return _result;
     } catch (e) {
+      ExceptionService.instance.showGetExceptionOverlay(e);
       print('updateProfile throws exception $e');
       return false;
     }
@@ -84,6 +85,7 @@ class ThemeService {
 
       return result.value;
     } catch (e) {
+      ExceptionService.instance.showGetExceptionOverlay(e);
       print('getThemePreference throws exception $e');
       return '';
     }

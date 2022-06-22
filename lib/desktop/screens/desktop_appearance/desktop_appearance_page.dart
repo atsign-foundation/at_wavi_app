@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 
+import '../../../services/exception_service.dart';
 import 'desktop_appearance_model.dart';
 
 class DesktopAppearancePage extends StatefulWidget {
@@ -138,16 +139,19 @@ class _DesktopAppearancePageState extends State<DesktopAppearancePage>
                     _model.isDarkMode ? ThemeColor.Dark : ThemeColor.Light);
           },
           onError: (provider) {
-            ScaffoldMessenger.of(scaffoldKey.currentContext!)
-                .showSnackBar(SnackBar(
-              backgroundColor: ColorConstants.RED,
-              content: Text(
-                'Publishing theme failed. Try again!',
-                style: CustomTextStyles.customTextStyle(
-                  ColorConstants.white,
-                ),
-              ),
-            ));
+            ExceptionService.instance.showGenericExceptionOverlay(
+              'Publishing theme failed. Try again!',
+            );
+            // ScaffoldMessenger.of(scaffoldKey.currentContext!)
+            //     .showSnackBar(SnackBar(
+            //   backgroundColor: ColorConstants.RED,
+            //   content: Text(
+            //     'Publishing theme failed. Try again!',
+            //     style: CustomTextStyles.customTextStyle(
+            //       ColorConstants.white,
+            //     ),
+            //   ),
+            // ));
           },
           showDialog: false,
           text: 'Publishing theme',

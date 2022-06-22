@@ -27,8 +27,11 @@ import 'package:at_client/src/service/sync_service.dart';
 import 'package:at_client/src/service/sync_service_impl.dart';
 import 'package:at_sync_ui_flutter/at_sync_ui_flutter.dart';
 
+import 'exception_service.dart';
+
 class BackendService {
   static final BackendService _singleton = BackendService._internal();
+
   BackendService._internal();
 
   factory BackendService() {
@@ -284,22 +287,23 @@ class BackendService {
   }
 
   showErrorSnackBar(dynamic error) {
-    try {
-      ScaffoldMessenger.of(NavService.navKey.currentContext!)
-          .showSnackBar(SnackBar(
-        backgroundColor: ColorConstants.RED,
-        content: Text(
-          '$error',
-          style: TextStyle(
-              color: ColorConstants.white,
-              fontSize: 16,
-              letterSpacing: 0.1,
-              fontWeight: FontWeight.normal),
-        ),
-      ));
-    } catch (e) {
-      print('Error while showing error snackbar $e');
-    }
+    ExceptionService.instance.showGenericExceptionOverlay('$error');
+    // try {
+    //   ScaffoldMessenger.of(NavService.navKey.currentContext!)
+    //       .showSnackBar(SnackBar(
+    //     backgroundColor: ColorConstants.RED,
+    //     content: Text(
+    //       '$error',
+    //       style: TextStyle(
+    //           color: ColorConstants.white,
+    //           fontSize: 16,
+    //           letterSpacing: 0.1,
+    //           fontWeight: FontWeight.normal),
+    //     ),
+    //   ));
+    // } catch (e) {
+    //   print('Error while showing error snackbar $e');
+    // }
   }
 
   resetDevice(List checkedAtsigns) async {
@@ -307,6 +311,7 @@ class BackendService {
     await resetAtsigns(checkedAtsigns).then((value) async {
       print('reset done');
     }).catchError((e) {
+      ExceptionService.instance.showGetExceptionOverlay(e);
       print('error in reset: $e');
     });
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:at_wavi_app/common_components/provider_callback.dart';
+import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_appearance/desktop_appearance_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_basic_info_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_edit_profile/desktop_profile_picture/desktop_profile_picture_page.dart';
@@ -12,6 +13,8 @@ import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_logo.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/services/exception_service.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
@@ -19,6 +22,7 @@ import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/text_constants.dart';
 import '../../utils/snackbar_utils.dart';
 import 'desktop_edit_profile_model.dart';
 import 'desktop_side_menu.dart';
@@ -207,7 +211,13 @@ class _DesktopEditProfilePageState extends State<DesktopEditProfilePage> {
         await provider.saveUserData(
             Provider.of<UserPreview>(context, listen: false).user()!);
       },
-      onError: (provider) {},
+      onError: (provider) async {
+        ExceptionService.instance.showGenericExceptionOverlay(
+          '${Strings.genericErrorMessage} while saving keys',
+        );
+        await SetupRoutes.pushAndRemoveAll(
+            context, DesktopRoutes.DESKTOP_MY_PROFILE);
+      },
       showDialog: false,
       text: 'Saving data',
       taskName: (provider) => provider.UPDATE_USER,
