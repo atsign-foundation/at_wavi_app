@@ -13,6 +13,7 @@ import 'package:at_wavi_app/desktop/widgets/desktop_welcome_widget.dart';
 import 'package:at_wavi_app/model/basic_data_model.dart';
 import 'package:at_wavi_app/model/osm_location_model.dart';
 import 'package:at_wavi_app/model/user.dart';
+import 'package:at_wavi_app/services/exception_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
@@ -20,6 +21,7 @@ import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/text_constants.dart';
 import 'desktop_add_location/desktop_add_location_page.dart';
 import 'desktop_profile_add_custom_field/desktop_profile_add_custom_field.dart';
 import 'desktop_edit_basic_detail/desktop_edit_basic_detail_page.dart';
@@ -575,7 +577,11 @@ class _DesktopProfileBasicInfoPageState
         await provider.saveUserData(
             Provider.of<UserPreview>(context, listen: false).user()!);
       },
-      onError: (provider) {},
+      onError: (provider) {
+        ExceptionService.instance.showGenericExceptionOverlay(
+          '${Strings.genericErrorMessage} while saving keys',
+        );
+      },
       showDialog: false,
       text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,

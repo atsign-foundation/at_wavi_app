@@ -19,6 +19,9 @@ import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../services/exception_service.dart';
+import '../../../../utils/text_constants.dart';
+
 class DesktopProfileMediaPage extends StatefulWidget {
   final AtCategory atCategory = AtCategory.IMAGE;
   final bool hideMenu;
@@ -251,7 +254,11 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
         await provider.saveUserData(
             Provider.of<UserPreview>(context, listen: false).user()!);
       },
-      onError: (provider) {},
+      onError: (provider) {
+        ExceptionService.instance.showGenericExceptionOverlay(
+          '${Strings.genericErrorMessage} while saving keys',
+        );
+      },
       showDialog: false,
       text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,

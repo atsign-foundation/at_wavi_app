@@ -8,6 +8,8 @@ import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/twitter_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 
+import '../services/exception_service.dart';
+
 class UserProvider extends BaseModel {
   User? user;
   String FETCH_USER = 'fetch_user_data';
@@ -56,6 +58,7 @@ class UserProvider extends BaseModel {
       print('error in saveUserData : $e');
       setError(UPDATE_USER, e.toString());
       setStatus(UPDATE_USER, Status.Error);
+      ExceptionService.instance.showGetExceptionOverlay(e);
     }
   }
 }

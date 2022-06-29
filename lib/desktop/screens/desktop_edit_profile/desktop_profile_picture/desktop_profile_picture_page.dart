@@ -4,11 +4,13 @@ import 'package:at_wavi_app/common_components/provider_callback.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/desktop/utils/snackbar_utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
+import 'package:at_wavi_app/services/exception_service.dart';
 import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
+import '../../../../utils/text_constants.dart';
 import '../../../services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +59,11 @@ class _DesktopProfilePicturePageState extends State<DesktopProfilePicturePage> {
         await provider.saveUserData(
             Provider.of<UserPreview>(context, listen: false).user()!);
       },
-      onError: (provider) {},
+      onError: (provider) {
+        ExceptionService.instance.showGenericExceptionOverlay(
+          '${Strings.genericErrorMessage} while saving keys',
+        );
+      },
       showDialog: false,
       text: 'Saving user data',
       taskName: (provider) => provider.UPDATE_USER,
