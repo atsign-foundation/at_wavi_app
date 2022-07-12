@@ -70,16 +70,16 @@ packages:
       name: at_client
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.25"
+    version: "3.0.27"
   at_client_mobile:
     dependency: "direct main"
     description:
       path: at_client_mobile
       ref: "bugfix/keychain-store-key"
-      resolved-ref: d6e59fc9aa7b4b58173771580b267a6d286741e5
-      url: "https://github.com/atsign-foundation/at_client_sdk.git"
+      resolved-ref: "4767967a293ebd24d16d5ad2db35fc6acfa55804"
+      url: "https://github.com/atsign-foundation/at_client_sdk"
     source: git
-    version: "3.1.13"
+    version: "3.1.17"
   at_common_flutter:
     dependency: "direct main"
     description:
@@ -93,7 +93,7 @@ packages:
       name: at_commons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.16"
+    version: "3.0.17"
   at_contact:
     dependency: "direct main"
     description:
@@ -111,9 +111,11 @@ packages:
   at_follows_flutter:
     dependency: "direct main"
     description:
-      name: at_follows_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: at_follows_flutter
+      ref: "fix/at_follows_notificationService"
+      resolved-ref: "5938b84191bdd0135aa536106f0232536dea79d1"
+      url: "https://github.com/atsign-foundation/at_widgets"
+    source: git
     version: "3.0.6"
   at_location_flutter:
     dependency: "direct main"
@@ -128,14 +130,14 @@ packages:
       name: at_lookup
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.24"
+    version: "3.0.25"
   at_onboarding_flutter:
     dependency: "direct main"
     description:
       path: at_onboarding_flutter
       ref: "feature/on-boarding-3.0"
-      resolved-ref: fbffd0614d4cb2e8b2d2cef295dd642838e964de
-      url: "https://github.com/atsign-foundation/at_widgets.git"
+      resolved-ref: "45d15c5dccbd8696b3f8edfe768a1d3f0d20c8fa"
+      url: "https://github.com/atsign-foundation/at_widgets"
     source: git
     version: "4.0.1"
   at_persistence_secondary_server:
@@ -144,14 +146,14 @@ packages:
       name: at_persistence_secondary_server
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.25"
+    version: "3.0.28"
   at_persistence_spec:
     dependency: transitive
     description:
       name: at_persistence_spec
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
+    version: "2.0.6"
   at_server_status:
     dependency: transitive
     description:
@@ -179,7 +181,7 @@ packages:
       name: at_utils
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.9"
+    version: "3.0.10"
   audio_session:
     dependency: transitive
     description:
@@ -1557,7 +1559,7 @@ packages:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.20"
+    version: "6.1.4"
   url_launcher_android:
     dependency: transitive
     description:
@@ -1592,7 +1594,7 @@ packages:
       name: url_launcher_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
+    version: "2.1.0"
   url_launcher_web:
     dependency: transitive
     description:

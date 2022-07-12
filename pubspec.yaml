@@ -54,7 +54,7 @@ dependencies:
   flutter_widget_from_html: ^0.8.5
   qr_flutter: ^4.0.0
   share_plus: ^4.0.3
-  url_launcher: ^6.0.20
+  url_launcher: ^6.1.4
 
   at_common_flutter: ^2.0.7
   at_onboarding_flutter: ^4.0.2
@@ -69,7 +69,7 @@ dependencies:
   at_sync_ui_flutter: ^1.0.2
   uni_links: ^0.5.1
 
-  flutter_dotenv: ^5.0.2 
+  flutter_dotenv: ^5.0.2
   flutter_qr_reader: ^1.0.5
 
   new_version: ^0.3.0
@@ -79,16 +79,20 @@ dependency_overrides:
   permission_handler: ^9.2.0
   biometric_storage: ^4.1.0
   at_onboarding_flutter:
-#    path: ../at_widgets/at_onboarding_flutter
     git:
-      url: https://github.com/atsign-foundation/at_widgets.git
+      url: https://github.com/atsign-foundation/at_widgets
       path: at_onboarding_flutter
       ref: feature/on-boarding-3.0
   at_client_mobile:
     git:
-      url: https://github.com/atsign-foundation/at_client_sdk.git
+      url: https://github.com/atsign-foundation/at_client_sdk
       ref: bugfix/keychain-store-key
       path: at_client_mobile
+  at_follows_flutter:
+    git:
+      url: https://github.com/atsign-foundation/at_widgets
+      ref: fix/at_follows_notificationService
+      path: at_follows_flutter
 
 dev_dependencies:
   flutter_test:
