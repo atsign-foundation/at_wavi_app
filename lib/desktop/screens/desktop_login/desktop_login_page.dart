@@ -163,7 +163,7 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                        'This will remove the selected @sign and its details from this app only.',
+                        'This will remove the selected atSign and its details from this app only.',
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 15)),
                     SizedBox(
@@ -176,7 +176,7 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                 ),
                 content: (atSignsList ?? []).isEmpty
                     ? Column(mainAxisSize: MainAxisSize.min, children: [
-                        Text('No @signs are paired to reset.',
+                        Text('No atSigns are paired to reset.',
                             style: TextStyle(fontSize: 15)),
                         Align(
                           alignment: Alignment.bottomRight,
@@ -225,7 +225,7 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
                               ),
                             Divider(thickness: 0.8),
                             if (isSelectAtSign)
-                              Text('Please select at least one @sign to reset',
+                              Text('Please select at least one atSign to reset',
                                   style: TextStyle(
                                       color: Colors.red, fontSize: 14)),
                             SizedBox(

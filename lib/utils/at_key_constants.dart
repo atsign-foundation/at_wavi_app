@@ -41,7 +41,7 @@ class AtText {
   static const TITLE_ERROR_DIALOG = 'Error';
   static const ADD_AT_SIGN = 'ADD ANOTHER @SIGN';
   static const VISIT_DASHBOARD = 'Visit Dashboard';
-  static const CONFIGURE_ATSIGN = "Let's configure your new @sign!";
+  static const CONFIGURE_ATSIGN = "Let's configure your new atSign!";
   static const CUSTOM_CONTENT = 'CUSTOM CONTENT';
   static const PROFILE_IMAGE_LIMIT = "Allows maximum of 512KB";
   static const PRIVACY_POLICY_URL =
