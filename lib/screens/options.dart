@@ -166,29 +166,29 @@ class _OptionsState extends State<Options> {
                     ),
                   ),
                   Padding(
-                      padding: EdgeInsets.fromLTRB(8.0, 15.0, 0.0, 0.0),
-                      child: Provider.of<SetPrivateState>(context).isLoading
-                      ? LoadingDialog().onlyText(
-                          'Updating',
-                          style: TextStyle(
-                              color: WaviColors.ColorConstants.DARK_GREY,
-                              fontSize: 16.toFont,
-                              fontWeight: FontWeight.w400,
-                              decoration: TextDecoration.none),
-                        )
-                      : Transform.scale(
-                          alignment: Alignment.center,
-                          scale: 0.7,
-                          child: CupertinoSwitch(
-                            activeColor: WaviColors.ColorConstants.black,
-                            value: _allPrivate,
-                            onChanged: (value) async {
-                              await ChangePrivacyService()
-                                  .setAllPrivate(value, _user);
-                              getUser();
-                            },
+                    padding: EdgeInsets.fromLTRB(8.0, 15.0, 0.0, 0.0),
+                    child: Provider.of<SetPrivateState>(context).isLoading
+                        ? LoadingDialog().onlyText(
+                            'Updating',
+                            style: TextStyle(
+                                color: WaviColors.ColorConstants.DARK_GREY,
+                                fontSize: 16.toFont,
+                                fontWeight: FontWeight.w400,
+                                decoration: TextDecoration.none),
+                          )
+                        : Transform.scale(
+                            alignment: Alignment.center,
+                            scale: 0.7,
+                            child: CupertinoSwitch(
+                              activeColor: WaviColors.ColorConstants.black,
+                              value: _allPrivate,
+                              onChanged: (value) async {
+                                await ChangePrivacyService()
+                                    .setAllPrivate(value, _user);
+                                getUser();
+                              },
+                            ),
                           ),
-                        ),
                   ),
                 ],
               ),
@@ -269,7 +269,7 @@ class _OptionsState extends State<Options> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
-                        'Delete @sign',
+                        'Delete atSign',
                         style: TextStyles.lightText(_themeData!.primaryColor),
                       ),
                     ),
@@ -306,7 +306,7 @@ class _OptionsState extends State<Options> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
-                        'Switch @sign',
+                        'Switch atSign',
                         style: TextStyles.lightText(_themeData!.primaryColor),
                       ),
                     ),

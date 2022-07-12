@@ -71,12 +71,12 @@ class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
           ),
           DesktopSettingWidget(
             prefixIcon: Icons.delete,
-            title: "Delete @sign",
+            title: "Delete atSign",
             onTapped: onDeleteAccountTapped,
           ),
           DesktopSettingWidget(
             prefixIcon: Icons.logout,
-            title: "Switch @sign",
+            title: "Switch atSign",
             onTapped: onSwitchAccountTapped,
           ),
         ],
@@ -129,6 +129,4 @@ class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
       Navigator.pop(context);
     }
   }
-
-
 }

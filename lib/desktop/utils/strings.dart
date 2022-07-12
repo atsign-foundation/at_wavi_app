@@ -68,12 +68,12 @@ class Strings {
   static const String desktop_all_links_in_one = 'Say Hello with @wavi';
   static const String desktop_create_persona =
       'Create your very own, free personal microsite.';
-  static const String desktop_get_sign = 'Don’t have an @sign? Get one now';
-  static const String desktop_sign = '@sign';
-  static const String desktop_enter_sign = 'Enter @sign';
+  static const String desktop_get_sign = 'Don’t have an atSign? Get one now';
+  static const String desktop_sign = 'atSign';
+  static const String desktop_enter_sign = 'Enter atSign';
   static const String desktop_search_sign = 'Search sign';
   static const String desktop_recent_search = 'Recent Search';
-  static const String desktop_prefix_sign = '@sign';
+  static const String desktop_prefix_sign = 'atSign';
   static const String desktop_search_follower = 'Search Follower';
   static const String desktop_search_following = 'Search Following';
 
