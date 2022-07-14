@@ -79,6 +79,11 @@ dependencies:
 dependency_overrides:
   permission_handler: ^9.2.0
   biometric_storage: ^4.1.0
+  at_follows_flutter:
+    git:
+      url: https://github.com/atsign-foundation/at_widgets.git
+      ref: fix/at_follows_notificationService
+      path: at_follows_flutter
   
 dev_dependencies:
   flutter_test:
