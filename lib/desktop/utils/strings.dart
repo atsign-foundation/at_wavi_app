@@ -6,7 +6,7 @@ class Strings {
   static const String desktop_passcode_title = 'Enter the passcode sent to ';
   static const String desktop_wrong_passcode = 'Passcode is wrong.';
   static const String desktop_passcode_description =
-      'Tap “YES” on the notification @wavi sent to your phone. ';
+      'Tap “YES” on the notification atWavi sent to your phone. ';
   static const String desktop_or = 'Or';
   static const String desktop_empty = 'Empty';
   static const String desktop_next = 'Close';
@@ -63,9 +63,9 @@ class Strings {
   static const String desktop_find_more_privacy =
       'Settings for privacy, search, and more.';
   static const String desktop_search_user =
-      'Quickly find people and businesses on @wavi.';
+      'Quickly find people and businesses on atWavi.';
 
-  static const String desktop_all_links_in_one = 'Say Hello with @wavi';
+  static const String desktop_all_links_in_one = 'Say Hello with atWavi';
   static const String desktop_create_persona =
       'Create your very own, free personal microsite.';
   static const String desktop_get_sign = 'Don’t have an atSign? Get one now';
@@ -84,7 +84,7 @@ class Strings {
   static const String desktop_create = 'Create my microsite';
   static const String desktop_delete = 'Delete';
   static const String desktop_confirm = 'Confirm';
-  //static const String desktop_wavi = '@Wavi';
+  //static const String desktop_wavi = 'atWavi';
   static const String desktop_company_copyrights = ' © 2022 The @ Company';
 
   static const List<String> desktop_login_title_page = [
@@ -94,7 +94,7 @@ class Strings {
   ];
 
   static const List<String> desktop_login_sub_title_page = [
-    '@wavi does not track any visitor data.',
+    'atWavi does not track any visitor data.',
     'Quickly create your own microsite and make edits in real time, quickly, from your phone, tablet, or desktop.',
     'No hosting fees, no hidden in-app fees or purchases. Actually free!',
   ];

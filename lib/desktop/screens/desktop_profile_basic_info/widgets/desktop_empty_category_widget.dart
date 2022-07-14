@@ -92,17 +92,17 @@ extension AtCategoryExt on AtCategory {
   String get titlePage {
     switch (this) {
       case AtCategory.IMAGE:
-        return 'Let’s add to your @wavi';
+        return 'Let’s add to your atWavi';
       case AtCategory.DETAILS:
-        return 'Let’s create your @wavi';
+        return 'Let’s create your atWavi';
       case AtCategory.ADDITIONAL_DETAILS:
-        return 'Let’s add to your @wavi';
+        return 'Let’s add to your atWavi';
       case AtCategory.LOCATION:
         return 'Add your Location details';
       case AtCategory.SOCIAL:
-        return 'Let’s add to your @wavi';
+        return 'Let’s add to your atWavi';
       case AtCategory.GAMER:
-        return 'Let’s add to your @wavi';
+        return 'Let’s add to your atWavi';
       default:
         return '';
     }
@@ -115,13 +115,13 @@ extension AtCategoryExt on AtCategory {
       case AtCategory.DETAILS:
         return 'Remember, this information will be public, unless you select “Hide.”';
       case AtCategory.ADDITIONAL_DETAILS:
-        return 'Add more about you to your @wavi.';
+        return 'Add more about you to your atWavi.';
       case AtCategory.LOCATION:
         return 'Add location details to start sharing your profile with others.';
       case AtCategory.SOCIAL:
-        return 'Display your social links on your @wavi.';
+        return 'Display your social links on your atWavi.';
       case AtCategory.GAMER:
-        return 'Display your gaming links on your @wavi.';
+        return 'Display your gaming links on your atWavi.';
       default:
         return '';
     }
