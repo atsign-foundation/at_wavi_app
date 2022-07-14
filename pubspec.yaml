@@ -77,6 +77,11 @@ dependencies:
   another_flushbar: ^1.10.28
 
 dependency_overrides:
+  at_follows_flutter:
+    git:
+      url: https://github.com/atsign-foundation/at_widgets.git
+      ref: fix/at_follows_notificationService
+      path: at_follows_flutter
   permission_handler: ^9.2.0
   biometric_storage: ^4.1.0
   

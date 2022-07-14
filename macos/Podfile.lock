@@ -1,11 +1,11 @@
 PODS:
+  - at_file_saver (0.0.1):
+    - FlutterMacOS
   - audio_session (0.0.1):
     - FlutterMacOS
   - biometric_storage (0.0.1):
     - FlutterMacOS
   - desktop_window (0.0.1):
-    - FlutterMacOS
-  - file_saver (0.0.1):
     - FlutterMacOS
   - file_selector_macos (0.0.1):
     - FlutterMacOS
@@ -36,10 +36,10 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
+  - at_file_saver (from `Flutter/ephemeral/.symlinks/plugins/at_file_saver/macos`)
   - audio_session (from `Flutter/ephemeral/.symlinks/plugins/audio_session/macos`)
   - biometric_storage (from `Flutter/ephemeral/.symlinks/plugins/biometric_storage/macos`)
   - desktop_window (from `Flutter/ephemeral/.symlinks/plugins/desktop_window/macos`)
-  - file_saver (from `Flutter/ephemeral/.symlinks/plugins/file_saver/macos`)
   - file_selector_macos (from `Flutter/ephemeral/.symlinks/plugins/file_selector_macos/macos`)
   - flutter_local_notifications (from `Flutter/ephemeral/.symlinks/plugins/flutter_local_notifications/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
@@ -58,14 +58,14 @@ SPEC REPOS:
     - FMDB
 
 EXTERNAL SOURCES:
+  at_file_saver:
+    :path: Flutter/ephemeral/.symlinks/plugins/at_file_saver/macos
   audio_session:
     :path: Flutter/ephemeral/.symlinks/plugins/audio_session/macos
   biometric_storage:
     :path: Flutter/ephemeral/.symlinks/plugins/biometric_storage/macos
   desktop_window:
     :path: Flutter/ephemeral/.symlinks/plugins/desktop_window/macos
-  file_saver:
-    :path: Flutter/ephemeral/.symlinks/plugins/file_saver/macos
   file_selector_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/file_selector_macos/macos
   flutter_local_notifications:
@@ -92,10 +92,10 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/wakelock_macos/macos
 
 SPEC CHECKSUMS:
+  at_file_saver: 1fc6ed722f17c7a20ce79cce168d1100fcad4b95
   audio_session: dea1f41890dbf1718f04a56f1d6150fd50039b72
   biometric_storage: 43caa6e7ef00e8e19c074216e7e1786dacda9e76
   desktop_window: fb7c4f12c1129f947ac482296b6f14059d57a3c3
-  file_saver: 44e6fbf666677faf097302460e214e977fdd977b
   file_selector_macos: f1b08a781e66103e3ba279fd5d4024a2478b3af6
   flutter_local_notifications: 3805ca215b2fb7f397d78b66db91f6a747af52e4
   FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
@@ -103,13 +103,13 @@ SPEC CHECKSUMS:
   geolocator_apple: 72a78ae3f3e4ec0db62117bd93e34523f5011d58
   just_audio: 9b67ca7b97c61cfc9784ea23cd8cc55eb226d489
   package_info_plus_macos: f010621b07802a241d96d01876d6705f15e77c1c
-  path_provider_macos: 160cab0d5461f0c0e02995469a98f24bdb9a3f1f
+  path_provider_macos: 3c0c3b4b0d4a76d2bf989a913c2de869c5641a19
   share_plus_macos: 853ee48e7dce06b633998ca0735d482dd671ade4
-  shared_preferences_macos: 480ce071d0666e37cef23fe6c702293a3d21799e
+  shared_preferences_macos: a64dc611287ed6cbe28fd1297898db1336975727
   sqflite: a5789cceda41d54d23f31d6de539d65bb14100ea
   url_launcher_macos: 597e05b8e514239626bcf4a850fcf9ef5c856ec3
   wakelock_macos: bc3f2a9bd8d2e6c89fee1e1822e7ddac3bd004a9
 
 PODFILE CHECKSUM: 27e1a4b6a6c5c9c3ab843716d2bb5ab62b3ce02f
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.11.0

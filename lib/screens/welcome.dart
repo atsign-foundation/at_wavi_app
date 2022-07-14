@@ -56,7 +56,7 @@ class _WelcomeState extends State<Welcome> {
                     children: <Widget>[
                       // Image.asset(Images.personaIcon),
                       SizedBox(width: 5.toWidth),
-                      Text('@wavi',
+                      Text('atWavi',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 18.toFont,
@@ -82,7 +82,7 @@ class _WelcomeState extends State<Welcome> {
                   ],
                 ),
                 SizedBox(height: 60),
-                Text('Say Hello with @wavi',
+                Text('Say Hello with atWavi',
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 28.toFont,
