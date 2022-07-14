@@ -1,8 +1,16 @@
+import 'dart:math';
+import 'dart:typed_data';
+
 import 'package:at_client_mobile/at_client_mobile.dart';
+import 'package:at_common_flutter/at_common_flutter.dart';
+import 'package:at_contacts_flutter/widgets/custom_circle_avatar.dart';
+import 'package:at_wavi_app/common_components/contact_initial.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
 import 'package:at_wavi_app/screens/options.dart';
+import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/change_privacy_service.dart';
+import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
@@ -113,18 +121,108 @@ class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
 
   void onDeleteAccountTapped() async {
     var atSignList = await KeychainUtil.getAtsignList();
+    BackendService backendService = BackendService();
+    final appTheme = AppTheme.of(context);
 
-    final result = await showModalBottomSheet(
+    final result = await showDialog(
       context: NavService.navKey.currentContext!,
-      backgroundColor: Colors.transparent,
-      builder: (context) => DesktopSwitchAccountPage(
-        isCheckDeleteAccount: true,
-        atSignList: atSignList ?? [],
-        onSuccess: () {
-          Navigator.pop(context, 'atSign_delete');
-        },
-      ),
+      builder: (BuildContext context) {
+        return Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Stack(
+            children: [
+              InkWell(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: 400,
+                  padding: EdgeInsets.all(DesktopDimens.paddingNormal),
+                  decoration: BoxDecoration(
+                    color: appTheme.backgroundColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Text(
+                          'Delete atSign',
+                          style: TextStyle(
+                            color: appTheme.primaryTextColor,
+                            fontSize: 20.toFont,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: atSignList?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          Uint8List? image = CommonFunctions()
+                              .getCachedContactImage(atSignList![index]);
+                          return InkWell(
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {
+                              await backendService.resetDevice(
+                                [
+                                  atSignList[index],
+                                ],
+                              );
+                              await backendService.onboardNextAtsign();
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Row(
+                                children: [
+                                  image != null
+                                      ? CustomCircleAvatar(
+                                          byteImage: image,
+                                          nonAsset: true,
+                                          size: 40,
+                                        )
+                                      : ContactInitial(
+                                          initials: atSignList[index],
+                                          size: 40,
+                                        ),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    atSignList[index],
+                                    style: TextStyle(
+                                      fontSize: 15.toFont,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Icon(
+                                    Icons.delete,
+                                    color: Colors.grey,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
+
     if (result == 'atSign_delete') {
       Navigator.pop(context);
     }
