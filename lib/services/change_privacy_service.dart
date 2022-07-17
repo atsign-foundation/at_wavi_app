@@ -23,13 +23,19 @@ class ChangePrivacyService {
           (field == FieldsEnum.HTMLTOASTVIEW)) {
         continue;
       }
-      var data = this.get(field.name);
-      if (data.value != null) {
-        // String key = atkeys.get(field.name);
-        var isUpdated = await AtKeySetService()
-            .update(data, field.name, isCheck: isCheck, scanKeys: scanKeys);
-        if (!isUpdated) return isUpdated;
+
+      try{
+        var data = this.get(field.name);
+        if (data.value != null) {
+          // String key = atkeys.get(field.name);
+          var isUpdated = await AtKeySetService()
+              .update(data, field.name, isCheck: isCheck, scanKeys: scanKeys);
+          if (!isUpdated) return isUpdated;
+        }
+      } catch(e){
+        print('error in storeInSecondary for ${field.name}');
       }
+      
     }
     // storing custom fields
     Map<String, List<BasicData>> customFields = user.customFields;
@@ -98,22 +104,26 @@ class ChangePrivacyService {
   }
 
   dynamic setPrivacy(property, bool value) async {
-    BasicData field = this.get(property);
-    // if (user.allPrivate != null && user.allPrivate == true)
-    //   field.isPrivate = true;
-    // else
-    // field.isPrivate =
-    //     field.value != '' && field.value != null ? value : false;
+    try {
+      BasicData field = this.get(property);
+      // if (user.allPrivate != null && user.allPrivate == true)
+      //   field.isPrivate = true;
+      // else
+      // field.isPrivate =
+      //     field.value != '' && field.value != null ? value : false;
 
-    if (field.value != '' && field.value != null) {
-      field.isPrivate = value;
-    }
+      if (field.value != '' && field.value != null) {
+        field.isPrivate = value;
+      }
 
-    if (field.value == null) {
-      return;
+      if (field.value == null) {
+        return;
+      }
+      print('vaslue ${field.value} ${property}');
+      // await AtKeySetService().update(field, property, isCheck: true);
+    } catch(e){
+      print('error in setPrivacy for $property');
     }
-    print('vaslue ${field.value} ${property}');
-    // await AtKeySetService().update(field, property, isCheck: true);
   }
 
   dynamic get(String propertyName) {
@@ -155,6 +165,8 @@ class ChangePrivacyService {
       FieldsEnum.PINTEREST.name: user.pinterest,
       FieldsEnum.GITHUB.name: user.github,
       FieldsEnum.TWITCH.name: user.twitch,
+      FieldsEnum.SWITCH.name: user.switchField,
+      FieldsEnum.EPIC.name: user.epic,
     };
   }
 }
