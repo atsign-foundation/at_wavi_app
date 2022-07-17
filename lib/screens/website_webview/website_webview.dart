@@ -4,6 +4,8 @@ import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:at_common_flutter/services/size_config.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 
 class WebsiteScreen extends StatefulWidget {
   final String title;
@@ -52,6 +54,11 @@ class _WebsiteScreenState extends State<WebsiteScreen> {
         WebView(
           initialUrl: widget.url,
           javascriptMode: JavascriptMode.unrestricted,
+          gestureRecognizers: {
+            Factory<VerticalDragGestureRecognizer>(
+              () => VerticalDragGestureRecognizer()..onUpdate = (_) {},
+            )
+          },
           onWebViewCreated: (WebViewController c) {
             setState(() {
               controller = c;
