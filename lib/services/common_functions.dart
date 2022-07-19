@@ -523,14 +523,18 @@ class CommonFunctions {
   }
 
   Future<bool> checkAtsign(String? receiver) async {
-    if (receiver == null) {
-      return false;
-    } else if (!receiver.contains('@')) {
-      receiver = '@' + receiver;
+    try {
+      if (receiver == null) {
+        return false;
+      } else if (!receiver.contains('@')) {
+        receiver = '@' + receiver;
+      }
+      var checkPresence = await AtLookupImpl.findSecondary(
+          receiver, MixedConstants.ROOT_DOMAIN, 64);
+      return checkPresence != null;
+    } catch (e) {
+      throw ("Error ======> ${e}");
     }
-    var checkPresence = await AtLookupImpl.findSecondary(
-        receiver, MixedConstants.ROOT_DOMAIN, 64);
-    return checkPresence != null;
   }
 
   showSnackBar(String msg) {

@@ -9,6 +9,7 @@ import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_reader/flutter_qr_reader.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -137,8 +138,33 @@ class _QRScannerState extends State<QRScanner> {
                       callback: (container) async {
                         this._controller = container;
                         await _controller!.startCamera((data, offsets) async {
-                          _controller?.stopCamera();
-                          await onScan(data, offsets, context);
+                          //check and make sure that "data" has a valid atsign
+                          // bool _atSignValid =
+                          //     await CommonFunctions().checkAtsign(data);
+                          bool _atSignValid = RegExp(
+                                  r"^@[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]")
+                              .hasMatch(data);
+                          print("checking in data");
+                          if (_atSignValid) {
+                            print("VALID ATSIGN! ${data}");
+
+                            //this works
+                            _controller?.stopCamera();
+                            await onScan(data, offsets, context);
+                          } else {
+                            print("INVALID ATSIGN! ${data}");
+                            _controller?.stopCamera();
+                            await ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(
+                              backgroundColor: ColorConstants.RED,
+                              content: Text(
+                                'QR code is invalid.',
+                                style: CustomTextStyles.customTextStyle(
+                                  ColorConstants.white,
+                                ),
+                              ),
+                            ));
+                          }
                         });
                       },
                     ),
