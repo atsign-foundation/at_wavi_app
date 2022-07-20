@@ -139,16 +139,11 @@ class _QRScannerState extends State<QRScanner> {
                         this._controller = container;
                         await _controller!.startCamera((data, offsets) async {
                           //check and make sure that "data" has a valid atsign
-                          // bool _atSignValid =
-                          //     await CommonFunctions().checkAtsign(data);
-                          bool _atSignValid = RegExp(
-                                  r"^@[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]")
-                              .hasMatch(data);
-                          print("checking in data");
+                          bool _atSignValid =
+                              await CommonFunctions().checkAtsign(data);
+
                           if (_atSignValid) {
                             print("VALID ATSIGN! ${data}");
-
-                            //this works
                             _controller?.stopCamera();
                             await onScan(data, offsets, context);
                           } else {
