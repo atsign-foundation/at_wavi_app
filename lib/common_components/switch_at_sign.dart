@@ -28,6 +28,7 @@ class _AtSignBottomSheetState extends State<AtSignBottomSheet> {
   BackendService backendService = BackendService();
   bool isLoading = false;
   var atClientPrefernce;
+
   @override
   Widget build(BuildContext context) {
     backendService
@@ -110,7 +111,10 @@ class _AtSignBottomSheetState extends State<AtSignBottomSheet> {
                           Navigator.pop(context);
                         });
                         setState(() {});
-                        await backendService.onboard('');
+                        await backendService.onboard(
+                          '',
+                          isSwitchAccount: true,
+                        );
 
                         setState(() {
                           isLoading = false;
