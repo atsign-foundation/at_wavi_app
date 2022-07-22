@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:at_wavi_app/desktop/utils/snackbar_utils.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
@@ -32,7 +33,7 @@ class UserProvider extends BaseModel {
     notifyListeners();
   }
 
-  saveUserData(User user) async {
+  Future<bool> saveUserData(User user) async {
     setStatus(UPDATE_USER, Status.Loading);
     try {
       var atKeys = await AtKeySetService().getAtkeys();
@@ -45,10 +46,12 @@ class UserProvider extends BaseModel {
       await BackendService().sync();
       this.user = User.fromJson(json.decode(json.encode(User.toJson(user))));
       setStatus(UPDATE_USER, Status.Done);
+      return true;
     } catch (e) {
       print('error in saveUserData : $e');
       setError(UPDATE_USER, e.toString());
       setStatus(UPDATE_USER, Status.Error);
+      return false;
     }
   }
 }

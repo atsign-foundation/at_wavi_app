@@ -4,7 +4,9 @@ import 'dart:typed_data';
 import 'package:at_wavi_app/desktop/screens/desktop_common/crop_editor_helper.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
+import 'package:at_wavi_app/desktop/utils/snackbar_utils.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
+import 'package:at_wavi_app/utils/constants.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
@@ -104,9 +106,22 @@ class _DesktopCropImagePageState extends State<DesktopCropImagePage> {
     });
     final Uint8List? fileData =
         await cropImageDataWithDartLibrary(state: state);
-    setState(() {
-      _cropping = true;
-    });
-    Navigator.pop(context, fileData);
+
+    if ((fileData?.length ?? 0) > MixedConstants.maxDataSize) {
+      setState(() {
+        _cropping = false;
+      });
+
+      SnackBarUtils.show(
+        context: context,
+        message: 'The file is too large to upload',
+        type: SnackBarType.error,
+      );
+    } else {
+      setState(() {
+        _cropping = true;
+      });
+      Navigator.pop(context, fileData);
+    }
   }
 }

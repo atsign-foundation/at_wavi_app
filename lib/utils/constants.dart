@@ -6,6 +6,8 @@ class MixedConstants {
   // static const String WEBSITE_URL = 'https://staging.atsign.wtf/';
   static const String WEBSITE_URL = 'https://atsign.com/';
 
+  static const int maxDataSize = 512000;
+
   // for local server
   // static const String ROOT_DOMAIN = 'vip.ve.atsign.zone';
 

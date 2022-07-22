@@ -90,7 +90,7 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
 
   Widget _buildContentWidget() {
     User? user;
-    User? myProfile = Provider.of<UserProvider>(context).user;;
+    User? myProfile = Provider.of<UserProvider>(context).user;
     if (widget.isMyProfile && widget.isEditable == false) {
       user = Provider.of<UserProvider>(context).user;
     } else {
@@ -108,7 +108,7 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
         myProfile?.customFields[AtCategory.IMAGE.name] ?? [];
     final myItems = myCustomFields
         .where((element) =>
-    element.accountName?.contains(AtText.IS_DELETED) == false)
+            element.accountName?.contains(AtText.IS_DELETED) == false)
         .toList();
 
     bool isEmptyData = (items).isEmpty;
@@ -248,8 +248,16 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
     await providerCallback<UserProvider>(
       context,
       task: (provider) async {
-        await provider.saveUserData(
+        final result = await provider.saveUserData(
             Provider.of<UserPreview>(context, listen: false).user()!);
+
+        if (result == false) {
+          await SnackBarUtils.show(
+            context: context,
+            message: 'There was a problem your save data',
+            type: SnackBarType.error,
+          );
+        }
       },
       onError: (provider) {},
       showDialog: false,
