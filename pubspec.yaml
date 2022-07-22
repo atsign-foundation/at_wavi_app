@@ -54,22 +54,22 @@ dependencies:
   flutter_widget_from_html: ^0.8.5
   qr_flutter: ^4.0.0
   share_plus: ^4.0.3
-  url_launcher: ^6.0.20
+  url_launcher: ^6.1.5
 
   at_common_flutter: ^2.0.7
-  at_onboarding_flutter: ^4.0.2
-  at_client_mobile: ^3.1.14
+  at_onboarding_flutter: ^5.0.0
+  at_client_mobile: ^3.2.1
   at_client: ^3.0.22
   at_contact: ^3.0.5
   at_lookup: ^3.0.22
   at_contacts_flutter: ^4.0.4
   at_commons: ^3.0.14
-  at_follows_flutter: ^3.0.6
+  at_follows_flutter: ^3.0.7
   at_location_flutter: ^3.1.3
-  at_sync_ui_flutter: ^1.0.2
+  at_sync_ui_flutter: ^1.0.5
   uni_links: ^0.5.1
 
-  flutter_dotenv: ^5.0.2 
+  flutter_dotenv: ^5.0.2
   flutter_qr_reader: ^1.0.5
 
   new_version: ^0.3.0
@@ -77,18 +77,17 @@ dependencies:
 
 dependency_overrides:
   permission_handler: ^9.2.0
-  biometric_storage: ^4.1.0
+  biometric_storage: ^4.1.3
   at_onboarding_flutter:
-#    path: ../at_widgets/at_onboarding_flutter
     git:
-      url: https://github.com/atsign-foundation/at_widgets.git
+      url: https://github.com/atsign-foundation/at_widgets
       path: at_onboarding_flutter
       ref: feature/on-boarding-4.0
-  at_client_mobile:
+  at_backupkey_flutter:
     git:
-      url: https://github.com/atsign-foundation/at_client_sdk.git
-      ref: bugfix/keychain-store-key
-      path: at_client_mobile
+      url: https://github.com/atsign-foundation/at_widgets
+      path: at_backupkey_flutter
+      ref: feature/on-boarding-4.0
 
 dev_dependencies:
   flutter_test:
