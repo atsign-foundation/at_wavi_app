@@ -80,6 +80,7 @@ class BackendService {
         appAPIKey: MixedConstants.devAPIKey,
       ),
       isSwitchingAtsign: isSwitchAccount,
+      atsign: atSign,
     );
 
     switch (result.status) {
