@@ -1,6 +1,4 @@
-<img src="https://atsign.dev/assets/img/@dev.png?sanitize=true">
-
-### Now for a little internet optimism
+<img width=250px src="https://atsign.dev/assets/img/atPlatform_logo_gray.svg?sanitize=true">
 
 # @‎wavi
 
@@ -13,7 +11,7 @@ what other people see about you.
 
 ## Who is this for?
 
-We have open sourced the @‎wavi mobile and desk app so that you can see how apps on The @ Platform
+We have open sourced the @‎wavi mobile and desk app so that you can see how apps on The atPlatform
 work. We also welcome issues and pull requests so that we can make @‎wavi
 better.
 
@@ -45,4 +43,6 @@ pull request.
 
 ## Maintainers
 
-Created by @sarika01, @sachins-geekyants and @nitesh2599
+Created by [@sarika01](https://github.com/sarika01),
+[@sachins-geekyants](https://github.com/sachins-geekyants)
+and [@nitesh2599](https://github.com/nitesh2599)

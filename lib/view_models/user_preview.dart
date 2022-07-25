@@ -46,7 +46,7 @@ class UserPreview extends BaseModel {
     // var index = customFields!.indexOf(basicData);
     var index = newIndex;
     customFields[index] = BasicData(
-        accountName: customFields[index].accountName! + AtText.IS_DELETED,
+        accountName: customFields[index].accountName!.trim() + AtText.IS_DELETED,
         isPrivate: customFields[index].isPrivate);
 
     FieldOrderService().deleteField(category, basicData.accountName!);

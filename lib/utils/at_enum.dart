@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// if new field is added here, please add the same the same into _toMap() fundtion of ChangePrivacyService
 enum FieldsEnum {
   PRIVATEACCOUNT,
   ATSIGN,

@@ -6,6 +6,7 @@ import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
 import 'package:at_sync_ui_flutter/at_sync_ui.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
+import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
@@ -310,16 +311,36 @@ class BackendService {
     });
   }
 
-  onboardNextAtsign() async {
+  onboardNextAtsign({bool isCheckDesktop = false}) async {
     var atSignList = await KeychainUtil.getAtsignList();
-    if (atSignList != null &&
-        atSignList.isNotEmpty &&
-        currentAtSign != atSignList.first) {
-      await Navigator.pushNamedAndRemoveUntil(NavService.navKey.currentContext!,
-          Routes.WELCOME_SCREEN, (Route<dynamic> route) => false);
-    } else if (atSignList == null || atSignList.isEmpty) {
-      await Navigator.pushNamedAndRemoveUntil(NavService.navKey.currentContext!,
-          Routes.WELCOME_SCREEN, (Route<dynamic> route) => false);
+    if (isCheckDesktop) {
+      if (atSignList != null &&
+          atSignList.isNotEmpty &&
+          currentAtSign != atSignList.first) {
+        await Navigator.pushNamedAndRemoveUntil(
+            NavService.navKey.currentContext!,
+            Routes.WELCOME_SCREEN,
+            (Route<dynamic> route) => false);
+      } else if (atSignList == null || atSignList.isEmpty) {
+        await Navigator.pushNamedAndRemoveUntil(
+            NavService.navKey.currentContext!,
+            Routes.WELCOME_SCREEN,
+            (Route<dynamic> route) => false);
+      }
+    } else {
+      if (atSignList != null &&
+          atSignList.isNotEmpty &&
+          currentAtSign != atSignList.first) {
+        await Navigator.pushNamedAndRemoveUntil(
+            NavService.navKey.currentContext!,
+            DesktopRoutes.DESKTOP_LOGIN,
+            (Route<dynamic> route) => false);
+      } else if (atSignList == null || atSignList.isEmpty) {
+        await Navigator.pushNamedAndRemoveUntil(
+            NavService.navKey.currentContext!,
+            DesktopRoutes.DESKTOP_LOGIN,
+            (Route<dynamic> route) => false);
+      }
     }
   }
 }

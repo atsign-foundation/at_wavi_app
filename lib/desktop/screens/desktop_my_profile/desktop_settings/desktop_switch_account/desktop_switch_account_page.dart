@@ -10,11 +10,13 @@ import 'package:flutter/material.dart';
 class DesktopSwitchAccountPage extends StatefulWidget {
   final List<String> atSignList;
   final VoidCallback? onSuccess;
+  final bool isCheckDeleteAccount;
 
   DesktopSwitchAccountPage({
     Key? key,
     required this.atSignList,
     this.onSuccess,
+    this.isCheckDeleteAccount = false,
   }) : super(key: key);
 
   @override
@@ -59,11 +61,17 @@ class _DesktopSwitchAccountPageState extends State<DesktopSwitchAccountPage> {
                           onTap: isLoading
                               ? () {}
                               : () async {
-                                  setState(() {});
-                                  await backendService.onboard(
-                                    widget.atSignList[index],
-                                    onSuccess: widget.onSuccess,
-                                  );
+                                  if (!widget.isCheckDeleteAccount) {
+                                    setState(() {});
+                                    await backendService.onboard(
+                                      widget.atSignList[index],
+                                      onSuccess: widget.onSuccess,
+                                    );
+                                  } else {
+                                    await backendService.resetDevice(
+                                        [widget.atSignList[index]]);
+                                    await backendService.onboardNextAtsign();
+                                  }
                                 },
                           child: Padding(
                             padding:
@@ -102,25 +110,28 @@ class _DesktopSwitchAccountPageState extends State<DesktopSwitchAccountPage> {
                     SizedBox(
                       width: 20,
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        setState(() {
-                          isLoading = true;
-                          Navigator.pop(context);
-                        });
-                        setState(() {});
-                        await backendService.onboard('');
+                    Visibility(
+                      visible: !widget.isCheckDeleteAccount,
+                      child: GestureDetector(
+                        onTap: () async {
+                          setState(() {
+                            isLoading = true;
+                            Navigator.pop(context);
+                          });
+                          setState(() {});
+                          await backendService.onboard('');
 
-                        setState(() {
-                          isLoading = false;
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 10),
-                        height: 40,
-                        width: 40,
-                        child: Icon(Icons.add_circle_outline_outlined,
-                            color: Colors.orange, size: 25.toFont),
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(right: 10),
+                          height: 40,
+                          width: 40,
+                          child: Icon(Icons.add_circle_outline_outlined,
+                              color: Colors.orange, size: 25.toFont),
+                        ),
                       ),
                     )
                   ],
