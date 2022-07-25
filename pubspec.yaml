@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 # For mobile version
-version: 1.0.6+19
+version: 1.0.6+21
 # For desktop version macos
 # version: 1.0.2+16
 # For desktop version windows
@@ -79,11 +79,6 @@ dependencies:
 dependency_overrides:
   permission_handler: ^9.2.0
   biometric_storage: ^4.1.0
-  at_follows_flutter:
-    git:
-      url: https://github.com/atsign-foundation/at_widgets.git
-      ref: fix/at_follows_notificationService
-      path: at_follows_flutter
   
 dev_dependencies:
   flutter_test:
