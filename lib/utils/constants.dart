@@ -52,7 +52,8 @@ class MixedConstants {
 
   /// release tags
   static const MACOS_STORE_LINK = 'https://apps.apple.com/app/id1583231748';
-  static const WINDOWS_STORE_LINK = 'https://www.microsoft.com/en-in/p/wavi/9pnfnw1mqqwc?activetab=pivot:overviewtab';
+  static const WINDOWS_STORE_LINK =
+      'https://www.microsoft.com/en-in/p/wavi/9pnfnw1mqqwc?activetab=pivot:overviewtab';
   static const RELEASE_TAG_API =
       'https://atsign-foundation.github.io/wavi/version.html';
   static const LINUX_STORE_LINK = 'https://atsign.com/apps/';
