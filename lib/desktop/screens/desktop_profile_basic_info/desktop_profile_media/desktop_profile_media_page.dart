@@ -218,6 +218,7 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
           allowContentType: [
             CustomContentType.Image,
           ],
+          isEditable: widget.isEditable,
         ),
       ),
     );

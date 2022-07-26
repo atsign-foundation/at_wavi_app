@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:at_wavi_app/common_components/provider_callback.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/desktop_dimens.dart';
+import 'package:at_wavi_app/desktop/utils/snackbar_utils.dart';
 import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_label_button.dart';
 import 'package:at_wavi_app/desktop/widgets/desktop_button.dart';
@@ -12,6 +14,7 @@ import 'package:at_wavi_app/services/image_picker.dart';
 import 'package:at_wavi_app/services/size_config.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
+import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,12 +27,14 @@ class DesktopProfileAddCustomField extends StatefulWidget {
   final AtCategory atCategory;
   final BasicData? data;
   final List<CustomContentType> allowContentType;
+  final bool? isEditable;
 
   DesktopProfileAddCustomField({
     Key? key,
     this.title = Strings.desktop_add_custom_content,
     required this.atCategory,
     this.data,
+    this.isEditable,
     this.allowContentType = const [
       CustomContentType.Text,
       CustomContentType.Link,
@@ -276,6 +281,10 @@ class _DesktopProfileAddCustomFieldState
       _model.updateCustomField(context);
     } else {
       _model.addCustomField(context);
+
+      if (!(widget.isEditable ?? false)) {
+        _handleSaveImage();
+      }
     }
   }
 
@@ -290,6 +299,35 @@ class _DesktopProfileAddCustomFieldState
         backgroundColor: Colors.transparent,
         child: DesktopHtmlPreviewPage(html: html),
       ),
+    );
+  }
+
+  void _handleSaveImage() async {
+    await providerCallback<UserProvider>(
+      context,
+      task: (provider) async {
+        final result = await provider.saveUserData(
+            Provider.of<UserPreview>(context, listen: false).user()!);
+
+        if (result == false) {
+          await SnackBarUtils.show(
+            context: context,
+            message: 'There was a problem your save data',
+            type: SnackBarType.error,
+          );
+        }
+      },
+      onError: (provider) {},
+      showDialog: false,
+      text: 'Saving user data',
+      taskName: (provider) => provider.UPDATE_USER,
+      onSuccess: (provider) async {
+        // Provider.of<DesktopEditProfileModel>(context, listen: false).jumpNextPage();
+        SnackBarUtils.show(
+          context: context,
+          message: 'Your changes have been saved!',
+        );
+      },
     );
   }
 }
