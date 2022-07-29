@@ -14,7 +14,7 @@ class DesktopOnBoardingPage extends StatefulWidget {
 
 class _DesktopOnBoardingPageState extends State<DesktopOnBoardingPage>
     with SingleTickerProviderStateMixin {
-  final numOfPage = 2;
+  final numOfPage = 3;
   late PageController _pageController;
   late TabController _tabController;
   Timer? timer;
@@ -53,7 +53,7 @@ class _DesktopOnBoardingPageState extends State<DesktopOnBoardingPage>
           Expanded(
             child: PageView.builder(
               physics: AlwaysScrollableScrollPhysics(),
-              itemCount: 2,
+              itemCount: 3,
               onPageChanged: (int page) {
                 _tabController.animateTo(page);
               },

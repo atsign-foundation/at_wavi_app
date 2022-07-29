@@ -90,7 +90,7 @@ class Strings {
   static const List<String> desktop_login_title_page = [
     'Secure & Private',
     'Convenient',
-    'Free!',
+    '',
   ];
 
   static const List<String> desktop_login_sub_title_page = [
