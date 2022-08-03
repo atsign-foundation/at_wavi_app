@@ -143,12 +143,9 @@ class _QRScannerState extends State<QRScanner> {
                               await CommonFunctions().checkAtsign(data);
 
                           if (_atSignValid) {
-                            print("VALID ATSIGN! ${data}");
                             _controller?.stopCamera();
                             await onScan(data, offsets, context);
                           } else {
-                            print("INVALID ATSIGN! ${data}");
-                            _controller?.stopCamera();
                             await ScaffoldMessenger.of(context)
                                 .showSnackBar(SnackBar(
                               backgroundColor: ColorConstants.RED,
