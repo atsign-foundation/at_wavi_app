@@ -999,7 +999,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
 
     if (_user.lastname.value != null) {
-      _name = _firstName + (_firstName == '' ? '' : ' ') + _user.lastname.value;
+      _name = _firstName + _user.lastname.value;
     }
 
     if (_name == '') {
