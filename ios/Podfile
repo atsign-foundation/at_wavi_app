@@ -64,6 +64,9 @@ post_install do |installer|
         ## dart: PermissionGroup.sensors
         'PERMISSION_SENSORS=0'
       ]
+
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+
     end
   end
 end
