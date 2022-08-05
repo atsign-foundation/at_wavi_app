@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 # For mobile version
-version: 1.0.7+22
+version: 1.0.7+23
 # For desktop version macos
 # version: 1.0.2+16
 # For desktop version windows
@@ -57,10 +57,9 @@ dependencies:
   url_launcher: ^6.0.20
 
   
-  at_common_flutter: ^2.0.7
-  at_onboarding_flutter: ^4.0.2
-  at_client_mobile: ^3.1.19
-  at_client: ^3.0.30
+  at_common_flutter: ^2.0.8
+  at_onboarding_flutter: ^4.0.4
+  at_client_mobile: 3.1.19
   at_contact: ^3.0.7
   at_lookup: ^3.0.28
   at_contacts_flutter: ^4.0.5

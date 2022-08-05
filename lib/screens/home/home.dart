@@ -993,14 +993,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     if (_user == null) return '';
 
     String _name = '';
+    String _firstName = '';
     if (_user.firstname.value != null) {
-      _name = _user.firstname.value;
+      _firstName = _user.firstname.value;
     }
 
     if (_user.lastname.value != null) {
-      _name = _user.firstname.value +
-          (_user.firstname.value == '' ? '' : ' ') +
-          _user.lastname.value;
+      _name = _firstName + (_firstName == '' ? '' : ' ') + _user.lastname.value;
     }
 
     if (_name == '') {
