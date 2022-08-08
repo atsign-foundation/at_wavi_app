@@ -138,28 +138,23 @@ class _QRScannerState extends State<QRScanner> {
                       callback: (container) async {
                         this._controller = container;
                         await _controller!.startCamera((data, offsets) async {
+                          _controller?.stopCamera();
                           //check and make sure that "data" has a valid atsign
                           bool _atSignValid =
                               await CommonFunctions().checkAtsign(data);
-                          bool flag;
                           if (_atSignValid) {
-                            flag = true;
-                            _controller?.stopCamera();
                             await onScan(data, offsets, context);
                           } else {
-                            flag = false;
-                            if (flag == false) {
-                              await ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                backgroundColor: ColorConstants.RED,
-                                content: Text(
-                                  'QR code is invalid.',
-                                  style: CustomTextStyles.customTextStyle(
-                                    ColorConstants.white,
-                                  ),
+                            await ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(
+                              backgroundColor: ColorConstants.RED,
+                              content: Text(
+                                'QR code is invalid.',
+                                style: CustomTextStyles.customTextStyle(
+                                  ColorConstants.white,
                                 ),
-                              ));
-                            }
+                              ),
+                            ));
                           }
                         });
                       },
