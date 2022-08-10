@@ -23,7 +23,7 @@ class QRScanner extends StatefulWidget {
 }
 
 class _QRScannerState extends State<QRScanner> {
-  //if flag is true the camera will scan for a qr code
+  //if flag is true the camera will scan for a qr code or else it wont
   bool flag = true;
   QrReaderViewController? _controller;
 
@@ -140,32 +140,24 @@ class _QRScannerState extends State<QRScanner> {
                       callback: (container) async {
                         this._controller = container;
                         await _controller!.startCamera((data, offsets) async {
-                          // _controller?.stopCamera();
-                          //confirm data for invalids
-                          //check and make sure that "data" has a valid atsign
                           if (flag) {
                             flag = false;
                             bool _atSignValid =
                                 await CommonFunctions().checkAtsign(data);
                             if (_atSignValid) {
-                              // flag = true;
                               _controller?.stopCamera();
                               await onScan(data, offsets, context);
                             } else {
-                              // flag = false;
-                              // if (flag == false) {
-                              print("this in else block: ${data}");
                               await ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
                                 backgroundColor: ColorConstants.RED,
                                 content: Text(
-                                  'QR code is invalid.${data}',
+                                  'QR code is invalid.',
                                   style: CustomTextStyles.customTextStyle(
                                     ColorConstants.white,
                                   ),
                                 ),
                               ));
-                              // }
                             }
                             flag = true;
                           }
