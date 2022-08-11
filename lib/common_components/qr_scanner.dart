@@ -162,7 +162,7 @@ class _QRScannerState extends State<QRScanner> {
                     child: QrReaderView(
                       width: 300.toWidth,
                       height: 350.toHeight,
-                      callback: (container) => scanQR(container),
+                      callback: scanQR,
                     ),
                   ),
                 ),
