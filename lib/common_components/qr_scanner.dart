@@ -33,7 +33,7 @@ class _QRScannerState extends State<QRScanner> {
     super.initState();
   }
 
-  scanQR(QrReaderViewController container) async {
+  Future<void> scanQR(QrReaderViewController container) async {
     this._controller = container;
     await _controller!.startCamera((data, offsets) async {
       if (flag) {
