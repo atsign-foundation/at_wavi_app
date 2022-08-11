@@ -33,6 +33,31 @@ class _QRScannerState extends State<QRScanner> {
     super.initState();
   }
 
+  scanQR(QrReaderViewController container) async {
+    this._controller = container;
+    await _controller!.startCamera((data, offsets) async {
+      if (flag) {
+        flag = false;
+        bool _atSignValid = await CommonFunctions().checkAtsign(data);
+        if (_atSignValid) {
+          _controller?.stopCamera();
+          await onScan(data, offsets, context);
+        } else {
+          await ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: ColorConstants.RED,
+            content: Text(
+              'QR code is invalid.',
+              style: CustomTextStyles.customTextStyle(
+                ColorConstants.white,
+              ),
+            ),
+          ));
+        }
+        flag = true;
+      }
+    });
+  }
+
   checkPermissions() async {
     var cameraStatus = await Permission.camera.status;
     print("camera status => $cameraStatus");
@@ -137,32 +162,7 @@ class _QRScannerState extends State<QRScanner> {
                     child: QrReaderView(
                       width: 300.toWidth,
                       height: 350.toHeight,
-                      callback: (container) async {
-                        this._controller = container;
-                        await _controller!.startCamera((data, offsets) async {
-                          if (flag) {
-                            flag = false;
-                            bool _atSignValid =
-                                await CommonFunctions().checkAtsign(data);
-                            if (_atSignValid) {
-                              _controller?.stopCamera();
-                              await onScan(data, offsets, context);
-                            } else {
-                              await ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                backgroundColor: ColorConstants.RED,
-                                content: Text(
-                                  'QR code is invalid.',
-                                  style: CustomTextStyles.customTextStyle(
-                                    ColorConstants.white,
-                                  ),
-                                ),
-                              ));
-                            }
-                            flag = true;
-                          }
-                        });
-                      },
+                      callback: (container) => scanQR(container),
                     ),
                   ),
                 ),
