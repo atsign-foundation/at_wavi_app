@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_contact/at_contact.dart';
 import 'package:at_contacts_flutter/at_contacts_flutter.dart';
 import 'package:at_location_flutter/at_location_flutter.dart';
@@ -523,14 +524,20 @@ class CommonFunctions {
   }
 
   Future<bool> checkAtsign(String? receiver) async {
-    if (receiver == null) {
+    try {
+      if (receiver == null) {
+        return false;
+      } else if (!receiver.contains('@')) {
+        receiver = '@' + receiver;
+      }
+      var checkPresence = await AtClientManager.getInstance()
+          .secondaryAddressFinder!
+          .findSecondary(receiver);
+      return checkPresence != null;
+    } catch (e) {
+      print("Error ======> ${e}");
       return false;
-    } else if (!receiver.contains('@')) {
-      receiver = '@' + receiver;
     }
-    var checkPresence = await AtLookupImpl.findSecondary(
-        receiver, MixedConstants.ROOT_DOMAIN, 64);
-    return checkPresence != null;
   }
 
   showSnackBar(String msg) {
