@@ -58,8 +58,8 @@ dependencies:
 
   
   at_common_flutter: ^2.0.8
-  at_onboarding_flutter: ^4.0.4
-  at_client_mobile: 3.1.19
+  at_onboarding_flutter: ^5.0.0
+  at_client_mobile: ^3.2.3+1
   at_contact: ^3.0.7
   at_lookup: ^3.0.28
   at_contacts_flutter: ^4.0.5
@@ -142,7 +142,7 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 
 msix_config:
-  display_name: "atWavi"
+  display_name: "@wavi"
   publisher_display_name: "The @ Company"
   identity_name: TheCompany.wavi
   publisher: CN=BBFE1D0B-F713-4C7F-B375-5EA851CBB1FF
