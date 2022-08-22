@@ -312,7 +312,7 @@ class _DesktopProfileInfoPageState extends State<DesktopProfileInfoPage> {
   void _openEditProfile() async {
     FieldOrderService().setPreviewOrder = {...FieldOrderService().fieldOrders};
     var userJson =
-        User.toJson(Provider.of<UserProvider>(context, listen: false).user!);
+        User.toJson(Provider.of<UserProvider>(context, listen: false).user);
     User previewUser = User.fromJson(json.decode(json.encode(userJson)));
     Provider.of<UserPreview>(context, listen: false).setUser = previewUser;
     await Navigator.pushNamed(context, DesktopRoutes.DESKTOP_EDIT_PROFILE);

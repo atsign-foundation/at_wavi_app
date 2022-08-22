@@ -18,6 +18,10 @@ class Themes {
       scaffoldBackgroundColor: ColorConstants.white,
       fontFamily: fontFamily ?? 'HelveticaNeu',
       visualDensity: VisualDensity.adaptivePlatformDensity,
+      colorScheme: ThemeData.dark().colorScheme.copyWith(
+        brightness: Brightness.light,
+        primary: ColorConstants.desktopPrimaryDefault,
+      ),
     );
   }
 
@@ -36,6 +40,10 @@ class Themes {
       scaffoldBackgroundColor: ColorConstants.black,
       fontFamily: fontFamily ?? 'HelveticaNeu',
       visualDensity: VisualDensity.adaptivePlatformDensity,
+      colorScheme: ThemeData.dark().colorScheme.copyWith(
+        brightness: Brightness.dark,
+        primary: ColorConstants.desktopPrimaryDefault,
+      ),
     );
   }
 

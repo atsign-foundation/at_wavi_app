@@ -4,6 +4,7 @@ import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_commons/at_commons.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
+import 'package:at_onboarding_flutter/services/onboarding_service.dart';
 import 'package:at_sync_ui_flutter/at_sync_ui.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
@@ -29,6 +30,7 @@ import 'package:at_sync_ui_flutter/at_sync_ui_flutter.dart';
 
 class BackendService {
   static final BackendService _singleton = BackendService._internal();
+
   BackendService._internal();
 
   factory BackendService() {
@@ -48,25 +50,43 @@ class BackendService {
     AtClientPreference? atClientPreference,
     Color appColor = ColorConstants.green,
     VoidCallback? onSuccess,
+    bool isSwitchAccount = false,
   }) async {
     if (Platform.isAndroid || Platform.isIOS) {
       await _checkForPermissionStatus();
     }
+
+    final OnboardingService _onboardingService =
+        OnboardingService.getInstance();
+    atClientServiceMap = _onboardingService.atClientServiceMap;
+
     var atClientPrefernce;
     await getAtClientPreference()
         .then((value) => atClientPrefernce = value)
         .catchError((e) => print(e));
-    Onboarding(
-      atsign: atSign,
+    AtOnboardingResult result;
+
+    ///switch account from avatar
+    if (atSign.isNotEmpty) {
+      _onboardingService.setAtsign = atSign;
+    }
+
+    result = await AtOnboarding.onboard(
       context: NavService.navKey.currentContext!,
-      atClientPreference: atClientPrefernce,
-      domain: MixedConstants.ROOT_DOMAIN,
-      appAPIKey: MixedConstants.devAPIKey,
-      appColor: appColor,
-      rootEnvironment: RootEnvironment.Production,
-      onboard: (atClientServiceMap, onboardedAtsign) async {
-        LoadingDialog().show(text: '$onboardedAtsign', heading: 'Loading');
-        await onSuccessOnboard(atClientServiceMap, onboardedAtsign);
+      config: AtOnboardingConfig(
+        atClientPreference: atClientPrefernce!,
+        domain: MixedConstants.ROOT_DOMAIN,
+        rootEnvironment: RootEnvironment.Production,
+        appAPIKey: MixedConstants.devAPIKey,
+      ),
+      isSwitchingAtsign: isSwitchAccount,
+      atsign: atSign,
+    );
+
+    switch (result.status) {
+      case AtOnboardingResultStatus.success:
+        LoadingDialog().show(text: '$atSign', heading: 'Loading');
+        await onSuccessOnboard(atClientServiceMap, result.atsign);
         LoadingDialog().hide();
         if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
           onSuccess?.call();
@@ -74,16 +94,19 @@ class BackendService {
           SetupRoutes.pushAndRemoveAll(
               NavService.navKey.currentContext!, Routes.HOME,
               arguments: {
-                'key': Key(onboardedAtsign!),
+                'key': Key(result.atsign!),
                 'isPreview': false,
               });
         }
-      },
-      onError: (error) {
-        print('Onboarding throws $error error');
-        showErrorSnackBar(error);
-      },
-    );
+        break;
+      case AtOnboardingResultStatus.error:
+        // TODO: Handle this case.
+        showErrorSnackBar("error");
+        break;
+      case AtOnboardingResultStatus.cancel:
+        // TODO: Handle this case.
+        break;
+    }
   }
 
   Future<void> _checkForPermissionStatus() async {
@@ -126,7 +149,7 @@ class BackendService {
       onErrorCallback: _onErrorCallback,
       primaryColor: (_themeProvider.highlightColor ?? ColorConstants.green),
     );
-    await AtSyncUIService().sync();
+    AtSyncUIService().sync();
 
     _themeProvider.resetThemeData();
     await _themeProvider.checkThemeFromSecondary();
@@ -313,7 +336,15 @@ class BackendService {
 
   onboardNextAtsign({bool isCheckDesktop = false}) async {
     var atSignList = await KeychainUtil.getAtsignList();
-    if (isCheckDesktop) {
+
+    if ((atSignList ?? []).length == 0) {
+      final OnboardingService _onboardingService =
+          OnboardingService.getInstance();
+
+      _onboardingService.setAtsign = null;
+    }
+
+    if (!isCheckDesktop) {
       if (atSignList != null &&
           atSignList.isNotEmpty &&
           currentAtSign != atSignList.first) {

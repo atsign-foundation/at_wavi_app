@@ -178,7 +178,9 @@ class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
                                   atSignList[index],
                                 ],
                               );
-                              await backendService.onboardNextAtsign();
+                              await backendService.onboardNextAtsign(
+                                isCheckDesktop: true,
+                              );
                             },
                             child: Padding(
                               padding: EdgeInsets.all(8),
