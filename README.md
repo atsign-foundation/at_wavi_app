@@ -1,8 +1,8 @@
 <img width=250px src="https://atsign.dev/assets/img/atPlatform_logo_gray.svg?sanitize=true">
 
-# @‎wavi
+# atWwavi
 
-Think of @‎wavi as a public space for your business, your projects, or
+Think of atWavi as a public space for your business, your projects, or
 yourself. Provide as little or as much information as you want on your
 profile, which will be made available to the public on our directory
 (http://wavi.ng). You can opt to publish contact information, location,
@@ -12,7 +12,7 @@ what other people see about you.
 ## Who is this for?
 
 We have open sourced the @‎wavi mobile and desk app so that you can see how apps on The atPlatform
-work. We also welcome issues and pull requests so that we can make @‎wavi
+work. We also welcome issues and pull requests so that we can make atWavi
 better.
 
 To access map and location search:
