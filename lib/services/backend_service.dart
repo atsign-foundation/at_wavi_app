@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:at_client/at_client.dart';
 import 'package:at_client_mobile/at_client_mobile.dart';
@@ -226,8 +227,19 @@ class BackendService {
         await atClientInstance.getAtKeys(sharedBy: sharedBy, regex: regex);
     scanKeys.retainWhere((scanKey) =>
         !scanKey.metadata!.isCached &&
-        '@' + (scanKey.sharedBy ?? '') == atClientInstance.getCurrentAtSign());
+        '' + (scanKey.sharedBy ?? '') == atClientInstance.getCurrentAtSign());
     return scanKeys;
+  }
+
+  bool compareAtSign(String atsign1, String atsign2) {
+    if (atsign1[0] != '@') {
+      atsign1 = '@$atsign1';
+    }
+    if (atsign2[0] != '@') {
+      atsign2 = '@$atsign2';
+    }
+
+    return atsign1.toLowerCase() == atsign2.toLowerCase() ? true : false;
   }
 
   ///Resets [atsigns] list from device storage.
