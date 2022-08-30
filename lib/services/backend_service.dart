@@ -225,20 +225,26 @@ class BackendService {
     var regex = MixedConstants.syncRegex;
     var scanKeys =
         await atClientInstance.getAtKeys(sharedBy: sharedBy, regex: regex);
-    scanKeys.retainWhere((scanKey) =>
-        !scanKey.metadata!.isCached &&
-        '' + (scanKey.sharedBy ?? '') == atClientInstance.getCurrentAtSign());
+    scanKeys.retainWhere(
+      (scanKey) =>
+          !scanKey.metadata!.isCached &&
+          compareAtSign(scanKey.sharedBy, atClientInstance.getCurrentAtSign()),
+    );
+
     return scanKeys;
   }
 
-  bool compareAtSign(String atsign1, String atsign2) {
+  bool compareAtSign(String? atsign1, String? atsign2) {
+    if (atsign1 == null || atsign2 == null) {
+      return false;
+    }
+
     if (atsign1[0] != '@') {
       atsign1 = '@$atsign1';
     }
     if (atsign2[0] != '@') {
       atsign2 = '@$atsign2';
     }
-
     return atsign1.toLowerCase() == atsign2.toLowerCase() ? true : false;
   }
 
