@@ -11,12 +11,20 @@ buildscript {
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-    }
-}
+// android {
+//     compileSdkVersion("33")
+
+//     defaultConfig {
+//         targetSdkVersion("33")
+//     }
+// }
+
+// allprojects {
+//     repositories {
+//         google()
+//         jcenter()
+//     }
+// }
 
 rootProject.buildDir = '../build'
 subprojects {

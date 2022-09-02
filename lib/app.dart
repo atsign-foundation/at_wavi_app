@@ -82,7 +82,7 @@ class MaterialAppClass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var brightness = SchedulerBinding.instance!.window.platformBrightness;
+    var brightness = SchedulerBinding.instance.window.platformBrightness;
 
     /// MaterialApp for desktop
     if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
