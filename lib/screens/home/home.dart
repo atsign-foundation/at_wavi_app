@@ -66,6 +66,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   String searchedAtsign = '';
   late AnimationController _inputBoxController;
 
+  get appStoreLink => null;
+
   @override
   void initState() {
     _inputBoxController =
@@ -119,14 +121,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Future<void> checkForUpdate() async {
     final newVersion = NewVersion();
-    final status = await newVersion.getVersionStatus();
+    VersionStatus status = await newVersion.getVersionStatus();
 
-    //// for forced version update
-    // newVersion.showUpdateDialog(
-    //   context: context,
-    //   versionStatus: status,
-    //   allowDismissal: false,
-    // );
+    // for forced version update
+    VersionStatus;
+    newVersion.showUpdateDialog(
+      context: context,
+      versionStatus: status,
+      allowDismissal: false,
+    );
 
     newVersion.showAlertIfNecessary(context: context);
   }
