@@ -77,6 +77,17 @@ dependencies:
 dependency_overrides:
   permission_handler: ^9.2.0
   biometric_storage: ^4.1.0
+  flutter_local_notifications: 9.7.1
+  at_onboarding_flutter:
+    git:
+      url: https://github.com/atsign-foundation/at_widgets
+      path: at_onboarding_flutter
+      ref: feature/on-boarding-5.0
+  at_backupkey_flutter:
+    git:
+      url: https://github.com/atsign-foundation/at_widgets
+      path: at_backupkey_flutter
+      ref: feature/on-boarding-5.0
 
 dev_dependencies:
   flutter_test:

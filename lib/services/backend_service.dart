@@ -5,6 +5,7 @@ import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_commons/at_commons.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
+import 'package:at_onboarding_flutter/services/at_onboarding_theme.dart';
 import 'package:at_onboarding_flutter/services/onboarding_service.dart';
 import 'package:at_sync_ui_flutter/at_sync_ui.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
@@ -79,6 +80,9 @@ class BackendService {
         domain: MixedConstants.ROOT_DOMAIN,
         rootEnvironment: RootEnvironment.Production,
         appAPIKey: MixedConstants.devAPIKey,
+        theme: OnboardingTheme(
+          appColor: null,
+        ),
       ),
       isSwitchingAtsign: isSwitchAccount,
       atsign: atSign,
