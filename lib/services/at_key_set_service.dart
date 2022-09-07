@@ -89,7 +89,7 @@ class AtKeySetService {
     tempScanKeys.addAll(atKeys);
 
     tempScanKeys.retainWhere((scanKey) =>
-        scanKey.key == atKey.key &&
+      scanKey.key == atKey.key &&
         !scanKey.metadata!.isPublic! == atKey.metadata!.isPublic);
 
     if (tempScanKeys.isNotEmpty) {
@@ -373,7 +373,7 @@ class AtKeySetService {
 
     keys.retainWhere((scanKey) =>
         !scanKey.metadata!.isCached &&
-        '@' + (scanKey.sharedBy ?? '') == BackendService().currentAtSign);
+        '' + (scanKey.sharedBy ?? '') == BackendService().currentAtSign);
 
     return keys;
   }
