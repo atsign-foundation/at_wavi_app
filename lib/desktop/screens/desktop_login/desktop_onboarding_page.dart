@@ -24,7 +24,7 @@ class _DesktopOnBoardingPageState extends State<DesktopOnBoardingPage>
     super.initState();
     _pageController = PageController();
     _tabController = TabController(vsync: this, length: numOfPage);
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       timer = Timer.periodic(Duration(seconds: 3), (timer) {
         _jumpToNextPage();
       });

@@ -28,7 +28,7 @@ class _DesktopLoginPageState extends State<DesktopLoginPage> {
     );
     super.initState();
     _model = DesktopLoginModel();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final appTheme = AppTheme.of(context);
       _model.checkToOnboard(onBoardingColor: appTheme.primaryColor);
     });

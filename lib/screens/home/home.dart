@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     initPackages();
     _getThemeData();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var followsProvider = Provider.of<FollowService>(
           NavService.navKey.currentContext!,
           listen: false);
