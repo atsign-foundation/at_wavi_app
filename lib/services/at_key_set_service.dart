@@ -33,6 +33,8 @@ class AtKeySetService {
   /// Returns true if the field gets updated in secondary successfully.
   Future<bool> update(BasicData data, String key,
       {bool? isCheck = true, List<AtKey>? scanKeys}) async {
+    print("KEY====>$key");
+    print("DATA VALUE====>${data.value}");
     var result;
     key = key.trim().toLowerCase().replaceAll(' ', '');
     String? sharedWith = data.isPrivate
@@ -55,8 +57,11 @@ class AtKeySetService {
     //updates only changed key and deletes previous key if public status is changed.
     if (isCheck != null) {
       if (scanKeys == null) {
+        print('scanKeys is empty!!!');
         scanKeys = await BackendService().atClientInstance.getAtKeys();
+        print("SCAN KEY====>$scanKeys");
       }
+
       var isDeleted = await _deleteChangedKeys(atKey, scanKeys);
       if (value.isEmpty) {
         AtKeyGetService().objectReference().remove(key.split('.')[0]);
@@ -70,6 +75,7 @@ class AtKeySetService {
         }
       }
     }
+    //print('ATKEY AND VALUE IN update ========> $atKey ===> $value');
     result = await BackendService().atClientInstance.put(atKey, value);
     return result;
   }
@@ -174,7 +180,7 @@ class AtKeySetService {
           }
         }
       }
-
+      //print('ATKEY AND VALUE IN updatecustomfield ========> $atKey ===> $jsonValue');
       result = await BackendService().atClientInstance.put(atKey, jsonValue);
       if (result == false) {
         return result;
@@ -324,6 +330,7 @@ class AtKeySetService {
     bool isCheck,
     List<AtKey> scanKeys,
   ) async {
+    print('UPDATED DEFINED FIELD');
     bool isUpdated = false;
     var userMap = User.toJson(userData);
 
@@ -339,8 +346,11 @@ class AtKeySetService {
         continue;
       }
       if (data.value != null) {
-        isUpdated = await update(data, field.name,
-            isCheck: isCheck, scanKeys: scanKeys);
+        var notUpdate = _checkCriteria(field.name, data.value);
+        if (!notUpdate) {
+          isUpdated = await update(data, field.name,
+              isCheck: isCheck, scanKeys: scanKeys);
+        }
       }
     }
     return isUpdated;
@@ -351,6 +361,8 @@ class AtKeySetService {
     bool isCheck,
     List<AtKey> scanKeys,
   ) async {
+    print('UPDATED CUSTOM DATA');
+
     Map<String, List<BasicData>> customFields = _user.customFields;
     bool isUpdated = false;
     if (customFields != null) {
