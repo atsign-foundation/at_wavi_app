@@ -75,6 +75,7 @@ dependencies:
   another_flushbar: ^1.10.28
 
 dependency_overrides:
+  flutter_local_notifications: 9.7.1
   permission_handler: ^9.2.0
   biometric_storage: ^4.1.0
 
