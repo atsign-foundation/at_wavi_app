@@ -23,7 +23,6 @@ import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_qr_reader/flutter_qr_reader.dart';
 import 'package:provider/provider.dart';
 import 'package:at_follows_flutter/services/size_config.dart';
 import 'package:at_follows_flutter/utils/color_constants.dart'
