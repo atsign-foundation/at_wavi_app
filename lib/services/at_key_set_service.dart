@@ -71,7 +71,6 @@ class AtKeySetService {
         }
       }
     }
-    //print('ATKEY AND VALUE IN update ========> $atKey ===> $value');
     result = await BackendService().atClientInstance.put(atKey, value);
     return result;
   }
@@ -182,7 +181,6 @@ class AtKeySetService {
           }
         }
       }
-      //print('ATKEY AND VALUE IN updatecustomfield ========> $atKey ===> $jsonValue');
       result = await BackendService().atClientInstance.put(atKey, jsonValue);
       if (result == false) {
         return result;
@@ -332,10 +330,8 @@ class AtKeySetService {
     bool isCheck,
     List<AtKey> scanKeys,
   ) async {
-    print('UPDATED DEFINED FIELD');
     bool isUpdated = false;
     var userMap = User.toJson(userData);
-    print('USER MAP ===> $userMap');
     for (FieldsEnum field in FieldsEnum.values) {
       var data;
       if (userMap.containsKey(field.name)) {
