@@ -57,6 +57,7 @@ class AtKeySetService {
       if (scanKeys == null) {
         scanKeys = await BackendService().atClientInstance.getAtKeys();
       }
+
       var isDeleted = await _deleteChangedKeys(atKey, scanKeys);
       if (value.isEmpty) {
         AtKeyGetService().objectReference().remove(key.split('.')[0]);
@@ -76,9 +77,15 @@ class AtKeySetService {
 
   ///Returns `true` if tempObject's value for [key] is equal to [value].
   bool _checkCriteria(dynamic key, var value) {
-    return AtKeyGetService().objectReference().containsKey(key)
-        ? AtKeyGetService().objectReference()[key] == value
-        : false;
+    if (AtKeyGetService().objectReference().containsKey(key)) {
+      if (AtKeyGetService().objectReference()[key].toString() ==
+          value.toString()) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
     // / check if this value is same as the previous value
   }
 
@@ -174,7 +181,6 @@ class AtKeySetService {
           }
         }
       }
-
       result = await BackendService().atClientInstance.put(atKey, jsonValue);
       if (result == false) {
         return result;
@@ -326,7 +332,6 @@ class AtKeySetService {
   ) async {
     bool isUpdated = false;
     var userMap = User.toJson(userData);
-
     for (FieldsEnum field in FieldsEnum.values) {
       var data;
       if (userMap.containsKey(field.name)) {
@@ -339,8 +344,11 @@ class AtKeySetService {
         continue;
       }
       if (data.value != null) {
-        isUpdated = await update(data, field.name,
-            isCheck: isCheck, scanKeys: scanKeys);
+        var notUpdate = _checkCriteria(field.name, data.value);
+        if (notUpdate == false) {
+          isUpdated = await update(data, field.name,
+              isCheck: isCheck, scanKeys: scanKeys);
+        }
       }
     }
     return isUpdated;
