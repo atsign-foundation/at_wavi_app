@@ -11,7 +11,8 @@ import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_qr_reader/flutter_qr_reader.dart';
+// import 'package:flutter_qr_reader/flutter_qr_reader.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +26,9 @@ class QRScanner extends StatefulWidget {
 class _QRScannerState extends State<QRScanner> {
   //if flag is true the camera will scan for a qr code or else it wont
   bool flag = true;
-  QrReaderViewController? _controller;
+  QRViewController? _controller;
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  Barcode? result;
 
   @override
   initState() {
@@ -33,29 +36,32 @@ class _QRScannerState extends State<QRScanner> {
     super.initState();
   }
 
-  Future<void> scanQR(QrReaderViewController container) async {
+  Future<void> scanQR(QRViewController container) async {
     this._controller = container;
-    await _controller!.startCamera((data, offsets) async {
-      if (flag) {
-        flag = false;
-        bool _atSignValid = await CommonFunctions().checkAtsign(data);
-        if (_atSignValid) {
-          _controller?.stopCamera();
-          await onScan(data, offsets, context);
-        } else {
-          await ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: ColorConstants.RED,
-            content: Text(
-              'QR code is invalid.',
-              style: CustomTextStyles.customTextStyle(
-                ColorConstants.white,
-              ),
-            ),
-          ));
-        }
-        flag = true;
-      }
+    _controller?.scannedDataStream.listen((scanData) {
+      setState(() {
+        result = scanData;
+      });
     });
+    if (flag) {
+      flag = false;
+      bool _atSignValid = await CommonFunctions().checkAtsign(result!.code);
+      if (_atSignValid) {
+        _controller?.stopCamera();
+        await onScan(result?.code, context);
+      } else {
+        await ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: ColorConstants.RED,
+          content: Text(
+            'QR code is invalid.',
+            style: CustomTextStyles.customTextStyle(
+              ColorConstants.white,
+            ),
+          ),
+        ));
+      }
+      flag = true;
+    }
   }
 
   checkPermissions() async {
@@ -80,12 +86,11 @@ class _QRScannerState extends State<QRScanner> {
     }
   }
 
-  Future<void> onScan(
-      String searchedAtsign, List<Offset> offsets, context) async {
+  Future<void> onScan(String? searchedAtsign, context) async {
     LoadingDialog().show(text: '$searchedAtsign', heading: 'Fetching');
 
     var _searchedAtsignData =
-        SearchService().getAlreadySearchedAtsignDetails(searchedAtsign);
+        SearchService().getAlreadySearchedAtsignDetails(searchedAtsign!);
 
     late bool _isPresent;
     if (_searchedAtsignData != null) {
@@ -159,10 +164,11 @@ class _QRScannerState extends State<QRScanner> {
                     width: 300.toWidth,
                     height: 350.toHeight,
                     color: Colors.black,
-                    child: QrReaderView(
-                      width: 300.toWidth,
-                      height: 350.toHeight,
-                      callback: scanQR,
+                    child: QRView(
+                      key: qrKey,
+                      // width: 300.toWidth,
+                      // height: 350.toHeight,
+                      onQRViewCreated: scanQR,
                     ),
                   ),
                 ),
