@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
@@ -10,8 +13,8 @@ import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_qr_reader/flutter_qr_reader.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +39,16 @@ class _QRScannerState extends State<QRScanner> {
     super.initState();
   }
 
+  @override
+  void reassemble() {
+    super.reassemble();
+    if (Platform.isAndroid) {
+      _controller!.pauseCamera();
+    } else if (Platform.isIOS) {
+      _controller!.resumeCamera();
+    }
+  }
+
   Future<void> scanQR(QRViewController container) async {
     this._controller = container;
     _controller?.scannedDataStream.listen((scanData) {
@@ -43,9 +56,10 @@ class _QRScannerState extends State<QRScanner> {
         result = scanData;
       });
     });
+    print('THE SCANNED DATA IS: ===> ${result?.code}');
     if (flag) {
       flag = false;
-      bool _atSignValid = await CommonFunctions().checkAtsign(result!.code);
+      bool _atSignValid = await CommonFunctions().checkAtsign(result?.code);
       if (_atSignValid) {
         _controller?.stopCamera();
         await onScan(result?.code, context);
@@ -62,6 +76,12 @@ class _QRScannerState extends State<QRScanner> {
       }
       flag = true;
     }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
   }
 
   checkPermissions() async {
@@ -143,6 +163,36 @@ class _QRScannerState extends State<QRScanner> {
     }
   }
 
+  // Widget _buildQrView(BuildContext context) {
+  //   // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
+  //   var scanArea = (MediaQuery.of(context).size.width < 400 ||
+  //           MediaQuery.of(context).size.height < 400)
+  //       ? 150.0
+  //       : 300.0;
+  //   // To ensure the Scanner view is properly sizes after rotation
+  //   // we need to listen for Flutter SizeChanged notification and update controller
+  //   return QRView(
+  //     key: qrKey,
+  //     onQRViewCreated: scanQR,
+  //     overlay: QrScannerOverlayShape(
+  //         borderColor: Colors.red,
+  //         borderRadius: 10,
+  //         borderLength: 30,
+  //         borderWidth: 10,
+  //         cutOutSize: scanArea),
+  //     onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+  //   );
+  // }
+
+  // void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
+  //   log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+  //   if (!p) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('no Permission')),
+  //     );
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,29 +202,23 @@ class _QRScannerState extends State<QRScanner> {
       body: Container(
         color: Colors.white,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.10),
+          children: <Widget>[
             Expanded(
-              child: Center(
-                child: Builder(
-                  builder: (context) => Container(
-                    alignment: Alignment.center,
-                    width: 300.toWidth,
-                    height: 350.toHeight,
-                    color: Colors.black,
-                    child: QRView(
-                      key: qrKey,
-                      // width: 300.toWidth,
-                      // height: 350.toHeight,
-                      onQRViewCreated: scanQR,
-                    ),
-                  ),
-                ),
+              flex: 5,
+              child: QRView(
+                key: qrKey,
+                onQRViewCreated: scanQR,
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.10),
+            Expanded(
+              flex: 1,
+              child: Center(
+                child: (result != null)
+                    ? Text(
+                        'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
+                    : Text('Scan a code'),
+              ),
+            )
           ],
         ),
       ),
