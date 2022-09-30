@@ -191,9 +191,6 @@ class _QRScannerState extends State<QRScanner> {
     this._controller?.scannedDataStream.listen(onScanned);
     this._controller?.pauseCamera();
     this._controller?.resumeCamera();
-    // controller.scannedDataStream.listen(onScanned);
-    // controller.pauseCamera();
-    // controller.resumeCamera();
   }
 
   void onScanned(scanData) {
