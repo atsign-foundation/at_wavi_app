@@ -77,6 +77,10 @@ dependencies:
 dependency_overrides:
   permission_handler: ^9.2.0
   biometric_storage: ^4.1.0
+  at_onboarding_flutter:
+    path: ../at_widgets/at_onboarding_flutter
+  at_client_mobile:
+    path: ../at_client_sdk/at_client_mobile
 
 dev_dependencies:
   flutter_test:
