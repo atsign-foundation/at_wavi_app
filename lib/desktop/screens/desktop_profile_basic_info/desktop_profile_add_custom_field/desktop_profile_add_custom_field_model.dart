@@ -111,6 +111,13 @@ class DesktopAddBasicDetailModel extends ChangeNotifier {
       customFields![index] = _basicData;
     }
 
+    // if account name changes then add field to delete
+    if (originBasicData?.accountName != null &&
+        originBasicData?.accountName!.trim() !=
+            _basicData.accountName!.trim()) {
+      UserPreview().addFieldToDelete(atCategory, originBasicData!);
+    }
+
     userPreview.user()?.customFields[atCategory.name] = customFields!;
     FieldOrderService().updateSingleField(
       atCategory,

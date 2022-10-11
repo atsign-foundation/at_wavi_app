@@ -49,7 +49,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.8.2"
+    version: "2.9.0"
   at_backupkey_flutter:
     dependency: transitive
     description:
@@ -70,14 +70,14 @@ packages:
       name: at_client
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.37"
+    version: "3.0.40"
   at_client_mobile:
     dependency: "direct main"
     description:
       name: at_client_mobile
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.2.3+1"
+    version: "3.2.7"
   at_common_flutter:
     dependency: "direct main"
     description:
@@ -91,7 +91,7 @@ packages:
       name: at_commons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.25"
+    version: "3.0.26"
   at_contact:
     dependency: "direct main"
     description:
@@ -133,7 +133,7 @@ packages:
       name: at_lookup
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.30"
+    version: "3.0.32"
   at_onboarding_flutter:
     dependency: "direct main"
     description:
@@ -147,7 +147,7 @@ packages:
       name: at_persistence_secondary_server
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.34"
+    version: "3.0.37"
   at_persistence_spec:
     dependency: transitive
     description:
@@ -182,7 +182,7 @@ packages:
       name: at_utils
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.10"
+    version: "3.0.11"
   audio_session:
     dependency: transitive
     description:
@@ -231,7 +231,7 @@ packages:
       name: characters
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   charcode:
     dependency: transitive
     description:
@@ -266,7 +266,7 @@ packages:
       name: clock
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   collection:
     dependency: transitive
     description:
@@ -294,7 +294,7 @@ packages:
       name: cron
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.2"
+    version: "0.5.0"
   cross_file:
     dependency: transitive
     description:
@@ -385,7 +385,7 @@ packages:
       name: fake_async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.0"
+    version: "1.3.1"
   ffi:
     dependency: transitive
     description:
@@ -539,12 +539,12 @@ packages:
     source: hosted
     version: "2.2.1"
   flutter_local_notifications:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: flutter_local_notifications
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "9.9.0"
+    version: "9.7.1"
   flutter_local_notifications_linux:
     dependency: transitive
     description:
@@ -661,12 +661,12 @@ packages:
     source: hosted
     version: "0.7.2"
   fwfh_text_style:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: fwfh_text_style
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.22.08"
+    version: "2.22.08+1"
   fwfh_url_launcher:
     dependency: transitive
     description:
@@ -883,21 +883,21 @@ packages:
       name: matcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.11"
+    version: "0.12.12"
   material_color_utilities:
     dependency: transitive
     description:
       name: material_color_utilities
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.4"
+    version: "0.1.5"
   meta:
     dependency: transitive
     description:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.7.0"
+    version: "1.8.0"
   mgrs_dart:
     dependency: transitive
     description:
@@ -1023,7 +1023,7 @@ packages:
       name: path
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.1"
+    version: "1.8.2"
   path_drawing:
     dependency: transitive
     description:
@@ -1420,7 +1420,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.2"
+    version: "1.9.0"
   sqflite:
     dependency: transitive
     description:
@@ -1455,7 +1455,7 @@ packages:
       name: string_scanner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   synchronized:
     dependency: transitive
     description:
@@ -1469,28 +1469,28 @@ packages:
       name: term_glyph
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   test:
     dependency: transitive
     description:
       name: test
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.21.1"
+    version: "1.21.4"
   test_api:
     dependency: transitive
     description:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.9"
+    version: "0.4.12"
   test_core:
     dependency: transitive
     description:
       name: test_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.13"
+    version: "0.4.16"
   timezone:
     dependency: transitive
     description:
