@@ -1,8 +1,5 @@
-import 'dart:developer';
 import 'dart:io';
-import 'package:at_client/at_client.dart';
 import 'package:at_client_mobile/at_client_mobile.dart';
-import 'package:at_commons/at_commons.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
 import 'package:at_onboarding_flutter/services/onboarding_service.dart';
@@ -14,7 +11,6 @@ import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
-import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -26,7 +22,6 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:at_client/src/service/sync_service.dart';
-import 'package:at_client/src/service/sync_service_impl.dart';
 import 'package:at_sync_ui_flutter/at_sync_ui_flutter.dart';
 
 class BackendService {
@@ -79,6 +74,7 @@ class BackendService {
         domain: MixedConstants.ROOT_DOMAIN,
         rootEnvironment: RootEnvironment.Production,
         appAPIKey: MixedConstants.devAPIKey,
+        showPopupSharedStorage: true,
       ),
       isSwitchingAtsign: isSwitchAccount,
       atsign: atSign,
