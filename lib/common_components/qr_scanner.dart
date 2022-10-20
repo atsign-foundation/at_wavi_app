@@ -100,9 +100,9 @@ class _QRScannerState extends State<QRScanner> {
   }
 
   Future<void> onScan(String? searchedAtsign, context) async {
-    LoadingDialog().show(text: '$searchedAtsign', heading: 'Fetching');
-
     if (searchedAtsign != null) {
+      LoadingDialog().show(text: '$searchedAtsign', heading: 'Fetching');
+
       var _searchedAtsignData =
           SearchService().getAlreadySearchedAtsignDetails(searchedAtsign);
       late bool _isPresent;
@@ -154,6 +154,15 @@ class _QRScannerState extends State<QRScanner> {
         ));
       }
     } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: ColorConstants.RED,
+            content: Text(
+              'No result was retrieved from the scanned code.',
+              style: CustomTextStyles.customTextStyle(
+                ColorConstants.white,
+              ),
+            ),
+          ));
       log("No result was retrieved from the scanned code.");
     }
   }
