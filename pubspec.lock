@@ -56,7 +56,7 @@ packages:
       name: at_backupkey_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.4"
+    version: "4.0.7"
   at_base2e15:
     dependency: "direct main"
     description:
@@ -70,7 +70,7 @@ packages:
       name: at_client
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.40"
+    version: "3.0.41"
   at_client_mobile:
     dependency: "direct main"
     description:
@@ -84,14 +84,14 @@ packages:
       name: at_common_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.9"
+    version: "2.0.11"
   at_commons:
     dependency: "direct main"
     description:
       name: at_commons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.26"
+    version: "3.0.28"
   at_contact:
     dependency: "direct main"
     description:
@@ -105,28 +105,28 @@ packages:
       name: at_contacts_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.6"
+    version: "4.0.8"
   at_file_saver:
     dependency: transitive
     description:
       name: at_file_saver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.1"
+    version: "0.1.2"
   at_follows_flutter:
     dependency: "direct main"
     description:
       name: at_follows_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.7"
+    version: "3.0.9"
   at_location_flutter:
     dependency: "direct main"
     description:
       name: at_location_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.7"
+    version: "3.1.8"
   at_lookup:
     dependency: "direct main"
     description:
@@ -140,14 +140,14 @@ packages:
       name: at_onboarding_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0"
+    version: "5.0.4"
   at_persistence_secondary_server:
     dependency: transitive
     description:
       name: at_persistence_secondary_server
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.37"
+    version: "3.0.40"
   at_persistence_spec:
     dependency: transitive
     description:
@@ -168,7 +168,7 @@ packages:
       name: at_sync_ui_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.5"
+    version: "1.0.7"
   at_utf7:
     dependency: transitive
     description:
@@ -191,7 +191,7 @@ packages:
     source: hosted
     version: "0.1.10"
   biometric_storage:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: biometric_storage
       url: "https://pub.dartlang.org"
@@ -504,12 +504,12 @@ packages:
     source: hosted
     version: "1.1.1"
   flutter_inappwebview:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: flutter_inappwebview
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.4.3+7"
+    version: "5.4.4+3"
   flutter_keyboard_visibility:
     dependency: transitive
     description:
