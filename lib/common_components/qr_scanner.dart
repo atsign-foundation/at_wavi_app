@@ -102,57 +102,59 @@ class _QRScannerState extends State<QRScanner> {
   Future<void> onScan(String? searchedAtsign, context) async {
     LoadingDialog().show(text: '$searchedAtsign', heading: 'Fetching');
 
-    var _searchedAtsignData =
-        SearchService().getAlreadySearchedAtsignDetails(searchedAtsign!);
+    if (searchedAtsign != null) {
+      var _searchedAtsignData =
+          SearchService().getAlreadySearchedAtsignDetails(searchedAtsign);
+      late bool _isPresent;
+      if (_searchedAtsignData != null) {
+        _isPresent = true;
+      } else {
+        _isPresent = await CommonFunctions().checkAtsign(searchedAtsign);
+      }
+      if (_isPresent) {
+        SearchInstance? _searchService =
+            await SearchService().getAtsignDetails(searchedAtsign);
+        User? _res = _searchService?.user;
 
-    late bool _isPresent;
-    if (_searchedAtsignData != null) {
-      _isPresent = true;
-    } else {
-      _isPresent = await CommonFunctions().checkAtsign(searchedAtsign);
-    }
+        LoadingDialog().hide();
 
-    if (_isPresent) {
-      SearchInstance? _searchService =
-          await SearchService().getAtsignDetails(searchedAtsign);
-      User? _res = _searchService?.user;
+        /// in case the search is cancelled, dont do anything
+        if (_searchService == null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: ColorConstants.RED,
+            content: Text(
+              'Something went wrong',
+              style: CustomTextStyles.customTextStyle(
+                ColorConstants.white,
+              ),
+            ),
+          ));
+          return;
+        }
 
-      LoadingDialog().hide();
+        Provider.of<UserPreview>(context, listen: false).setUser = _res;
+        FieldOrderService().setPreviewOrder = _searchService.fieldOrders;
 
-      /// in case the search is cancelled, dont do anything
-      if (_searchService == null) {
+        await SetupRoutes.replace(context, Routes.HOME, arguments: {
+          'key': Key(searchedAtsign),
+          'themeData': _searchService.currentAtsignThemeData,
+          'isPreview': true,
+        });
+      } else {
+        LoadingDialog().hide();
+
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: ColorConstants.RED,
           content: Text(
-            'Something went wrong',
+            '$searchedAtsign not found',
             style: CustomTextStyles.customTextStyle(
               ColorConstants.white,
             ),
           ),
         ));
-        return;
       }
-
-      Provider.of<UserPreview>(context, listen: false).setUser = _res;
-      FieldOrderService().setPreviewOrder = _searchService.fieldOrders;
-
-      await SetupRoutes.replace(context, Routes.HOME, arguments: {
-        'key': Key(searchedAtsign),
-        'themeData': _searchService.currentAtsignThemeData,
-        'isPreview': true,
-      });
     } else {
-      LoadingDialog().hide();
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: ColorConstants.RED,
-        content: Text(
-          '$searchedAtsign not found',
-          style: CustomTextStyles.customTextStyle(
-            ColorConstants.white,
-          ),
-        ),
-      ));
+      log("No result was retrieved from the scanned code.");
     }
   }
 
