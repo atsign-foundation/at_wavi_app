@@ -66,8 +66,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   String searchedAtsign = '';
   late AnimationController _inputBoxController;
 
-  get appStoreLink => null;
-
   @override
   void initState() {
     _inputBoxController =
