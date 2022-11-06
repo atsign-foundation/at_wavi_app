@@ -17,7 +17,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 # For mobile version
-version: 1.0.7+23
+version: 1.0.7+26
 # For desktop version macos
 # version: 1.0.2+16
 # For desktop version windows
@@ -56,20 +56,19 @@ dependencies:
   share_plus: ^4.0.3
   url_launcher: ^6.0.20
 
-  at_common_flutter: ^2.0.8
-  at_onboarding_flutter: ^5.0.0
+  at_common_flutter: ^2.0.11
+  at_onboarding_flutter: ^5.0.5
   at_client_mobile: ^3.2.7
   at_contact: ^3.0.7
   at_lookup: ^3.0.32
-  at_contacts_flutter: ^4.0.5
-  at_commons: ^3.0.20
-  at_follows_flutter: ^3.0.7
-  at_location_flutter: ^3.1.6
-  at_sync_ui_flutter: ^1.0.4
+  at_contacts_flutter: ^4.0.8
+  at_commons: ^3.0.29
+  at_follows_flutter: ^3.0.9
+  at_location_flutter: ^3.1.8
+  at_sync_ui_flutter: ^1.0.7
   uni_links: ^0.5.1
 
   flutter_dotenv: ^5.0.2
-  qr_code_scanner: ^1.0.1
 
   new_version: ^0.3.0
   another_flushbar: ^1.10.28
@@ -78,7 +77,7 @@ dependency_overrides:
   fwfh_text_style: ^2.22.8+1
   flutter_local_notifications: 9.7.1
   permission_handler: ^9.2.0
-  biometric_storage: ^4.1.0
+  flutter_inappwebview: 5.4.4+3
 
 dev_dependencies:
   flutter_test:

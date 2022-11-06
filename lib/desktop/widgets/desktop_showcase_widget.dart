@@ -49,8 +49,8 @@ class DesktopShowCaseWidget extends StatelessWidget {
             color: ColorConstants.blackShade2,
           ),
           onPressed: () {
-            ShowCaseWidget.of(context)!.dismiss();
-            ShowCaseWidget.of(context)!.startShowCase([globalKey]);
+            ShowCaseWidget.of(context).dismiss();
+            ShowCaseWidget.of(context).startShowCase([globalKey]);
           },
         ),
       ),
