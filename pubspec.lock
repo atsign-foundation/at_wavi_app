@@ -141,7 +141,7 @@ packages:
     description:
       path: at_onboarding_flutter
       ref: "feature/enable-user-sharing"
-      resolved-ref: f7b7d1aaf7630558def5637c1bb26b787617c14c
+      resolved-ref: "5c08105ffdb2fb20526e057332fca82695879acd"
       url: "https://github.com/atsign-foundation/at_widgets.git"
     source: git
     version: "5.0.0"
