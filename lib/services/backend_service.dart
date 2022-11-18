@@ -4,6 +4,7 @@ import 'package:at_client/at_client.dart';
 import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_commons/at_commons.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
+import 'package:at_follows_flutter/utils/app_constants.dart';
 import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
 import 'package:at_onboarding_flutter/services/at_onboarding_theme.dart';
 import 'package:at_onboarding_flutter/services/onboarding_service.dart';
@@ -81,7 +82,7 @@ class BackendService {
         rootEnvironment: RootEnvironment.Production,
         appAPIKey: MixedConstants.devAPIKey,
         theme: OnboardingTheme(
-          appColor: null,
+          appColor: ColorConstants.green,
         ),
       ),
       isSwitchingAtsign: isSwitchAccount,
