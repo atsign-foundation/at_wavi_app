@@ -1,6 +1,6 @@
 <img width=250px src="https://atsign.dev/assets/img/atPlatform_logo_gray.svg?sanitize=true">
 
-# atWwavi
+# atWavi
 
 Think of atWavi as a public space for your business, your projects, or
 yourself. Provide as little or as much information as you want on your
