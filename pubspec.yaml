@@ -78,7 +78,12 @@ dependency_overrides:
   flutter_local_notifications: 9.7.1
   permission_handler: ^9.2.0
   flutter_inappwebview: 5.4.4+3
-
+  at_sync_ui_flutter:
+    git:
+      url: https://github.com/atsign-foundation/at_widgets.git
+      ref: fix/sync_snackbar_issue
+      path: packages/at_sync_ui_flutter
+ 
 dev_dependencies:
   flutter_test:
     sdk: flutter

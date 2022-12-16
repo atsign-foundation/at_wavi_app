@@ -165,10 +165,12 @@ packages:
   at_sync_ui_flutter:
     dependency: "direct main"
     description:
-      name: at_sync_ui_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.7"
+      path: "packages/at_sync_ui_flutter"
+      ref: "fix/sync_snackbar_issue"
+      resolved-ref: "8f3fa0ca3fc63f7b970864cd797c7d05b3ce9c69"
+      url: "https://github.com/atsign-foundation/at_widgets.git"
+    source: git
+    version: "1.0.8"
   at_utf7:
     dependency: transitive
     description:
