@@ -5,11 +5,8 @@ import 'package:at_base2e15/at_base2e15.dart';
 import 'package:at_commons/at_commons.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
-import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/at_key_constants.dart';
-import 'package:at_wavi_app/utils/constants.dart';
-import 'package:at_wavi_app/view_models/base_model.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -23,25 +20,16 @@ class AtKeySetService {
 
   final String UPDATE_USER = 'update_user';
 
-  /// Example for update() => Will update FirstName
-  // AtKeySetService().update(
-  // BasicData(
-  //   value: 'Ntsh',
-  // ),
-  // FieldsEnum.FIRSTNAME.name);
-
   /// Returns true if the field gets updated in secondary successfully.
   Future<bool> update(BasicData data, String key,
-      {bool? isCheck = true, List<AtKey>? scanKeys}) async {
+      {List<AtKey>? scanKeys}) async {
     var result;
     key = key.trim().toLowerCase().replaceAll(' ', '');
     String? sharedWith = data.isPrivate
         ? BackendService().atClientInstance.getCurrentAtSign()!
         : null;
     var value = data.value;
-    if (value?.isEmpty && isCheck == null) {
-      return true;
-    }
+
     var metaData = Metadata();
     metaData.isPublic = !data.isPrivate;
     metaData.isEncrypted = data.isPrivate;
@@ -53,45 +41,62 @@ class AtKeySetService {
       ..sharedWith = sharedWith
       ..metadata = metaData;
     //updates only changed key and deletes previous key if public status is changed.
-    if (isCheck != null) {
-      if (scanKeys == null) {
-        scanKeys = await BackendService().atClientInstance.getAtKeys();
-      }
+    if (scanKeys == null || scanKeys.isEmpty) {
+      scanKeys = await BackendService().getAtKeys();
+    }
 
-      var isDeleted = await _deleteChangedKeys(atKey, scanKeys);
-      if (value.isEmpty) {
-        AtKeyGetService().objectReference().remove(key.split('.')[0]);
-        return await BackendService().atClientInstance.delete(atKey);
-      }
-      if (!isDeleted) {
-        /// If revious value is same as new value then dont update
-        var notUpdate = _checkCriteria(key.split('.')[0], data.value);
-        if (notUpdate) {
-          return true;
-        }
+    var isDeleted = await _deleteChangedKeys(atKey, scanKeys);
+    if (value.isEmpty) {
+      AtKeyGetService().objectReference().remove(key.split('.')[0]);
+      return await BackendService().atClientInstance.delete(atKey);
+    }
+    if (!isDeleted) {
+      /// If revious value is same as new value then dont update
+      var notUpdate = _checkCriteria(key.split('.')[0], data);
+      if (notUpdate) {
+        return true;
       }
     }
+
     result = await BackendService().atClientInstance.put(atKey, value);
     return result;
   }
 
-  ///Returns `true` if tempObject's value for [key] is equal to [value].
-  bool _checkCriteria(dynamic key, var value) {
-    if (AtKeyGetService().objectReference().containsKey(key)) {
-      if (AtKeyGetService().objectReference()[key].toString() ==
-          value.toString()) {
-        return true;
-      } else {
+  /// check if this value is same as the previous value
+  /// Returns `true` if tempObject's value for [key] is equal to [unsavedBasicData.value].
+  /// also compares whether visibility of key is changed or not.
+  bool _checkCriteria(
+    dynamic key,
+    BasicData unsavedBasicData,
+  ) {
+    var userObject = AtKeyGetService().objectReference();
+    var savedUserData = Provider.of<UserProvider>(
+            NavService.navKey.currentContext!,
+            listen: false)
+        .user;
+
+    var savedUserMap = User.toJson(savedUserData);
+
+    if (userObject.containsKey(key) &&
+        userObject[key].toString() == unsavedBasicData.value.toString()) {
+      /// If data's visibility is changed
+      if (savedUserData != null &&
+          savedUserMap.containsKey(key) &&
+          savedUserMap[key].isPrivate != unsavedBasicData.isPrivate) {
         return false;
       }
+      return true;
+    } else {
+      return false;
     }
-    return false;
-    // / check if this value is same as the previous value
   }
 
   ///deletes old key for atKey if public status is changed.
   Future<bool> _deleteChangedKeys(AtKey atKey, List<AtKey> atKeys) async {
     var response;
+    if (atKeys.isEmpty) {
+      atKeys = await BackendService().getAtKeys();
+    }
     List<AtKey> tempScanKeys = [];
     tempScanKeys.addAll(atKeys);
 
@@ -127,15 +132,19 @@ class AtKeySetService {
   /// category = screen name, later also gets stored as category in json
   /// Returns true on succesfully updating custom fields in secondary.
   Future<bool> updateCustomFields(String category, List<BasicData> value,
-      {bool? isCheck = true, var scanKeys, String? previousKey}) async {
+      {List<AtKey>? scanKeys, String? previousKey}) async {
     var result;
-    if (scanKeys == null) {
-      scanKeys = await BackendService().atClientInstance.getAtKeys();
+
+    scanKeys ??= [];
+    if (scanKeys.isEmpty) {
+      scanKeys = await BackendService().getAtKeys();
     }
+
     for (var data in value) {
       String oldkey = _formatOldCustomTitle(data.accountName);
       for (int i = 0; i < scanKeys.length; i++) {
-        if (scanKeys[i].key.contains(oldkey) &&
+        if (scanKeys[i].key != null &&
+            scanKeys[i].key!.contains(oldkey) &&
             data.accountName!.contains(" ")) {
           await BackendService().atClientInstance.delete(scanKeys[i]);
         }
@@ -158,29 +167,23 @@ class AtKeySetService {
         ..sharedWith = sharedWith
         ..metadata = metadata;
 
-      if (data.value == null && isCheck == null) {
+      var isDeleted = await _deleteChangedKeys(atKey, scanKeys);
+
+      if (data.value == null || data.value == '') {
+        atKey.key = atKey.key!.replaceAll(' ', '');
+        AtKeyGetService().objectReference().remove(key.split('.')[0]);
+        result = await BackendService().atClientInstance.delete(atKey);
+        if (!result) return result;
         continue;
       }
-      if (isCheck != null) {
-        if (scanKeys == null) {
-          scanKeys = await BackendService().atClientInstance.getAtKeys();
-        }
-        var isDeleted = await _deleteChangedKeys(atKey, scanKeys);
-
-        if (data.value == null || data.value == '') {
-          atKey.key = atKey.key!.replaceAll(' ', '');
-          AtKeyGetService().objectReference().remove(key.split('.')[0]);
-          result = await BackendService().atClientInstance.delete(atKey);
-          if (!result) return result;
+      if (!isDeleted) {
+        var notUpdate = _checkCriteria(
+            key, BasicData(value: jsonValue, isPrivate: data.isPrivate));
+        if (notUpdate) {
           continue;
         }
-        if (!isDeleted) {
-          var notUpdate = _checkCriteria(key, jsonValue);
-          if (notUpdate) {
-            continue;
-          }
-        }
       }
+
       result = await BackendService().atClientInstance.put(atKey, jsonValue);
       if (result == false) {
         return result;
@@ -327,7 +330,6 @@ class AtKeySetService {
 
   Future<bool> updateDefinedFields(
     User userData,
-    bool isCheck,
     List<AtKey> scanKeys,
   ) async {
     bool isUpdated = false;
@@ -344,10 +346,9 @@ class AtKeySetService {
         continue;
       }
       if (data.value != null) {
-        var notUpdate = _checkCriteria(field.name, data.value);
+        var notUpdate = _checkCriteria(field.name, data as BasicData);
         if (notUpdate == false) {
-          isUpdated = await update(data, field.name,
-              isCheck: isCheck, scanKeys: scanKeys);
+          isUpdated = await update(data, field.name, scanKeys: scanKeys);
         }
       }
     }
@@ -356,7 +357,6 @@ class AtKeySetService {
 
   Future<bool> updateCustomData(
     User _user,
-    bool isCheck,
     List<AtKey> scanKeys,
   ) async {
     Map<String, List<BasicData>> customFields = _user.customFields;
@@ -367,22 +367,10 @@ class AtKeySetService {
           continue;
         }
         isUpdated = await updateCustomFields(field.key, field.value,
-            isCheck: isCheck, scanKeys: scanKeys);
+            scanKeys: scanKeys);
         if (!isUpdated) return isUpdated;
       }
     }
     return isUpdated;
-  }
-
-  getAtkeys() async {
-    var keys = await BackendService()
-        .atClientInstance
-        .getAtKeys(regex: MixedConstants.syncRegex);
-
-    keys.retainWhere((scanKey) =>
-        !scanKey.metadata!.isCached &&
-        '@' + (scanKey.sharedBy ?? '') == BackendService().currentAtSign);
-
-    return keys;
   }
 }
