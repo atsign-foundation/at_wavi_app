@@ -310,6 +310,12 @@ class AtKeyGetService {
       case FieldsEnum.HTMLTOASTVIEW:
         user.htmlToastView = data;
         break;
+      case FieldsEnum.SWITCH:
+        user.switchField = data;
+        break;
+      case FieldsEnum.EPIC:
+        user.epic = data;
+        break;
       default:
         break;
     }
