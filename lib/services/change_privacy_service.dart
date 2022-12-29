@@ -1,5 +1,7 @@
+import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/screens/options.dart';
+import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
@@ -15,7 +17,8 @@ class ChangePrivacyService {
   late User user;
 
   ///Returns 'true' on storing all fields in secondary.
-  Future<bool> storeInSecondary([scanKeys]) async {
+  Future<bool> storeInSecondary() async {
+    List<AtKey>? scanKeys = await BackendService().getAtKeys();
     //storing detail fields
     for (FieldsEnum field in FieldsEnum.values) {
       if ((field == FieldsEnum.ATSIGN) ||
@@ -79,7 +82,7 @@ class ChangePrivacyService {
       //   }
       // }
 
-      await storeInSecondary(true);
+      await storeInSecondary();
       // update PRIVATEACCOUNT key
       await AtKeySetService().update(
           BasicData(value: private.toString()), FieldsEnum.PRIVATEACCOUNT.name);

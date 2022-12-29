@@ -1,9 +1,7 @@
-// @dart=2.9
 import 'dart:async';
 import 'dart:io';
 
 import 'package:at_wavi_app/app.dart';
-// import 'package:dart_vlc/dart_vlc.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:flutter/material.dart';
