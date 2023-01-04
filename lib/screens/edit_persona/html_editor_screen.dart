@@ -153,7 +153,6 @@ class _HtmlEditorScreenState extends State<HtmlEditorScreen> {
                                       AtKeySetService().update(
                                         BasicData(value: 'false'),
                                         FieldsEnum.HTMLTOASTVIEW.name,
-                                        isCheck: null,
                                       );
                                       ScaffoldMessenger.of(context)
                                           .clearSnackBars();

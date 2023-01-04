@@ -48,7 +48,7 @@ class _OptionsState extends State<Options> {
     follows_color_constants.ColorConstants.darkTheme = false;
     //
 
-    getUser();
+    updateAllPrivateKey();
     _getThemeData();
     super.initState();
   }
@@ -62,7 +62,7 @@ class _OptionsState extends State<Options> {
     }
   }
 
-  getUser() async {
+  updateAllPrivateKey() async {
     _user = Provider.of<UserProvider>(context, listen: false).user!;
     if (mounted) {
       setState(() {
@@ -182,7 +182,7 @@ class _OptionsState extends State<Options> {
                               onChanged: (value) async {
                                 await ChangePrivacyService()
                                     .setAllPrivate(value, _user);
-                                getUser();
+                                updateAllPrivateKey();
                               },
                             ),
                           ),

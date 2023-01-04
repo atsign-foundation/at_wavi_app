@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:at_base2e15/at_base2e15.dart';
-import 'package:at_commons/at_commons.dart';
+import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/at_key_set_service.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
@@ -104,7 +104,11 @@ class AtKeyGetService {
         atKey.metadata!.isBinary = true;
       }
 
-      var successValue = await BackendService().atClientInstance.get(atKey);
+      var successValue =
+          await BackendService().atClientInstance.get(atKey).catchError((e) {
+        print('error in getitng value : ${atKey.key}');
+      });
+      
 
       if (atKey.key!.contains(MixedConstants.fieldOrderKey)) {
         FieldOrderService().addFieldOrder(successValue);
@@ -305,6 +309,12 @@ class AtKeyGetService {
         break;
       case FieldsEnum.HTMLTOASTVIEW:
         user.htmlToastView = data;
+        break;
+      case FieldsEnum.SWITCH:
+        user.switchField = data;
+        break;
+      case FieldsEnum.EPIC:
+        user.epic = data;
         break;
       default:
         break;

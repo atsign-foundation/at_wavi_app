@@ -35,13 +35,13 @@ class UserProvider extends BaseModel {
   saveUserData(User user) async {
     setStatus(UPDATE_USER, Status.Loading);
     try {
-      var atKeys = await AtKeySetService().getAtkeys();
+      var atKeys = await BackendService().getAtKeys();
       await FieldOrderService().updateFieldsOrder();
       if (user.twitter.value != this.user!.twitter.value) {
         await TwitetrService().getTweets();
       }
-      await AtKeySetService().updateDefinedFields(user, true, atKeys);
-      await AtKeySetService().updateCustomData(user, true, atKeys);
+      await AtKeySetService().updateDefinedFields(user, atKeys);
+      await AtKeySetService().updateCustomData(user, atKeys);
       await BackendService().sync();
       this.user = User.fromJson(json.decode(json.encode(User.toJson(user))));
       setStatus(UPDATE_USER, Status.Done);

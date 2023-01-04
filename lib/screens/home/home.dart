@@ -12,7 +12,6 @@ import 'package:at_wavi_app/screens/home/widgets/home_empty_details.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_featured.dart';
 import 'package:at_wavi_app/screens/home/widgets/home_private_account.dart';
 import 'package:at_wavi_app/screens/options.dart';
-import 'package:at_wavi_app/screens/website_webview/website_webview.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
