@@ -76,8 +76,14 @@ dependencies:
 dependency_overrides:
   fwfh_text_style: ^2.22.8+1
   flutter_local_notifications: 9.7.1
-  permission_handler: ^9.2.0
+  permission_handler: ^10.2.0
   flutter_inappwebview: 5.4.4+3
+  file_picker: ^5.2.5
+  webview_flutter: ^4.0.1
+  fwfh_webview: 0.7.0
+  geolocator: ^9.0.2
+  at_onboarding_flutter:
+    path: ../at_widgets/packages/at_onboarding_flutter
   at_sync_ui_flutter:
     git:
       url: https://github.com/atsign-foundation/at_widgets.git

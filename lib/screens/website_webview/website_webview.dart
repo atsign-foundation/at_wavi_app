@@ -18,18 +18,51 @@ class WebsiteScreen extends StatefulWidget {
       required this.url,
       this.isShareProfileScreen = false})
       : super(key: key);
+
   @override
   _WebsiteScreenState createState() => _WebsiteScreenState();
 }
 
 class _WebsiteScreenState extends State<WebsiteScreen> {
-  WebViewController? controller;
-  late bool loading;
+  late WebViewController webViewController;
+  late bool isLoading;
+
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
-    loading = true;
+
+    webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.white)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (String url) {
+            setState(() {
+              // on page started codes
+            });
+          },
+          onProgress: (int progress) {},
+          onPageFinished: (String url) async {
+            setState(() {
+              isLoading = false;
+            });
+            if (widget.isShareProfileScreen) {
+              await Future.delayed(Duration(milliseconds: 1000));
+
+              webViewController.runJavaScriptReturningResult(
+                "(document.getElementsByClassName('share-btn')[3]).click()",
+              );
+            }
+          },
+          onWebResourceError: (WebResourceError error) {},
+        ),
+      )
+      ..loadRequest(
+        Uri.parse(widget.url),
+      )
+      ..runJavaScriptReturningResult('');
+
+    isLoading = true;
   }
 
   @override
@@ -51,7 +84,15 @@ class _WebsiteScreenState extends State<WebsiteScreen> {
         title: Text(widget.title, style: CustomTextStyles.black(size: 18)),
       ),
       body: Stack(children: [
-        WebView(
+        WebViewWidget(
+          controller: webViewController,
+          gestureRecognizers: {
+            Factory<VerticalDragGestureRecognizer>(
+              () => VerticalDragGestureRecognizer()..onUpdate = (_) {},
+            ),
+          },
+        ),
+        /*WebView(
           initialUrl: widget.url,
           javascriptMode: JavascriptMode.unrestricted,
           gestureRecognizers: {
@@ -82,8 +123,9 @@ class _WebsiteScreenState extends State<WebsiteScreen> {
               }
             }
           },
-        ),
-        loading
+        ),*/
+
+        isLoading
             ? Center(
                 child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(
