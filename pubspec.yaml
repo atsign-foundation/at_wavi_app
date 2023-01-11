@@ -86,11 +86,6 @@ dependency_overrides:
   fwfh_webview: 0.7.0
   geolocator: ^9.0.2
   path: ^1.8.3
-  at_sync_ui_flutter:
-    git:
-      url: https://github.com/atsign-foundation/at_widgets.git
-      ref: fix/sync_snackbar_issue
-      path: packages/at_sync_ui_flutter
   at_onboarding_flutter:
     git:
       url: https://github.com/atsign-foundation/at_widgets.git
