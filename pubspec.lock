@@ -137,9 +137,11 @@ packages:
   at_onboarding_flutter:
     dependency: "direct main"
     description:
-      path: "../at_widgets/packages/at_onboarding_flutter"
-      relative: true
-    source: path
+      path: "packages/at_onboarding_flutter"
+      ref: "feature/sync-progress"
+      resolved-ref: dd76598c4be7521ec7900c19ac93108ad965d5c1
+      url: "https://github.com/atsign-foundation/at_widgets.git"
+    source: git
     version: "6.0.0"
   at_persistence_secondary_server:
     dependency: transitive

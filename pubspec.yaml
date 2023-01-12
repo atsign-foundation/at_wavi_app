@@ -83,7 +83,10 @@ dependency_overrides:
   fwfh_webview: 0.7.0
   geolocator: ^9.0.2
   at_onboarding_flutter:
-    path: ../at_widgets/packages/at_onboarding_flutter
+    git:
+      url: https://github.com/atsign-foundation/at_widgets.git
+      ref: feature/sync-progress
+      path: packages/at_onboarding_flutter
   at_sync_ui_flutter:
     git:
       url: https://github.com/atsign-foundation/at_widgets.git
