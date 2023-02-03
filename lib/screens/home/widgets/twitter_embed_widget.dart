@@ -1,14 +1,22 @@
 import 'dart:convert';
 
 import 'package:at_wavi_app/services/size_config.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class TwitterEmbedWidget extends StatelessWidget {
+class TwitterEmbedWidget extends StatefulWidget {
   final String twitterUsername;
 
+  const TwitterEmbedWidget({
+    Key? key,
+    required this.twitterUsername,
+  }) : super(key: key);
+
+  @override
+  State<TwitterEmbedWidget> createState() => _TwitterEmbedWidgetState();
+}
+
+class _TwitterEmbedWidgetState extends State<TwitterEmbedWidget> {
   final String twitterEmbedText = '''
 <!DOCTYPE html>
 <html>
@@ -21,22 +29,50 @@ class TwitterEmbedWidget extends StatelessWidget {
    </body>
 </html>
 ''';
-
-  const TwitterEmbedWidget({
-    Key? key,
-    required this.twitterUsername,
-  }) : super(key: key);
+  late String url;
+  late bool isLoading;
+  late WebViewController webViewController;
 
   @override
-  Widget build(BuildContext context) {
-    final url = Uri.dataFromString(
-            twitterEmbedText.replaceAll('{username}', twitterUsername),
+  void initState() {
+    super.initState();
+    url = Uri.dataFromString(
+            twitterEmbedText.replaceAll('{username}', widget.twitterUsername),
             mimeType: 'text/html',
             encoding: Encoding.getByName('utf-8'))
         .toString();
+    webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.white)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageFinished: (String url) {
+            setState(() {
+              isLoading = false;
+            });
+          },
+          onNavigationRequest: (request) async {
+            if (request.url == url) {
+              return NavigationDecision.navigate;
+            } else {
+              return NavigationDecision.prevent;
+            }
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(url ?? ''));
+
+    isLoading = true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       height: 200.toHeight,
-      child: WebView(
+      child: WebViewWidget(
+        controller: webViewController,
+      ),
+      /*WebView(
         javascriptMode: JavascriptMode.unrestricted,
         gestureRecognizers: Set()
           ..add(Factory<OneSequenceGestureRecognizer>(
@@ -51,7 +87,7 @@ class TwitterEmbedWidget extends StatelessWidget {
             return NavigationDecision.prevent;
           }
         },
-      ),
+      ),*/
     );
   }
 }
