@@ -194,6 +194,16 @@ valueOf(String property) {
   return '';
 }
 
+RegExp getRegex(String name) {
+  switch (name) {
+    case "Email":
+      return RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    default:
+      return RegExp("");
+  }
+}
+
 // enum CATEGORY { DETAILS, ADDITIONAL_DETAILS, LOCATION, SOCIAL, GAMER, FEATURED }
 
 /// new app doesnt have IMAGE
@@ -393,6 +403,7 @@ extension value on RootEnvironment {
 }
 
 enum CustomContentStatus { Exists, Success, Fails }
+
 enum CustomContentType { Text, Link, Number, Image, Youtube, Html, Location }
 
 extension values on CustomContentType {
