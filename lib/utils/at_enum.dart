@@ -199,6 +199,10 @@ RegExp getRegex(String name) {
     case "Email":
       return RegExp(
           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    case "Twitter":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)");
+    case "Instagram":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?instagram\.com\/([a-zA-Z0-9_]+)");
     default:
       return RegExp("");
   }
