@@ -202,7 +202,25 @@ RegExp getRegex(String name) {
     case "Twitter":
       return RegExp(r"http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)");
     case "Instagram":
-      return RegExp(r"http(?:s)?:\/\/(?:www\.)?instagram\.com\/([a-zA-Z0-9_]+)");
+      return RegExp(
+          r"http(?:s)?:\/\/(?:www\.)?instagram\.com\/([a-zA-Z0-9_]+)");
+    case "Facebook":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?facebook\.com\/([a-zA-Z0-9_]+)");
+    case "Linkedin":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?linkedin\.com\/([a-zA-Z0-9_]+)");
+    case "Youtube":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?youtube\.com\/([a-zA-Z0-9@_]+)");
+    case "Tumblr":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?tumblr\.com\/([a-zA-Z0-9_]+)");
+    case "Medium":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?medium\.com\/([a-zA-Z0-9@_]+)");
+    case "Snapchat":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?snapchat\.com\/([a-zA-Z0-9_]+)");
+    case "Tiktok":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?ticktok\.com\/([a-zA-Z0-9_]+)");
+    case "Pinterest":
+      return RegExp(
+          r"http(?:s)?:\/\/(?:www\.)?pinterest\.com\/([a-zA-Z0-9_]+)");
     default:
       return RegExp("");
   }

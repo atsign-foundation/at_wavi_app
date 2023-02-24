@@ -10,10 +10,12 @@ import 'package:url_launcher/url_launcher.dart';
 class CustomCard extends StatelessWidget {
   final String? title, subtitle;
   final bool isUrl;
+  final bool isEmail;
   late bool _isDark;
   late ThemeData themeData;
   CustomCard(
       {this.title,
+      this.isEmail = false,
       required this.subtitle,
       this.isUrl = false,
       required this.themeData});
@@ -26,7 +28,7 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     setThemeData(context);
     return Container(
-      color: themeData.backgroundColor,
+      color: themeData.colorScheme.background,
       child: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
@@ -44,6 +46,14 @@ class CustomCard extends StatelessWidget {
             subtitle != null
                 ? GestureDetector(
                     onTap: () async {
+                      if(isEmail){
+                        Uri emailUrl = Uri(
+                          scheme: "mailto",
+                          path: subtitle,
+                        );
+                        await launchUrl(emailUrl);
+                        return;
+                      }
                       if (!isUrl) {
                         return;
                       }
@@ -53,7 +63,7 @@ class CustomCard extends StatelessWidget {
                     child: HtmlWidget(
                       subtitle!,
                       textStyle: TextStyle(
-                        color: isUrl
+                        color: isUrl || isEmail
                             ? ColorConstants.orange
                             : themeData.primaryColor,
                         fontSize: 16.toFont,

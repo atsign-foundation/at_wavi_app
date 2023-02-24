@@ -404,6 +404,9 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
 
   bool matchRegex(String value, BasicData basicData) {
     print(basicData);
+    if(value.isEmpty) {
+      return true;
+    }
     var regex = getRegex(basicData.displayingAccountName ?? "");
     bool res = regex.hasMatch(value);
     return res;

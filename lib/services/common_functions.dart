@@ -6,7 +6,6 @@ import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_contact/at_contact.dart';
 import 'package:at_contacts_flutter/at_contacts_flutter.dart';
 import 'package:at_location_flutter/at_location_flutter.dart';
-import 'package:at_lookup/at_lookup.dart';
 import 'package:at_wavi_app/common_components/create_marker.dart';
 import 'package:at_wavi_app/common_components/custom_card.dart';
 import 'package:at_wavi_app/common_components/custom_media_card.dart';
@@ -279,6 +278,8 @@ class CommonFunctions {
                   title: getTitle(basicData.accountName!),
                   subtitle: basicData.value,
                   themeData: _themeData,
+                  isUrl: Uri.parse(basicData.value ?? "").isAbsolute,
+                  isEmail:  basicData.displayingAccountName == "Email",
                 )),
             Divider(
                 height: 1, color: _themeData.highlightColor.withOpacity(0.5))
@@ -514,8 +515,7 @@ class CommonFunctions {
     Uint8List image;
     AtContact contact = checkForCachedContactDetail(atsign);
 
-    if (contact != null &&
-        contact.tags != null &&
+    if (contact.tags != null &&
         contact.tags!['image'] != null) {
       List<int> intList = contact.tags!['image'].cast<int>();
       image = Uint8List.fromList(intList);
