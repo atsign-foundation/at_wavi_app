@@ -489,14 +489,14 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
           children: [
             Expanded(
               child: TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
+                // autovalidateMode: AutovalidateMode.onUserInteraction,
                 style: TextStyles.lightText(_themeData!.primaryColor),
                 key: UniqueKey(),
-                // autovalidateMode: isCustomField
-                //     ? basicData.value != ''
-                //         ? AutovalidateMode.disabled
-                //         : AutovalidateMode.onUserInteraction
-                //     : AutovalidateMode.disabled,
+                autovalidateMode: isCustomField
+                    ? basicData.value != ''
+                        ? AutovalidateMode.disabled
+                        : AutovalidateMode.onUserInteraction
+                    : AutovalidateMode.disabled,
                 validator: (value) {
                   if (value == null || value == '' && isCustomField) {
                     return 'Body is required';

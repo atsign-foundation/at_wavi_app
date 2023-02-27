@@ -28,7 +28,7 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     setThemeData(context);
     return Container(
-      color: themeData.colorScheme.background,
+      color: themeData.backgroundColor,
       child: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
