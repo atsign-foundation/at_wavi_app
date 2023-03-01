@@ -52,6 +52,7 @@ class DesktopBasicInfoWidget extends StatelessWidget {
   }
 
   Widget _textContent(BuildContext context) {
+    bool isUrl = Uri.parse(data.value ?? "").isAbsolute;
     final appTheme = AppTheme.of(context);
     return Container(
       constraints: BoxConstraints(
@@ -71,10 +72,18 @@ class DesktopBasicInfoWidget extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              child: Text(
-                data.value ?? '',
-                style: appTheme.textTheme.bodyText2?.copyWith(
-                  color: appTheme.primaryTextColor,
+              child: GestureDetector(
+                onTap: () async {
+                  if(isUrl) {
+                    // open link in browser
+                    await launchUrl(Uri.parse(data.value));
+                  }
+                },
+                child: Text(
+                  data.value ?? '',
+                  style: appTheme.textTheme.bodyText2?.copyWith(
+                    color: isUrl ? Colors.blue : appTheme.primaryTextColor,
+                  ),
                 ),
               ),
             ),
