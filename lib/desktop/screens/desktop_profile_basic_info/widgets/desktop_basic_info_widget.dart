@@ -53,6 +53,7 @@ class DesktopBasicInfoWidget extends StatelessWidget {
 
   Widget _textContent(BuildContext context) {
     bool isUrl = Uri.parse(data.value ?? "").isAbsolute;
+    bool isEmail = data.displayingAccountName == "Email";
     final appTheme = AppTheme.of(context);
     return Container(
       constraints: BoxConstraints(
@@ -74,15 +75,24 @@ class DesktopBasicInfoWidget extends StatelessWidget {
             child: Container(
               child: GestureDetector(
                 onTap: () async {
-                  if(isUrl) {
+                  if (isUrl) {
                     // open link in browser
                     await launchUrl(Uri.parse(data.value));
+                    return;
+                  }
+                  if (isEmail) {
+                    Uri emailUrl = Uri(
+                      scheme: "mailto",
+                      path: data.value,
+                    );
+                    await launchUrl(emailUrl);
+                    return;
                   }
                 },
                 child: Text(
                   data.value ?? '',
                   style: appTheme.textTheme.bodyText2?.copyWith(
-                    color: isUrl ? Colors.blue : appTheme.primaryTextColor,
+                    color: isUrl || isEmail ? Colors.blue : appTheme.primaryTextColor,
                   ),
                 ),
               ),
