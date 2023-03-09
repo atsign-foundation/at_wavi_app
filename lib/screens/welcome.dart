@@ -31,6 +31,11 @@ class _WelcomeState extends State<Welcome> {
         .then((value) => atClientPrefernce = value)
         .catchError((e) => print(e));
 
+    AtClientService atClientService = AtClientService();
+    var isOnboarded = await atClientService.isClientOnboarded(
+        currentatSign!, atClientPrefernce);
+    print('isOnboarded: $isOnboarded');
+
     if (currentatSign != null && currentatSign != '') {
       await BackendService()
           .onboard(currentatSign, atClientPreference: atClientPrefernce);
