@@ -153,8 +153,10 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
                         controller: data.controller ?? TextEditingController(),
                         title: data.data.displayingAccountName ?? '',
                         validator: (value) {
-                          if (!matchRegex(value ?? "", data.data)) {
-                            return "Invalid ${data.data.displayingAccountName} value";
+                          if (Uri.parse(value ?? "").isAbsolute) {
+                            if (!matchRegex(value ?? "", data.data)) {
+                              return "Invalid ${data.data.displayingAccountName} value";
+                            }
                           }
                           return null;
                         },

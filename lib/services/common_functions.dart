@@ -270,6 +270,15 @@ class CommonFunctions {
 
       Widget widget;
       if (!isCustomField) {
+        bool isUrl;
+        String url;
+        if (Uri.parse(basicData.value).isAbsolute) {
+          isUrl = true;
+          url = basicData.value;
+        } else {
+          url = getUrl(basicData.displayingAccountName ?? "", basicData.value);
+          isUrl = Uri.parse(url).isAbsolute;
+        }
         widget = Column(
           children: [
             SizedBox(
@@ -278,8 +287,8 @@ class CommonFunctions {
                   title: getTitle(basicData.accountName!),
                   subtitle: basicData.value,
                   themeData: _themeData,
-                  isUrl: Uri.parse(basicData.value ?? "").isAbsolute,
-                  isEmail:  basicData.displayingAccountName == "Email",
+                  url: url,
+                  isEmail: basicData.displayingAccountName == "Email",
                 )),
             Divider(
                 height: 1, color: _themeData.highlightColor.withOpacity(0.5))
@@ -515,8 +524,7 @@ class CommonFunctions {
     Uint8List image;
     AtContact contact = checkForCachedContactDetail(atsign);
 
-    if (contact.tags != null &&
-        contact.tags!['image'] != null) {
+    if (contact.tags != null && contact.tags!['image'] != null) {
       List<int> intList = contact.tags!['image'].cast<int>();
       image = Uint8List.fromList(intList);
       return image;

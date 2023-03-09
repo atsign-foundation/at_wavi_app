@@ -52,7 +52,15 @@ class DesktopBasicInfoWidget extends StatelessWidget {
   }
 
   Widget _textContent(BuildContext context) {
-    bool isUrl = Uri.parse(data.value ?? "").isAbsolute;
+    bool isUrl;
+    String url;
+    if(Uri.parse(data.value).isAbsolute) {
+      isUrl = true;
+      url = data.value;
+    }else {
+      url = getUrl(data.displayingAccountName ?? "", data.value);
+      isUrl = Uri.parse(url).isAbsolute;
+    }
     bool isEmail = data.displayingAccountName == "Email";
     final appTheme = AppTheme.of(context);
     return Container(
@@ -77,7 +85,7 @@ class DesktopBasicInfoWidget extends StatelessWidget {
                 onTap: () async {
                   if (isUrl) {
                     // open link in browser
-                    await launchUrl(Uri.parse(data.value));
+                    await launchUrl(Uri.parse(url));
                     return;
                   }
                   if (isEmail) {

@@ -10,12 +10,14 @@ import 'package:url_launcher/url_launcher.dart';
 class CustomCard extends StatelessWidget {
   final String? title, subtitle;
   final bool isUrl;
+  final String? url;
   final bool isEmail;
   late bool _isDark;
   late ThemeData themeData;
   CustomCard(
       {this.title,
       this.isEmail = false,
+      this.url,
       required this.subtitle,
       this.isUrl = false,
       required this.themeData});
@@ -57,8 +59,15 @@ class CustomCard extends StatelessWidget {
                       if (!isUrl) {
                         return;
                       }
+
+                      // String url;
+                      // if(Uri.parse(subtitle ?? "").isAbsolute){
+                      //   url = subtitle;
+                      // }else {
+                      //   url = getUrl
+                      // }
                       SetupRoutes.push(context, Routes.WEB_VIEW,
-                          arguments: {'title': title, 'url': subtitle});
+                          arguments: {'title': title, 'url': url});
                     },
                     child: HtmlWidget(
                       subtitle!,

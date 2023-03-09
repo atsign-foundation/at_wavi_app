@@ -404,7 +404,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
 
   bool matchRegex(String value, BasicData basicData) {
     print(basicData);
-    if(value.isEmpty) {
+    if (value.isEmpty) {
       return true;
     }
     var regex = getRegex(basicData.displayingAccountName ?? "");
@@ -501,8 +501,10 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                   if (value == null || value == '' && isCustomField) {
                     return 'Body is required';
                   }
-                  if (!matchRegex(value ?? "", basicData)) {                   
-                    return "Invalid ${basicData.displayingAccountName} value";
+                  if (Uri.parse(value).isAbsolute) {
+                    if (!matchRegex(value, basicData)) {
+                      return "Invalid ${basicData.displayingAccountName} value";
+                    }
                   }
                   return null;
                 },

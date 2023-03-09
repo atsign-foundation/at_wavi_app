@@ -226,6 +226,33 @@ RegExp getRegex(String name) {
   }
 }
 
+String getUrl(String name, String value) {
+  switch (name) {
+    case "Twitter":
+      return "https://www.twitter.com/$value";
+    case "Instagram":
+      return "https://www.instagram.com/$value";
+    case "Facebook":
+      return "https://www.facebook.com/$value";
+    case "Linkedin":
+      return "https://www.linkedin.com/$value";
+    case "Youtube":
+      return "https://www.youtube.com/$value";
+    case "Tumblr":
+      return "https://www.tumblr.com/$value";
+    case "Medium":
+      return "https://www.medium.com/$value";
+    case "Snapchat":
+      return "https://www.snapchat.com/$value";
+    case "Tiktok":
+      return "https://www.tiktok.com/$value";
+    case "Pinterest":
+      return "https://www.pinterest.com/$value";
+    default:
+      return "";
+  }
+}
+
 // enum CATEGORY { DETAILS, ADDITIONAL_DETAILS, LOCATION, SOCIAL, GAMER, FEATURED }
 
 /// new app doesnt have IMAGE
