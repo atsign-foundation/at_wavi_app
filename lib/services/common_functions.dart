@@ -288,6 +288,7 @@ class CommonFunctions {
                   subtitle: basicData.value,
                   themeData: _themeData,
                   url: url,
+                  isUrl: isUrl,
                   isEmail: basicData.displayingAccountName == "Email",
                 )),
             Divider(

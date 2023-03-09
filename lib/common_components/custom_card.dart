@@ -48,7 +48,8 @@ class CustomCard extends StatelessWidget {
             subtitle != null
                 ? GestureDetector(
                     onTap: () async {
-                      if(isEmail){
+                      print("url is $url and isUrl is $isUrl");
+                      if (isEmail) {
                         Uri emailUrl = Uri(
                           scheme: "mailto",
                           path: subtitle,
@@ -60,14 +61,18 @@ class CustomCard extends StatelessWidget {
                         return;
                       }
 
-                      // String url;
-                      // if(Uri.parse(subtitle ?? "").isAbsolute){
-                      //   url = subtitle;
-                      // }else {
-                      //   url = getUrl
-                      // }
-                      SetupRoutes.push(context, Routes.WEB_VIEW,
-                          arguments: {'title': title, 'url': url});
+                      if (await canLaunchUrl(Uri.parse(url ?? ""))) {
+                        try {
+                          await launchUrl(Uri.parse(url ?? ""),
+                              mode: LaunchMode.externalApplication);
+                        } catch (e) {
+                          SetupRoutes.push(context, Routes.WEB_VIEW,
+                              arguments: {'title': title, 'url': url});
+                        }
+                      } else {
+                        SetupRoutes.push(context, Routes.WEB_VIEW,
+                            arguments: {'title': title, 'url': url});
+                      }
                     },
                     child: HtmlWidget(
                       subtitle!,

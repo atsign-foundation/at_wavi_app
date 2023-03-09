@@ -218,6 +218,8 @@ RegExp getRegex(String name) {
       return RegExp(r"http(?:s)?:\/\/(?:www\.)?snapchat\.com\/([a-zA-Z0-9_]+)");
     case "Tiktok":
       return RegExp(r"http(?:s)?:\/\/(?:www\.)?ticktok\.com\/([a-zA-Z0-9_]+)");
+      case "Github":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?github\.com\/([a-zA-Z0-9_]+)");
     case "Pinterest":
       return RegExp(
           r"http(?:s)?:\/\/(?:www\.)?pinterest\.com\/([a-zA-Z0-9_]+)");
@@ -235,7 +237,7 @@ String getUrl(String name, String value) {
     case "Facebook":
       return "https://www.facebook.com/$value";
     case "Linkedin":
-      return "https://www.linkedin.com/$value";
+      return "https://www.linkedin.com/in/$value";
     case "Youtube":
       return "https://www.youtube.com/$value";
     case "Tumblr":
@@ -248,6 +250,8 @@ String getUrl(String name, String value) {
       return "https://www.tiktok.com/$value";
     case "Pinterest":
       return "https://www.pinterest.com/$value";
+      case "Github":
+      return "https://www.github.com/$value";
     default:
       return "";
   }
