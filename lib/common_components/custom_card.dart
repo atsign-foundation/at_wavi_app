@@ -48,7 +48,6 @@ class CustomCard extends StatelessWidget {
             subtitle != null
                 ? GestureDetector(
                     onTap: () async {
-                      print("url is $url and isUrl is $isUrl");
                       if (isEmail) {
                         Uri emailUrl = Uri(
                           scheme: "mailto",
