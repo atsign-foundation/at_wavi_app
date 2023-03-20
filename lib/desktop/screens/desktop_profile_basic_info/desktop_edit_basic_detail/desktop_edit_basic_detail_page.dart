@@ -9,6 +9,7 @@ import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../model/user.dart';
 import 'desktop_edit_basic_detail_model.dart';
 
 class DesktopEditBasicDetailPage extends StatefulWidget {
@@ -26,6 +27,7 @@ class DesktopEditBasicDetailPage extends StatefulWidget {
 class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
   final _showHideController = ShowHideController(isShow: null);
   late DesktopEditBasicDetailModel _model;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -41,6 +43,16 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
     if (_model.allFieldPublic) {
       _showHideController.value = true;
     }
+  }
+
+  bool matchRegex(String value, BasicData basicData) {
+    print(basicData);
+    if (value.isEmpty) {
+      return true;
+    }
+    var regex = getRegex(basicData.displayingAccountName ?? "");
+    bool res = regex.hasMatch(value);
+    return res;
   }
 
   @override
@@ -70,7 +82,10 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
               ),
             ),
             SizedBox(height: DesktopDimens.paddingNormal),
-            _buildContentWidget(),
+            Form(
+              key: _formKey,
+              child: _buildContentWidget(),
+            ),
             SizedBox(height: DesktopDimens.paddingNormal),
             Container(
               padding: EdgeInsets.only(left: DesktopDimens.paddingNormal),
@@ -137,6 +152,14 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
                       child: DesktopTextField(
                         controller: data.controller ?? TextEditingController(),
                         title: data.data.displayingAccountName ?? '',
+                        validator: (value) {
+                          if (Uri.parse(value ?? "").isAbsolute) {
+                            if (!matchRegex(value ?? "", data.data)) {
+                              return "Invalid ${data.data.displayingAccountName} value";
+                            }
+                          }
+                          return null;
+                        },
                       ),
                     ),
                     Container(
@@ -161,6 +184,8 @@ class _DesktopEditBasicDetailState extends State<DesktopEditBasicDetailPage> {
   }
 
   void _onSaveData() {
-    _model.saveData(context);
+    if (_formKey.currentState!.validate()) {
+      _model.saveData(context);
+    }
   }
 }

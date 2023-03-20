@@ -166,15 +166,13 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                               customFields = [];
                             }
 
-                            if (customFields != null) {
-                              setState(() {
-                                customFields!.add(data);
-                                UserPreview()
-                                        .user()!
-                                        .customFields[widget.category.name] =
-                                    customFields;
-                              });
-                            }
+                            setState(() {
+                              customFields!.add(data);
+                              UserPreview()
+                                      .user()!
+                                      .customFields[widget.category.name] =
+                                  customFields;
+                            });
 
                             FieldOrderService().addNewField(
                                 widget.category, data.accountName!);
@@ -404,7 +402,18 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
     return SizedBox();
   }
 
+  bool matchRegex(String value, BasicData basicData) {
+    print(basicData);
+    if (value.isEmpty) {
+      return true;
+    }
+    var regex = getRegex(basicData.displayingAccountName ?? "");
+    bool res = regex.hasMatch(value);
+    return res;
+  }
+
   Widget inputField(BasicData basicData, {bool isCustomField = false}) {
+    String error = "error";
     return Slidable(
       key: UniqueKey(),
       actionPane: SlidableDrawerActionPane(),
@@ -470,6 +479,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
       //         setState(() {});
       //       },
       //     ),
+
       //   ]
       // : null,
       child: Padding(
@@ -479,6 +489,7 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
           children: [
             Expanded(
               child: TextFormField(
+                // autovalidateMode: AutovalidateMode.onUserInteraction,
                 style: TextStyles.lightText(_themeData!.primaryColor),
                 key: UniqueKey(),
                 autovalidateMode: isCustomField
@@ -489,6 +500,11 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
                 validator: (value) {
                   if (value == null || value == '' && isCustomField) {
                     return 'Body is required';
+                  }
+                  if (Uri.parse(value).isAbsolute) {
+                    if (!matchRegex(value, basicData)) {
+                      return "Invalid ${basicData.displayingAccountName} value";
+                    }
                   }
                   return null;
                 },

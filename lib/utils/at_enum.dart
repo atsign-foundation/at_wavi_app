@@ -194,6 +194,69 @@ valueOf(String property) {
   return '';
 }
 
+RegExp getRegex(String name) {
+  switch (name) {
+    case "Email":
+      return RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    case "Twitter":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)");
+    case "Instagram":
+      return RegExp(
+          r"http(?:s)?:\/\/(?:www\.)?instagram\.com\/([a-zA-Z0-9_]+)");
+    case "Facebook":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?facebook\.com\/([a-zA-Z0-9_]+)");
+    case "Linkedin":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?linkedin\.com\/([a-zA-Z0-9_]+)");
+    case "Youtube":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?youtube\.com\/([a-zA-Z0-9@_]+)");
+    case "Tumblr":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?tumblr\.com\/([a-zA-Z0-9_]+)");
+    case "Medium":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?medium\.com\/([a-zA-Z0-9@_]+)");
+    case "Snapchat":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?snapchat\.com\/([a-zA-Z0-9_]+)");
+    case "Tiktok":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?ticktok\.com\/([a-zA-Z0-9_]+)");
+      case "Github":
+      return RegExp(r"http(?:s)?:\/\/(?:www\.)?github\.com\/([a-zA-Z0-9_]+)");
+    case "Pinterest":
+      return RegExp(
+          r"http(?:s)?:\/\/(?:www\.)?pinterest\.com\/([a-zA-Z0-9_]+)");
+    default:
+      return RegExp("");
+  }
+}
+
+String getUrl(String name, String value) {
+  switch (name) {
+    case "Twitter":
+      return "https://www.twitter.com/$value";
+    case "Instagram":
+      return "https://www.instagram.com/$value";
+    case "Facebook":
+      return "https://www.facebook.com/$value";
+    case "Linkedin":
+      return "https://www.linkedin.com/in/$value";
+    case "Youtube":
+      return "https://www.youtube.com/$value";
+    case "Tumblr":
+      return "https://www.tumblr.com/$value";
+    case "Medium":
+      return "https://www.medium.com/$value";
+    case "Snapchat":
+      return "https://www.snapchat.com/$value";
+    case "Tiktok":
+      return "https://www.tiktok.com/$value";
+    case "Pinterest":
+      return "https://www.pinterest.com/$value";
+      case "Github":
+      return "https://www.github.com/$value";
+    default:
+      return "";
+  }
+}
+
 // enum CATEGORY { DETAILS, ADDITIONAL_DETAILS, LOCATION, SOCIAL, GAMER, FEATURED }
 
 /// new app doesnt have IMAGE
@@ -393,6 +456,7 @@ extension value on RootEnvironment {
 }
 
 enum CustomContentStatus { Exists, Success, Fails }
+
 enum CustomContentType { Text, Link, Number, Image, Youtube, Html, Location }
 
 extension values on CustomContentType {
