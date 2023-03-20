@@ -68,6 +68,8 @@
 	<string>Microphone is used for speech to text feature</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Enable atWavi to access your photos to upload the ones you choose in file transfer.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -92,8 +94,6 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 </dict>
 </plist>
