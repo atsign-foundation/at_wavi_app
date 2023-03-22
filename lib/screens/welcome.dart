@@ -5,8 +5,10 @@ import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/images.dart';
 import 'package:at_wavi_app/utils/text_constants.dart';
+import 'package:at_wavi_app/view_models/Internet_connectivity_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:at_common_flutter/at_common_flutter.dart';
+import 'package:provider/provider.dart';
 
 class Welcome extends StatefulWidget {
   @override
@@ -20,6 +22,10 @@ class _WelcomeState extends State<Welcome> {
   @override
   void initState() {
     _checkToOnboard();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      Provider.of<InternetConnectivityChecker>(context, listen: false)
+          .checkConnectivity();
+    });
 
     super.initState();
   }
@@ -30,11 +36,6 @@ class _WelcomeState extends State<Welcome> {
         .getAtClientPreference()
         .then((value) => atClientPrefernce = value)
         .catchError((e) => print(e));
-
-    AtClientService atClientService = AtClientService();
-    var isOnboarded = await atClientService.isClientOnboarded(
-        currentatSign!, atClientPrefernce);
-    print('isOnboarded: $isOnboarded');
 
     if (currentatSign != null && currentatSign != '') {
       await BackendService()

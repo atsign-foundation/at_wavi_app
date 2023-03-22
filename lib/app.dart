@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/utils/colors.dart';
+import 'package:at_wavi_app/view_models/Internet_connectivity_checker.dart';
 import 'package:at_wavi_app/view_models/deep_link_provider.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
 
@@ -60,6 +61,8 @@ class _MyAppState extends State<MyApp> {
               create: (context) => SetPrivateState()),
           ChangeNotifierProvider<DeepLinkProvider>(
               create: (context) => DeepLinkProvider()),
+          ChangeNotifierProvider<InternetConnectivityChecker>(
+              create: (context) => InternetConnectivityChecker()),
         ],
         child: MaterialAppClass(
           initialRoute: initialRoute,

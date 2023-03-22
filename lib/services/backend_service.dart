@@ -12,6 +12,7 @@ import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/view_models/Internet_connectivity_checker.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
@@ -53,6 +54,10 @@ class BackendService {
     VoidCallback? onSuccess,
     bool isSwitchAccount = false,
   }) async {
+    var internetConnectivityChecker = Provider.of<InternetConnectivityChecker>(
+        NavService.navKey.currentContext!,
+        listen: false);
+
     if (Platform.isAndroid || Platform.isIOS) {
       await _checkForPermissionStatus();
     }
@@ -67,27 +72,19 @@ class BackendService {
         .catchError((e) => print(e));
     AtOnboardingResult result;
 
-    ///switch account from avatar
-    if (atSign.isNotEmpty) {
-      _onboardingService.setAtsign = atSign;
-    }
+    _onboardingService.setAtsign = atSign;
 
-    result = await AtOnboarding.onboard(
-      context: NavService.navKey.currentContext!,
-      config: AtOnboardingConfig(
-        atClientPreference: atClientPrefernce!,
-        domain: MixedConstants.ROOT_DOMAIN,
-        rootEnvironment: RootEnvironment.Production,
-        appAPIKey: MixedConstants.devAPIKey,
-      ),
-      isSwitchingAtsign: isSwitchAccount,
-      atsign: atSign,
-    );
+    // If no internet and atSign is present
+    if (atSign != '' && !internetConnectivityChecker.isInternetAvailable) {
+      AtClientService atClientService = AtClientService();
+      var isOnboarded =
+          await atClientService.isClientOnboarded(atSign, atClientPrefernce);
+      if (isOnboarded) {
+        AtClientManager.getInstance().setCurrentAtSign(
+            atSign, MixedConstants.appNamespace, atClientPrefernce);
 
-    switch (result.status) {
-      case AtOnboardingResultStatus.success:
         LoadingDialog().show(text: '$atSign', heading: 'Loading');
-        await onSuccessOnboard(atClientServiceMap, result.atsign);
+        await onSuccessOnboard(atClientServiceMap, atSign);
         LoadingDialog().hide();
         if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
           onSuccess?.call();
@@ -95,18 +92,51 @@ class BackendService {
           SetupRoutes.pushAndRemoveAll(
               NavService.navKey.currentContext!, Routes.HOME,
               arguments: {
-                'key': Key(result.atsign!),
+                'key': Key(atSign),
                 'isPreview': false,
               });
         }
-        break;
-      case AtOnboardingResultStatus.error:
-        // TODO: Handle this case.
-        showErrorSnackBar("error");
-        break;
-      case AtOnboardingResultStatus.cancel:
-        // TODO: Handle this case.
-        break;
+        print(
+            'isOnboarded: ${AtClientManager.getInstance().atClient.getCurrentAtSign()}');
+      }
+    } else {
+      // If internet is available
+      result = await AtOnboarding.onboard(
+        context: NavService.navKey.currentContext!,
+        config: AtOnboardingConfig(
+          atClientPreference: atClientPrefernce!,
+          domain: MixedConstants.ROOT_DOMAIN,
+          rootEnvironment: RootEnvironment.Production,
+          appAPIKey: MixedConstants.devAPIKey,
+        ),
+        isSwitchingAtsign: isSwitchAccount,
+        atsign: atSign,
+      );
+
+      switch (result.status) {
+        case AtOnboardingResultStatus.success:
+          LoadingDialog().show(text: '$atSign', heading: 'Loading');
+          await onSuccessOnboard(atClientServiceMap, result.atsign);
+          LoadingDialog().hide();
+          if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+            onSuccess?.call();
+          } else {
+            SetupRoutes.pushAndRemoveAll(
+                NavService.navKey.currentContext!, Routes.HOME,
+                arguments: {
+                  'key': Key(result.atsign!),
+                  'isPreview': false,
+                });
+          }
+          break;
+        case AtOnboardingResultStatus.error:
+          // TODO: Handle this case.
+          showErrorSnackBar("error");
+          break;
+        case AtOnboardingResultStatus.cancel:
+          // TODO: Handle this case.
+          break;
+      }
     }
   }
 
@@ -123,15 +153,15 @@ class BackendService {
 
   onSuccessOnboard(Map<String?, AtClientService> atClientServiceMap,
       String? onboardedAtsign) async {
-    String? atSign = onboardedAtsign;
-    atClientInstance =
-        atClientServiceMap[onboardedAtsign]!.atClientManager.atClient;
-    atClientServiceMap = atClientServiceMap;
-    syncService = AtClientManager.getInstance().syncService;
-    currentAtSign = atSign;
-    KeychainUtil.makeAtSignPrimary(atSign!);
-    atClientServiceInstance = atClientServiceMap[onboardedAtsign]!;
-    atClientServiceInstance = atClientServiceMap[onboardedAtsign]!;
+    // String? atSign = onboardedAtsign;
+    // atClientInstance =
+    //     atClientServiceMap[onboardedAtsign]!.atClientManager.atClient;
+    // atClientServiceMap = atClientServiceMap;
+    // syncService = AtClientManager.getInstance().syncService;
+    // currentAtSign = atSign;
+    // KeychainUtil.makeAtSignPrimary(atSign!);
+    // atClientServiceInstance = atClientServiceMap[onboardedAtsign]!;
+    // atClientServiceInstance = atClientServiceMap[onboardedAtsign]!;
 
     initializeContactsService(rootDomain: MixedConstants.ROOT_DOMAIN);
     Provider.of<FollowService>(NavService.navKey.currentContext!, listen: false)
