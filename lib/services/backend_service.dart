@@ -80,10 +80,18 @@ class BackendService {
       var isOnboarded =
           await atClientService.isClientOnboarded(atSign, atClientPrefernce);
       if (isOnboarded) {
-        AtClientManager.getInstance().setCurrentAtSign(
+        await AtClientManager.getInstance().setCurrentAtSign(
             atSign, MixedConstants.appNamespace, atClientPrefernce);
 
         LoadingDialog().show(text: '$atSign', heading: 'Loading');
+
+        atClientInstance = AtClientManager.getInstance().atClient;
+        AtClientService atClientService = AtClientService();
+        atClientService.atClientManager = AtClientManager.getInstance();
+
+        Map<String?, AtClientService> atClientServiceMap = {
+          atSign: atClientService
+        };
         await onSuccessOnboard(atClientServiceMap, atSign);
         LoadingDialog().hide();
         if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
@@ -153,15 +161,15 @@ class BackendService {
 
   onSuccessOnboard(Map<String?, AtClientService> atClientServiceMap,
       String? onboardedAtsign) async {
-    // String? atSign = onboardedAtsign;
-    // atClientInstance =
-    //     atClientServiceMap[onboardedAtsign]!.atClientManager.atClient;
-    // atClientServiceMap = atClientServiceMap;
-    // syncService = AtClientManager.getInstance().syncService;
-    // currentAtSign = atSign;
-    // KeychainUtil.makeAtSignPrimary(atSign!);
-    // atClientServiceInstance = atClientServiceMap[onboardedAtsign]!;
-    // atClientServiceInstance = atClientServiceMap[onboardedAtsign]!;
+    String? atSign = onboardedAtsign;
+    atClientInstance =
+        atClientServiceMap[onboardedAtsign]!.atClientManager.atClient;
+    atClientServiceMap = atClientServiceMap;
+    syncService = AtClientManager.getInstance().syncService;
+    currentAtSign = atSign;
+    KeychainUtil.makeAtSignPrimary(atSign!);
+    atClientServiceInstance = atClientServiceMap[onboardedAtsign]!;
+    atClientServiceInstance = atClientServiceMap[onboardedAtsign]!;
 
     initializeContactsService(rootDomain: MixedConstants.ROOT_DOMAIN);
     Provider.of<FollowService>(NavService.navKey.currentContext!, listen: false)

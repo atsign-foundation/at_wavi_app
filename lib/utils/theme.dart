@@ -19,9 +19,9 @@ class Themes {
       fontFamily: fontFamily ?? 'HelveticaNeu',
       visualDensity: VisualDensity.adaptivePlatformDensity,
       colorScheme: ThemeData.dark().colorScheme.copyWith(
-        brightness: Brightness.light,
-        primary: ColorConstants.desktopPrimaryDefault,
-      ),
+            brightness: Brightness.light,
+            primary: ColorConstants.desktopPrimaryDefault,
+          ),
     );
   }
 
@@ -41,9 +41,9 @@ class Themes {
       fontFamily: fontFamily ?? 'HelveticaNeu',
       visualDensity: VisualDensity.adaptivePlatformDensity,
       colorScheme: ThemeData.dark().colorScheme.copyWith(
-        brightness: Brightness.dark,
-        primary: ColorConstants.desktopPrimaryDefault,
-      ),
+            brightness: Brightness.dark,
+            primary: ColorConstants.desktopPrimaryDefault,
+          ),
     );
   }
 
