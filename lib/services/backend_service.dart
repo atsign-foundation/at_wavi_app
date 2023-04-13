@@ -29,6 +29,8 @@ import 'package:at_client/src/service/sync_service.dart';
 import 'package:at_client/src/service/sync_service_impl.dart';
 import 'package:at_sync_ui_flutter/at_sync_ui_flutter.dart';
 
+import '../view_models/internet_connectivity_checker.dart';
+
 class BackendService {
   static final BackendService _singleton = BackendService._internal();
 
@@ -101,8 +103,14 @@ class BackendService {
         }
         break;
       case AtOnboardingResultStatus.error:
-        // TODO: Handle this case.
-        showErrorSnackBar("error");
+        var isConnected = Provider.of<InternetConnectivityChecker>(
+                NavService.navKey.currentContext!,
+                listen: false)
+            .isInternetAvailable;
+
+        showErrorSnackBar(isConnected
+            ? "Onboarding failed: ${result.message}"
+            : 'No internet connection available');
         break;
       case AtOnboardingResultStatus.cancel:
         // TODO: Handle this case.
