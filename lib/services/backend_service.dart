@@ -183,10 +183,6 @@ class BackendService {
     return _atClientPreference;
   }
 
-  sync() async {
-    AtSyncUIService().sync(atSyncUIOverlay: AtSyncUIOverlay.snackbar);
-  }
-
   _onSuccessCallback(syncStatus) async {
     print(
         'syncStatus type : $syncStatus, datachanged : ${syncStatus.dataChange}');

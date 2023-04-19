@@ -171,7 +171,6 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
   void _syncData() async {
     _controller.reset();
     _controller.forward();
-    await BackendService().sync();
     setState(() {});
   }
 }

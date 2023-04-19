@@ -280,8 +280,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         Provider.of<UserPreview>(context, listen: false)
                             .user()!;
                   }
-                } else {
-                  await BackendService().sync();
                 }
                 if (mounted) setState(() {});
               },

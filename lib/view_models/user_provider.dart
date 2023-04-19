@@ -42,7 +42,6 @@ class UserProvider extends BaseModel {
       }
       await AtKeySetService().updateDefinedFields(user, atKeys);
       await AtKeySetService().updateCustomData(user, atKeys);
-      await BackendService().sync();
       this.user = User.fromJson(json.decode(json.encode(User.toJson(user))));
       setStatus(UPDATE_USER, Status.Done);
     } catch (e) {
