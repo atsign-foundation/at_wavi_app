@@ -3,7 +3,9 @@ import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/logger.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../view_models/internet_connectivity_checker.dart';
 import 'desktop_onboarding_page.dart';
 import 'desktop_login_page.dart';
 
@@ -19,6 +21,13 @@ class _DesktopLoginLandingPageState extends State<DesktopLoginLandingPage> {
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      print("home called from desktop");
+      await Provider.of<InternetConnectivityChecker>(context, listen: false)
+          .checkConnectivity();
+    });
+
     setup();
   }
 
