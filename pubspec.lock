@@ -77,18 +77,18 @@ packages:
     dependency: transitive
     description:
       name: at_chops
-      sha256: "52d12dd3ff9ef3c91007132d175bcba23bbbe2cc0b0aba240038d53d780a0569"
+      sha256: "4bd63f0bb9b61ad8087455f5ab303101cbc07b6b87892d4a7dba197ca2b3eb6c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.3"
   at_client:
     dependency: transitive
     description:
       name: at_client
-      sha256: "179bea8c4ecb5cf719887f2f5b806719dd6458736cbb824c29cf928129203bf5"
+      sha256: f2ebf1ceeb42eb6638ddf38c6a1f414e4af3186f2cf4bc245efcb54943e5072e
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.56"
+    version: "3.0.57"
   at_client_mobile:
     dependency: "direct main"
     description:
@@ -1909,6 +1909,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  version:
+    dependency: transitive
+    description:
+      name: version
+      sha256: "3d4140128e6ea10d83da32fef2fa4003fccbf6852217bb854845802f04191f94"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.2"
   video_player:
     dependency: transitive
     description:
