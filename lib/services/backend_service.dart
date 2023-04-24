@@ -157,7 +157,7 @@ class BackendService {
       primaryColor: (_themeProvider.highlightColor ?? ColorConstants.green),
       syncProgressCallback: _syncProgressCallback,
     );
-    AtSyncUIService().sync();
+    AtSyncUIService().sync(atSyncUIOverlay: AtSyncUIOverlay.dialog);
 
     _themeProvider.resetThemeData();
     await _themeProvider.checkThemeFromSecondary();
