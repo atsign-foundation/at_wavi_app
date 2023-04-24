@@ -71,8 +71,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _inputBoxController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
 
-    VersionService.getInstance().init();
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<InternetConnectivityChecker>(context, listen: false)
           .checkConnectivity();
@@ -285,9 +283,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     _currentUser =
                         Provider.of<UserPreview>(context, listen: false)
                             .user()!;
+                  } else {
+                    BackendService().showSyncSnackbar();
                   }
-                } else {
-                  await BackendService().sync();
                 }
                 if (mounted) setState(() {});
               },
