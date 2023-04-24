@@ -70,8 +70,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _inputBoxController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
 
-    VersionService.getInstance().init();
-
     checkForUpdate();
     startDeepLinkProviderListener();
 
@@ -279,6 +277,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     _currentUser =
                         Provider.of<UserPreview>(context, listen: false)
                             .user()!;
+                  } else {
+                    BackendService().showSyncSnackbar();
                   }
                 }
                 if (mounted) setState(() {});

@@ -1,20 +1,18 @@
-import 'dart:developer';
+import 'dart:async';
 import 'dart:io';
-import 'package:at_client/at_client.dart';
-import 'package:at_client_mobile/at_client_mobile.dart';
-import 'package:at_commons/at_commons.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
 import 'package:at_onboarding_flutter/services/onboarding_service.dart';
 import 'package:at_sync_ui_flutter/at_sync_ui.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
 import 'package:at_wavi_app/desktop/routes/desktop_route_names.dart';
+import 'package:at_wavi_app/desktop/utils/snackbar_utils.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
+import 'package:at_wavi_app/services/version_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';
-import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/at_key_get_service.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/colors.dart';
@@ -26,7 +24,6 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:at_client/src/service/sync_service.dart';
-import 'package:at_client/src/service/sync_service_impl.dart';
 import 'package:at_sync_ui_flutter/at_sync_ui_flutter.dart';
 
 class BackendService {
@@ -45,6 +42,7 @@ class BackendService {
   AtClientPreference? atClientPreference;
   Directory? downloadDirectory;
   Map<String?, AtClientService> atClientServiceMap = {};
+  Timer? snackbarRefreshTimer;
 
   onboard(
     String atSign, {
@@ -149,11 +147,13 @@ class BackendService {
       onSuccessCallback: _onSuccessCallback,
       onErrorCallback: _onErrorCallback,
       primaryColor: (_themeProvider.highlightColor ?? ColorConstants.green),
+      syncProgressCallback: _syncProgressCallback,
     );
     AtSyncUIService().sync();
 
     _themeProvider.resetThemeData();
     await _themeProvider.checkThemeFromSecondary();
+    VersionService.getInstance().init();
 
     AtKeyGetService().init();
     await Provider.of<UserProvider>(NavService.navKey.currentContext!,
@@ -198,6 +198,23 @@ class BackendService {
 
   _onErrorCallback(syncStatus) async {
     showErrorSnackBar('Sync failed');
+  }
+
+  _syncProgressCallback(SyncProgress syncProgress) async {
+    if (syncProgress.syncStatus == SyncStatus.failure) {
+      if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+        await SnackBarUtils.show(
+          context: NavService.navKey.currentContext!,
+          message: syncProgress.message ?? 'Sync failed...',
+          type: SnackBarType.error,
+        );
+      } else {
+        ScaffoldMessenger.of(NavService.navKey.currentContext!)
+            .showSnackBar(SnackBar(
+          content: Text(syncProgress.message ?? 'Sync failed...'),
+        ));
+      }
+    }
   }
 
   ///Fetches privatekey for [atsign] from device keychain.
@@ -346,6 +363,21 @@ class BackendService {
     }).catchError((e) {
       print('error in reset: $e');
     });
+  }
+
+  showSyncSnackbar() async {
+    hideSyncSnackbar();
+    snackbarRefreshTimer?.cancel();
+
+    AtSyncUI.instance.showSnackBar(message: 'Sync in progress');
+    snackbarRefreshTimer = Timer.periodic(Duration(seconds: 4), (timer) {
+      hideSyncSnackbar();
+    });
+  }
+
+  hideSyncSnackbar() {
+    AtSyncUI.instance.hideSnackBar();
+    snackbarRefreshTimer?.cancel();
   }
 
   onboardNextAtsign({bool isCheckDesktop = false}) async {
