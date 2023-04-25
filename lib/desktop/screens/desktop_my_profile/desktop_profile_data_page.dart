@@ -103,18 +103,18 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
                               },
                             ),
                             SizedBox(width: DesktopDimens.paddingSmall),
-                            if (widget.isMyProfile &&
-                                widget.isEditable == false)
-                              RotationTransition(
-                                turns: _animation,
-                                child: DesktopIconButton(
-                                  iconData: Icons.sync,
-                                  iconColor: appTheme.primaryTextColor,
-                                  backgroundColor:
-                                      appTheme.secondaryBackgroundColor,
-                                  onPressed: _syncData,
-                                ),
-                              ),
+                            // if (widget.isMyProfile &&
+                            //     widget.isEditable == false)
+                            //   RotationTransition(
+                            //     turns: _animation,
+                            //     child: DesktopIconButton(
+                            //       iconData: Icons.sync,
+                            //       iconColor: appTheme.primaryTextColor,
+                            //       backgroundColor:
+                            //           appTheme.secondaryBackgroundColor,
+                            //       onPressed: _syncData,
+                            //     ),
+                            //   ),
                             SizedBox(width: DesktopDimens.paddingSmall),
                             DesktopIconButton(
                               iconData: Icons.more_vert,
@@ -171,7 +171,7 @@ class _DesktopProfileDataPageState extends State<DesktopProfileDataPage>
   void _syncData() async {
     _controller.reset();
     _controller.forward();
-    await BackendService().sync();
+    BackendService().showSyncSnackbar();
     setState(() {});
   }
 }

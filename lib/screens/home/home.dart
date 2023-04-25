@@ -27,6 +27,7 @@ import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/constants.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:at_wavi_app/utils/theme.dart';
+import 'package:at_wavi_app/view_models/internet_connectivity_checker.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
@@ -70,7 +71,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _inputBoxController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
 
-    VersionService.getInstance().init();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<InternetConnectivityChecker>(context, listen: false)
+          .checkConnectivity();
+    });
 
     checkForUpdate();
     startDeepLinkProviderListener();
@@ -279,9 +283,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     _currentUser =
                         Provider.of<UserPreview>(context, listen: false)
                             .user()!;
+                  } else {
+                    BackendService().showSyncSnackbar();
                   }
-                } else {
-                  await BackendService().sync();
                 }
                 if (mounted) setState(() {});
               },

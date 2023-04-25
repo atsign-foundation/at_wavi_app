@@ -164,10 +164,11 @@ packages:
   at_onboarding_flutter:
     dependency: "direct main"
     description:
-      name: at_onboarding_flutter
-      sha256: "8e225b9df5625d7f614b6b0bbf96f8dcbe9cd0d976684788383faf8a203fad58"
-      url: "https://pub.dev"
-    source: hosted
+      path: "packages/at_onboarding_flutter"
+      ref: "feature/fix-theme-onboarding"
+      resolved-ref: "6c511b14cee8d7d8e5e9a4c6ec1f1b8dfc0568a9"
+      url: "https://github.com/atsign-foundation/at_widgets"
+    source: git
     version: "6.0.3"
   at_persistence_secondary_server:
     dependency: transitive
@@ -678,6 +679,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.1"
+  flutter_lints:
+    dependency: transitive
+    description:
+      name: flutter_lints
+      sha256: aeb0b80a8b3709709c9cc496cdc027c5b3216796bc0af0ce1007eaf24464fd4c
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   flutter_local_notifications:
     dependency: "direct overridden"
     description:
@@ -1040,6 +1049,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.8.1"
+  lints:
+    dependency: transitive
+    description:
+      name: lints
+      sha256: "5e4a9cd06d447758280a8ac2405101e0e2094d2a1dbdd3756aec3fe7775ba593"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   lists:
     dependency: transitive
     description:
@@ -1781,6 +1798,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  tutorial_coach_mark:
+    dependency: transitive
+    description:
+      name: tutorial_coach_mark
+      sha256: "669d4bd517d22e14671f3ddee0e7442d976ab71f94bb6eec6ad057ca3944fd73"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.8"
   typed_data:
     dependency: transitive
     description:

@@ -10,11 +10,13 @@ import 'package:at_wavi_app/view_models/follow_service.dart';
 import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/nav_service.dart';
 import 'package:at_wavi_app/utils/theme.dart';
+import 'package:at_wavi_app/view_models/internet_connectivity_checker.dart';
 import 'package:at_wavi_app/view_models/theme_view_model.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 
 import 'desktop/routes/desktop_routes.dart';
@@ -60,6 +62,8 @@ class _MyAppState extends State<MyApp> {
               create: (context) => SetPrivateState()),
           ChangeNotifierProvider<DeepLinkProvider>(
               create: (context) => DeepLinkProvider()),
+          ChangeNotifierProvider<InternetConnectivityChecker>(
+              create: (context) => InternetConnectivityChecker()),
         ],
         child: MaterialAppClass(
           initialRoute: initialRoute,

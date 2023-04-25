@@ -67,6 +67,7 @@ dependencies:
   at_location_flutter: ^3.1.8
   at_sync_ui_flutter: ^1.0.8
   uni_links: ^0.5.1
+  internet_connection_checker: ^1.0.0+1
 
   flutter_dotenv: ^5.0.2
 
@@ -86,7 +87,7 @@ dependency_overrides:
     git:
       url: https://github.com/atsign-foundation/at_widgets
       path: packages/at_onboarding_flutter
-      ref: feature/fix-theme-onboarding
+      ref: trunk
 
 dev_dependencies:
   flutter_test:

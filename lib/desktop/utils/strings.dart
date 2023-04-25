@@ -71,7 +71,7 @@ class Strings {
   static const String desktop_get_sign = 'Don’t have an atSign? Get one now';
   static const String desktop_sign = 'atSign';
   static const String desktop_enter_sign = 'Enter atSign';
-  static const String desktop_search_sign = 'Search sign';
+  static const String desktop_search_sign = 'Search atSign';
   static const String desktop_recent_search = 'Recent Search';
   static const String desktop_prefix_sign = 'atSign';
   static const String desktop_search_follower = 'Search Follower';
