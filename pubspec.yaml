@@ -83,8 +83,12 @@ dependency_overrides:
   webview_flutter: ^4.0.1
   fwfh_webview: 0.7.0
   geolocator: ^9.0.2
+  at_onboarding_flutter:
+    git:
+      url: https://github.com/atsign-foundation/at_widgets
+      path: packages/at_onboarding_flutter
+      ref: trunk
 
- 
 dev_dependencies:
   flutter_test:
     sdk: flutter

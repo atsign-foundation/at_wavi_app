@@ -79,6 +79,13 @@ class BackendService {
         domain: MixedConstants.ROOT_DOMAIN,
         rootEnvironment: RootEnvironment.Production,
         appAPIKey: MixedConstants.devAPIKey,
+        theme: AtOnboardingTheme(
+          primaryColor: Provider.of<ThemeProvider>(
+                NavService.navKey.currentContext!,
+                listen: false,
+              ).highlightColor ??
+              ColorConstants.green,
+        ),
       ),
       isSwitchingAtsign: isSwitchAccount,
       atsign: atSign,
