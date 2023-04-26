@@ -28,7 +28,7 @@ class _WebsiteScreenState extends State<WebsiteScreen> {
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+    // if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     loading = true;
   }
 
@@ -51,38 +51,38 @@ class _WebsiteScreenState extends State<WebsiteScreen> {
         title: Text(widget.title, style: CustomTextStyles.black(size: 18)),
       ),
       body: Stack(children: [
-        WebView(
-          initialUrl: widget.url,
-          javascriptMode: JavascriptMode.unrestricted,
-          gestureRecognizers: {
-            Factory<VerticalDragGestureRecognizer>(
-              () => VerticalDragGestureRecognizer()..onUpdate = (_) {},
-            )
-          },
-          onWebViewCreated: (WebViewController c) {
-            setState(() {
-              controller = c;
-            });
-          },
-          onPageStarted: (String s) async {
-            setState(() {
-              // on page started codes
-            });
-          },
-          onPageFinished: (test1) async {
-            setState(() {
-              loading = false;
-            });
-            if (widget.isShareProfileScreen) {
-              await Future.delayed(
-                  Duration(milliseconds: 1000)); // To let complete page load
-              if (controller != null) {
-                controller!.evaluateJavascript(
-                    "(document.getElementsByClassName('share-btn')[3]).click()");
-              }
-            }
-          },
-        ),
+        // WebView(
+        //   initialUrl: widget.url,
+        //   javascriptMode: JavascriptMode.unrestricted,
+        //   gestureRecognizers: {
+        //     Factory<VerticalDragGestureRecognizer>(
+        //       () => VerticalDragGestureRecognizer()..onUpdate = (_) {},
+        //     )
+        //   },
+        //   onWebViewCreated: (WebViewController c) {
+        //     setState(() {
+        //       controller = c;
+        //     });
+        //   },
+        //   onPageStarted: (String s) async {
+        //     setState(() {
+        //       // on page started codes
+        //     });
+        //   },
+        //   onPageFinished: (test1) async {
+        //     setState(() {
+        //       loading = false;
+        //     });
+        //     if (widget.isShareProfileScreen) {
+        //       await Future.delayed(
+        //           Duration(milliseconds: 1000)); // To let complete page load
+        //       if (controller != null) {
+        //         controller!.evaluateJavascript(
+        //             "(document.getElementsByClassName('share-btn')[3]).click()");
+        //       }
+        //     }
+        //   },
+        // ),
         loading
             ? Center(
                 child: CircularProgressIndicator(

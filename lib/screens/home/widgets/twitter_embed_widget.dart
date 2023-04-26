@@ -36,22 +36,22 @@ class TwitterEmbedWidget extends StatelessWidget {
         .toString();
     return Container(
       height: 200.toHeight,
-      child: WebView(
-        javascriptMode: JavascriptMode.unrestricted,
-        gestureRecognizers: Set()
-          ..add(Factory<OneSequenceGestureRecognizer>(
-              () => EagerGestureRecognizer())),
-        onWebViewCreated: (controller) {
-          controller.loadUrl(url);
-        },
-        navigationDelegate: (NavigationRequest request) {
-          if (request.url == url) {
-            return NavigationDecision.navigate;
-          } else {
-            return NavigationDecision.prevent;
-          }
-        },
-      ),
+      // child: WebView(
+      //   javascriptMode: JavascriptMode.unrestricted,
+      //   gestureRecognizers: Set()
+      //     ..add(Factory<OneSequenceGestureRecognizer>(
+      //         () => EagerGestureRecognizer())),
+      //   onWebViewCreated: (controller) {
+      //     controller.loadUrl(url);
+      //   },
+      //   navigationDelegate: (NavigationRequest request) {
+      //     if (request.url == url) {
+      //       return NavigationDecision.navigate;
+      //     } else {
+      //       return NavigationDecision.prevent;
+      //     }
+      //   },
+      // ),
     );
   }
 }

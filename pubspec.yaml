@@ -77,18 +77,21 @@ dependencies:
   another_flushbar: ^1.10.28
 
 dependency_overrides:
+  file_picker: ^5.2.11
+  webview_flutter: ^4.2.0
   permission_handler: ^9.2.0
   biometric_storage: ^4.1.0
+  win32: ^2.0.0
   at_onboarding_flutter:
     git:
       url: https://github.com/atsign-foundation/at_widgets.git
-      path: at_onboarding_flutter
+      path: packages/at_onboarding_flutter
       ref: feature/enable-user-sharing
   at_client_mobile:
     git:
       url: https://github.com/atsign-foundation/at_client_sdk
-      path: at_client_mobile
-      ref: feature/enable-user-sharing
+      path: packages/at_client_mobile
+      ref: trunk
 
 dev_dependencies:
   flutter_test:
