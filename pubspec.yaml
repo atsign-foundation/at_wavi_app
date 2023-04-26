@@ -77,11 +77,12 @@ dependencies:
   another_flushbar: ^1.10.28
 
 dependency_overrides:
-  file_picker: ^5.2.11
+  file_picker: ^5.2.6
   webview_flutter: ^4.2.0
   permission_handler: ^9.2.0
   biometric_storage: ^4.1.0
-  win32: ^2.0.0
+  win32: ^4.0.0
+  fwfh_webview: ^0.7.0
   at_onboarding_flutter:
     git:
       url: https://github.com/atsign-foundation/at_widgets.git
