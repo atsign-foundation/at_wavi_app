@@ -90,12 +90,7 @@ dependency_overrides:
     git:
       url: https://github.com/atsign-foundation/at_widgets.git
       path: packages/at_onboarding_flutter
-      ref: feature/enable-user-sharing
-  at_client_mobile:
-    git:
-      url: https://github.com/atsign-foundation/at_client_sdk
-      path: packages/at_client_mobile
-      ref: feature/enable-user-sharing
+      ref: trunk
 
 dev_dependencies:
   flutter_test:
