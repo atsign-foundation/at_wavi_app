@@ -30,12 +30,27 @@ class DesktopSettingsPage extends StatefulWidget {
 }
 
 class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
+  bool enableShareStSign = false;
+  final KeyChainManager _keyChainManager = KeyChainManager.getInstance();
+
+  @override
+  void initState() {
+    getShareAtSign();
+    super.initState();
+  }
+
+  void getShareAtSign() async {
+    enableShareStSign = await _keyChainManager.isUsingSharedStorage() ?? false;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
     final isPrivateAccount =
         Provider.of<UserProvider>(context).user?.allPrivate ?? false;
     final isUpdating = Provider.of<SetPrivateState>(context).isLoading;
+
     return Container(
       width: DesktopDimens.sideMenuWidth,
       color: appTheme.backgroundColor,
@@ -53,6 +68,23 @@ class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
               if (user != null) {
                 await ChangePrivacyService().setAllPrivate(isOn, user);
               }
+            },
+          ),
+          DesktopSettingSwitchWidget(
+            prefixIcon: Icons.share_outlined,
+            title: "Sharing atSign",
+            isOn: enableShareStSign,
+            isUpdating: false,
+            onChanged: (check) async {
+              if (check) {
+                _keyChainManager.enableUsingSharedStorage();
+              } else {
+                _keyChainManager.disableUsingSharedStorage();
+              }
+
+              setState(() {
+                enableShareStSign = check;
+              });
             },
           ),
           // DesktopSettingSwitchWidget(
