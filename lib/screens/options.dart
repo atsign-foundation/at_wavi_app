@@ -99,52 +99,52 @@ class _OptionsState extends State<Options> {
               textColor: _themeData!.primaryColor,
               image: widget.image?.toList(),
             ),
-            SizedBox(height: 15.toHeight),
-            Divider(height: 1),
-            SizedBox(
-              height: 38,
-              width: SizeConfig().screenWidth,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, 13.0, 0.0, 0.0),
-                    child: Icon(Icons.share_outlined, size: 25),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(8.0, 15.0, 0.0, 0.0),
-                      child: Text(
-                        'Sharing atSign',
-                        style: TextStyles.lightText(_themeData!.primaryColor),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(8.0, 15.0, 0.0, 0.0),
-                    child: Transform.scale(
-                      alignment: Alignment.center,
-                      scale: 0.7,
-                      child: CupertinoSwitch(
-                        activeColor: WaviColors.ColorConstants.black,
-                        value: enableShareStSign,
-                        onChanged: (value) async {
-                          if (value) {
-                            _keyChainManager.enableUsingSharedStorage();
-                          } else {
-                            _keyChainManager.disableUsingSharedStorage();
-                          }
+            // SizedBox(height: 15.toHeight),
+            // Divider(height: 1),
+            // SizedBox(
+            //   height: 38,
+            //   width: SizeConfig().screenWidth,
+            //   child: Row(
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: <Widget>[
+            //       Padding(
+            //         padding: EdgeInsets.fromLTRB(0.0, 13.0, 0.0, 0.0),
+            //         child: Icon(Icons.share_outlined, size: 25),
+            //       ),
+            //       Expanded(
+            //         child: Padding(
+            //           padding: EdgeInsets.fromLTRB(8.0, 15.0, 0.0, 0.0),
+            //           child: Text(
+            //             'Sharing atSign',
+            //             style: TextStyles.lightText(_themeData!.primaryColor),
+            //           ),
+            //         ),
+            //       ),
+            //       Padding(
+            //         padding: EdgeInsets.fromLTRB(8.0, 15.0, 0.0, 0.0),
+            //         child: Transform.scale(
+            //           alignment: Alignment.center,
+            //           scale: 0.7,
+            //           child: CupertinoSwitch(
+            //             activeColor: WaviColors.ColorConstants.black,
+            //             value: enableShareStSign,
+            //             onChanged: (value) async {
+            //               if (value) {
+            //                 _keyChainManager.enableUsingSharedStorage();
+            //               } else {
+            //                 _keyChainManager.disableUsingSharedStorage();
+            //               }
 
-                          setState(() {
-                            enableShareStSign = value;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            //               setState(() {
+            //                 enableShareStSign = value;
+            //               });
+            //             },
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SizedBox(height: 15.toHeight),
             Divider(height: 1),
             SizedBox(height: 15.toHeight),
