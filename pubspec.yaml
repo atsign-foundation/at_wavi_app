@@ -46,7 +46,7 @@ dependencies:
   validators: ^3.0.0
   latlong2: ^0.8.1
   image_cropper: ^1.5.0
-  extended_image: ^6.2.1
+  extended_image: ^6.4.1
   image: ^3.1.1
   showcaseview: ^1.1.1
   desktop_window: ^0.4.0
@@ -55,7 +55,7 @@ dependencies:
   html_editor_enhanced: ^2.5.1
   flutter_widget_from_html: ^0.8.5
   qr_flutter: ^4.0.0
-  share_plus: ^4.0.3
+  share_plus: ^4.5.3
   url_launcher: ^6.0.20
 
   at_common_flutter: ^2.0.11
