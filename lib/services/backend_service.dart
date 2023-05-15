@@ -165,6 +165,8 @@ class BackendService {
       onErrorCallback: _onErrorCallback,
       primaryColor: (_themeProvider.highlightColor ?? ColorConstants.green),
       syncProgressCallback: _syncProgressCallback,
+      showRemoveAtsignOption: true,
+      onAtSignRemoved: onAtsignRemoved,
     );
     AtSyncUIService().sync(atSyncUIOverlay: AtSyncUIOverlay.dialog);
 
@@ -231,6 +233,14 @@ class BackendService {
           content: Text(syncProgress.message ?? 'Sync failed...'),
         ));
       }
+    }
+  }
+
+  onAtsignRemoved() {
+    if (Platform.isAndroid || Platform.isIOS) {
+      onboardNextAtsign();
+    } else {
+      onboardNextAtsign(isCheckDesktop: true);
     }
   }
 
