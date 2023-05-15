@@ -146,9 +146,11 @@ class AppTheme {
       fontFamily: 'Inter',
       textTheme: textTheme,
       colorScheme: ThemeData.dark().colorScheme.copyWith(
-        brightness: brightness,
-        primary: primaryColor,
-      ),
+            brightness: brightness,
+            primary: primaryColor,
+            background: backgroundColor,
+            secondary: accentColor,
+          ),
     );
   }
 
