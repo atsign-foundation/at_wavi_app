@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:at_client_mobile/at_client_mobile.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_onboarding_flutter/at_onboarding_flutter.dart';
 import 'package:at_onboarding_flutter/services/onboarding_service.dart';
@@ -166,6 +167,8 @@ class BackendService {
       onErrorCallback: _onErrorCallback,
       primaryColor: (_themeProvider.highlightColor ?? ColorConstants.green),
       syncProgressCallback: _syncProgressCallback,
+      showRemoveAtsignOption: true,
+      onAtSignRemoved: onAtsignRemoved,
     );
     AtSyncUIService().sync(atSyncUIOverlay: AtSyncUIOverlay.dialog);
 
@@ -232,6 +235,14 @@ class BackendService {
           content: Text(syncProgress.message ?? 'Sync failed...'),
         ));
       }
+    }
+  }
+
+  onAtsignRemoved() {
+    if (Platform.isAndroid || Platform.isIOS) {
+      onboardNextAtsign();
+    } else {
+      onboardNextAtsign(isCheckDesktop: true);
     }
   }
 

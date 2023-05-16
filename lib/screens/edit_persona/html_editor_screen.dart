@@ -87,6 +87,9 @@ class _HtmlEditorScreenState extends State<HtmlEditorScreen> {
               HtmlEditor(
                 controller: _controller,
                 htmlToolbarOptions: HtmlToolbarOptions(
+                  buttonColor: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.white,
                   toolbarType: ToolbarType.nativeGrid,
                   dropdownBackgroundColor:
                       Theme.of(context).scaffoldBackgroundColor,

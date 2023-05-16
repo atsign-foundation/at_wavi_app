@@ -164,10 +164,11 @@ packages:
   at_onboarding_flutter:
     dependency: "direct main"
     description:
-      name: at_onboarding_flutter
-      sha256: "8e225b9df5625d7f614b6b0bbf96f8dcbe9cd0d976684788383faf8a203fad58"
-      url: "https://pub.dev"
-    source: hosted
+      path: "packages/at_onboarding_flutter"
+      ref: trunk
+      resolved-ref: "7ac790c773f2cfd4dcfe10c149ae98154f27500e"
+      url: "https://github.com/atsign-foundation/at_widgets.git"
+    source: git
     version: "6.0.3"
   at_persistence_secondary_server:
     dependency: transitive
@@ -226,7 +227,7 @@ packages:
     source: hosted
     version: "0.1.10"
   biometric_storage:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: biometric_storage
       sha256: f6d7f5f4c28323797658423e4c5982c9dee42e18f59a8a8d4bc5df38eaf2e2f1
@@ -678,6 +679,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.1"
+  flutter_lints:
+    dependency: transitive
+    description:
+      name: flutter_lints
+      sha256: aeb0b80a8b3709709c9cc496cdc027c5b3216796bc0af0ce1007eaf24464fd4c
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   flutter_local_notifications:
     dependency: "direct overridden"
     description:
@@ -1040,6 +1049,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.8.1"
+  lints:
+    dependency: transitive
+    description:
+      name: lints
+      sha256: "5e4a9cd06d447758280a8ac2405101e0e2094d2a1dbdd3756aec3fe7775ba593"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   lists:
     dependency: transitive
     description:
