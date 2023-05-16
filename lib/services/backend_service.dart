@@ -80,14 +80,16 @@ class BackendService {
         domain: MixedConstants.ROOT_DOMAIN,
         rootEnvironment: RootEnvironment.Production,
         appAPIKey: MixedConstants.devAPIKey,
-        theme: AtOnboardingTheme(
-          primaryColor: Provider.of<ThemeProvider>(
-                NavService.navKey.currentContext!,
-                listen: false,
-              ).highlightColor ??
-              ColorConstants.green,
-        ),
-        showPopupSharedStorage: true,
+
+        //TODO: uncomment when using onboarding from trunk branch
+        // theme: AtOnboardingTheme(
+        //   primaryColor: Provider.of<ThemeProvider>(
+        //         NavService.navKey.currentContext!,
+        //         listen: false,
+        //       ).highlightColor ??
+        //       ColorConstants.green,
+        // ),
+        // showPopupSharedStorage: true,
       ),
       isSwitchingAtsign: isSwitchAccount,
       atsign: atSign,
