@@ -70,7 +70,7 @@ dependencies:
   at_sync_ui_flutter: ^1.0.8
   uni_links: ^0.5.1
   internet_connection_checker: ^1.0.0+1
-
+  at_server_status: ^1.0.3
   flutter_dotenv: ^5.0.2
 
   new_version: ^0.3.0

@@ -3,6 +3,7 @@ import 'package:at_contact/at_contact.dart';
 import 'package:at_contacts_flutter/utils/init_contacts_service.dart';
 import 'package:at_follows_flutter/domain/at_follows_list.dart';
 import 'package:at_follows_flutter/utils/at_follow_services.dart';
+import 'package:at_server_status/at_server_status.dart';
 import 'package:at_wavi_app/common_components/confirmation_dialog.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
@@ -15,6 +16,13 @@ class FollowService extends BaseModel {
   AtFollowsData following = AtFollowsData();
   final String FETCH_FOLLOWERS = 'fetch_followers';
   final String FETCH_FOLLOWING = 'fetch_followings';
+
+  late AtStatus atStatus;
+  final AtStatusImpl atStatusImpl = AtStatusImpl();
+
+  // AtStatus atStatus = await atStatusImpl.get(atSign);
+  // AtSignStatus atSignStatus = atStatus.status();
+  // int httpStatus = atStatus.httpStatus();
 
   bool isFollowersFetched = false;
   bool isFollowingFetched = false;
@@ -180,6 +188,13 @@ class FollowService extends BaseModel {
   ///[forFollowersList] is to identify whether we want to perform operation on followers list or following list.
   Future<void> performFollowUnfollow(String atsign,
       {bool forFollowersList: false}) async {
+        
+    // check for the atsign we are about to follow is valid or not
+    atStatus = await atStatusImpl.get(atsign);
+    if(atStatus.serverLocation != null) {
+      print('Invalid atSign');
+      return;
+    }
     try {
       bool isFollowingAtsign = isFollowing(atsign);
       if (isFollowingAtsign) {
