@@ -188,10 +188,10 @@ class FollowService extends BaseModel {
   ///[forFollowersList] is to identify whether we want to perform operation on followers list or following list.
   Future<void> performFollowUnfollow(String atsign,
       {bool forFollowersList: false}) async {
-        
+
     // check for the atsign we are about to follow is valid or not
     atStatus = await atStatusImpl.get(atsign);
-    if(atStatus.serverLocation != null) {
+    if(atStatus.serverLocation == null) {
       print('Invalid atSign');
       return;
     }
