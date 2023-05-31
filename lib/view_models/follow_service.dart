@@ -5,10 +5,15 @@ import 'package:at_follows_flutter/domain/at_follows_list.dart';
 import 'package:at_follows_flutter/utils/at_follow_services.dart';
 import 'package:at_server_status/at_server_status.dart';
 import 'package:at_wavi_app/common_components/confirmation_dialog.dart';
+import 'package:at_wavi_app/desktop/utils/snackbar_utils.dart';
 import 'package:at_wavi_app/model/at_follows_value.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import '../services/nav_service.dart';
 
 class FollowService extends BaseModel {
   FollowService();
@@ -188,11 +193,20 @@ class FollowService extends BaseModel {
   ///[forFollowersList] is to identify whether we want to perform operation on followers list or following list.
   Future<void> performFollowUnfollow(String atsign,
       {bool forFollowersList: false}) async {
-
     // check for the atsign we are about to follow is valid or not
     atStatus = await atStatusImpl.get(atsign);
-    if(atStatus.serverLocation == null) {
+    if (atStatus.serverLocation == null) {
       print('Invalid atSign');
+      await ScaffoldMessenger.of(NavService.navKey.currentContext!)
+          .showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            "Invalid atsign",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      );
       return;
     }
     try {
