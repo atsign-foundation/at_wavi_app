@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
-import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -18,13 +17,9 @@ class CustomMediaCard extends StatefulWidget {
 }
 
 class _CustomMediaCardState extends State<CustomMediaCard> {
-  late bool _isDark, _isImage = false, _isVideo = false;
+  late bool _isImage = false, _isVideo = false;
   Uint8List? customImage;
   late YoutubePlayerController _controller;
-
-  void setThemeData(BuildContext context) {
-    _isDark = widget.themeData.scaffoldBackgroundColor == ColorConstants.black;
-  }
 
   @override
   void initState() {
@@ -55,7 +50,6 @@ class _CustomMediaCardState extends State<CustomMediaCard> {
 
   @override
   Widget build(BuildContext context) {
-    setThemeData(context);
     return Container(
       color: widget.themeData.backgroundColor,
       child: Padding(

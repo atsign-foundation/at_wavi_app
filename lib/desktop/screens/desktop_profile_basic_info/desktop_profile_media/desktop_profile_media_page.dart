@@ -1,5 +1,4 @@
 import 'package:at_wavi_app/common_components/provider_callback.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_edit_profile/desktop_edit_profile_model.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_add_custom_field/desktop_profile_add_custom_field.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_profile_media/widgets/desktop_media_item.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/widgets/desktop_empty_category_widget.dart';
@@ -209,7 +208,7 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
   }
 
   void _showAddCustomContent() async {
-    final result = await showDialog<String>(
+    await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -229,7 +228,7 @@ class _DesktopProfileMediaPageState extends State<DesktopProfileMediaPage>
   }
 
   void _editData(BasicData basicData) async {
-    final result = await showDialog<String>(
+    await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,

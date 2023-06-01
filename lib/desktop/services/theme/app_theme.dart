@@ -140,9 +140,7 @@ class AppTheme {
     return ThemeData(
       // brightness: brightness,
       primaryColor: primaryColor,
-      backgroundColor: backgroundColor,
       scaffoldBackgroundColor: backgroundColor,
-      accentColor: accentColor,
       fontFamily: 'Inter',
       textTheme: textTheme,
       colorScheme: ThemeData.dark().colorScheme.copyWith(

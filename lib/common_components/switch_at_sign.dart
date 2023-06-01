@@ -2,8 +2,6 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'package:at_common_flutter/services/size_config.dart';
 import 'package:at_contacts_flutter/widgets/custom_circle_avatar.dart';
-import 'package:at_wavi_app/routes/route_names.dart';
-import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:flutter/material.dart';

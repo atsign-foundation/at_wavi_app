@@ -24,7 +24,7 @@ version: 1.0.7+29
 # version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.12.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -46,7 +46,7 @@ dependencies:
   validators: ^3.0.0
   latlong2: ^0.8.1
   image_cropper: ^1.5.0
-  extended_image: ^6.4.1
+  extended_image: ^8.0.2
   image: ^3.1.1
   showcaseview: ^1.1.1
   desktop_window: ^0.4.0
@@ -70,7 +70,7 @@ dependencies:
   at_sync_ui_flutter: ^1.0.8
   uni_links: ^0.5.1
   internet_connection_checker: ^1.0.0+1
-
+  at_server_status: ^1.0.3
   flutter_dotenv: ^5.0.2
 
   new_version: ^0.3.0
@@ -86,6 +86,7 @@ dependency_overrides:
   fwfh_webview: 0.7.0
   geolocator: ^9.0.2
   path: ^1.8.3
+  numberpicker: ^2.1.2
   # at_onboarding_flutter:
   #   git:
   #     url: https://github.com/atsign-foundation/at_widgets.git

@@ -1,6 +1,5 @@
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/utils/enums.dart';
-import 'package:at_wavi_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 import 'item/desktop_notification_item.dart';
@@ -20,7 +19,6 @@ class _DesktopNotificationListPageState
     extends State<DesktopNotificationListPage> {
   @override
   Widget build(BuildContext context) {
-    final appTheme = AppTheme.of(context);
     return ListView.separated(
       itemCount: 5,
       shrinkWrap: true,

@@ -413,7 +413,6 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   }
 
   Widget inputField(BasicData basicData, {bool isCustomField = false}) {
-    String error = "error";
     return Slidable(
       key: UniqueKey(),
       actionPane: SlidableDrawerActionPane(),

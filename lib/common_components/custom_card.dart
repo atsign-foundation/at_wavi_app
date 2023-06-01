@@ -12,8 +12,7 @@ class CustomCard extends StatelessWidget {
   final bool isUrl;
   final String? url;
   final bool isEmail;
-  late bool _isDark;
-  late ThemeData themeData;
+  final ThemeData themeData;
   CustomCard(
       {this.title,
       this.isEmail = false,
@@ -22,13 +21,8 @@ class CustomCard extends StatelessWidget {
       this.isUrl = false,
       required this.themeData});
 
-  void setThemeData(BuildContext context) {
-    _isDark = themeData.scaffoldBackgroundColor == ColorConstants.black;
-  }
-
   @override
   Widget build(BuildContext context) {
-    setThemeData(context);
     return Container(
       color: themeData.backgroundColor,
       child: Padding(

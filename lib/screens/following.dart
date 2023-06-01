@@ -40,7 +40,6 @@ class Following extends StatefulWidget {
 class _FollowingState extends State<Following>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
-  int _tabIndex = 0;
   String _searchedText = '';
 
   @override

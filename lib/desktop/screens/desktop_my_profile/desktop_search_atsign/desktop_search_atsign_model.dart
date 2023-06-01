@@ -1,5 +1,4 @@
 import 'package:at_wavi_app/desktop/utils/load_status.dart';
-import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/services/search_service.dart';
 import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:flutter/cupertino.dart';
