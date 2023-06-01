@@ -15,7 +15,6 @@ import 'package:at_wavi_app/screens/options.dart';
 import 'package:at_wavi_app/services/backend_service.dart';
 import 'package:at_wavi_app/services/common_functions.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
-import 'package:at_wavi_app/services/version_service.dart';
 import 'package:at_wavi_app/view_models/base_model.dart';
 import 'package:at_wavi_app/view_models/deep_link_provider.dart';
 import 'package:at_wavi_app/view_models/follow_service.dart';

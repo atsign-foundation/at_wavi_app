@@ -1,5 +1,4 @@
 import 'package:at_wavi_app/common_components/provider_callback.dart';
-import 'package:at_wavi_app/desktop/screens/desktop_edit_profile/desktop_edit_profile_model.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_location/desktop_location_preview_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_user_profile/desktop_user_profile_page.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
@@ -469,7 +468,7 @@ class _DesktopProfileBasicInfoPageState
   }
 
   void _showAddDetailPopup() async {
-    final result = await showDialog<String>(
+    await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -489,7 +488,7 @@ class _DesktopProfileBasicInfoPageState
   }
 
   void _showAddCustomContent() async {
-    final result = await showDialog<String>(
+    await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -501,7 +500,7 @@ class _DesktopProfileBasicInfoPageState
   }
 
   void _showEditCustomContent(BasicData data) async {
-    final result = await showDialog<String>(
+    await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -519,7 +518,7 @@ class _DesktopProfileBasicInfoPageState
     BasicData? location,
     BasicData? locationNickname,
   }) async {
-    final result = await showDialog<String>(
+    await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -534,7 +533,7 @@ class _DesktopProfileBasicInfoPageState
   }
 
   void _showReorderDetailPopup() async {
-    final result = await showDialog<List<String>>(
+    await showDialog<List<String>>(
       context: context,
       builder: (BuildContext context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -563,7 +562,7 @@ class _DesktopProfileBasicInfoPageState
       );
     } else if ((title ?? '').isNotEmpty) {
       try {
-        launch('https://www.google.com/maps/place/$title');
+        launchUrl(Uri.parse('https://www.google.com/maps/place/$title'));
       } catch (e) {}
     }
   }

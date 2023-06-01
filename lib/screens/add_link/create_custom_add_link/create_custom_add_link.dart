@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:at_wavi_app/common_components/custom_input_field.dart';
 import 'package:at_wavi_app/common_components/loading_widget.dart';
-import 'package:at_wavi_app/common_components/text_tile.dart';
 import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';

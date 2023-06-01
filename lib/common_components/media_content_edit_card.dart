@@ -4,7 +4,6 @@ import 'package:at_wavi_app/model/user.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:at_wavi_app/services/size_config.dart';
 
 class MediaContentEditCard extends StatefulWidget {
   final BasicData basicData;

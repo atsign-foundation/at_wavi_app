@@ -9,11 +9,8 @@ import 'package:at_wavi_app/view_models/user_preview.dart';
 import 'package:at_wavi_app/view_models/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:at_wavi_app/desktop/services/theme/app_theme.dart';
-import '../../../services/theme/app_theme.dart';
 import 'package:at_wavi_app/desktop/widgets/buttons/desktop_icon_button.dart';
 import 'package:flutter/material.dart';
-
-import '../desktop_edit_profile_model.dart';
 
 class DesktopProfilePicturePage extends StatefulWidget {
   DesktopProfilePicturePage({Key? key}) : super(key: key);

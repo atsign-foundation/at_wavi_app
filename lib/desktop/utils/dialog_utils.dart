@@ -1,7 +1,4 @@
-import 'package:at_wavi_app/desktop/screens/desktop_notification/desktop_notification_page.dart';
 import 'package:at_wavi_app/desktop/screens/desktop_profile_basic_info/desktop_reorder_basic_info/desktop_reorder_basic_info_page.dart';
-import 'package:at_wavi_app/desktop/utils/shared_preferences_utils.dart';
-import 'package:at_wavi_app/desktop/utils/strings.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:flutter/material.dart';
 
