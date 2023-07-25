@@ -30,7 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  biometric_storage: ^4.1.3
+  biometric_storage: ^5.0.0
 
   flutter_slidable: ^0.6.0
   provider: ^6.0.2
@@ -87,11 +87,18 @@ dependency_overrides:
   geolocator: ^9.0.2
   path: ^1.8.3
   numberpicker: ^2.1.2
+  package_info_plus: ^4.0.2
+  chewie: ^1.7.0
   # at_onboarding_flutter:
   #   git:
   #     url: https://github.com/atsign-foundation/at_widgets.git
   #     path: packages/at_onboarding_flutter
   #     ref: trunk
+  at_client_mobile:
+    git:
+      url: https://github.com/atsign-foundation/at_client_sdk.git
+      path: packages/at_client_mobile
+      ref: hotfix/fix-biometric-storage
 
 dev_dependencies:
   flutter_test:
