@@ -14,13 +14,13 @@ import file_selector_macos
 import flutter_local_notifications
 import geolocator_apple
 import just_audio
-import package_info_plus_macos
+import package_info_plus
 import path_provider_macos
 import share_plus_macos
 import shared_preferences_macos
 import sqflite
 import url_launcher_macos
-import wakelock_macos
+import wakelock_plus
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   FileSaverPlugin.register(with: registry.registrar(forPlugin: "FileSaverPlugin"))
@@ -38,5 +38,5 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   SharedPreferencesPlugin.register(with: registry.registrar(forPlugin: "SharedPreferencesPlugin"))
   SqflitePlugin.register(with: registry.registrar(forPlugin: "SqflitePlugin"))
   UrlLauncherPlugin.register(with: registry.registrar(forPlugin: "UrlLauncherPlugin"))
-  WakelockMacosPlugin.register(with: registry.registrar(forPlugin: "WakelockMacosPlugin"))
+  WakelockPlusMacosPlugin.register(with: registry.registrar(forPlugin: "WakelockPlusMacosPlugin"))
 }
