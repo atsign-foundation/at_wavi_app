@@ -174,7 +174,8 @@ class BackendService {
 
     _themeProvider.resetThemeData();
     await _themeProvider.checkThemeFromSecondary();
-    VersionService.getInstance().init();
+    // TODO: for testing purpose only
+    // VersionService.getInstance().init();
 
     AtKeyGetService().init();
     await Provider.of<UserProvider>(NavService.navKey.currentContext!,
