@@ -8,6 +8,7 @@
 
 #include <at_file_saver/file_saver_plugin.h>
 #include <desktop_window/desktop_window_plugin.h>
+#include <fast_rsa/fast_rsa_plugin.h>
 #include <file_selector_windows/file_selector_windows.h>
 #include <geolocator_windows/geolocator_windows.h>
 #include <permission_handler_windows/permission_handler_windows_plugin.h>
@@ -19,6 +20,8 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("FileSaverPlugin"));
   DesktopWindowPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("DesktopWindowPlugin"));
+  FastRsaPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("FastRsaPlugin"));
   FileSelectorWindowsRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FileSelectorWindows"));
   GeolocatorWindowsRegisterWithRegistrar(

@@ -270,10 +270,9 @@ class User {
             BasicData.fromJson(json.decode(userMap[FieldsEnum.DISCORD.name])),
         htmlToastView: BasicData.fromJson(
             json.decode(userMap[FieldsEnum.HTMLTOASTVIEW.name])),
-        switchField: BasicData.fromJson(
-            json.decode(userMap[FieldsEnum.SWITCH.name])),
-        epic: BasicData.fromJson(
-            json.decode(userMap[FieldsEnum.EPIC.name])),
+        switchField:
+            BasicData.fromJson(json.decode(userMap[FieldsEnum.SWITCH.name])),
+        epic: BasicData.fromJson(json.decode(userMap[FieldsEnum.EPIC.name])),
         customFields: customFields,
       );
     } catch (e) {
@@ -327,9 +326,11 @@ class BasicData {
           json['accountName'] == FieldsEnum.IMAGE.name &&
               json['value'] != null &&
               json['value'] != '') {
+        // if (json['value'].contains("storjshare") == false) {
         json['value'] = jsonDecode(json['value']);
         json['value'] = json['value']!.cast<int>();
         json['value'] = Uint8List.fromList(json['value']);
+        // }
       }
       if (json['value'] == '') {
         json['value'] = null;

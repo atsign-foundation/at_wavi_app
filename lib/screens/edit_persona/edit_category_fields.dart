@@ -7,6 +7,7 @@ import 'package:at_wavi_app/routes/route_names.dart';
 import 'package:at_wavi_app/routes/routes.dart';
 import 'package:at_wavi_app/services/field_order_service.dart';
 import 'package:at_wavi_app/services/size_config.dart';
+import 'package:at_wavi_app/services/storj_service.dart';
 import 'package:at_wavi_app/utils/at_enum.dart';
 import 'package:at_wavi_app/utils/colors.dart';
 import 'package:at_wavi_app/utils/field_names.dart';
@@ -552,8 +553,20 @@ class _EditCategoryFieldsState extends State<EditCategoryFields> {
   }
 
   Widget imageField(BasicData basicData) {
+    late Uint8List customImage;
+    // if (basicData.value.contains("storjshare")) {
+    //   String fileName = "custom_${basicData.accountName}.png";
+    //   var imageFile = StorjService().getImageFromFile(fileName);
+    //   if (imageFile != null) {
+    //     customImage = imageFile.readAsBytesSync();
+    //   }
+    // } else {
+    //   var intList = basicData.value!.cast<int>();
+    //   customImage = Uint8List.fromList(intList);
+    // }
+
     var intList = basicData.value!.cast<int>();
-    Uint8List customImage = Uint8List.fromList(intList);
+    customImage = Uint8List.fromList(intList);
 
     return SizedBox(
       width: double.infinity,
